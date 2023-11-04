@@ -1,0 +1,19 @@
+{
+	"files.associations": {
+		"*.embeddedhtml": "html",
+		"*.py": "python",
+		"*.vue": "vue",
+		"__config": "c",
+		"array": "c",
+		"bitset": "c",
+		"chrono": "c",
+		"exception": "c",
+		"functional": "c",
+		"iterator": "c",
+		"string_view": "c",
+		"tuple": "c",
+		"variant": "c",
+		"cstdio": "c",
+		"ostream": "c"
+	}
+}
