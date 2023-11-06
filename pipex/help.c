@@ -385,3 +385,69 @@ int main(void)
 		close(fd[0]);
 	}
 }
+
+int main2(void)
+{
+	int arr[] = {1,2,3,4,1,2,7};
+	int arrSize = sizeof(arr) / sizeof(int);
+	int start, end;
+	int fd[2];
+
+ 	if(pipe(fd)== -1)
+	{
+		return 1;
+	}
+
+	int id = fork();
+	if(id == -1)
+	{
+		return 2;
+	}
+
+	if(id == 0)
+	{
+		start = 0;
+		end =  arrSize/2; //first 3. Summed by child
+	}
+	else
+	{
+		start = arrSize / 2; //last 4. Summed by parent
+		end = arrSize;
+	}
+
+	int sum = 0;
+	int i;
+	for(i = start; i < end; i++)
+	{
+		sum += arr[i];
+	}
+
+	printf("Calculated partial sum:%d\n", sum);
+	if (id ==0)
+	{
+		close(fd[0]);
+		write(fd[1], &sum, sizeof(int));
+		close(fd[1]);
+	}
+	else
+	{
+		int sumFromChild;
+		close(fd[1]);
+		read(fd[0], &sumFromChild, sizeof(sumFromChild));
+		close(fd[0]);
+
+		int totalSum = sum + sumFromChild;
+		printf("Total sum is %d\n", totalSum);
+		wait(NULL);
+	}
+
+}
+
+
+	// dup2(pipex.tube[1], 1); //change stdout to write end
+	// // so instead of stdout, it will write to pipe
+
+	// close(pipex.tube[0]); //close the read end of pipe. Make sure does not read
+	
+	// dup2(pipex.infile, 0); //redirect stdin to fd to infile
+	// // so instead of stdin, it will read from infile
