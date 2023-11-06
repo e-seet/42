@@ -8,11 +8,27 @@
 //fd[0] - read
 //fd[1] - write	
 
-#include "libftfiles.h"
+// #include "libftfiles.h"
 #include <sys/wait.h>
+#include "./libft/libft.h"
+#include <stdio.h>
+#include <unistd.h>
+//for read write, permission with files, creating files
+#include <fcntl.h>
+
+//struct to store whatever i need for now
+struct pipeStructure {
+    int pid1;
+	int pid1status;
+	int p1fd;
+
+    int pid2;
+	int pid2status;
+	int p2fd;
+};
 
 // P1 write to pipe
-void P1child(char *argv[], char *paths[], char *path, char *envp[], struct pipeStructure pipexStruct, int fd[])
+void P1child(char *argv[], char *paths[], char *path, char *envp[], /*struct pipeStructure pipexStruct,*/ int fd[])
 {
 		int		i;
 		char	**argvs;
@@ -53,7 +69,7 @@ void P1child(char *argv[], char *paths[], char *path, char *envp[], struct pipeS
 }
 
 // read from pipe and write
-void P2child(char *argv[], char *paths[], char *path, char *envp[], struct pipeStructure pipexStruct, int fd[])
+void P2child(char *argv[], char *paths[], char *path, char *envp[], /*struct pipeStructure pipexStruct,*/ int fd[])
 {
 		int i;
 		char **argvs;
@@ -123,11 +139,11 @@ int main(int argc, char *argv[], char *envp[])
 
 		pipexStruct.pid1 = fork();
 		if (pipexStruct.pid1 == 0)
-			P1child(argv, paths, path,envp, pipexStruct, fd);
+			P1child(argv, paths, path,envp, /*pipexStruct,*/ fd);
 
 		pipexStruct.pid2 = fork();
 		if (pipexStruct.pid2 == 0)
-			P2child(argv, paths, path,envp, pipexStruct, fd);
+			P2child(argv, paths, path,envp, /*pipexStruct,*/ fd);
 
 		//The third argument, which is 0 in this case, represents
 		// the "options" argument. It specifies various options
