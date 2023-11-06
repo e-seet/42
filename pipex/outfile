@@ -1,11 +1,9 @@
-total 68
--rw-r--r-- 1 eseet 2023_singapore   565 Nov  6 12:48 example.txt
+total 60
 -rw-r--r-- 1 eseet 2023_singapore 10958 Nov  6 10:53 help.c
 -rw-r--r-- 1 eseet 2023_singapore   168 Nov  6 10:53 infile
 -rw-r--r-- 1 eseet 2023_singapore  2208 Nov  6 12:06 libftfiles.c
 -rw-r--r-- 1 eseet 2023_singapore   665 Nov  6 12:08 libftfiles.h
--rwxr-xr-x 1 eseet 2023_singapore 16888 Nov  6 12:49 main
--rw-r--r-- 1 eseet 2023_singapore  5695 Nov  6 12:49 main.c
--rw-r--r-- 1 eseet 2023_singapore     0 Nov  6 12:49 outfile
--rw-r--r-- 1 eseet 2023_singapore  1347 Nov  6 11:44 test2.c
--rw-r--r-- 1 eseet 2023_singapore  5400 Nov  6 12:46 test.c
+-rwxr-xr-x 1 eseet 2023_singapore 16888 Nov  6 13:30 main
+-rw-r--r-- 1 eseet 2023_singapore  5542 Nov  6 13:30 main.c
+-rw-r--r-- 1 eseet 2023_singapore     0 Nov  6 13:30 outfile
+-rw-r--r-- 1 eseet 2023_singapore  7257 Nov  6 13:27 test.c

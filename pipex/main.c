@@ -1,35 +1,30 @@
 // To do: find out what happen if file is missing. To test
-//note stdin0 stdout1 stderr2	
-// fd[0] read, fd[1] write
-#include "libftfiles.h"
 
+// quick reference
+// stdin 0
+// stdout 1
+// stderr 2
+//creating the pipe
+//fd[0] - read
+//fd[1] - write	
+
+#include "libftfiles.h"
 #include <sys/wait.h>
 
-//do stuff to p1 child.
-// P1 is the read process
+// P1 write to pipe
 void P1child(char *argv[], char *paths[], char *path, char *envp[], struct pipeStructure pipexStruct, int fd[])
 {
-		int i;
-		char **argvs;
+		int		i;
+		char	**argvs;
 
+		i = 0;
 		argvs = ft_split(argv[2], ' ');
-		i = 0;
-		//argvs[0] is the command. Eg "ls"
-		// while(argvs[i])
-		// {
-		// 	printf("%s\n", argvs[i]);
-		// 	i++;
-		// }
-		
-		//re-assiging the path pointer
-		i = 0;
-		//loop through the paths and check whether it is valid
+		// loop through the various
 		while (paths[i])
 		{
-			
 			path = ft_strjoin(paths[i], "/");
 			path = ft_strjoin(path, argvs[0]);
-			//check file exists
+			//check the path+file exists
 			if (access(path, F_OK) == 0)
 			{
 				break;
@@ -39,84 +34,59 @@ void P1child(char *argv[], char *paths[], char *path, char *envp[], struct pipeS
 
 		int readfd = open(argv[1], O_RDONLY);
 
+		//Change from stdout(1) to fd[1] so that the data that supposed to go stdout will go to pipe instead
+		// then it will write into pipe. That's why fd[1]
 		dup2(fd[1], 1);
-		close(fd[0]); //close pipe for reading
+		//close the pipe for reading
+		close(fd[0]);
+		//Change the stdin(0) to read the file's fd so that it will read from the file of interest
 		dup2(readfd, 0);
 
+		int execveResult;
 		//path: "/bin/ls"
 		//arg:  ["ls", "-l"]
-		int execveResult;
-		printf("execve of p1child");
 		execveResult =  execve(path, argvs, envp);
 		
 		if (execveResult == -1)
-		{
-			perror("smth wrong with executing. Terminate now");
-		}
-		else
-		{
-			printf("end of p1child");
-		}
+			perror("Execve failed in P1child. Terminating Now");
 		//end of process code
 }
 
-//do stuff to p2 child
-
+// read from pipe and write
 void P2child(char *argv[], char *paths[], char *path, char *envp[], struct pipeStructure pipexStruct, int fd[])
 {
 		int i;
 		char **argvs;
 
+		i = 0;
 		argvs = ft_split(argv[2], ' ');
-		i = 0;
-		//argvs[0] is the command. Eg "ls"
-		// while(argvs[i])
-		// {
-		// 	printf("%s\n", argvs[i]);
-		// 	i++;
-		// }
-		
-		//re-assiging the path pointer
-		i = 0;
-		//loop through the paths and check whether it is valid
 		while (paths[i])
 		{
-			
 			path = ft_strjoin(paths[i], "/");
 			path = ft_strjoin(path, argvs[0]);
-			//check file exists
+			//check the path+file exists
 			if (access(path, F_OK) == 0)
-			{
 				break;
-			}
 			i++;
 		}
 
-
-		//!! settle the fd
 		// Open a file for writing (create if it doesn't exist or truncate if it does)
 		int writefd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
 		
+		// change from stdin(0)  to listen to fd[0]
 		dup2(fd[0], 0);
-		close(fd[1]); //close pipe for reading
+		// Close the pipe for writing as we not sending any data over
+		close(fd[1]);
+		// change the output to writefd
 		dup2(writefd, 1);
 
+		int execveResult;
 		//path: "/bin/ls"
 		//arg:  ["ls", "-l"]
-		int execveResult;
 		execveResult =  execve(path, argvs, envp);
-		printf("end of p2child");
-		
 		if (execveResult == -1)
-		{
 			perror("smth wrong with executing. Terminate now");
-		}
 		//end of process code
-		else
-		{
-			printf("end of p2child");
-		}
 }
 
 
@@ -126,14 +96,12 @@ int main(int argc, char *argv[], char *envp[])
 	struct pipeStructure pipexStruct;
 	char *path;
 	char **paths;
-	// char **argvs;
 
 	//correct number of parameters
 	if (argc == 5)
 	{
-		//Find env + arg
 		int i = 0;
-		//Get the path string
+		//Get the string:"PATH="
 		while (envp[i])
 		{
 			if (ft_strncmp("PATH=",envp[i], 5) == 0)
@@ -147,22 +115,11 @@ int main(int argc, char *argv[], char *envp[])
 		//Split the path string into various paths
 		paths = ft_split(path + 5, ':');
 		i = 0;
-		// while(paths[i])
-		// {
-		// 	printf("%s\n", paths[i]);
-		// 	i++;
-		// }
-		// printf("\n");
 
-
-		//creating the pipe
-		//fd[0] - read
-		//fd[1] - write	
-		int fd[2];
+		// int array for pipe 
+		int fd[2]; 
 		if(pipe(fd) == -1)
-		{
 			printf("Error in creating pipe\n");
-		}
 
 		pipexStruct.pid1 = fork();
 		if (pipexStruct.pid1 == 0)
@@ -181,80 +138,25 @@ int main(int argc, char *argv[], char *envp[])
 		waitpid(pipexStruct.pid1, &pipexStruct.pid1status, 0);
 		waitpid(pipexStruct.pid2, &pipexStruct.pid2status, 0);
 
-
-    if (WIFEXITED(pipexStruct.pid1status)) {
+		//! to do: close both pipes
+		// the 2 if statements are just extra and should be removed 
+    	if (WIFEXITED(pipexStruct.pid1status)) {
             printf("Child process (PID %d) exited with status %d\n", pipexStruct.pid1, WEXITSTATUS(pipexStruct.pid1status));
         } else if (WIFSIGNALED(pipexStruct.pid1status)) {
             printf("Child process (PID %d) terminated by signal %d\n", pipexStruct.pid1, WTERMSIG(pipexStruct.pid1status));
         }
-		
-
 		if (WIFEXITED(pipexStruct.pid2status)) {
             printf("Child process (PID %d) exited with status %d\n", pipexStruct.pid2, WEXITSTATUS(pipexStruct.pid2status));
         } else if (WIFSIGNALED(pipexStruct.pid2status)) {
             printf("Child process (PID %d) terminated by signal %d\n", pipexStruct.pid2, WTERMSIG(pipexStruct.pid2status));
         }
-		// close both pipes
-		// wait pid
-		// free all the memory
-
-		/*
-		//!process orientated
-		//close the pipe id and all
-
-		argvs = ft_split(argv[2], ' ');
-		i = 0;
-		//argvs[0] is the command. Eg "ls"
-		while(argvs[i])
-		{
-			printf("%s\n", argvs[i]);
-			i++;
-		}
-		
-		//re-assiging the path pointer
-		i = 0;
-		//loop through the paths and check whether it is valid
-		while (paths[i])
-		{
-			
-			path = ft_strjoin(paths[i], "/");
-			path = ft_strjoin(path, argvs[0]);
-			//check file exists
-			if (access(path, F_OK) == 0)
-			{
-				break;
-			}
-			i++;
-		}
-
-		//path: "/bin/ls"
-		//arg:  ["ls", "-l"]
-		int execveResult;
-		execveResult =  execve(path, argvs, envp);
-		if (execveResult == -1)
-		{
-			perror("smth wrong with executing. Terminate now");
-			return 0;
-		}
-		//end of process code
-		*/
-
-		// int P1 = getppid();
-		// int P1 = getpid();
-
-		//forking the process
-		// int P1C = fork(); // 0 if success. -1 if error
-
+		// to do:free alls the memory
 
 	}
 	else
-	{
 		return -1;
-	}
-	
 
 }
-
 
 // ./main  in "grep a1" "wc -w" out
 
