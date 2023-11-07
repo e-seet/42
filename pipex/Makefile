@@ -20,7 +20,6 @@ CFLAGS := -Wall -Wextra -Werror
 SRC_FILES   := main.c
 OBJS        = $(SRC_FILES:.c=.o)
 
-
 SRC_FILESL  := ft_split.c ft_strjoin.c ft_strncmp.c	ft_strlen.c
 LIBFT_DIR   = libft/
 LIBFTSRC	= $(addprefix $(LIBFT_DIR), $(SRC_FILESL))
@@ -39,16 +38,20 @@ all: $(NAME)
 $(OBJS): %.o: %.c
 	@$(CC) $(CFLAGS) -I $(LIBFT_DIR) -c $< -o $@
 
-$(LIBFT):
-	@make -C $(LIBFT_DIR)
-	@cp $(LIBFT) $(NAME)
+$(OBJ_L): %.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+	
+# $(LIBFT):
+# 	@make -C $(LIBFT_DIR)
+# 	@cp $(LIBFT) $(NAME)
 
 clean:
 	rm	-f	$(OBJS)
-	@make -C $(LIBFT_DIR) clean
+	rm	-f	$(OBJ_L)
+#	@make -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
-	@make -C $(LIBFT_DIR) fclean
+#	@make -C $(LIBFT_DIR) fclean
 
 re:	fclean
