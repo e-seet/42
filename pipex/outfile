@@ -1,9 +1,2 @@
-total 60
--rw-r--r-- 1 eseet 2023_singapore 10958 Nov  6 10:53 help.c
--rw-r--r-- 1 eseet 2023_singapore   168 Nov  6 10:53 infile
--rw-r--r-- 1 eseet 2023_singapore  2208 Nov  6 12:06 libftfiles.c
--rw-r--r-- 1 eseet 2023_singapore   665 Nov  6 12:08 libftfiles.h
--rwxr-xr-x 1 eseet 2023_singapore 16888 Nov  6 13:30 main
--rw-r--r-- 1 eseet 2023_singapore  5542 Nov  6 13:30 main.c
--rw-r--r-- 1 eseet 2023_singapore     0 Nov  6 13:30 outfile
--rw-r--r-- 1 eseet 2023_singapore  7257 Nov  6 13:27 test.c
+Hello, this is a sample input file.
+You can replace this text with the actual content you want to process.

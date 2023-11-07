@@ -12,8 +12,11 @@
 
 //struct to store whatever i need for now
 struct pipeStructure {
-    int pid1;
+    // get the process id
+	int pid1;
+	// process status
 	int pid1status;
+	// fd to read
 	int p1fd;
 
     int pid2;

@@ -28,7 +28,7 @@ struct pipeStructure {
 };
 
 // P1 write to pipe
-void P1child(char *argv[], char *paths[], char *path, char *envp[], /*struct pipeStructure pipexStruct,*/ int fd[])
+void P1child(char *argv[], char *paths[], char *path, char *envp[], struct pipeStructure pipexStruct, int fd[])
 {
 		int		i;
 		char	**argvs;
@@ -42,13 +42,18 @@ void P1child(char *argv[], char *paths[], char *path, char *envp[], /*struct pip
 			path = ft_strjoin(path, argvs[0]);
 			//check the path+file exists
 			if (access(path, F_OK) == 0)
-			{
 				break;
-			}
+			free(path);
+			path = NULL;
 			i++;
 		}
+		if (access(path, F_OK) != 0)
+			return perror("access error");
 
-		int readfd = open(argv[1], O_RDONLY);
+
+		pipexStruct.p1fd = open(argv[1], O_RDONLY);
+		if (pipexStruct.p1fd < 0)
+			perror("Error in opening file. Terminating now");
 
 		//Change from stdout(1) to fd[1] so that the data that supposed to go stdout will go to pipe instead
 		// then it will write into pipe. That's why fd[1]
@@ -56,7 +61,7 @@ void P1child(char *argv[], char *paths[], char *path, char *envp[], /*struct pip
 		//close the pipe for reading
 		close(fd[0]);
 		//Change the stdin(0) to read the file's fd so that it will read from the file of interest
-		dup2(readfd, 0);
+		dup2(pipexStruct.p1fd, 0);
 
 		int execveResult;
 		//path: "/bin/ls"
@@ -69,7 +74,7 @@ void P1child(char *argv[], char *paths[], char *path, char *envp[], /*struct pip
 }
 
 // read from pipe and write
-void P2child(char *argv[], char *paths[], char *path, char *envp[], /*struct pipeStructure pipexStruct,*/ int fd[])
+void P2child(char *argv[], char *paths[], char *path, char *envp[], struct pipeStructure pipexStruct, int fd[])
 {
 		int i;
 		char **argvs;
@@ -83,18 +88,27 @@ void P2child(char *argv[], char *paths[], char *path, char *envp[], /*struct pip
 			//check the path+file exists
 			if (access(path, F_OK) == 0)
 				break;
+			free(path);
+			path = NULL;
 			i++;
 		}
 
+		if (access(path, F_OK) != 0)
+			return perror("access error");
+
 		// Open a file for writing (create if it doesn't exist or truncate if it does)
-		int writefd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		
+		// int writefd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		pipexStruct.p2fd = open(argv[4], O_TRUNC | O_CREAT | O_RDWR, 0644);
+
+		if (pipexStruct.p2fd < 0)
+			perror("Error in opening file. Terminating now");
+
 		// change from stdin(0)  to listen to fd[0]
 		dup2(fd[0], 0);
 		// Close the pipe for writing as we not sending any data over
 		close(fd[1]);
 		// change the output to writefd
-		dup2(writefd, 1);
+		dup2(pipexStruct.p2fd, 1);
 
 		int execveResult;
 		//path: "/bin/ls"
@@ -113,68 +127,70 @@ int main(int argc, char *argv[], char *envp[])
 	char *path;
 	char **paths;
 
+	path = NULL;
 	//correct number of parameters
-	if (argc == 5)
-	{
-		int i = 0;
-		//Get the string:"PATH="
-		while (envp[i])
-		{
-			if (ft_strncmp("PATH=",envp[i], 5) == 0)
-			{
-				path = envp[i];
-				break;
-			}
-			i++;
-		}
-
-		//Split the path string into various paths
-		paths = ft_split(path + 5, ':');
-		i = 0;
-
-		// int array for pipe 
-		int fd[2]; 
-		if(pipe(fd) == -1)
-			printf("Error in creating pipe\n");
-
-		pipexStruct.pid1 = fork();
-		if (pipexStruct.pid1 == 0)
-			P1child(argv, paths, path,envp, /*pipexStruct,*/ fd);
-
-		pipexStruct.pid2 = fork();
-		if (pipexStruct.pid2 == 0)
-			P2child(argv, paths, path,envp, /*pipexStruct,*/ fd);
-
-		//The third argument, which is 0 in this case, represents
-		// the "options" argument. It specifies various options
-		// that control the behavior of the waitpid function. 
-		//When you pass 0 as the options, you are indicating that
-		// you want the waitpid function to operate in its default
-		// blocking mode and wait for a child process to change state.
-		waitpid(pipexStruct.pid1, &pipexStruct.pid1status, 0);
-		waitpid(pipexStruct.pid2, &pipexStruct.pid2status, 0);
-
-		//! to do: close both pipes
-		// the 2 if statements are just extra and should be removed 
-    	if (WIFEXITED(pipexStruct.pid1status)) {
-            printf("Child process (PID %d) exited with status %d\n", pipexStruct.pid1, WEXITSTATUS(pipexStruct.pid1status));
-        } else if (WIFSIGNALED(pipexStruct.pid1status)) {
-            printf("Child process (PID %d) terminated by signal %d\n", pipexStruct.pid1, WTERMSIG(pipexStruct.pid1status));
-        }
-		if (WIFEXITED(pipexStruct.pid2status)) {
-            printf("Child process (PID %d) exited with status %d\n", pipexStruct.pid2, WEXITSTATUS(pipexStruct.pid2status));
-        } else if (WIFSIGNALED(pipexStruct.pid2status)) {
-            printf("Child process (PID %d) terminated by signal %d\n", pipexStruct.pid2, WTERMSIG(pipexStruct.pid2status));
-        }
-		// to do:free alls the memory
-
-	}
-	else
+	if (argc != 5)
 		return -1;
 
+	int i = 0;
+	//Get the string:"PATH="
+	while (envp[i])
+	{
+		if (ft_strncmp("PATH=",envp[i], 5) == 0)
+		{
+			path = envp[i];
+			break;
+		}
+		i++;
+	}
+
+	//Split the path string into various paths
+	paths = ft_split(path + 5, ':');
+	i = 0;
+
+	// int array for pipe 
+	int fd[2]; 
+	if(pipe(fd) == -1)
+		printf("Error in creating pipe\n");
+
+	pipexStruct.pid1 = fork();
+	if (pipexStruct.pid1 == 0)
+		P1child(argv, paths, path,envp, pipexStruct, fd);
+
+	pipexStruct.pid2 = fork();
+	if (pipexStruct.pid2 == 0)
+		P2child(argv, paths, path,envp, pipexStruct, fd);
+
+	//! to do: close both pipes
+	close(fd[0]);
+	close(fd[1]);
+
+	//The third argument, which is 0 in this case, represents
+	// the "options" argument. It specifies various options
+	// that control the behavior of the waitpid function. 
+	//When you pass 0 as the options, you are indicating that
+	// you want the waitpid function to operate in its default
+	// blocking mode and wait for a child process to change state.
+	waitpid(pipexStruct.pid1, &pipexStruct.pid1status, 0);
+	waitpid(pipexStruct.pid2, &pipexStruct.pid2status, 0);
+
+	
+	// the 2 if statements are just extra and should be removed 
+	// if (WIFEXITED(pipexStruct.pid1status)) {
+	//     printf("Child process (PID %d) exited with status %d\n", pipexStruct.pid1, WEXITSTATUS(pipexStruct.pid1status));
+	// } else if (WIFSIGNALED(pipexStruct.pid1status)) {
+	//     printf("Child process (PID %d) terminated by signal %d\n", pipexStruct.pid1, WTERMSIG(pipexStruct.pid1status));
+	// }
+	// if (WIFEXITED(pipexStruct.pid2status)) {
+	//     printf("Child process (PID %d) exited with status %d\n", pipexStruct.pid2, WEXITSTATUS(pipexStruct.pid2status));
+	// } else if (WIFSIGNALED(pipexStruct.pid2status)) {
+	//     printf("Child process (PID %d) terminated by signal %d\n", pipexStruct.pid2, WTERMSIG(pipexStruct.pid2status));
+	// }
+	// to do:free alls the memory
+	return 0;
 }
 
-// ./main  in "grep a1" "wc -w" out
+// ./main  infile "grep this" "wc -w" outfile
 
 //compile 
 // gcc -o main main.c libftfiles.c
