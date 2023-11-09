@@ -165,15 +165,21 @@ int main(int argc, char *argv[], char *envp[])
 	if(pipe(fd) == -1)
 		printf("Error in creating pipe\n");
 
+	if (pipexStruct.pid1 != 0)
+		wait(NULL);
 	pipexStruct.pid1 = fork();
+
 	if (pipexStruct.pid1 == 0)
 		P1child(argv, paths, path,envp, pipexStruct, fd);
 
+	if (pipexStruct.pid2 != 0)
+		wait(NULL);
 	pipexStruct.pid2 = fork();
+
 	if (pipexStruct.pid2 == 0)
 		P2child(argv, paths, path,envp, pipexStruct, fd);
 
-	//! to do: close both pipes
+	//!close both pipes
 	close(fd[0]);
 	close(fd[1]);
 
@@ -183,11 +189,12 @@ int main(int argc, char *argv[], char *envp[])
 	//When you pass 0 as the options, you are indicating that
 	// you want the waitpid function to operate in its default
 	// blocking mode and wait for a child process to change state.
+	
 	waitpid(pipexStruct.pid1, &pipexStruct.pid1status, 0);
 	waitpid(pipexStruct.pid2, &pipexStruct.pid2status, 0);
 
 	
-	// the 2 if statements are just extra and should be removed 
+	// // the 2 if statements are just extra and should be removed 
 	// if (WIFEXITED(pipexStruct.pid1status)) {
 	//     printf("Child process (PID %d) exited with status %d\n", pipexStruct.pid1, WEXITSTATUS(pipexStruct.pid1status));
 	// } else if (WIFSIGNALED(pipexStruct.pid1status)) {
@@ -198,6 +205,7 @@ int main(int argc, char *argv[], char *envp[])
 	// } else if (WIFSIGNALED(pipexStruct.pid2status)) {
 	//     printf("Child process (PID %d) terminated by signal %d\n", pipexStruct.pid2, WTERMSIG(pipexStruct.pid2status));
 	// }
+
 	// to do:free alls the memory
 	// freemem();
 	return 0;
