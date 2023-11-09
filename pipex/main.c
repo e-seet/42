@@ -142,7 +142,10 @@ int main(int argc, char *argv[], char *envp[])
 	path = NULL;
 	//correct number of parameters
 	if (argc != 5)
-		return -1;
+	{
+		printf("crash");
+		return 1;
+	}
 
 	int i = 0;
 	//Get the string:"PATH="
