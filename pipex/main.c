@@ -1,25 +1,4 @@
-
-#include <sys/wait.h>
-#include "./libft/libft.h"
-#include <stdio.h>
-#include <unistd.h>
-//for read write, permission with files, creating files
-#include <fcntl.h>
-
-//struct to store whatever i need
-struct s_pipex {
-	int		pid1;
-	int		pid1status;
-	int		p1fd;
-	char	**argvs1;
-
-	int		pid2;
-	int		pid2status;
-	int		p2fd;
-	char	**argvs2;
-
-	int		fdpipe[2];
-};
+#include "utils.h"
 
 char	*findprocesspath(char *path, char *paths[],
 struct s_pipex pipexstruct, int processnum)
@@ -130,34 +109,22 @@ int	main(int argc, char *argv[], char *envp[])
 
 	if (argc != 5)
 		return (1);
-	path = findpath(envp); // should check null.
+	path = findpath(envp);
 	paths = ft_split(path + 5, ':');
 	if (pipe(pipexstruct.fdpipe) == -1)
-		printf("Error in creating pipe\n");
-	//open my files's fd first
-	pipexstruct.p2fd = open(argv[4], O_TRUNC | O_CREAT | O_RDWR, 0644);
-	if (pipexstruct.p2fd < 0)
-		perror("Error in opening file. Terminating now");
-	pipexstruct.p1fd = open(argv[1], O_RDONLY);
-	if (pipexstruct.p1fd < 0)
-		perror("Error in opening file. Terminating now");
-
-	//setting argvs for p1 and p2
-	pipexstruct.argvs1 = ft_split(argv[2], ' ');
-	pipexstruct.argvs2 = ft_split(argv[3], ' ');
+		return (1);
+	setstructure(argv, &pipexstruct);
 	if (pipexstruct.pid1 != 0)
 		wait(NULL);
 	pipexstruct.pid1 = fork();
 	if (pipexstruct.pid1 == 0)
 		if (p1child(paths, path, envp, pipexstruct) == 1)
 			exit(1);
-
 	pipexstruct.pid2 = fork();
 	if (pipexstruct.pid2 == 0)
 		if (p2child(paths, path, envp, pipexstruct) == 1)
 			exit(1);
-	close(pipexstruct.fdpipe[0]);
-	close(pipexstruct.fdpipe[1]);
+	closepipes(&pipexstruct);
 	waitpid(pipexstruct.pid1, &pipexstruct.pid1status, 0);
 	waitpid(pipexstruct.pid2, &pipexstruct.pid2status, 0);
 	return (0);

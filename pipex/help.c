@@ -1,3 +1,4 @@
+//some useful things that may help 
 
 //read
 // const char *filename = "example.txt";

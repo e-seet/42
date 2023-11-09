@@ -13,7 +13,7 @@ CFLAGS := -Wall -Wextra -Werror
 # **************************************************************************** #
 # Source
 # **************************************************************************** #
-SRC_FILES   := main.c
+SRC_FILES   := main.c	utils.c
 OBJS        = $(SRC_FILES:.c=.o)
 
 SRC_FILESL  := ft_split.c ft_strjoin.c ft_strncmp.c	ft_strlen.c
