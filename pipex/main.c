@@ -25,6 +25,8 @@ struct pipeStructure {
     int pid2;
 	int pid2status;
 	int p2fd;
+
+	// int fdpipe[];
 };
 
 // P1 write to pipe
@@ -47,6 +49,7 @@ void P1child(char *argv[], char *paths[], char *path, char *envp[], struct pipeS
 			path = NULL;
 			i++;
 		}
+		//check that at the end (when break out or end of loop)
 		if (access(path, F_OK) != 0)
 			return perror("access error");
 
@@ -70,6 +73,8 @@ void P1child(char *argv[], char *paths[], char *path, char *envp[], struct pipeS
 		
 		if (execveResult == -1)
 			perror("Execve failed in P1child. Terminating Now");
+		free(path);
+		free(argvs);
 		//end of process code
 }
 
@@ -117,8 +122,15 @@ void P2child(char *argv[], char *paths[], char *path, char *envp[], struct pipeS
 		if (execveResult == -1)
 			perror("smth wrong with executing. Terminate now");
 		//end of process code
+		free(path);
+		free(argvs);
+
 }
 
+// void freemem()
+// {
+
+// }
 
 //pipex, file1, cmd1, cmd2, file2
 int main(int argc, char *argv[], char *envp[])
@@ -187,6 +199,7 @@ int main(int argc, char *argv[], char *envp[])
 	//     printf("Child process (PID %d) terminated by signal %d\n", pipexStruct.pid2, WTERMSIG(pipexStruct.pid2status));
 	// }
 	// to do:free alls the memory
+	// freemem();
 	return 0;
 }
 
