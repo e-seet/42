@@ -7,18 +7,44 @@
 #include <fcntl.h>
 
 //struct to store whatever i need
-struct pipestructure {
-	int	pid1;
-	int	pid1status;
-	int	p1fd;
+struct s_pipex {
+	int		pid1;
+	int		pid1status;
+	int		p1fd;
+	char	**argvs1;
 
-	int	pid2;
-	int	pid2status;
-	int	p2fd;
+	int		pid2;
+	int		pid2status;
+	int		p2fd;
+	char	**argvs2;
 
-	int	fdpipe[2];
+	int		fdpipe[2];
 };
 
+char	*findprocesspath(char *path, char *paths[],
+struct s_pipex pipexstruct, int processnum)
+{
+	int	i;
+
+	i = 0;
+	while (paths[i])
+	{
+		path = ft_strjoin(paths[i], "/");
+		if (processnum == 1)
+			path = ft_strjoin(path, pipexstruct.argvs1[0]);
+		else
+			path = ft_strjoin(path, pipexstruct.argvs2[0]);
+		if (access(path, F_OK) == 0)
+			break ;
+		free (path);
+		path = NULL;
+		i++;
+	}
+	if (access(path, F_OK) == 0)
+		return (path);
+	else
+		return (NULL);
+}
 // //Change from stdout(1) to fd[1] so that the data that 
 //supposed to go stdout will go to pipe instead
 // // then it will write into pipe. That's why fd[1]
@@ -30,46 +56,24 @@ struct pipestructure {
 // dup2(pipexstruct.p1fd, 0);
 //path: "/bin/ls"
 //arg:  ["ls", "-l"]
-int	P1child(char *argv[], char *paths[], char *path, char *envp[], struct pipestructure pipexstruct)
+
+int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 {
-	int		i;
-	char	**argvs;
 	int		execveresult;
 
-	i = 0;
-	argvs = ft_split(argv[2], ' ');
-	while (paths[i])
-	{
-		path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(path, argvs[0]);
-		if (access(path, F_OK) == 0)
-			break ;
-		free (path);
-		path = NULL;
-		i++;
-	}
+	path = findprocesspath(path, paths, pipexstruct, 1);
 	if (access(path, F_OK) != 0)
 	{
 		perror("command not found");
 		return (1);
 	}
-	pipexstruct.p1fd = open(argv[1], O_RDONLY);
-	if (pipexstruct.p1fd < 0)
-		perror("Error in opening file. Terminating now");
-	i = 0;
-	while (argvs[i])
-	{
-		printf("argv:%s \n", argvs[i]);
-		i ++;
-	}
 	dup2(pipexstruct.fdpipe[1], 1);
 	close(pipexstruct.fdpipe[0]);
 	dup2(pipexstruct.p1fd, 0);
-	execveresult = execve(path, argvs, envp);
+	execveresult = execve(path, pipexstruct.argvs1, envp);
 	if (execveresult == -1)
 		perror("Execve failed in P1child. Terminating Now");
 	free(path);
-	free(argvs);
 	return (0);
 }
 
@@ -77,24 +81,11 @@ int	P1child(char *argv[], char *paths[], char *path, char *envp[], struct pipest
 //arg:  ["ls", "-l"]
 // change from stdin(0)  to listen to fd[0]
 
-int	P2child(char *argv[], char *paths[], char *path, char *envp[], struct pipestructure pipexstruct)
+int	p2child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 {
-	int		i;
-	char	**argvs;
 	int		execveresult;
 
-	i = 0;
-	argvs = ft_split(argv[3], ' ');
-	while (paths[i])
-	{
-		path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(path, argvs[0]);
-		if (access(path, F_OK) == 0)
-			break ;
-		free(path);
-		path = NULL;
-		i++;
-	}
+	path = findprocesspath(path, paths, pipexstruct, 2);
 	if (access(path, F_OK) != 0)
 	{
 		perror("command not found");
@@ -102,31 +93,19 @@ int	P2child(char *argv[], char *paths[], char *path, char *envp[], struct pipest
 	}
 	dup2(pipexstruct.fdpipe[0], 0);
 	close(pipexstruct.fdpipe[1]);
-	i = 0;
-	while (argvs[i])
-	{
-		printf("argv2:%s \n", argvs[i]);
-		i ++;
-	}
 	dup2(pipexstruct.p2fd, 1);
-	execveresult = execve(path, argvs, envp);
+	execveresult = execve(path, pipexstruct.argvs2, envp);
 	if (execveresult == -1)
 		perror("smth wrong with executing. Terminate now");
 	free(path);
-	free(argvs);
 	return (0);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+char	*findpath(char *envp[])
 {
-	struct pipestructure	pipexstruct;
-	char					*path;
-	char					**paths;
-	int						i;
+	int		i;
+	char	*path;
 
-	path = NULL;
-	if (argc != 5)
-		return (1);
 	i = 0;
 	while (envp[i])
 	{
@@ -137,22 +116,45 @@ int	main(int argc, char *argv[], char *envp[])
 		}
 		i++;
 	}
+	if (ft_strncmp("PATH=", path, 5) == 0)
+		return (path);
+	else
+		return (NULL);
+}
+
+int	main(int argc, char *argv[], char *envp[])
+{
+	struct s_pipex	pipexstruct;
+	char			*path;
+	char			**paths;
+
+	if (argc != 5)
+		return (1);
+	path = findpath(envp); // should check null.
 	paths = ft_split(path + 5, ':');
-	i = 0;
 	if (pipe(pipexstruct.fdpipe) == -1)
 		printf("Error in creating pipe\n");
+	//open my files's fd first
+	pipexstruct.p2fd = open(argv[4], O_TRUNC | O_CREAT | O_RDWR, 0644);
+	if (pipexstruct.p2fd < 0)
+		perror("Error in opening file. Terminating now");
+	pipexstruct.p1fd = open(argv[1], O_RDONLY);
+	if (pipexstruct.p1fd < 0)
+		perror("Error in opening file. Terminating now");
+
+	//setting argvs for p1 and p2
+	pipexstruct.argvs1 = ft_split(argv[2], ' ');
+	pipexstruct.argvs2 = ft_split(argv[3], ' ');
 	if (pipexstruct.pid1 != 0)
 		wait(NULL);
 	pipexstruct.pid1 = fork();
 	if (pipexstruct.pid1 == 0)
-		if (P1child(argv, paths, path, envp, pipexstruct) == 1)
+		if (p1child(paths, path, envp, pipexstruct) == 1)
 			exit(1);
-	pipexstruct.p2fd = open(argv[4], O_TRUNC | O_CREAT | O_RDWR, 0644);
-	if (pipexstruct.p2fd < 0)
-		perror("Error in opening file. Terminating now");
+
 	pipexstruct.pid2 = fork();
 	if (pipexstruct.pid2 == 0)
-		if (P2child(argv, paths, path, envp, pipexstruct) == 1)
+		if (p2child(paths, path, envp, pipexstruct) == 1)
 			exit(1);
 	close(pipexstruct.fdpipe[0]);
 	close(pipexstruct.fdpipe[1]);
