@@ -67,7 +67,7 @@ char	*copycontent(const char *s, char c)
 		return (0);
 	i = 0;
 	len = wordlen(s, c);
-	str = malloc((len + 1) * sizeof(char)); 
+	str = malloc((len + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
 	while (len > i)

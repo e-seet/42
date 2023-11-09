@@ -25,7 +25,6 @@ struct pipeStructure {
     int pid2;
 	int pid2status;
 	int p2fd;
-
 	int fdpipe[2];
 };
 
@@ -231,7 +230,6 @@ int main(int argc, char *argv[], char *envp[])
 	
 	waitpid(pipexStruct.pid1, &pipexStruct.pid1status, 0);
 	waitpid(pipexStruct.pid2, &pipexStruct.pid2status, 0);
-
 	
 	// // // the 2 if statements are just extra and should be removed 
 	// if (WIFEXITED(pipexStruct.pid1status)) {
@@ -247,8 +245,6 @@ int main(int argc, char *argv[], char *envp[])
 	// //     printf("Child process 2(PID %d) terminated by signal %d\n", pipexStruct.pid2, WTERMSIG(pipexStruct.pid2status));
 	// // }
 
-	// to do:free alls the memory
-	// freemem();
 	return 0;
 }
 
@@ -266,7 +262,6 @@ int main(int argc, char *argv[], char *envp[])
 
 // #18
 // ./main  "infile2" "grep Now" "head -2" outfile
-
 
 //0:./main
 //1:infile

@@ -1,8 +1,6 @@
 // temporary put all my libft functions here
 #include <stdlib.h>
 
-
-
 //ft_strncmp
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
@@ -76,7 +74,7 @@ char	*copycontent(const char *s, char c)
 		return (0);
 	i = 0;
 	len = wordlen(s, c);
-	str = malloc((len + 1) * sizeof(char)); 
+	str = malloc((len + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
 	while (len > i)
@@ -123,7 +121,6 @@ char	**ft_split(char const *s, char c)
 	return (strs);
 }
 
-
 size_t	ft_strlen(const char *s)
 {
 	int		i;
@@ -137,6 +134,7 @@ size_t	ft_strlen(const char *s)
 	}
 	return (i);
 }
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	length;
