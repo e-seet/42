@@ -6,3 +6,9 @@ main.out
 main
 infile
 outfile
+
+# For pushswap
+help/
+
+.DS_Store
+settings.json
