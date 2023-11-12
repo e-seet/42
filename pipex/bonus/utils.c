@@ -22,9 +22,9 @@ void	setstructure(char *argv[], struct s_pipex *pipexstruct)
 int heredoccmd(struct s_pipex *pipexstruct)
 {
 	char	*line;
-	int		i;
+	// int		i;
 
-	i = 0;
+	// i = 0;
 	while (1)
 	{
 		write(1,"heredoc>", 8);

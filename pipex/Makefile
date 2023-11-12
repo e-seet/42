@@ -3,6 +3,7 @@
 # **************************************************************************** #
 
 NAME        = pipex
+NAME_BONUS	= pipex_bonus
 
 # **************************************************************************** #
 # Comp and flags
@@ -22,19 +23,27 @@ SRC_FILESLIBFT		:=	ft_isalpha.c		ft_isdigit.c		ft_isalnum.c		ft_isascii.c		ft_is
 						ft_strrchr.c			ft_strncmp.c 		ft_memchr.c			ft_memcmp.c			ft_strnstr.c		\
 						ft_atoi.c				ft_calloc.c			ft_strdup.c			ft_substr.c			ft_strjoin.c		\
 						ft_strtrim.c			ft_split.c			ft_itoa.c			ft_strmapi.c		ft_striteri.c		\
-						ft_putchar_fd.c			ft_putstr_fd.c		ft_putendl_fd.c		ft_putnbr_fd.c
+						ft_putchar_fd.c			ft_putstr_fd.c		ft_putendl_fd.c		ft_putnbr_fd.c# **************************************************************************** #
+
+# **************************************************************************** #
+# Libft
+# **************************************************************************** #
 
 LIBFT_DIR			=	../libft/
 LIBFTSRC			=	$(addprefix $(LIBFT_DIR), $(SRC_FILESLIBFT))
 OBJ_L				=	$(LIBFTSRC:.c=.o)
 
 # **************************************************************************** #
+# Get_Next_Line
+# **************************************************************************** #
+
+
+# **************************************************************************** #
 # Bonus	Source
 # **************************************************************************** #
-# BSRC_FILES  := main.c	utils.c
-# OBJS_BONUS  = $(BSRC_FILES:.c=.o)
-
-# BSRC_FILESL	:=	ft_split.c ft_strjoin.c ft_strncmp.c	ft_strlen.c
+BSRC_FILES			:=	main.c	utils.c
+BSRC_FILES_DIR		=	$(addprefix bonus/, $(BSRC_FILES))
+OBJS_BONUS			=	$(BSRC_FILES_DIR:.c=.o)
 
 
 
@@ -48,18 +57,23 @@ $(NAME):	$(OBJ_L) $(OBJS)
 
 all: $(NAME)
 
+# Pipex file
 $(OBJS): %.o: %.c
 	@$(CC) $(CFLAGS) -I $(LIBFT_DIR) -c $< -o $@
 
+# Libft
 $(OBJ_L): %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
-	
-# $(LIBFT):
-# 	@make -C $(LIBFT_DIR)
-# 	@cp $(LIBFT) $(NAME)
 
-bonus:
+# Declaring Bonus
+$(NAME_BONUS):	$(OBJ_L) $(OBJS_BONUS)
+		@$(CC) $(OBJ_L) $(OBJS_BONUS) -o $(NAME_BONUS)
 
+# Command to create 'Make bonus'
+bonus: $(NAME_BONUS)
+
+$(OBJS_BONUS): %.o: %.c
+	@$(CC) $(CFLAGS) -I $(LIBFT_DIR) -c $< -o $@
 
 clean:
 	rm	-f	$(OBJS)

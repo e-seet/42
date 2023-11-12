@@ -130,6 +130,9 @@ int	main(int argc, char *argv[], char *envp[])
 	else
 		printf("heredoccmd failed\n");
 
+	printf("to ignore%s, %s\n.", paths[0],argv[0]);
+
+
 	// if (pipe(pipexstruct.fdpipe) == -1)
 	// 	return (1);
 	// setstructure(argv, &pipexstruct);
