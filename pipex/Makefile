@@ -22,6 +22,16 @@ LIBFTSRC	= $(addprefix $(LIBFT_DIR), $(SRC_FILESL))
 OBJ_L	   	= $(LIBFTSRC:.c=.o)
 
 # **************************************************************************** #
+# Bonus	Source
+# **************************************************************************** #
+BSRC_FILES  := main.c	utils.c
+OBJS_BONUS  = $(BSRC_FILES:.c=.o)
+
+BSRC_FILESL	:=	ft_split.c ft_strjoin.c ft_strncmp.c	ft_strlen.c
+
+
+
+# **************************************************************************** #
 # Rules
 # **************************************************************************** #
 .PHONY: all clean fclean re
@@ -40,6 +50,9 @@ $(OBJ_L): %.o: %.c
 # $(LIBFT):
 # 	@make -C $(LIBFT_DIR)
 # 	@cp $(LIBFT) $(NAME)
+
+bonus:
+
 
 clean:
 	rm	-f	$(OBJS)
