@@ -126,17 +126,19 @@ int	main(int argc, char *argv[], char *envp[])
 	path = findpath(envp);
 	paths = ft_split(path + 5, ':');
 
-	int temp;
-	temp = heredoccmd(&pipexstruct);
-	if (temp == 0)
-		printf("heredoccmd success\n");
-	else
-		printf("heredoccmd failed\n");
+	printf("happy birthday first");
+
+	// int temp;
+	// temp = heredoccmd(&pipexstruct);
+	// if (temp == 0)
+	// 	printf("heredoccmd success\n");
+	// else
+	// 	printf("heredoccmd failed\n");
 
 	
 
 	pipexstruct.p1fd = 0;
-	printf("\n\nto ignore%s, %s, %d, %d\n.", paths[0],argv[0], pipexstruct.p1fd, argc);
+	printf("\n\nto ignore\n%s, %s, %d, %d\n.", paths[0],argv[0], pipexstruct.p1fd, argc);
 
 
 	// if (pipe(pipexstruct.fdpipe) == -1)
