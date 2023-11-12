@@ -2,14 +2,14 @@
 
 void	setstructure(char *argv[], struct s_pipex *pipexstruct)
 {
-	pipexstruct->p2fd = open(argv[4], O_TRUNC | O_CREAT | O_RDWR, 0644);
-	if (pipexstruct->p2fd < 0)
-		perror("Error in opening file. Terminating now");
-	pipexstruct->p1fd = open(argv[1], O_RDONLY);
-	if (pipexstruct->p1fd < 0)
-		perror("Error in opening file. Terminating now");
-	pipexstruct->argvs1 = ft_split(argv[3], ' ');
-	pipexstruct->argvs2 = ft_split(argv[4], ' ');
+	// pipexstruct->p2fd = open(argv[4], O_TRUNC | O_CREAT | O_RDWR, 0644);
+	// if (pipexstruct->p2fd < 0)
+	// 	perror("Error in opening file. Terminating now1");
+	// pipexstruct->p1fd = open(argv[1], O_RDONLY);
+	// if (pipexstruct->p1fd < 0)
+	// 	perror("Error in opening file. Terminating now2");
+	// pipexstruct->argvs1 = ft_split(argv[3], ' ');
+	// pipexstruct->argvs2 = ft_split(argv[4], ' ');
 
 	// delimiter
 	pipexstruct->delimiter = argv[2];
@@ -37,6 +37,8 @@ int heredoccmd(struct s_pipex *pipexstruct)
 		printf("%s\n", line);
 		// write to file
 		write(pipexstruct->heredocfd, line, ft_strlen(line));
+		write(1,line, ft_strlen(line));
+		write(1, "\n", 1);
 		free(line);
 		line = NULL;
 	}

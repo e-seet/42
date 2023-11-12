@@ -115,11 +115,14 @@ int	main(int argc, char *argv[], char *envp[])
 	char			*path;
 	char			**paths;
 
-	if (argc < 5)
-		return (1);
+	// printf("argc: %d\n", argc);
+	// if (argc < 3)
+	// 	printf("argc is less than 5\n");
+	// else
+	// 	printf("argc is more than 5\n");
 
 	// // original pipex code
-	// setstructure(argv, &pipexstruct);
+	setstructure(argv, &pipexstruct);
 	path = findpath(envp);
 	paths = ft_split(path + 5, ':');
 
@@ -130,7 +133,10 @@ int	main(int argc, char *argv[], char *envp[])
 	else
 		printf("heredoccmd failed\n");
 
-	printf("to ignore%s, %s\n.", paths[0],argv[0]);
+	
+
+	pipexstruct.p1fd = 0;
+	printf("\n\nto ignore%s, %s, %d, %d\n.", paths[0],argv[0], pipexstruct.p1fd, argc);
 
 
 	// if (pipe(pipexstruct.fdpipe) == -1)
@@ -151,6 +157,10 @@ int	main(int argc, char *argv[], char *envp[])
 	// waitpid(pipexstruct.pid2, &pipexstruct.pid2status, 0);
 	return (0);
 }
+
+// For now
+// ./pipex_bonus "here_doc" "wow"
+
 
 // Do heredoc
 //HEREDOC argv[1]
@@ -174,6 +184,7 @@ int	main(int argc, char *argv[], char *envp[])
 // pipex original code
 // ./main  infile "grep this" "wc -w" outfile
 
+// Basic stuff
 //stdin: 0
 //stdout: 1
 //pipe fd[0]: read

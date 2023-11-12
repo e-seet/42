@@ -43,13 +43,14 @@ OBJ_GNL				=	$(GNLSRC:.c=.o)
 # Bonus	Source
 # **************************************************************************** #
 BSRC_FILES			:=	main.c	utils.c
-BSRC_FILES_DIR		=	$(addprefix bonus/, $(BSRC_FILES))
-OBJS_BONUS			=	$(BSRC_FILES_DIR:.c=.o)
+BSRC_FILES_DIR		=	./bonus/
+BSRC				=	$(addprefix $(BSRC_FILES_DIR), $(BSRC_FILES))
+OBJS_BONUS			=	$(BSRC:.c=.o)
 
 # **************************************************************************** #
 # Rules
 # **************************************************************************** #
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re
 
 $(NAME):	$(OBJ_L) $(OBJS)
 			@$(CC) $(OBJ_L) $(OBJS) -o $(NAME)
