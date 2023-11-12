@@ -126,18 +126,40 @@ int	main(int argc, char *argv[], char *envp[])
 	path = findpath(envp);
 	paths = ft_split(path + 5, ':');
 
-	printf("happy birthday first");
+	int temp;
+	temp = heredoccmd(&pipexstruct);
+	if (temp == 0)
+	{
+		printf("heredoccmd success\n Writing the content out now");
+		
+		char buffer[1024];  // Allocate a buffer for the read operation
+		ssize_t bytes_read; 
+		int destfd = open("heredoctemp.txt", O_RDONLY);
+		// Perform the read operation in a loop until there's nothing left to read
+		while ((bytes_read = read(destfd, buffer, 1024)) > 0)
+		{
+			// Process the bytes read
+			// For example, you could write them to stdout or another file descriptor
+			write(STDOUT_FILENO, buffer, bytes_read);
+		}
 
-	// int temp;
-	// temp = heredoccmd(&pipexstruct);
-	// if (temp == 0)
-	// 	printf("heredoccmd success\n");
-	// else
-	// 	printf("heredoccmd failed\n");
+
+		// Check if the read operation finished because of an error or end-of-file
+		if (bytes_read == -1) {
+			// An error occurred, handle it here
+			perror("read failed");
+		} else {
+			// End of file reached, all data has been read
+		}
+
+	}
+	else
+		printf("heredoccmd failed\n");
 
 	
 
 	pipexstruct.p1fd = 0;
+	printf("\nend of heredoc\n");
 	printf("\n\nto ignore\n%s, %s, %d, %d\n.", paths[0],argv[0], pipexstruct.p1fd, argc);
 
 

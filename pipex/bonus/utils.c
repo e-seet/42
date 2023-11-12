@@ -17,6 +17,22 @@ void	setstructure(char *argv[], struct s_pipex *pipexstruct)
 	pipexstruct->heredocfd = open("heredoctemp.txt", O_TRUNC | O_CREAT | O_RDWR, 0644);
 }
 
+//check if the last character is a \n and subtract accordingly
+int linechecker(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+
+	// go to the position before \0 and check if it is a \n
+	if (str[i - 1] == '\n')
+		return 1;
+	else
+		return 0;
+}
+
 // read from stdin.
 // write to pipe
 int heredoccmd(struct s_pipex *pipexstruct)
@@ -28,18 +44,21 @@ int heredoccmd(struct s_pipex *pipexstruct)
 	while (1)
 	{
 		write(1,"heredoc>", 8);
-		// end of file. Break and nth to write
-		if (get_next_line(0) == 0)
+		// Get line by line 
+		line = get_next_line(0);
+
+		// found the delimiter.
+		// Make sure delimiter is same length as line
+		// There will be a extra \n for line, that's why need to subtract by 1. 
+		if ( (ft_strncmp(line, pipexstruct->delimiter, ft_strlen(pipexstruct->delimiter)) == 0) 
+		&& (ft_strlen(line) - linechecker(line)) == ft_strlen(pipexstruct->delimiter))
 			break ;
-		// found the delimiter, nothing to write 
-		if (ft_strncmp(line, pipexstruct->delimiter, ft_strlen(pipexstruct->delimiter)) == 0)
-			break ;
-		printf("%s\n", line);
+
 		// write to file
 		write(pipexstruct->heredocfd, line, ft_strlen(line));
 		write(1,line, ft_strlen(line));
 		write(1, "\n", 1);
-		free(line);
+
 		line = NULL;
 	}
 	return (0);
