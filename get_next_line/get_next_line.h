@@ -8,8 +8,8 @@
 #  define BUFFER_SIZE	1
 # endif
 
-int		ft_strlen(char *str);
-char	*ft_strjoin(char *str, char *buffer, int bufferi);
+int		ft_strlen2(char *str);
+char	*ft_strjoin2(char *str, char *buffer, int bufferi);
 int		ft_findline2(char *str);
 
 char	*ft_processstr(char *str, int len);

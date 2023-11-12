@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-int	ft_strlen(char *str)
+int	ft_strlen2(char *str)
 {
 	int	i;
 
@@ -14,7 +14,7 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char *str, char *buffer, int bufferi)
+char	*ft_strjoin2(char *str, char *buffer, int bufferi)
 {
 	int		strlen;
 	int		i;
@@ -22,7 +22,7 @@ char	*ft_strjoin(char *str, char *buffer, int bufferi)
 	int		j;
 
 	i = 0;
-	strlen = ft_strlen(str);
+	strlen = ft_strlen2(str);
 	newstr = malloc(sizeof(char) * (strlen + bufferi + 1));
 	if (!newstr)
 		return (NULL);

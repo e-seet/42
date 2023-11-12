@@ -4,6 +4,7 @@
 
 # include <sys/wait.h>
 # include "../libft/libft.h"
+# include "../get_next_line/get_next_line.h"
 # include <stdio.h>
 # include <unistd.h>
 //for read write, permission with files, creating files

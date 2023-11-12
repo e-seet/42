@@ -9,9 +9,9 @@ char	*ft_processstr(char *str, int len)
 	int		j;
 
 	if (len == -1)
-		len = ft_strlen(str);
+		len = ft_strlen2(str);
 	j = 0;
-	newlen = ft_strlen(str) - len;
+	newlen = ft_strlen2(str) - len;
 	newstr = malloc(sizeof(char) * (newlen + 1));
 	if (!newstr)
 		return (NULL);
@@ -32,7 +32,7 @@ char	*ft_processline(char *str, char *line, int len)
 	int		i;
 
 	if (len == -1)
-		len = ft_strlen(str);
+		len = ft_strlen2(str);
 	line = malloc(sizeof(char) * (len + 1));
 	if (!line)
 		return (NULL);
@@ -61,7 +61,7 @@ char	*ft_read_and_join(char *str, int fd, int *bufferi)
 	*bufferi = read(fd, buffer, BUFFER_SIZE);
 	while (*bufferi > 0)
 	{
-		str = ft_strjoin(str, buffer, *bufferi);
+		str = ft_strjoin2(str, buffer, *bufferi);
 		linelen = ft_findline2(str);
 		if (linelen != -1)
 			break ;

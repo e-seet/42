@@ -29,7 +29,7 @@ int heredoccmd(struct s_pipex *pipexstruct)
 	{
 		write(1,"heredoc>", 8);
 		// end of file. Break and nth to write
-		if (get_next_line(0, &line) == 0)
+		if (get_next_line(0) == 0)
 			break ;
 		// found the delimiter, nothing to write 
 		if (ft_strncmp(line, pipexstruct->delimiter, ft_strlen(pipexstruct->delimiter)) == 0)
