@@ -130,19 +130,17 @@ int	main(int argc, char *argv[], char *envp[])
 	temp = heredoccmd(&pipexstruct);
 	if (temp == 0)
 	{
-		printf("heredoccmd success\n Writing the content out now");
+		printf("heredoccmd success\nWriting the content out now");
 		
 		char buffer[1024];  // Allocate a buffer for the read operation
 		ssize_t bytes_read; 
-		int destfd = open("heredoctemp.txt", O_RDONLY);
+		pipexstruct.heredocreadfd = open("heredoctemp.txt", O_RDONLY);
 		// Perform the read operation in a loop until there's nothing left to read
-		while ((bytes_read = read(destfd, buffer, 1024)) > 0)
+		while ((bytes_read = read(pipexstruct.heredocreadfd, buffer, 1024)) > 0)
 		{
 			// Process the bytes read
-			// For example, you could write them to stdout or another file descriptor
-			write(STDOUT_FILENO, buffer, bytes_read);
+			write(1, buffer, bytes_read);
 		}
-
 
 		// Check if the read operation finished because of an error or end-of-file
 		if (bytes_read == -1) {
@@ -154,9 +152,8 @@ int	main(int argc, char *argv[], char *envp[])
 
 	}
 	else
-		printf("heredoccmd failed\n");
+		perror("heredoccmd failed");
 
-	
 
 	pipexstruct.p1fd = 0;
 	printf("\nend of heredoc\n");

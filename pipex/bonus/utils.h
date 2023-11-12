@@ -29,7 +29,11 @@ struct s_pipex {
 	// char	**argvshd; //argvs
 
 	// int		heredocstatus;
-	int		heredocfd;
+	// write from terminal to file
+	int		heredocwritefd; 
+
+	// read from file to pipe
+	int		heredocreadfd;
 };
 
 void	setstructure(char *argv[], struct s_pipex *pipexstruct);
