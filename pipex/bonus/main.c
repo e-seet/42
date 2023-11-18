@@ -1,10 +1,8 @@
-#include <stdio.h>
 #include "utils.h"
 
 
 // to check setstructure since it is for bonus
-char	*findprocesspath(char *path, char *paths[],
-struct s_pipex pipexstruct, int processnum)
+char	*findprocesspath(char *path, char *paths[], struct s_pipex pipexstruct)
 {
 	int	i;
 
@@ -12,12 +10,8 @@ struct s_pipex pipexstruct, int processnum)
 	while (paths[i])
 	{
 		path = ft_strjoin(paths[i], "/");
-		if (processnum == 1)
-			path = ft_strjoin(path, pipexstruct.argvs1[0]);
-		else if (processnum == 2)
-			path = ft_strjoin(path, pipexstruct.argvs2[0]); 
-		else //for heredoc
-			
+		path = ft_strjoin(path, pipexstruct.argvs[0]);
+		
 		if (access(path, F_OK) == 0)
 			break ;
 		free (path);
@@ -45,16 +39,16 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 {
 	int		execveresult;
 
-	path = findprocesspath(path, paths, pipexstruct, 1);
+	path = findprocesspath(path, paths, pipexstruct);
 	if (access(path, F_OK) != 0)
 	{
 		perror("command not found");
 		return (1);
 	}
-	dup2(pipexstruct.fdpipe[1], 1);
-	close(pipexstruct.fdpipe[0]);
-	dup2(pipexstruct.p1fd, 0);
-	execveresult = execve(path, pipexstruct.argvs1, envp);
+	// dup2(pipexstruct.fdpipe[1], 1);
+	// close(pipexstruct.fdpipe[0]);
+	// dup2(pipexstruct.p1fd, 0);
+	execveresult = execve(path, pipexstruct.argvs, envp);
 	if (execveresult == -1)
 		perror("Execve failed in P1child. Terminating Now");
 	free(path);
@@ -65,25 +59,25 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 //arg:  ["ls", "-l"]
 // change from stdin(0)  to listen to fd[0]
 
-int	p2child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
-{
-	int		execveresult;
+// int	p2child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
+// {
+// 	int		execveresult;
 
-	path = findprocesspath(path, paths, pipexstruct, 2);
-	if (access(path, F_OK) != 0)
-	{
-		perror("command not found");
-		return (1);
-	}
-	dup2(pipexstruct.fdpipe[0], 0);
-	close(pipexstruct.fdpipe[1]);
-	dup2(pipexstruct.p2fd, 1);
-	execveresult = execve(path, pipexstruct.argvs2, envp);
-	if (execveresult == -1)
-		perror("smth wrong with executing. Terminate now");
-	free(path);
-	return (0);
-}
+// 	path = findprocesspath(path, paths, pipexstruct, 2);
+// 	if (access(path, F_OK) != 0)
+// 	{
+// 		perror("command not found");
+// 		return (1);
+// 	}
+// 	dup2(pipexstruct.fdpipe[0], 0);
+// 	close(pipexstruct.fdpipe[1]);
+// 	dup2(pipexstruct.p2fd, 1);
+// 	execveresult = execve(path, pipexstruct.argvs2, envp);
+// 	if (execveresult == -1)
+// 		perror("smth wrong with executing. Terminate now");
+// 	free(path);
+// 	return (0);
+// }
 
 char	*findpath(char *envp[])
 {
@@ -133,7 +127,7 @@ int	main(int argc, char *argv[], char *envp[])
 		printf("heredoccmd success\nWriting the content out now");
 		
 		char buffer[1024];  // Allocate a buffer for the read operation
-		ssize_t bytes_read; 
+		int bytes_read; 
 		pipexstruct.heredocreadfd = open("heredoctemp.txt", O_RDONLY);
 		// Perform the read operation in a loop until there's nothing left to read
 		while ((bytes_read = read(pipexstruct.heredocreadfd, buffer, 1024)) > 0)
@@ -156,9 +150,27 @@ int	main(int argc, char *argv[], char *envp[])
 
 
 	pipexstruct.p1fd = 0;
-	printf("\nend of heredoc\n");
-	printf("\n\nto ignore\n%s, %s, %d, %d\n.", paths[0],argv[0], pipexstruct.p1fd, argc);
 
+
+	//setting up for processors
+	int start = 3;
+	pipexstruct.end = argc - 2; // to check
+
+
+	printf("\nend of heredoc\n");
+	printf("\n\nto ignore\n%s, %s, %d, %d %d\n.", paths[0],argv[0], pipexstruct.p1fd, argc, start); 
+
+	while ((argc-2) > start)
+	{
+		pipexstruct.curr = start;
+		if (pipexstruct.pid1 != 0)
+			wait(NULL);
+		pipexstruct.pid1 = fork();
+		if (pipexstruct.pid1 == 0)
+			if (p1child(paths, path, envp, pipexstruct) == 1)
+				exit(1);
+		waitpid(pipexstruct.pid1, &pipexstruct.pid1status, 0);
+	}
 
 	// if (pipe(pipexstruct.fdpipe) == -1)
 	// 	return (1);

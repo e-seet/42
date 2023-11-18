@@ -38,9 +38,7 @@ int linechecker(char *str)
 int heredoccmd(struct s_pipex *pipexstruct)
 {
 	char	*line;
-	// int		i;
 
-	// i = 0;
 	while (1)
 	{
 		write(1,"heredoc>", 8);
@@ -64,8 +62,8 @@ int heredoccmd(struct s_pipex *pipexstruct)
 	return (0);
 }
 
-void	closepipes(struct s_pipex *pipexstruct)
-{
-	close(pipexstruct->fdpipe[0]);
-	close(pipexstruct->fdpipe[1]);
-}
+// void	closepipes(struct s_pipex *pipexstruct)
+// {
+// 	close(pipexstruct->fdpipe[0]);
+// 	close(pipexstruct->fdpipe[1]);
+// }
