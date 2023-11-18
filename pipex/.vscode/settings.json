@@ -14,6 +14,13 @@
 		"tuple": "c",
 		"variant": "c",
 		"cstdio": "c",
-		"ostream": "c"
-	}
+		"ostream": "c",
+		"utils.h": "c",
+		"stdio.h": "c",
+		"unistd.h": "c",
+		"wait.h": "c",
+		"libft.h": "c",
+		"get_next_line.h": "c"
+	},
+	"C_Cpp.errorSquiggles": "disabled"
 }

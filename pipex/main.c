@@ -42,6 +42,7 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 	int		execveresult;
 
 	path = findprocesspath(path, paths, pipexstruct, 1);
+	printf("check the paths:%s\n", path);
 	if (access(path, F_OK) != 0)
 	{
 		perror("command not found");

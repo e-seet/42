@@ -452,3 +452,87 @@ int main2(void)
 	
 	// dup2(pipex.infile, 0); //redirect stdin to fd to infile
 	// // so instead of stdin, it will read from infile
+
+
+// Gpt's bonus suggestion 1
+// int pipe1[2], pipe2[2];
+// pipe(pipe1);
+// pipe(pipe2);
+
+// if (fork() == 0) {
+//     // Child 1
+//     dup2(pipe1[1], STDOUT_FILENO); //write to pipe1[1] 
+//     close(pipe1[0]);
+//     close(pipe1[1]);
+//     execlp("command1", "command1", NULL);
+// }
+
+// if (fork() == 0) {
+//     // Child 2
+//     dup2(pipe1[0], STDIN_FILENO); //read
+//     dup2(pipe2[1], STDOUT_FILENO); // write
+//     close(pipe1[1]);
+//     close(pipe2[0]);
+//     execlp("command2", "command2", NULL);
+// }
+
+// // Close the first pipe as the parent doesn't use it
+// close(pipe1[0]);
+// close(pipe1[1]);
+
+// if (fork() == 0) {
+//     // Child 3
+//     dup2(pipe2[0], STDIN_FILENO); //read 
+//     close(pipe2[1]);
+//     execlp("command3", "command3", NULL);
+// }
+
+// close(pipe2[0]);
+// close(pipe2[1]);
+
+// // The parent waits for all child processes
+// wait(NULL);
+// wait(NULL);
+// wait(NULL);
+
+// GPT suggestion of bonus. Piping
+// Essentially What it is saying:
+// 1. Create array of (pipes[])s
+// 2. the number of array of pipes is determined by the number of process you have
+// 3. Then do the piping accordingly based on the process number
+int num_processes = determine_number_of_processes();
+int pipes[num_processes - 1][2];
+
+// Create the pipes
+for (int i = 0; i < num_processes - 1; i++) {
+    pipe(pipes[i]);
+}
+
+for (int i = 0; i < num_processes; i++) {
+    if (fork() == 0) {
+        // In child process
+        if (i != 0) {
+            // Redirect stdin to read from previous pipe
+            dup2(pipes[i - 1][0], STDIN_FILENO);
+        }
+
+        if (i != num_processes - 1) {
+            // Redirect stdout to write to next pipe
+            dup2(pipes[i][1], STDOUT_FILENO);
+        }
+
+        // Close all pipe file descriptors
+        close_unused_pipe_ends(pipes, num_processes);
+
+        execlp(get_command(i), get_command(i), NULL);
+        // Handle error if execlp fails
+    }
+}
+
+// In the parent process
+close_unused_pipe_ends(pipes, num_processes);
+
+// Wait for all child processes
+for (int i = 0; i < num_processes; i++) {
+    wait(NULL);
+}
