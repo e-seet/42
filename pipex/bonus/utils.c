@@ -18,6 +18,8 @@ void	setstructure(char *argv[], struct s_pipex *pipexstruct)
 	pipexstruct->heredocwritefd = open("heredoctemp.txt", O_TRUNC | O_CREAT | O_RDWR, 0644);
 	if (pipexstruct->heredocwritefd == - 1)
 		printf("opening heredoctempt for writing failed");
+
+
 }
 
 //check if the last character is a \n and subtract accordingly

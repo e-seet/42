@@ -63,35 +63,8 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,
 	if (pipexstruct.curr == 3)
 	{
 		printf("case 1:\n");
-		// pipexstruct.infilefd = open("heredoctemp.txt", O_TRUNC | O_CREAT | O_RDWR, 0644);
-		if (pipexstruct.infilefd  == - 1)
-		{
-			printf("error with infilefd\n");
-		}
-		else
-		{
-			printf("opened infilefd\n");
-			pipexstruct.heredocreadfd = open("heredoctemp.txt", O_RDONLY);
-	
-			// char buffer[1024];  // Allocate a buffer for the read operation
-			// int bytes_read; 
-			// Perform the read operation in a loop until there's nothing left to read
-			// while ((bytes_read = read(pipexstruct.heredocreadfd, buffer, 1024)) > 0)
-			// {
-			// 	printf("reading from buffer");
-			// 	// Process the bytes read
-			// 	write(1, buffer, bytes_read);
-			// }
-			// // Check if the read operation finished because of an error or end-of-file
-			// if (bytes_read == -1) {
-			// 	// An error occurred, handle it here
-			// 	perror("read failed");
-			// } else {
-			// 	// End of file reached, all data has been read
-			// }
-
-
-		}
+		
+		
 		//original	
 		// dup2(pipexstruct.fdpipe[1], 1);
 		// close(pipexstruct.fdpipe[0]);
@@ -114,15 +87,44 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,
 
 
 		// to experiment with this.
-		// dup2(arrayoffd[pipexstruct.curr-1][0], 0); //read from previous pipe
-		dup2(arrayoffd[pipexstruct.curr][0], 0); //read from current pipe? Shouldnt work
+		 //read from previous pipe?
+		// dup2(arrayoffd[pipexstruct.curr-1][0], 0);
+
+		//read from current pipe? Shouldnt work? but worked
+		dup2(arrayoffd[pipexstruct.curr][0], 0); 
+		
 		close((arrayoffd[pipexstruct.curr][1])); // close write
 
 		// The following line is correct
+		// dup2(pipexstruct.outfilefd, 1);	// to write to file
+		
+		// dup2(pipexstruct.outfilefd, arrayoffd[pipexstruct.curr][1]);	// to write to file
+		// dup2(pipexstruct.outfilefd, arrayoffd[pipexstruct.curr][0]);	// to write to file
 		dup2(pipexstruct.outfilefd, 1);	// to write to file
 		
+
+			// while ((bytes_read = read(arrayoffd[pipexstruct.curr-1][0], buffer, 1024)) > 0) // bad fd
+			// while ((bytes_read = read(arrayoffd[pipexstruct.curr][1], buffer, 1024)) > 0) // bad fd
+
+
+			char buffer[1024];  // Allocate a buffer for the read operation
+			int bytes_read = 0; 
+
+			//	no difference and no output..
+			while ((bytes_read = read(arrayoffd[pipexstruct.curr-1][1], buffer, 1024)) > 0)
+			while ((bytes_read = read(arrayoffd[pipexstruct.curr][0], buffer, 1024)) > 0)
+			{
+				write(1, buffer, bytes_read);
+			}
+
+			// Check if the read operation finished because of an error or end-of-file
+			if (bytes_read == -1) {
+				// An error occurred, handle it here
+				perror("read failed");
+			} 
+			
 		// this gets written to the output file.	
-		printf("print something\n"); 
+		write(1, "end\n", 3);
 
 	}
 	// else
@@ -136,6 +138,15 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,
 	// close(pipexstruct.fdpipe[0]);
 	// dup2(pipexstruct.p1fd, 0);
 
+	
+	printf("check args:\n");
+	int z = 0;
+	while(pipexstruct.argvs[z])
+	{
+		printf("%s\n", pipexstruct.argvs[z]);
+		z ++;
+	}
+	
 	execveresult = execve(path, pipexstruct.argvs, envp);
 	if (execveresult == -1)
 		perror("Execve failed in Process. Terminating Now\n");
@@ -328,3 +339,7 @@ int	main(int argc, char *argv[], char *envp[])
 //stdout: 1
 //pipe fd[0]: read
 //pipe fd[1]: write
+
+
+
+// find . -name "*.c" | entr make bonus
