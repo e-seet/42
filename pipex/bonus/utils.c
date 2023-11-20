@@ -14,7 +14,10 @@ void	setstructure(char *argv[], struct s_pipex *pipexstruct)
 	// delimiter
 	pipexstruct->delimiter = argv[2];
 	// Get FD to open file and write
+
 	pipexstruct->heredocwritefd = open("heredoctemp.txt", O_TRUNC | O_CREAT | O_RDWR, 0644);
+	if (pipexstruct->heredocwritefd == - 1)
+		printf("opening heredoctempt for writing failed");
 }
 
 //check if the last character is a \n and subtract accordingly
@@ -54,11 +57,12 @@ int heredoccmd(struct s_pipex *pipexstruct)
 
 		// write to file
 		write(pipexstruct->heredocwritefd, line, ft_strlen(line));
-		write(1,line, ft_strlen(line));
-		write(1, "\n", 1);
+		// write(1,line, ft_strlen(line));
+		// write(1, "\n", 1);
 
 		line = NULL;
 	}
+	printf("end\n\n ");
 	return (0);
 }
 

@@ -52,8 +52,10 @@ void	closepipes(struct s_pipex *pipexstruct);
 
 char	*findprocesspath(char *path, char *paths[],
 			struct s_pipex pipexstruct);
+// int		p1child(char *paths[], char *path, char *envp[],
+// 			struct s_pipex pipexstruct);
 int		p1child(char *paths[], char *path, char *envp[],
-			struct s_pipex pipexstruct);
+			struct s_pipex pipexstruct,  int (*arrayoffd)[2]);
 
 int		p2child(char *paths[], char *path, char *envp[],
 			struct s_pipex pipexstruct);
