@@ -1,5 +1,5 @@
+// pipe then fork
 #include "utils.h"
-
 
 // to check setstructure since it is for bonus
 char	*findprocesspath(char *path, char *paths[], struct s_pipex pipexstruct)
@@ -72,6 +72,8 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,
 
 		// testing
 		dup2(arrayoffd[pipexstruct.curr][1], 1);  // write to pipe instead of stdout
+		// dup2(arrayoffd[pipexstruct.curr+1][1], 1);  // if i used +1, the result will fly to stdout (1)
+		
 		close(arrayoffd[pipexstruct.curr][0]); // close read pipe
 		dup2(pipexstruct.heredocreadfd, 0); // read from infile instead of stdin
 
@@ -79,7 +81,7 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,
 	}
 	else if ( pipexstruct.curr == pipexstruct.end)
 	{
-		printf("case 2: last process \n");
+		printf("case 2: last process\n");
 		// original
 		// dup2(pipexstruct.fdpipe[0], 0);
 		// close(pipexstruct.fdpipe[1]);
@@ -92,15 +94,15 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,
 
 		//read from current pipe? Shouldnt work? but worked
 		dup2(arrayoffd[pipexstruct.curr][0], 0); 
-		
 		close((arrayoffd[pipexstruct.curr][1])); // close write
 
 		// The following line is correct
-		// dup2(pipexstruct.outfilefd, 1);	// to write to file
+		dup2(pipexstruct.outfilefd, 1);	// to write to file
 		
 		// dup2(pipexstruct.outfilefd, arrayoffd[pipexstruct.curr][1]);	// to write to file
 		// dup2(pipexstruct.outfilefd, arrayoffd[pipexstruct.curr][0]);	// to write to file
-		dup2(pipexstruct.outfilefd, 1);	// to write to file
+		// dup2(pipexstruct.outfilefd, 1);	// to write to file
+		// dup2(arrayoffd[pipexstruct.curr+1][1], 1);  // if i used +1, the result will fly to stdout (1)
 		
 
 			// while ((bytes_read = read(arrayoffd[pipexstruct.curr-1][0], buffer, 1024)) > 0) // bad fd
@@ -110,9 +112,14 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,
 			char buffer[1024];  // Allocate a buffer for the read operation
 			int bytes_read = 0; 
 
+			// printf("trying to read from pipe\n");
+			// write(1,"write from pipe\n", 16);
 			//	no difference and no output..
-			while ((bytes_read = read(arrayoffd[pipexstruct.curr-1][1], buffer, 1024)) > 0)
+			// while ((bytes_read = read(arrayoffd[pipexstruct.curr-1][1], buffer, 1024)) > 0)
 			while ((bytes_read = read(arrayoffd[pipexstruct.curr][0], buffer, 1024)) > 0)
+		
+			// while ((bytes_read = read(arrayoffd[pipexstruct.curr-1][0], buffer, 1024)) > 0) // fail
+			// while ((bytes_read = read(arrayoffd[pipexstruct.curr][1], buffer, 1024)) > 0) // failed
 			{
 				write(1, buffer, bytes_read);
 			}
@@ -124,7 +131,7 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,
 			} 
 			
 		// this gets written to the output file.	
-		write(1, "end\n", 3);
+		// write(1, "end\n", 3);
 
 	}
 	// else
@@ -139,13 +146,13 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,
 	// dup2(pipexstruct.p1fd, 0);
 
 	
-	printf("check args:\n");
-	int z = 0;
-	while(pipexstruct.argvs[z])
-	{
-		printf("%s\n", pipexstruct.argvs[z]);
-		z ++;
-	}
+	// printf("check args:\n");
+	// int z = 0;
+	// while(pipexstruct.argvs[z])
+	// {
+	// 	printf("%s\n", pipexstruct.argvs[z]);
+	// 	z ++;
+	// }
 	
 	execveresult = execve(path, pipexstruct.argvs, envp);
 	if (execveresult == -1)
