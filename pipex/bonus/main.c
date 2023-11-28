@@ -14,7 +14,6 @@ char	*findprocesspath(char *path, char *paths[], struct s_pipex pipexstruct)
 		path = ft_strjoin(path, pipexstruct.argvs[0]);
 		if (access(path, F_OK) == 0)
 		{
-			printf("break\n");
 			break ;
 
 		}
@@ -43,7 +42,9 @@ char	*findprocesspath(char *path, char *paths[], struct s_pipex pipexstruct)
 //path: "/bin/ls"
 //arg:  ["ls", "-l"]
 
-int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,  int (*arrayoffd)[2])
+int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,  
+// int (*arrayoffd)[2], 
+int fdpipe[])
 {
 	int		execveresult;
 	// printf("\n\nprocess child execution??\n");
@@ -58,102 +59,72 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,
 		return (1);
 	}
 	
-	pipe(arrayoffd[pipexstruct.curr]);
 
 	if (pipexstruct.curr == 3)
 	{
 		printf("case 1:\n");
 		
-		
-		//original	
-		// dup2(pipexstruct.fdpipe[1], 1);
-		// close(pipexstruct.fdpipe[0]);
-		// dup2(pipexstruct.p1fd, 0);
-
-		// testing
-		dup2(arrayoffd[pipexstruct.curr][1], 1);  // write to pipe instead of stdout
-		// dup2(arrayoffd[pipexstruct.curr+1][1], 1);  // if i used +1, the result will fly to stdout (1)
-		
-		close(arrayoffd[pipexstruct.curr][0]); // close read pipe
+		// dup2(arrayoffd[pipexstruct.curr][1], 1);  // write to pipe instead of stdout
+		// close(arrayoffd[pipexstruct.curr][0]); // close read pipe
+		dup2(fdpipe[1], 1);  // write to pipe instead of stdout
+		close(fdpipe[0]); // close read pipe
 		dup2(pipexstruct.heredocreadfd, 0); // read from infile instead of stdin
-
-
 	}
 	else if ( pipexstruct.curr == pipexstruct.end)
 	{
-		printf("case 2: last process\n");
-		// original
-		// dup2(pipexstruct.fdpipe[0], 0);
-		// close(pipexstruct.fdpipe[1]);
-		// dup2(pipexstruct.p2fd, 1);		
+		printf("case 2: last process To check my pipes H\n");
 
-
-		// to experiment with this.
-		 //read from previous pipe?
-		// dup2(arrayoffd[pipexstruct.curr-1][0], 0);
-
-		//read from current pipe? Shouldnt work? but worked
-		dup2(arrayoffd[pipexstruct.curr][0], 0); 
-		close((arrayoffd[pipexstruct.curr][1])); // close write
-
-		// The following line is correct
+		dup2(fdpipe[0], 0); 
+		close(fdpipe[1]); // close write //this is where is says bad fd
 		dup2(pipexstruct.outfilefd, 1);	// to write to file
+
+
+		// char buffer[1024];  // Allocate a buffer for the read operation
+		// int bytes_read = 0; 
+		// here is the bad file descriptor
+		// while ((bytes_read = read(fdpipe[0], buffer, 1024)) > 0) // failed
+		// {
+		// 	write(1, buffer, bytes_read);
+		// }
+
+		// // Check if the read operation finished because of an error or end-of-file
+		// if (bytes_read == -1) {
+		// 	// An error occurred, handle it here
+		// 	perror("read failed");
+		// } 
 		
-		// dup2(pipexstruct.outfilefd, arrayoffd[pipexstruct.curr][1]);	// to write to file
-		// dup2(pipexstruct.outfilefd, arrayoffd[pipexstruct.curr][0]);	// to write to file
-		// dup2(pipexstruct.outfilefd, 1);	// to write to file
-		// dup2(arrayoffd[pipexstruct.curr+1][1], 1);  // if i used +1, the result will fly to stdout (1)
+
+
+		// dup2(arrayoffd[pipexstruct.curr][0], 0); 
+		// close((arrayoffd[pipexstruct.curr][1])); // close write
+		// The following line is correct
+
+		// char buffer[1024];  // Allocate a buffer for the read operation
+		// int bytes_read = 0; 
+		// while ((bytes_read = read(fdpipe[1], buffer, 1024)) > 0) // failed
+		// {
+		// 	write(1, buffer, bytes_read);
+		// }
+
+
+
+		// char buffer[1024];  // Allocate a buffer for the read operation
+		// int bytes_read = 0; 
+		//here is the bad file descriptor
+		// while ((bytes_read = read(arrayoffd[pipexstruct.curr][1], buffer, 1024)) > 0) // failed
+		// {
+		// 	write(1, buffer, bytes_read);
+		// }
+
+		// // Check if the read operation finished because of an error or end-of-file
+		// if (bytes_read == -1) {
+		// 	// An error occurred, handle it here
+		// 	perror("read failed");
+		// } 
 		
-
-			// while ((bytes_read = read(arrayoffd[pipexstruct.curr-1][0], buffer, 1024)) > 0) // bad fd
-			// while ((bytes_read = read(arrayoffd[pipexstruct.curr][1], buffer, 1024)) > 0) // bad fd
-
-
-			char buffer[1024];  // Allocate a buffer for the read operation
-			int bytes_read = 0; 
-
-			// printf("trying to read from pipe\n");
-			// write(1,"write from pipe\n", 16);
-			//	no difference and no output..
-			// while ((bytes_read = read(arrayoffd[pipexstruct.curr-1][1], buffer, 1024)) > 0)
-			while ((bytes_read = read(arrayoffd[pipexstruct.curr][0], buffer, 1024)) > 0)
-		
-			// while ((bytes_read = read(arrayoffd[pipexstruct.curr-1][0], buffer, 1024)) > 0) // fail
-			// while ((bytes_read = read(arrayoffd[pipexstruct.curr][1], buffer, 1024)) > 0) // failed
-			{
-				write(1, buffer, bytes_read);
-			}
-
-			// Check if the read operation finished because of an error or end-of-file
-			if (bytes_read == -1) {
-				// An error occurred, handle it here
-				perror("read failed");
-			} 
-			
-		// this gets written to the output file.	
-		// write(1, "end\n", 3);
 
 	}
-	// else
-	// {
-	// 	printf("case 3: middle process \n");
-	// 	dup2(arrayoffd[pipexstruct.curr-1][0], 0); //read from previous pipe
-	// 	close(arrayoffd[pipexstruct.curr-1][1]); //read from previous pipe
-	// 	dup2(arrayoffd[pipexstruct.curr][1], 1); //write to next pipe
-	// }
-	// dup2(pipexstruct.fdpipe[1], 1);
-	// close(pipexstruct.fdpipe[0]);
-	// dup2(pipexstruct.p1fd, 0);
 
-	
-	// printf("check args:\n");
-	// int z = 0;
-	// while(pipexstruct.argvs[z])
-	// {
-	// 	printf("%s\n", pipexstruct.argvs[z]);
-	// 	z ++;
-	// }
-	
 	execveresult = execve(path, pipexstruct.argvs, envp);
 	if (execveresult == -1)
 		perror("Execve failed in Process. Terminating Now\n");
@@ -164,29 +135,6 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct,
 	return (0);
 }
 
-//path: "/bin/ls"
-//arg:  ["ls", "-l"]
-// change from stdin(0)  to listen to fd[0]
-
-// int	p2child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
-// {
-// 	int		execveresult;
-
-// 	path = findprocesspath(path, paths, pipexstruct, 2);
-// 	if (access(path, F_OK) != 0)
-// 	{
-// 		perror("command not found");
-// 		return (1);
-// 	}
-// 	dup2(pipexstruct.fdpipe[0], 0);
-// 	close(pipexstruct.fdpipe[1]);
-// 	dup2(pipexstruct.p2fd, 1);
-// 	execveresult = execve(path, pipexstruct.argvs2, envp);
-// 	if (execveresult == -1)
-// 		perror("smth wrong with executing. Terminate now");
-// 	free(path);
-// 	return (0);
-// }
 
 char	*findpath(char *envp[])
 {
@@ -237,6 +185,10 @@ int	main(int argc, char *argv[], char *envp[])
 			// char buffer[1024];  // Allocate a buffer for the read operation
 			// int bytes_read; 
 			pipexstruct.heredocreadfd = open("heredoctemp.txt", O_RDONLY);
+			if (pipexstruct.heredocreadfd == - 1)
+				printf("heredocreadfd opened with error")
+			else
+				printf("no error")
 			// // Perform the read operation in a loop until there's nothing left to read
 			// while ((bytes_read = read(pipexstruct.heredocreadfd, buffer, 1024)) > 0)
 			// {
@@ -259,26 +211,23 @@ int	main(int argc, char *argv[], char *envp[])
 
 	pipexstruct.p1fd = 0;
 
+	int		fdpipe[2];
 
 	//setting up for processors
 	int start = 3;
 	pipexstruct.end = argc - 2; // to check
-	int arrayoffd[argc][2];
-
-
-
-	// printf("\nend of heredoc\n\n");
-	// printf("\n\nto ignore\n%s, %s, %d, %d %d\n.", paths[0],argv[0], pipexstruct.p1fd, argc, start); 
+	// int arrayoffd[argc][2];
 
 	pipexstruct.outfilefd = open(argv[argc-1], O_TRUNC | O_CREAT | O_RDWR, 0644);
+	printf("check fd:%d | outfile name:%s", pipexstruct.outfilefd, argv[argc-1]);
 
 	// printf("where we stop?:%d\n", argc-1);
 	while ((argc-1) > start)
 	{
-		// printf("start:%d\n", start);
 		pipexstruct.curr = start;
-		// printf("pipex curr: %d\n",pipexstruct.curr);
 		pipexstruct.argvs = ft_split(argv[start], ' ');
+
+		// pipe(arrayoffd[pipexstruct.curr]);
 
 		if (pipexstruct.pid1 != 0)
 			wait(NULL);
@@ -286,7 +235,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 		if (pipexstruct.pid1 == 0)
 		{
-			if (p1child(paths, path, envp, pipexstruct, arrayoffd) == 1)
+			if (p1child(paths, path, envp, pipexstruct, fdpipe) == 1)
 				exit(1);
 		}
 			
@@ -296,22 +245,6 @@ int	main(int argc, char *argv[], char *envp[])
 
 	printf("end of all my processes\n");
 
-	// if (pipe(pipexstruct.fdpipe) == -1)
-	// 	return (1);
-	// setstructure(argv, &pipexstruct);
-	// if (pipexstruct.pid1 != 0)
-	// 	wait(NULL);
-	// pipexstruct.pid1 = fork();
-	// if (pipexstruct.pid1 == 0)
-	// 	if (p1child(paths, path, envp, pipexstruct) == 1)
-	// 		exit(1);
-	// pipexstruct.pid2 = fork();
-	// if (pipexstruct.pid2 == 0)
-	// 	if (p2child(paths, path, envp, pipexstruct) == 1)
-	// 		exit(1);
-	// closepipes(&pipexstruct);
-	// waitpid(pipexstruct.pid1, &pipexstruct.pid1status, 0);
-	// waitpid(pipexstruct.pid2, &pipexstruct.pid2status, 0);
 	return (0);
 }
 
