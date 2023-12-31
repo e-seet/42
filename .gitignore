@@ -10,6 +10,9 @@ main.out
 main
 infile
 outfile
+pipexs
+pipexs.out
+output.txt
 
 # For pushswap
 help/
@@ -21,3 +24,4 @@ settings.json
 # For pipex
 pipex
 pipex_bonus
+pipexb/pipexs

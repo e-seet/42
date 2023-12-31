@@ -16,9 +16,9 @@ struct s_pipex {
 	char	**argvs1;
 
 	// convert this into a single process orientaed
-	// int		pid2;
-	// int		pid2status;
-	// char	**argvs2;
+	int		pid2;
+	int		pid2status;
+	char	**argvs2;
 	int		p2fd; //outfile
 
 	int		fdpipe[2];

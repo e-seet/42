@@ -14,8 +14,10 @@ void	setstructure(int argc, 	char *argv[], struct s_pipex *pipexstruct)
 		perror("Error in opening file. Terminating now");
 	
 	// the following 2 will be variable
-	// pipexstruct->argvs1 = ft_split(argv[2], ' ');
+	// pipexstruct->argvs1 = ft_split(argv[3], ' ');
 	// pipexstruct->argvs2 = ft_split(argv[3], ' ');
+	// printf("argv1:%s", pipexstruct->argvs1);
+	// printf("argv2:%s", pipexstruct->argvs2);
 }
 
 void	closepipes(struct s_pipex *pipexstruct)
