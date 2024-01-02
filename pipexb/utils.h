@@ -22,6 +22,8 @@ struct s_pipex {
 	int		p2fd; //outfile
 
 	int		fdpipe[2];
+	int		curr;
+	int		argc;
 };
 
 void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct);
