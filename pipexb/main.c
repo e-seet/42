@@ -5,7 +5,7 @@ struct s_pipex pipexstruct, int processnum)
 {
 	int	i;
 
-	printf("findprocesspath\n");
+	// printf("findprocesspath\n");
 	// printf("joined this:%s\n", pipexstruct.argvs1[0]);
 
 	i = 0;
@@ -19,7 +19,7 @@ struct s_pipex pipexstruct, int processnum)
 		
 		if (access(path, F_OK) == 0)
 		{
-			printf("found path\n");
+			// printf("found path\n");
 			break ;
 		}
 		free (path);
@@ -37,8 +37,10 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 	int		execveresult;
 
 	printf("\n\np1child: %d\n", pipexstruct.curr);
+	// printf("argc:%d\n", pipexstruct.argc);
+
 	path = findprocesspath(path, paths, pipexstruct, 1);
-	printf("the path1 to use: %s\n\n", path);
+	printf("the path1 to use: %s\n", path);
 	if (access(path, F_OK) != 0)
 	{ 
 		perror("command not found");
@@ -55,21 +57,68 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 		dup2(pipexstruct.p1fd, 0);
 	}
 	// supposed to write output to p1fd.
-	else if (pipexstruct.curr +3 == pipexstruct.argc)
+	else if (pipexstruct.curr + 3 == pipexstruct.argc)
 	{
 		printf("p1: else if: write output to p1fd");
+
+		// printf("check p1fd:%d", pipexstruct.p1fd);
 		dup2(pipexstruct.fdpipe[0], 0);
-		close(pipexstruct.fdpipe[1]);
+		// close(pipexstruct.fdpipe[1]);
 		dup2(pipexstruct.p1fd, 1);
 	}
+	// else if (pipexstruct.curr == 5)
+	// {
+	// 	printf("huh");
+	// }
 	else
 	{
 		printf("p1: else\n");
 		printf("p1child to do something \n");
-		
+
+		// printf("curr value: %d\n", pipexstruct.curr);
+		// printf("argc value:%d\n", pipexstruct.argc);
+		printf("check p1fd:%d\n", pipexstruct.p1fd);
+		printf("check p2fd:%d\n", pipexstruct.p2fd);
+
+		int i = 0;
+		// printf("\n");
+		while (pipexstruct.argvs1[i])
+		{
+			printf("argvs %d, %s\n", i, pipexstruct.argvs1[i]);
+			i ++;
+		}
+	
+		// printf("Write to fd here\n");
+		// dup2(0,pipexstruct.fdpipe[0]);
+		// dup2(1,pipexstruct.fdpipe[1]);
+
+
 		// dup2(pipexstruct.fdpipe[0], 0);
 		// dup2(pipexstruct.fdpipe[1], 1);
+		// dup2(pipexstruct.p1fd,1);
 
+		// close(pipexstruct.fdpipe[1]);
+		// close(pipexstruct.fdpipe[0]);
+		// dup2(pipexstruct.fdpipe[1], 1);
+		// dup2(pipexstruct.p2fd, 1); 
+		
+
+		// char buffer[1024];
+		// int bytes_read;
+
+		// bytes_read = read(pipexstruct.fdpipe[0], buffer, sizeof(buffer));
+		// if (bytes_read < 0) {
+		// 	perror("Error reading from the pipe");
+		// } else {
+		// 	// Process the data in the 'buffer' here
+		// 	printf("there is content");
+		// 	printf("%d", bytes_read);
+		// }
+
+
+		// dup2(pipexstruct.fdpipe[0], 0);
+		// dup2(pipexstruct.fdpipe[1], 1);
+		// return 0;
 	}
 
 	execveresult = execve(path, pipexstruct.argvs1, envp);
@@ -102,17 +151,19 @@ int	p2child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 	// End at the current P2 
 	if (pipexstruct.argc - 3 == pipexstruct.curr)
 	{
+		printf("p2child: %d. if\n", pipexstruct.curr);
+		printf("check fd:%d", pipexstruct.p2fd);
 		dup2(pipexstruct.fdpipe[0], 0);
 		close(pipexstruct.fdpipe[1]);
 		dup2(pipexstruct.p2fd, 1);
-	}
+	}  
 	else
 	{
-		printf("p2child to do. Else\n");
-		
-		dup2(pipexstruct.fdpipe[1], 1);
-		// close(pipexstruct.fdpipe[]);
+		printf("p2child: %d. Else\n", pipexstruct.curr);
 		dup2(pipexstruct.fdpipe[0], 0);
+		// added this line and it stop appearing at the end of p4
+		dup2(pipexstruct.fdpipe[1], 1); 
+
 	}
 	// Curr:p2. End at P1 
 	// else if (pipexstruct.argc -3 == pipexstruct.curr)
@@ -172,13 +223,15 @@ int	main(int argc, char *argv[], char *envp[])
 	// looping 
 	setstructure(argc, argv, &pipexstruct);
 
-	printf("basic testing of variables: argc:%d\n", argc);
+	// printf("basic testing of variables: argc:%d\n", argc);
 
 
 	while (argc - 2 >= pipexstruct.curr)
 	{
-		// printf("\ncurr value: %d\n", pipexstruct.curr);
-		// printf("argc value:%d\n", argc);
+		/*
+		printf("\ncurr value: %d\n", pipexstruct.curr);
+		printf("argc value:%d\n", pipexstruct.argc);
+		*/
 
 		pipexstruct.argvs1 = ft_split(argv[pipexstruct.curr], ' ');
 		pipexstruct.argvs2 = ft_split(argv[pipexstruct.curr+1], ' ');
@@ -189,7 +242,7 @@ int	main(int argc, char *argv[], char *envp[])
 			// ends with p2 process
 			if (pipexstruct.curr %2 == 1)
 			{
-				printf("Ends with p2 process\n");
+				// printf("Ends with p2 process\n");
 				pipexstruct.p2fd = open(argv[pipexstruct.curr+2], O_TRUNC | O_CREAT | O_RDWR, 0644);
 				if (pipexstruct.p2fd == -1 )
 					printf("error2 opening file fd2:%d\n", pipexstruct.p2fd);
@@ -219,12 +272,16 @@ int	main(int argc, char *argv[], char *envp[])
 				exit(1);
 
 
-		pipexstruct.pid2 = fork();
-		if (pipexstruct.pid2 == 0)
-			if (p2child(paths, path, envp, pipexstruct) == 1)
-				exit(1);
+		if (pipexstruct.curr + 2 != pipexstruct.argc)
+		{
+		
+			pipexstruct.pid2 = fork();
+			if (pipexstruct.pid2 == 0)
+				if (p2child(paths, path, envp, pipexstruct) == 1)
+					exit(1);
+		}
 
-		closepipes(&pipexstruct);
+		// closepipes(&pipexstruct);
 
 		// waitpid(pipexstruct.pid1, &pipexstruct.pid1status, 0); // this will end
 		waitpid(pipexstruct.pid1, &pipexstruct.pid1status, WNOHANG); // this will end
