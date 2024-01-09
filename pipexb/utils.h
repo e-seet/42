@@ -21,7 +21,13 @@ struct s_pipex {
 	char	**argvs2;
 	int		p2fd; //outfile
 
+	int		pid3;
+	int		pid3status;
+	int		p3fd; //infile
+	char	**argvs3;
+
 	int		fdpipe[2];
+	int		fdpipe_next[2];
 	int		curr;
 	int		argc;
 };

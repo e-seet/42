@@ -25,4 +25,7 @@ void	closepipes(struct s_pipex *pipexstruct)
 {
 	close(pipexstruct->fdpipe[0]);
 	close(pipexstruct->fdpipe[1]);
+
+	close(pipexstruct->fdpipe_next[0]);
+	close(pipexstruct->fdpipe_next[1]);
 }
