@@ -704,7 +704,7 @@ int	main(int argc, char *argv[], char *envp[])
 	setstructure(argc, argv, &pipexstruct);
 	// printf("argc:%d, curr:%d", pipexstruct.argc, pipexstruct.curr);
 
-	while (pipexstruct.argc - 2 >= pipexstruct.curr)
+	while (pipexstruct.argc - 1 > pipexstruct.curr)
 	{
 		pipexstruct.argvs3 = ft_split(argv[pipexstruct.curr], ' ');
 		pipexstruct.pid3 = fork();
