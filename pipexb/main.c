@@ -675,6 +675,7 @@ int	main(int argc, char *argv[], char *envp[])
 	struct s_pipex	pipexstruct;
 	char			*path;
 	char			**paths;
+	int				temp;
 
 	path = findpath(envp);
 	paths = ft_split(path + 5, ':');
@@ -689,6 +690,50 @@ int	main(int argc, char *argv[], char *envp[])
 	setstructure(argc, argv, &pipexstruct);
 	// printf("argc:%d, curr:%d", pipexstruct.argc, pipexstruct.curr);
 	// printf("argc:%d\n", pipexstruct.argc);
+
+
+	// string comparison to be done
+	temp = heredoccmd(&pipexstruct, argv);
+	if (temp == 0)
+	{
+	
+			pipexstruct.heredocreadfd = open("heredoctemp.txt", O_RDONLY);
+			if (pipexstruct.heredocreadfd == - 1)
+			{
+				printf("heredocreadfd opened with error\n");
+				exit(1);
+			}
+			else
+				printf("no error\n");
+
+			// Perform the read operation in a loop until there's nothing left to read
+			/*
+			char buffer[1024];  // Allocate a buffer for the read operation
+			int bytes_read; 
+			while ((bytes_read = read(pipexstruct.heredocreadfd, buffer, 1024)) > 0)
+			{
+				// Process the bytes read
+				printf("reading:");
+				write(1, buffer, bytes_read);
+				printf("\n");
+			}
+
+			// Check if the read operation finished because of an error or end-of-file
+			if (bytes_read == -1) {
+				// An error occurred, handle it here
+				perror("read failed");
+			} 
+			else 
+			{
+				// End of file reached, all data has been read
+			}
+			*/
+	}
+	else
+		perror("heredoccmd failed. Nothing inside\n");
+
+	// exit(1); // to be commented out
+
 
 	while (pipexstruct.argc - 1 > pipexstruct.curr)
 	{
@@ -712,7 +757,7 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			if (pipexstruct.curr == 3)
 			{
-				dup2(pipexstruct.p1fd, 0);		// read from p1fd instead of stdin
+				dup2(pipexstruct.p1fd, 0);					// read from p1fd instead of stdin
 				dup2(pipexstruct.fdpipe1[1], 1); 			// write to pipefd instead of stdout
 			}
 			else if (pipexstruct.argc - 2 == pipexstruct.curr)
@@ -723,14 +768,14 @@ int	main(int argc, char *argv[], char *envp[])
 			else if (pipexstruct.curr % 2 == 0)
 			{
 				dup2(pipexstruct.fdpipe1[0], 0);				// read from pipe instead of stdin
-				dup2(pipexstruct.fdpipe2[1], 1); // write to fdpipe instead of stdout
+				dup2(pipexstruct.fdpipe2[1], 1); 				// write to fdpipe instead of stdout
 			}
 			else if (pipexstruct.curr % 2 == 1)
 			{
-				dup2(pipexstruct.fdpipe2[0], 0);	// read from fdpipe instead of stdout
-				dup2(pipexstruct.fdpipe1[1], 1); 			
+				dup2(pipexstruct.fdpipe2[0], 0);				// read from fdpipe instead of stdout
+				dup2(pipexstruct.fdpipe1[1], 1); 				// write to fdpipe instead of stdout
 			}
-			if (p3child(paths, path, envp, pipexstruct) == 1)
+			if (p3child(paths, path, envp, pipexstruct) == 1) //execute the p3child
 			{
 				printf("error: 1, exiting\n");
 				exit(1);
@@ -744,7 +789,7 @@ int	main(int argc, char *argv[], char *envp[])
 				close(pipexstruct.fdpipe2[1]);
 			else
 				exit(1);
-			waitpid(pipexstruct.pid3, NULL, 0); // modified 
+			waitpid(pipexstruct.pid3, NULL, 0);  // wait for the process
 		}
 		pipexstruct.curr +=1;
 	}
@@ -752,3 +797,8 @@ int	main(int argc, char *argv[], char *envp[])
 	return (0);
 }
 
+
+
+
+
+//  ./pipex "here_doc" "END" "tr a b" "tr b c" "tr c d" "output_file"

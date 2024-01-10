@@ -52,8 +52,8 @@ OBJS_BONUS			=	$(BSRC:.c=.o)
 # **************************************************************************** #
 .PHONY: all bonus clean fclean re
 
-$(NAME):	$(OBJ_L) $(OBJS)
-			@$(CC) $(OBJ_L) $(OBJS) -o $(NAME)
+$(NAME):	$(OBJ_L) $(OBJS)  $(OBJ_GNL) 
+			@$(CC) $(OBJ_L) $(OBJS) $(OBJ_GNL) -o $(NAME)
 
 all: $(NAME)
 

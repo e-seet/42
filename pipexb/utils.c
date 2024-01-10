@@ -2,23 +2,96 @@
 
 void	setstructure(int argc, 	char *argv[], struct s_pipex *pipexstruct)
 {
-
+	pipexstruct->curr = 3;
+	pipexstruct->argc = argc;
+	
 	// outfile
 	pipexstruct->p2fd = open(argv[argc-1], O_TRUNC | O_CREAT | O_RDWR, 0644);
 	if (pipexstruct->p2fd < 0)
-		perror("Error in opening file. Terminating now");
-	
-	pipexstruct->p1fd = open(argv[1], O_RDONLY);
-	if (pipexstruct->p1fd < 0)
-		perror("Error in opening file. Terminating now");
+		perror("Error in opening fd for p2fd. Terminating now");
 
-	pipexstruct->curr = 3;
-	pipexstruct->argc = argc;
-	// the following 2 will be variable
-	// pipexstruct->argvs1 = ft_split(argv[3], ' ');
-	// pipexstruct->argvs2 = ft_split(argv[3], ' ');
-	// printf("argv1:%s", pipexstruct->argvs1);
-	// printf("argv2:%s", pipexstruct->argvs2);
+	// here_doc command
+	if (ft_strncmp("here_doc", argv[1], 8) == 0)
+	{
+		// delimiter
+		pipexstruct->delimiter = argv[2];
+		// Get FD to open file and write
+		pipexstruct->heredocwritefd = open("heredoctemp.txt", O_TRUNC | O_CREAT | O_RDWR, 0644);
+		if (pipexstruct->heredocwritefd == - 1)
+		{
+			printf("opening heredoctempt for writing failed in set structure");
+		}
+
+		pipexstruct->p1fd = open("heredoctemp.txt", O_RDONLY);
+		if (pipexstruct->p1fd < 0)
+			perror("Error in opening fd for p1fd. Terminating now");
+	}
+	else
+	{
+		printf("jsut normal piping\n");
+
+		// just pipe
+		pipexstruct->p1fd = open(argv[1], O_RDONLY);
+		if (pipexstruct->p1fd < 0)
+			perror("Error in opening fd for p1fd. Terminating now");
+	}
+
+
+}
+//check if the last character is a \n and subtract accordingly
+int linechecker(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+
+	// go to the position before \0 and check if it is a \n
+	if (str[i - 1] == '\n')
+		return 1;
+	else
+		return 0;
+}
+
+// read from stdin.
+// write to pipe
+int	heredoccmd(struct s_pipex *pipexstruct, char *argv[])
+{
+	char	*line;
+
+	pipexstruct->delimiter = argv[2];
+	pipexstruct->heredocwritefd = open("heredoctemp.txt", O_TRUNC | O_CREAT | O_RDWR, 0644);
+	if (pipexstruct->heredocwritefd < 0)
+	{
+		perror("invalid fd. quitting now\n");
+		exit(1);
+	}
+
+	while (1)
+	{
+		write(1,"heredoc>", 8);
+		line = get_next_line(0);
+
+		// found the delimiter.
+		// Make sure delimiter is same length as line
+		// There will be a extra \n for line, that's why need to subtract by 1. 
+		if ( (ft_strncmp(line, pipexstruct->delimiter, ft_strlen(pipexstruct->delimiter)) == 0) 
+		&& (ft_strlen(line) - linechecker(line)) == ft_strlen(pipexstruct->delimiter))
+		{
+			printf("found delimiter\n");
+			break ;
+		}
+
+		// write to file and stdout for now
+		// printf("heredocwritefd\n");
+		write(pipexstruct->heredocwritefd, line, ft_strlen(line));
+		printf("line");
+		write(1, line, ft_strlen(line));
+		printf("\n\n");
+		line = NULL;
+	}
+	return (0);
 }
 
 void	closepipes(struct s_pipex *pipexstruct)
