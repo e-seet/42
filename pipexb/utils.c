@@ -23,9 +23,9 @@ void	setstructure(int argc, 	char *argv[], struct s_pipex *pipexstruct)
 
 void	closepipes(struct s_pipex *pipexstruct)
 {
-	close(pipexstruct->fdpipe[0]);
-	close(pipexstruct->fdpipe[1]);
+	close(pipexstruct->fdpipe1[0]);
+	close(pipexstruct->fdpipe1[1]);
 
-	close(pipexstruct->fdpipe_next[0]);
-	close(pipexstruct->fdpipe_next[1]);
+	close(pipexstruct->fdpipe2[0]);
+	close(pipexstruct->fdpipe2[1]);
 }

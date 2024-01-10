@@ -635,16 +635,6 @@ int	p3child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 
 	path = findprocesspath(path, paths, pipexstruct, 3);
 	
-	// print stuffs here
-	// int	 i = 0;
-	// while (pipexstruct.argvs3[i])
-	// {
-	// 	printf("curr:%d argvs %d, %s ", pipexstruct.curr ,i, pipexstruct.argvs3[i]);
-	// 	i ++;
-	// }
-	// printf("\n");
-	//end
-
 	// check access
 	if (access(path, F_OK) != 0)
 	{
@@ -689,15 +679,10 @@ int	main(int argc, char *argv[], char *envp[])
 	path = findpath(envp);
 	paths = ft_split(path + 5, ':');
 
-	if (pipe(pipexstruct.fdpipe) == -1)
+	if (pipe(pipexstruct.fdpipe1) == -1)
 		return (1);
 
-	int		pipefd[2];
-	if (pipe(pipefd) == -1)
-		return (1);
-
-	int		pipefd2[2];
-	if (pipe(pipefd2) == -1)
+	if (pipe(pipexstruct.fdpipe2) == -1)
 		return (1);
 
 	// looping 
@@ -708,21 +693,29 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		pipexstruct.argvs3 = ft_split(argv[pipexstruct.curr], ' ');
 		
-		if (pipexstruct.curr == 6)
-			if (pipe(pipefd2) == -1)
+		if (pipexstruct.curr != 3 && pipexstruct.curr % 2 == 1)
+		{
+			if (pipe(pipexstruct.fdpipe1) == -1)
+							return (1);
+		}
+			
+
+		if (pipexstruct.curr != 4 && pipexstruct.curr % 2 == 0)
+		{
+			if (pipe(pipexstruct.fdpipe2) == -1)
 				return (1);
+		}
 
 
 		pipexstruct.pid3 = fork();
-		
 		// child process
 		if (pipexstruct.pid3 == 0)
 		{
-			printf("child:%d dups\n", pipexstruct.curr);
+			// printf("child:%d dups\n", pipexstruct.curr);
 			if (pipexstruct.curr == 3)
 			{
 				dup2(pipexstruct.p1fd, 0);		// read from p1fd instead of stdin
-				dup2(pipefd2[1], 1); 			// write to pipefd instead of stdout
+				dup2(pipexstruct.fdpipe1[1], 1); 			// write to pipefd instead of stdout
 				int result = p3child(paths, path, envp, pipexstruct);
 				if (result == 1)
 				{
@@ -732,8 +725,8 @@ int	main(int argc, char *argv[], char *envp[])
 			}
 			else if (pipexstruct.curr == 4)
 			{
-				dup2(pipefd2[0], 0);				// read from pipe instead of stdin
-				dup2(pipexstruct.fdpipe[1], 1); // write to fdpipe instead of stdout
+				dup2(pipexstruct.fdpipe1[0], 0);				// read from pipe instead of stdin
+				dup2(pipexstruct.fdpipe2[1], 1); // write to fdpipe instead of stdout
 				int result = p3child(paths, path, envp, pipexstruct);
 				if (result == 1)
 				{
@@ -743,8 +736,8 @@ int	main(int argc, char *argv[], char *envp[])
 			}
 			else if (pipexstruct.curr == 5)
 			{
-				dup2(pipexstruct.fdpipe[0], 0);	// read from fdpipe instead of stdout
-				dup2(pipefd[1], 1); 			
+				dup2(pipexstruct.fdpipe2[0], 0);	// read from fdpipe instead of stdout
+				dup2(pipexstruct.fdpipe1[1], 1); 			
 				int result = p3child(paths, path, envp, pipexstruct);
 				if (result == 1)
 				{
@@ -754,9 +747,8 @@ int	main(int argc, char *argv[], char *envp[])
 			}
 			else if (pipexstruct.curr == 6)
 			{
-			
-				dup2(pipefd[0], 0);
-				dup2(pipefd2[1], 1); // this not working
+				dup2(pipexstruct.fdpipe1[0], 0);
+				dup2(pipexstruct.fdpipe2[1], 1); // this not working
 				int result = p3child(paths, path, envp, pipexstruct);
 				if (result == 1)
 				{
@@ -766,7 +758,7 @@ int	main(int argc, char *argv[], char *envp[])
 			}
 			else if (pipexstruct.curr == 7)
 			{
-				dup2(pipefd2[0], 0);
+				dup2(pipexstruct.fdpipe2[0], 0);
 				dup2(pipexstruct.p2fd, 1);
 				int result = p3child(paths, path, envp, pipexstruct);
 				if (result == 1)
@@ -784,32 +776,30 @@ int	main(int argc, char *argv[], char *envp[])
 		// parent process
 		else
 		{
-			printf("\nparents:%d dups\n", pipexstruct.curr);
-			// change from stdin to read pipe
-
 			if (pipexstruct.curr == 3)
 			{
-				close(pipefd2[1]);
+				close(pipexstruct.fdpipe1[1]);
 				waitpid(pipexstruct.pid3, NULL, 0); // modified 
 			}
 			else if (pipexstruct.curr == 4)
 			{
-				close(pipexstruct.fdpipe[1]);
+				close(pipexstruct.fdpipe2[1]);
 				waitpid(pipexstruct.pid3, NULL, 0); // modified 
 		
 			}
 			else if (pipexstruct.curr == 5)
 			{
-				close(pipefd[1]); // cannot uncomment
+				close(pipexstruct.fdpipe1[1]);
 				waitpid(pipexstruct.pid3, NULL, 0); // modified 
 			}
 			else if (pipexstruct.curr == 6)
 			{
-				close(pipefd2[1]);
+				close(pipexstruct.fdpipe2[1]);
 				waitpid(pipexstruct.pid3, NULL, 0); // modified 
 			}
 			else if (pipexstruct.curr == 7)
 			{
+				close(pipexstruct.fdpipe1[1]);
 				waitpid(pipexstruct.pid3, NULL, 0); // modified 
 			}
 			else

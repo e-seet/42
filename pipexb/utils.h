@@ -26,8 +26,8 @@ struct s_pipex {
 	int		p3fd; //infile
 	char	**argvs3;
 
-	int		fdpipe[2];
-	int		fdpipe_next[2];
+	int		fdpipe1[2];
+	int		fdpipe2[2];
 	int		curr;
 	int		argc;
 };
