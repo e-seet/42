@@ -50,7 +50,8 @@ int		p1child(char *paths[], char *path, char *envp[],
 int		p2child(char *paths[], char *path, char *envp[],
 			struct s_pipex pipexstruct);
 
-int		heredoccmd(struct s_pipex *pipexstruct, char *argv[]);
+// int		heredoccmd(struct s_pipex *pipexstruct, char *argv[]);
+int		heredoccmd(struct s_pipex *pipexstruct);
 
 char	*findpath(char *envp[]);
 

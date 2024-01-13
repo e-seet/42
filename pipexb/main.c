@@ -81,17 +81,12 @@ int	main(int argc, char *argv[], char *envp[])
 	setstructure(argc, argv, &pipexstruct);
 	if (ft_strncmp("here_doc", argv[1], 8) == 0)
 	{
-		temp = heredoccmd(&pipexstruct, argv);
+		temp = heredoccmd(&pipexstruct);
 		if (temp == 0)
 		{
 			pipexstruct.heredocreadfd = open("heredoctemp.txt", O_RDONLY);
 			if (pipexstruct.heredocreadfd == -1)
-			{
-				printf("heredocreadfd opened with error\n");
-				exit(1);
-			}
-			else
-				printf("no error\n");
+				perror("heredocreadfd opened with error\n");
 		}
 		else
 			perror("heredoccmd failed. Nothing inside\n");
@@ -99,6 +94,7 @@ int	main(int argc, char *argv[], char *envp[])
 	while (pipexstruct.argc - 1 > pipexstruct.curr)
 	{
 		pipexstruct.argvs3 = ft_split(argv[pipexstruct.curr], ' ');
+		//prepare the pipe
 		if (pipexstruct.curr != 3 && pipexstruct.curr % 2 == 1)
 		{
 			if (pipe(pipexstruct.fdpipe1) == -1)
@@ -110,6 +106,7 @@ int	main(int argc, char *argv[], char *envp[])
 				return (1);
 		}
 		pipexstruct.pid3 = fork();
+		// checking child process
 		if (pipexstruct.pid3 == 0)
 		{
 			if (pipexstruct.curr == 3)
@@ -133,11 +130,9 @@ int	main(int argc, char *argv[], char *envp[])
 				dup2(pipexstruct.fdpipe1[1], 1);
 			}
 			if (p3child(paths, path, envp, pipexstruct) == 1)
-			{
-				printf("error: 1, exiting\n");
-				exit(1);
-			}
+				perror("Error with p3child\n");
 		}
+		//parent process
 		else
 		{
 			if (pipexstruct.curr % 2 == 1)

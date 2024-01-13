@@ -10,7 +10,8 @@ void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct)
 	if (ft_strncmp("here_doc", argv[1], 8) == 0)
 	{
 		pipexstruct->delimiter = argv[2];
-		pipexstruct->heredocwritefd = open("heredoctemp.txt", O_TRUNC | O_CREAT | O_RDWR, 0644);
+		pipexstruct->heredocwritefd = open("heredoctemp.txt", O_TRUNC | O_CREAT
+				| O_RDWR, 0644);
 		if (pipexstruct->heredocwritefd == -1)
 			printf("opening heredoctempt for writing failed in set structure");
 		pipexstruct->p1fd = open("heredoctemp.txt", O_RDONLY);
@@ -41,12 +42,11 @@ int	linechecker(char *str)
 		return (0);
 }
 
-int	heredoccmd(struct s_pipex *pipexstruct, char *argv[])
+
+int	heredoccmd(struct s_pipex *pipexstruct)
 {
 	char	*line;
 
-	pipexstruct->delimiter = argv[2];
-	pipexstruct->heredocwritefd = open("heredoctemp.txt", O_TRUNC | O_CREAT | O_RDWR, 0644);
 	if (pipexstruct->heredocwritefd < 0)
 	{
 		perror("invalid fd. quitting now\n");
@@ -56,14 +56,14 @@ int	heredoccmd(struct s_pipex *pipexstruct, char *argv[])
 	{
 		write(1, "heredoc>", 8);
 		line = get_next_line(0);
-		if ((ft_strncmp(line, pipexstruct->delimiter, ft_strlen(pipexstruct->delimiter)) == 0)
-			&& (ft_strlen(line) - linechecker(line)) == ft_strlen(pipexstruct->delimiter))
+		if ((ft_strncmp(line, pipexstruct->delimiter, ft_strlen(
+						pipexstruct->delimiter)) == 0) && (ft_strlen(line)
+				- linechecker(line)) == ft_strlen(pipexstruct->delimiter))
 		{
 			printf("found delimiter\n");
 			break ;
 		}
 		write(pipexstruct->heredocwritefd, line, ft_strlen(line));
-		printf("line");
 		write(1, line, ft_strlen(line));
 		printf("\n\n");
 		line = NULL;
