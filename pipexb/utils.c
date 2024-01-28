@@ -1,7 +1,10 @@
 #include "utils.h"
 
-void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct)
+void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
+	char *envp[])
 {
+	pipexstruct->path = findpath(envp);
+	pipexstruct->paths = ft_split(pipexstruct->path + 5, ':');
 	pipexstruct->curr = 3;
 	pipexstruct->argc = argc;
 	pipexstruct->p2fd = open(argv[argc - 1], O_TRUNC | O_CREAT | O_RDWR, 0644);
@@ -13,14 +16,13 @@ void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct)
 		pipexstruct->heredocwritefd = open("heredoctemp.txt", O_TRUNC | O_CREAT
 				| O_RDWR, 0644);
 		if (pipexstruct->heredocwritefd == -1)
-			printf("opening heredoctempt for writing failed in set structure");
+			perror("opening heredoctempt for writing failed in set structure");
 		pipexstruct->p1fd = open("heredoctemp.txt", O_RDONLY);
 		if (pipexstruct->p1fd < 0)
 			perror("Error in opening fd for p1fd. Terminating now");
 	}
 	else
 	{
-		printf("jsut normal piping\n");
 		pipexstruct->p1fd = open(argv[1], O_RDONLY);
 		if (pipexstruct->p1fd < 0)
 			perror("Error in opening fd for p1fd. Terminating now");
@@ -41,7 +43,6 @@ int	linechecker(char *str)
 	else
 		return (0);
 }
-
 
 int	heredoccmd(struct s_pipex *pipexstruct)
 {
@@ -71,10 +72,60 @@ int	heredoccmd(struct s_pipex *pipexstruct)
 	return (0);
 }
 
-void	closepipes(struct s_pipex *pipexstruct)
+char	*findprocesspath(struct s_pipex pipexstruct, int processnum)
 {
-	close(pipexstruct->fdpipe1[0]);
-	close(pipexstruct->fdpipe1[1]);
-	close(pipexstruct->fdpipe2[0]);
-	close(pipexstruct->fdpipe2[1]);
+	int	i;
+
+	i = 0;
+	while (pipexstruct.paths[i])
+	{
+		pipexstruct.path = ft_strjoin(pipexstruct.paths[i], "/");
+		if (processnum == 1)
+			pipexstruct.path
+				= ft_strjoin(pipexstruct.path, pipexstruct.argvs1[0]);
+		else if (processnum == 2)
+			pipexstruct.path
+				= ft_strjoin(pipexstruct.path, pipexstruct.argvs2[0]);
+		else
+			pipexstruct.path
+				= ft_strjoin(pipexstruct.path, pipexstruct.argvs3[0]);
+		if (access(pipexstruct.path, F_OK) == 0)
+			break ;
+		free (pipexstruct.path);
+		pipexstruct.path = NULL;
+		i++;
+	}
+	if (access(pipexstruct.path, F_OK) == 0)
+		return (pipexstruct.path);
+	else
+		return (NULL);
 }
+
+char	*findpath(char *envp[])
+{
+	int		i;
+	char	*path;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp("PATH=", envp[i], 5) == 0)
+		{
+			path = envp[i];
+			break ;
+		}
+		i++;
+	}
+	if (ft_strncmp("PATH=", path, 5) == 0)
+		return (path);
+	else
+		return (NULL);
+}
+
+// void	closepipes(struct s_pipex *pipexstruct)
+// {
+// 	close(pipexstruct->fdpipe1[0]);
+// 	close(pipexstruct->fdpipe1[1]);
+// 	close(pipexstruct->fdpipe2[0]);
+// 	close(pipexstruct->fdpipe2[1]);
+// }

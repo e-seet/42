@@ -1,88 +1,32 @@
 #include "utils.h"
 
-char	*findprocesspath(char *path, char *paths[],
-struct s_pipex pipexstruct, int processnum)
-{
-	int	i;
-
-	i = 0;
-	while (paths[i])
-	{
-		path = ft_strjoin(paths[i], "/");
-		if (processnum == 1)
-			path = ft_strjoin(path, pipexstruct.argvs1[0]);
-		else if (processnum == 2)
-			path = ft_strjoin(path, pipexstruct.argvs2[0]);
-		else
-			path = ft_strjoin(path, pipexstruct.argvs3[0]);
-		if (access(path, F_OK) == 0)
-		{
-			break ;
-		}
-		free (path);
-		path = NULL;
-		i++;
-	}
-	if (access(path, F_OK) == 0)
-		return (path);
-	else
-		return (NULL);
-}
-
-int	p3child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
+int	p3child(char *envp[], struct s_pipex pipexstruct)
 {
 	int		execveresult;
 
-	path = findprocesspath(path, paths, pipexstruct, 3);
-	if (access(path, F_OK) != 0)
+	pipexstruct.path = findprocesspath(pipexstruct, 3);
+	if (access(pipexstruct.path, F_OK) != 0)
 	{
 		perror("command not found");
 		return (1);
 	}
-	execveresult = execve(path, pipexstruct.argvs3, envp);
+	execveresult = execve(pipexstruct.path, pipexstruct.argvs3, envp);
 	if (execveresult == -1)
 		perror("smth wrong with executing. Terminate now");
-	free(path);
+	free(pipexstruct.path);
 	return (0);
-}
-
-char	*findpath(char *envp[])
-{
-	int		i;
-	char	*path;
-
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp("PATH=", envp[i], 5) == 0)
-		{
-			path = envp[i];
-			break ;
-		}
-		i++;
-	}
-	if (ft_strncmp("PATH=", path, 5) == 0)
-		return (path);
-	else
-		return (NULL);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
 	struct s_pipex	pipexstruct;
-	char			*path;
-	char			**paths;
-	int				temp;
 
-	path = findpath(envp);
-	paths = ft_split(path + 5, ':');
 	if (pipe(pipexstruct.fdpipe1) == -1 || pipe(pipexstruct.fdpipe2) == -1)
 		return (1);
-	setstructure(argc, argv, &pipexstruct);
+	setstructure(argc, argv, &pipexstruct, envp);
 	if (ft_strncmp("here_doc", argv[1], 8) == 0)
 	{
-		temp = heredoccmd(&pipexstruct);
-		if (temp == 0)
+		if (heredoccmd(&pipexstruct) == 0)
 		{
 			pipexstruct.heredocreadfd = open("heredoctemp.txt", O_RDONLY);
 			if (pipexstruct.heredocreadfd == -1)
@@ -94,7 +38,6 @@ int	main(int argc, char *argv[], char *envp[])
 	while (pipexstruct.argc - 1 > pipexstruct.curr)
 	{
 		pipexstruct.argvs3 = ft_split(argv[pipexstruct.curr], ' ');
-		//prepare the pipe
 		if (pipexstruct.curr != 3 && pipexstruct.curr % 2 == 1)
 		{
 			if (pipe(pipexstruct.fdpipe1) == -1)
@@ -106,7 +49,6 @@ int	main(int argc, char *argv[], char *envp[])
 				return (1);
 		}
 		pipexstruct.pid3 = fork();
-		// checking child process
 		if (pipexstruct.pid3 == 0)
 		{
 			if (pipexstruct.curr == 3)
@@ -129,10 +71,9 @@ int	main(int argc, char *argv[], char *envp[])
 				dup2(pipexstruct.fdpipe2[0], 0);
 				dup2(pipexstruct.fdpipe1[1], 1);
 			}
-			if (p3child(paths, path, envp, pipexstruct) == 1)
+			if (p3child(envp, pipexstruct) == 1)
 				perror("Error with p3child\n");
 		}
-		//parent process
 		else
 		{
 			if (pipexstruct.curr % 2 == 1)

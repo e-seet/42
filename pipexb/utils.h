@@ -1,4 +1,3 @@
-
 #ifndef UTILS_H
 # define UTILS_H
 
@@ -37,18 +36,20 @@ struct s_pipex {
 	char	*delimiter;
 	int		heredocwritefd;
 	int		heredocreadfd;
+
+	char	*path;
+	char	**paths;
 };
 
-void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct);
+void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct, char *envp[]);
 void	closepipes(struct s_pipex *pipexstruct);
 
-char	*findprocesspath(char *path, char *paths[],
-			struct s_pipex pipexstruct, int processnum);
-int		p1child(char *paths[], char *path, char *envp[],
-			struct s_pipex pipexstruct);
+char	*findprocesspath(struct s_pipex pipexstruct, int processnum);
+// int		p1child(char *paths[], char *path, char *envp[],
+			// struct s_pipex pipexstruct);
 
-int		p2child(char *paths[], char *path, char *envp[],
-			struct s_pipex pipexstruct);
+// int		p2child(char *paths[], char *path, char *envp[],
+			// struct s_pipex pipexstruct);
 
 // int		heredoccmd(struct s_pipex *pipexstruct, char *argv[]);
 int		heredoccmd(struct s_pipex *pipexstruct);
