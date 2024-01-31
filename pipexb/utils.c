@@ -61,12 +61,10 @@ int	heredoccmd(struct s_pipex *pipexstruct)
 						pipexstruct->delimiter)) == 0) && (ft_strlen(line)
 				- linechecker(line)) == ft_strlen(pipexstruct->delimiter))
 		{
-			printf("found delimiter\n");
 			break ;
 		}
 		write(pipexstruct->heredocwritefd, line, ft_strlen(line));
 		write(1, line, ft_strlen(line));
-		printf("\n\n");
 		line = NULL;
 	}
 	return (0);

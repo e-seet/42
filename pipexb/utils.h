@@ -39,9 +39,12 @@ struct s_pipex {
 
 	char	*path;
 	char	**paths;
+	int		pipestatus1;
+	int		pipestatus2;
 };
 
-void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct, char *envp[]);
+void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
+			char *envp[]);
 void	closepipes(struct s_pipex *pipexstruct);
 
 char	*findprocesspath(struct s_pipex pipexstruct, int processnum);
