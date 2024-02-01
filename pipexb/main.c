@@ -1,14 +1,10 @@
 #include "utils.h"
 
-// int catch_error()
-// {
-// }
-
 int	p3child(char *envp[], struct s_pipex pipexstruct)
 {
 	int		execveresult;
 
-	pipexstruct.path = findprocesspath(pipexstruct, 3);
+	pipexstruct.path = findprocesspath(pipexstruct);
 	if (access(pipexstruct.path, F_OK) != 0)
 	{
 		perror("command not found");
@@ -45,19 +41,9 @@ void	dup2child(struct s_pipex pipexstruct)
 	}
 }
 
-void	setuppipe(struct s_pipex pipexstruct)
-{
-	if (pipexstruct.curr != 3 && pipexstruct.curr % 2 == 1)
-		pipexstruct.pipestatus1 = pipe(pipexstruct.fdpipe1);
-	else if (pipexstruct.curr != 4 && pipexstruct.curr % 2 == 0)
-		pipexstruct.pipestatus1 = pipe(pipexstruct.fdpipe2);
-}
-
 int	refactormain(struct s_pipex pipexstruct, char *envp[], char *argv[])
 {
 	pipexstruct.argvs3 = ft_split(argv[pipexstruct.curr], ' ');
-	if (pipexstruct.pipestatus1 == -1 || pipexstruct.pipestatus2 == -1)
-		return (1);
 	pipexstruct.pid3 = fork();
 	if (pipexstruct.pid3 == 0)
 	{
@@ -81,7 +67,6 @@ int	refactormain(struct s_pipex pipexstruct, char *envp[], char *argv[])
 int	main(int argc, char *argv[], char *envp[])
 {
 	struct s_pipex	pipexstruct;
-	int				result;
 
 	if (pipe(pipexstruct.fdpipe1) == -1 || pipe(pipexstruct.fdpipe2) == -1)
 		return (1);
@@ -99,10 +84,11 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	while (pipexstruct.argc - 1 > pipexstruct.curr)
 	{
-		result = refactormain(pipexstruct, envp, argv);
-		if (result == 1)
+		
+		if (refactormain(pipexstruct, envp, argv) == 1)
 			return (1);
 		pipexstruct.curr += 1;
 	}
+	closepipes(&pipexstruct);
 	return (0);
 }

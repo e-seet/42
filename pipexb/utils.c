@@ -70,7 +70,7 @@ int	heredoccmd(struct s_pipex *pipexstruct)
 	return (0);
 }
 
-char	*findprocesspath(struct s_pipex pipexstruct, int processnum)
+char	*findprocesspath(struct s_pipex pipexstruct)
 {
 	int	i;
 
@@ -78,15 +78,7 @@ char	*findprocesspath(struct s_pipex pipexstruct, int processnum)
 	while (pipexstruct.paths[i])
 	{
 		pipexstruct.path = ft_strjoin(pipexstruct.paths[i], "/");
-		if (processnum == 1)
-			pipexstruct.path
-				= ft_strjoin(pipexstruct.path, pipexstruct.argvs1[0]);
-		else if (processnum == 2)
-			pipexstruct.path
-				= ft_strjoin(pipexstruct.path, pipexstruct.argvs2[0]);
-		else
-			pipexstruct.path
-				= ft_strjoin(pipexstruct.path, pipexstruct.argvs3[0]);
+		pipexstruct.path = ft_strjoin(pipexstruct.path, pipexstruct.argvs3[0]);
 		if (access(pipexstruct.path, F_OK) == 0)
 			break ;
 		free (pipexstruct.path);
@@ -120,10 +112,10 @@ char	*findpath(char *envp[])
 		return (NULL);
 }
 
-// void	closepipes(struct s_pipex *pipexstruct)
-// {
-// 	close(pipexstruct->fdpipe1[0]);
-// 	close(pipexstruct->fdpipe1[1]);
-// 	close(pipexstruct->fdpipe2[0]);
-// 	close(pipexstruct->fdpipe2[1]);
-// }
+void	closepipes(struct s_pipex *pipexstruct)
+{
+	close(pipexstruct->fdpipe1[0]);
+	close(pipexstruct->fdpipe1[1]);
+	close(pipexstruct->fdpipe2[0]);
+	close(pipexstruct->fdpipe2[1]);
+}
