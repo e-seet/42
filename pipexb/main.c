@@ -106,5 +106,3 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	return (0);
 }
-
-//  ./pipex "here_doc" "END" "tr a b" "tr b c" "tr c d" "output_file"
