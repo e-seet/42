@@ -9,7 +9,6 @@
 //for read write, permission with files, creating files
 # include <fcntl.h>
 
-
 struct s_pipex {
 	int		p1fd;
 	int		p2fd;
@@ -34,7 +33,9 @@ void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
 
 int		linechecker(char *str);
 
-void	closepipes(struct s_pipex *pipexstruct);
+// void	closepipes(struct s_pipex *pipexstruct);
+
+// int		checkforheredoc(char *argv[], struct s_pipex *pipexstruct);
 
 int		heredoccmd(struct s_pipex *pipexstruct);
 
