@@ -16,6 +16,7 @@ struct s_pipex {
 
 	int		pid3;
 	char	**argvs3;
+	int		fdpipe0[2];
 	int		fdpipe1[2];
 	int		fdpipe2[2];
 	int		opened;

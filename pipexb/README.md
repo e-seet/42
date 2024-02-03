@@ -68,6 +68,72 @@ main: setup structure, Check if the command involves heredoc, while loop to exec
 
 #### Status
 
-Using infile works. But as the "curr" starts from 3, the first set of command is not run due to dup2.
+### Second set of commands [no issues]
+
+> ./pipexs "here_doc" "END" "tr a b" "tr b c" "tr c d" "output_file"
+> ./pipexs "here_doc" "END" "tr a b" "tr b c" "tr c d" "tr d e" "output_file"
+> ./pipexs "here_doc" "END" "tr a b" "tr b c" "tr c d" "tr d e" "tr e f" "output_file"
+> ./pipexs "here_doc" "END" "tr a b" "tr b c" "tr c d" "tr d e" "tr e f" "tr f g" "output_file"
+
+If argc: 9
+curr:
+3: read: p1fd, write: fdpipe1[1]
+4: read: fdpipe1[0], write:fdpipe2[1]
+5: read: fdpipe2[0], write:fdpipe1[1]
+6: read: fdpipe1[0], write:fdpipe2[1]
+7: read: fdpipe2[0], write:p2fd
+
+If argc: 10
+curr:
+3: read: p1fd, write: fdpipe1[1]
+4: read: fdpipe1[0], write:fdpipe2[1]
+5: read: fdpipe2[0], write:fdpipe1[1]
+6: read: fdpipe1[0], write:fdpipe2[1]
+7: read: fdpipe2[0], write:fdpipe1[1]
+8: read: fdpipe1[0], write:p2fd
+
+3 is fixed.
+4 is even so pipe 1
+5 is odd so pipe 2
+
+if argc: 9
+curr:
+2: read: p1fd, write: fdpipe1[1]
+3: read: fdpipe1[0], write:fdpipe2[1]
+4: read: fdpipe2[0], write:fdpipe1[1]
+5: read: fdpipe1[0], write:fdpipe2[1]
+6: read: fdpipe2[0], write:fdpipe1[1]
+7: read: fdpipe1[0], write:p2fd
+
+if argc: 10
+2: read: p1fd, write: fdpipe1[1]
+3: read: fdpipe1[0], write:fdpipe2[1]
+4: read: fdpipe2[0], write:fdpipe1[1]
+5: read: fdpipe1[0], write:fdpipe2[1]
+6: read: fdpipe2[0], write:fdpipe1[1]
+7: read: fdpipe1[0], write:fdpipe2[1]
+8: read: fdpipe2[0], write:p2fd
+
+To solve it:
+2:
+[2] -0- [3] -1- [4] -2- [5] -1- [6] -2- [7]
+[2] -0- [3] -1- [4] -2- [5] -1- [6] -2- [7] -1- [8]
+
+7-2 = 5 % 2 = odd
+8-2 = 6 % 2 = even
+
+3:
+[3] -1- [4] -2- [5] -1- [6] -2- [7]
+[3] -1- [4] -2- [5] -1- [6] -2- [7] -1- [8]
+
+<!-- algo: curr - start = remainder. remainder % 2  -->
+<!-- to fix command with infile -->
+### Got issues
+
+> ./pipexs "infile" "tr a b" "tr b c" "tr c d" "tr d e"  "tr e f"  "output_file"
+> ./pipexs "infile" "tr a b" "tr b c" "tr c d" "tr d e"  "tr e f" "tr f g" "output_file"
+> ./pipexs "infile" "tr a b" "tr b c" "tr c d" "tr d e"  "tr e f" "tr f g" "tr g h" "output_file"
+
+infile [2:read from fd, write to pipe1] → [3:read from ,write to pipe2] →p2 [4:pipe1] ⇒ [5:pipe2] → [6:pipe1] ⇒ [7:pipe2]
 
 Using heredoc: Need to check refactoring of code. Something breaks after refactoring.

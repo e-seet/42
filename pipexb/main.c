@@ -17,37 +17,62 @@ int	p3child(char *envp[], struct s_pipex pipexstruct)
 	return (0);
 }
 
-void	dup2child(struct s_pipex pipexstruct)
+void	dup2child( struct s_pipex *pipexstruct)
 {
-	if (pipexstruct.curr == 3)
+	// start
+	if (pipexstruct->curr == pipexstruct->opened)
 	{
-		printf("case == 3 \n");
-		dup2(pipexstruct.p1fd, 0);
-		dup2(pipexstruct.fdpipe1[1], 1);
-	}
-	else if (pipexstruct.argc - 2 == pipexstruct.curr)
-	{
-		printf("last part\n\n");
-		if (pipexstruct.curr % 2 == 1)
-			dup2(pipexstruct.fdpipe2[0], 0); //was there first
+		printf("in case. Check opened:%d \n\n", pipexstruct->opened);
+		pipexstruct->opened = 1;
+		dup2(pipexstruct->p1fd, 0);
+		if (pipexstruct->curr == 2)
+			dup2(pipexstruct->fdpipe0[1], 1);
 		else
-			dup2(pipexstruct.fdpipe1[0], 0);
-		dup2(pipexstruct.p2fd, 1);
+			dup2(pipexstruct->fdpipe1[1], 1);
 	}
-	else if (pipexstruct.curr % 2 == 0)
+	//end
+	else if (pipexstruct->argc - 2 == pipexstruct->curr)
+	{
+		printf("out case.\n\n");
+		if (pipexstruct->curr % 2 == 1)
+		{
+			dup2(pipexstruct->fdpipe2[0], 0);
+		}
+		else
+		{
+			dup2(pipexstruct->fdpipe1[0], 0);
+		}
+		dup2(pipexstruct->p2fd, 1);
+	}
+	// odd
+	else if (pipexstruct->curr % 2 == 1)
+	{
+		printf("case 1\n\n");
+
+		printf("check my if\n");
+		printf("curr:%d, opened:%d\n", pipexstruct->curr, pipexstruct->opened);
+		if (pipexstruct->opened == 2 && pipexstruct->curr == 3)
+		{
+			printf("interesting case\n");
+			dup2(pipexstruct->fdpipe0[0], 0);
+		}
+		else
+		{
+			printf("normal case\n");
+			dup2(pipexstruct->fdpipe2[0], 0);
+		}
+		dup2(pipexstruct->fdpipe1[1], 1);
+	}
+	//even
+	else if (pipexstruct->curr % 2 == 0)
 	{
 		printf("case 0\n\n");
-		dup2(pipexstruct.fdpipe1[0], 0);
-		dup2(pipexstruct.fdpipe2[1], 1);
+		dup2(pipexstruct->fdpipe1[0], 0);
+		dup2(pipexstruct->fdpipe2[1], 1);
 	}
-	else if (pipexstruct.curr % 2 == 1)
-	{
-		printf("case 1\n");
-		dup2(pipexstruct.fdpipe2[0], 0);
-		dup2(pipexstruct.fdpipe1[1], 1);
-	}
-}
 
+}
+/*
 int	refactormain(struct s_pipex pipexstruct, char *envp[], char *argv[])
 {
 	pipexstruct.argvs3 = ft_split(argv[pipexstruct.curr], ' ');
@@ -55,7 +80,7 @@ int	refactormain(struct s_pipex pipexstruct, char *envp[], char *argv[])
 	pipexstruct.pid3 = fork();
 	if (pipexstruct.pid3 == 0)
 	{
-		dup2child(pipexstruct);
+		dup2child(&pipexstruct);
 		if (p3child(envp, pipexstruct) == -1)
 			return (-1);
 	}
@@ -71,19 +96,20 @@ int	refactormain(struct s_pipex pipexstruct, char *envp[], char *argv[])
 	}
 	return (0);
 }
-
+*/
 int	main(int argc, char *argv[], char *envp[])
 {
 	struct s_pipex	pipexstruct;
 
-	if (pipe(pipexstruct.fdpipe1) == -1 || pipe(pipexstruct.fdpipe2) == -1)
-		return (1);
+	// if (pipe(pipexstruct.fdpipe1) == -1 || pipe(pipexstruct.fdpipe2) == -1 || pipe(pipexstruct.fdpipe0) == -1)
+		// return (1);
 	setstructure(argc, argv, &pipexstruct, envp);
 	if (ft_strncmp("here_doc", argv[1], 8) == 0)
 	{
 		if (heredoccmd(&pipexstruct) == 0)
 		{
-			pipexstruct.curr =3 ;
+			pipexstruct.curr = 3 ;
+			pipexstruct.opened = 3 ;
 			pipexstruct.heredocreadfd = open("heredoctemp.txt", O_RDONLY);
 			if (pipexstruct.heredocreadfd == -1)
 				perror("heredocreadfd opened with error\n");
@@ -100,7 +126,7 @@ int	main(int argc, char *argv[], char *envp[])
 		pipexstruct.curr += 1;
 	}
 	 */
-// /*
+	// /*
 	printf("argc:%d\n\n", pipexstruct.argc);
 	while (pipexstruct.argc - 1 > pipexstruct.curr)
 	{
@@ -108,20 +134,28 @@ int	main(int argc, char *argv[], char *envp[])
 		pipexstruct.argvs3 = ft_split(argv[pipexstruct.curr], ' ');
 		printf("check argvs3 %s\n", argv[pipexstruct.curr]);
 
-		if (pipexstruct.curr != 3 && pipexstruct.curr % 2 == 1)
+		// setup 'pipe()'
+		if (pipexstruct.curr == 2)
+		{
+			if (pipe(pipexstruct.fdpipe0) == -1)
+				return (1);
+		}
+		else if (pipexstruct.curr % 2 == 1)
 		{
 			if (pipe(pipexstruct.fdpipe1) == -1)
 				return (1);
 		}
-		else if (pipexstruct.curr != 4 && pipexstruct.curr % 2 == 0)
+		else if (pipexstruct.curr % 2 == 0)
 		{
 			if (pipe(pipexstruct.fdpipe2) == -1)
 				return (1);
 		}
+
+		// pipe process
 		pipexstruct.pid3 = fork();
 		if (pipexstruct.pid3 == 0)
 		{
-			dup2child(pipexstruct);
+			dup2child(&pipexstruct);
 			if (p3child(envp, pipexstruct) == 1)
 			{
 				printf("error: 1, exiting\n");
@@ -130,22 +164,18 @@ int	main(int argc, char *argv[], char *envp[])
 		}
 		else
 		{
-			if (pipexstruct.argc - 2 == pipexstruct.curr)
-			{
-				printf("close in main\n");
-				// close(pipexstruct.fdpipe2[1]);
-				// close(pipexstruct.fdpipe2[0]);
 
-				// close(pipexstruct.fdpipe1[1]);
-				// close(pipexstruct.fdpipe1[0]);
-
-			}
-			else if (pipexstruct.curr % 2 == 1)
+			// closing of pipes
+			if (pipexstruct.opened == 2 && pipexstruct.curr == 2)
+				close(pipexstruct.fdpipe0[1]);
+			
+			if (pipexstruct.curr % 2 == 1)
 				close(pipexstruct.fdpipe1[1]);
 			else if (pipexstruct.curr % 2 == 0)
 				close(pipexstruct.fdpipe2[1]);
 			else
 				exit(1);
+
 			waitpid(pipexstruct.pid3, NULL, 0);
 		}
 		pipexstruct.curr = pipexstruct.curr +1;
