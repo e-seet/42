@@ -4,11 +4,19 @@
 
 find . -name "*.c" | entr make
 
-## To run the program: Sample commands
+### To run the program: Sample commands
 
->./pipexs "here_doc" "END" "tr a b" "tr b c" "tr c d" "output_file"
+### First set of commands
 
->./pipexs "here_doc" "END" "tr a b" "tr b c" "tr c d" "tr d e" "output_file"
+> ./pipexs "here_doc" "END" "tr a b" "tr b c" "tr c d" "output_file"
+> ./pipexs "here_doc" "END" "tr a b" "tr b c" "tr c d" "tr d e" "output_file"
+> ./pipexs "here_doc" "END" "tr a b" "tr b c" "tr c d" "tr d e" "tr e f" "tr f g" "output_file"
+
+### Second set of commands
+
+> ./pipexs "infile" "tr a b" "tr b c" "tr c d" "tr d e"  "tr e f"  "output_file"
+> ./pipexs "infile" "tr a b" "tr b c" "tr c d" "tr d e"  "tr e f" "tr f g" "output_file"
+> ./pipexs "infile" "tr a b" "tr b c" "tr c d" "tr d e"  "tr e f" "tr f g" "tr g h" "output_file"
 
 - pipexs: executable
 - "here_doc": heredoc block
@@ -22,7 +30,7 @@ s_pipex{
 p1fd: input file
 p2fd: Output file
 
-pid3: Used to determine
+pid3: Used to determine	
 **argvs3: Get the current command
 fdpipe1[2]: First set of pipe
 fdpipe2[2]: Second set of pipe
@@ -57,3 +65,9 @@ refactormain: Get the argument from the terminal, fork the process, switch to th
 command in the child process
 
 main: setup structure, Check if the command involves heredoc, while loop to execute and do all the requried commands in the terminal
+
+#### Status
+
+Using infile works. But as the "curr" starts from 3, the first set of command is not run due to dup2.
+
+Using heredoc: Need to check refactoring of code. Something breaks after refactoring.

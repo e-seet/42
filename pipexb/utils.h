@@ -18,6 +18,7 @@ struct s_pipex {
 	char	**argvs3;
 	int		fdpipe1[2];
 	int		fdpipe2[2];
+	int		opened;
 	int		curr;
 	int		argc;
 	char	*delimiter;
@@ -41,3 +42,5 @@ char	*findprocesspath(struct s_pipex pipexstruct);
 char	*findpath(char *envp[]);
 
 #endif
+// opened = 0. Haven't opened
+// opened = 1. Opened

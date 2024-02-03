@@ -6,8 +6,9 @@ void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
 	pipexstruct->path = findpath(envp);
 	pipexstruct->paths = ft_split(pipexstruct->path + 5, ':');
 	pipexstruct->curr = 3;
+	pipexstruct->opened = 0;
 	pipexstruct->argc = argc;
-	pipexstruct->p2fd = open(argv[argc - 1], O_CREAT | O_RDWR | O_APPEND, 0644);
+	pipexstruct->p2fd = open(argv[argc - 1], O_RDWR | O_APPEND| O_CREAT , 0644);
 	if (pipexstruct->p2fd < 0)
 		perror("Error in opening fd for p2fd. Terminating now");
 	if (ft_strncmp("here_doc", argv[1], 8) == 0)
@@ -114,6 +115,7 @@ char	*findpath(char *envp[])
 
 void	closepipes(struct s_pipex *pipexstruct)
 {
+	printf("close all pipes");
 	close(pipexstruct->fdpipe1[0]);
 	close(pipexstruct->fdpipe1[1]);
 	close(pipexstruct->fdpipe2[0]);
