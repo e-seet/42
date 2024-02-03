@@ -5,11 +5,10 @@ void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
 {
 	pipexstruct->path = findpath(envp);
 	pipexstruct->paths = ft_split(pipexstruct->path + 5, ':');
-	pipexstruct->curr = 2; //the moment i change this there is error
+	pipexstruct->curr = 2;
 	pipexstruct->opened = 2;
 	pipexstruct->argc = argc;
-	printf("set structure: argc:%d", pipexstruct->argc);
-	pipexstruct->p2fd = open(argv[argc - 1], O_RDWR | O_APPEND| O_CREAT , 0644);
+	pipexstruct->p2fd = open(argv[argc - 1], O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (pipexstruct->p2fd < 0)
 		perror("Error in opening fd for p2fd. Terminating now");
 	if (ft_strncmp("here_doc", argv[1], 8) == 0)
@@ -122,5 +121,3 @@ void	closepipes(struct s_pipex *pipexstruct)
 	close(pipexstruct->fdpipe2[0]);
 	close(pipexstruct->fdpipe2[1]);
 }
-
-// when curr is changed, the fd is wrong
