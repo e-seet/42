@@ -1,5 +1,7 @@
 # For pipex
 
+make
+
 //pipex, file1, cmd1, cmd2, file2
 
 // compile
@@ -19,21 +21,22 @@ You can replace this file with the actual content you want to process.
 
 ## Use entr file watcher. Any file changes will automatically be run with "make"
 
-find . -name "*.c" | entr make
+<!-- find . -name "*.c" | entr make -->
+make pipex_bonus
 
 ### To run the program: Sample commands
 
 ### First set of commands
 
-> ./pipexs "here_doc" "END" "tr a b" "tr b c" "tr c d" "output_file_bonus"
-> ./pipexs "here_doc" "END" "tr a b" "tr b c" "tr c d" "tr d e" "output_file_bonus"
-> ./pipexs "here_doc" "END" "tr a b" "tr b c" "tr c d" "tr d e" "tr e f" "tr f g" "output_file_bonus"
+> ./pipex_bonus "here_doc" "END" "tr a b" "tr b c" "tr c d" "output_file_bonus"
+> ./pipex_bonus "here_doc" "END" "tr a b" "tr b c" "tr c d" "tr d e" "output_file_bonus"
+> ./pipex_bonus "here_doc" "END" "tr a b" "tr b c" "tr c d" "tr d e" "tr e f" "tr f g" "output_file_bonus"
 
 ### Second set of commands
 
-> ./pipexs "in_file_bonus" "tr a b" "tr b c" "tr c d" "tr d e"  "tr e f"  "output_file_bonus"
-> ./pipexs "in_file_bonus" "tr a b" "tr b c" "tr c d" "tr d e"  "tr e f" "tr f g" "output_file_bonus"
-> ./pipexs "in_file_bonus" "tr a b" "tr b c" "tr c d" "tr d e"  "tr e f" "tr f g" "tr g h" "output_file_bonus"
+> ./pipex_bonus "in_file_bonus" "tr a b" "tr b c" "tr c d" "tr d e"  "tr e f"  "output_file_bonus"
+> ./pipex_bonus "in_file_bonus" "tr a b" "tr b c" "tr c d" "tr d e"  "tr e f" "tr f g" "output_file_bonus"
+> ./pipex_bonus "in_file_bonus" "tr a b" "tr b c" "tr c d" "tr d e"  "tr e f" "tr f g" "tr g h" "output_file_bonus"
 
 - pipexs: executable
 - "here_doc": heredoc block

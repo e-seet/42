@@ -8,8 +8,10 @@
 # For pipex folder
 main.out
 main
-infile
-outfile
+# in_file
+# in_file_bonus
+output_file
+output_file_bonus
 pipexs
 pipexs.out
 output.txt
