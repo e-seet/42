@@ -104,3 +104,7 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	return (0);
 }
+
+// to do. Check if i have a heredoc.
+// if i have heredoc, curr = 3
+// else curr = 2

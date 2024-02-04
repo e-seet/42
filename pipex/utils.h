@@ -3,7 +3,7 @@
 # define UTILS_H
 
 # include <sys/wait.h>
-# include "./libft/libft.h"
+# include "../libft/libft.h"
 # include <stdio.h>
 # include <unistd.h>
 //for read write, permission with files, creating files

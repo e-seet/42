@@ -14,6 +14,8 @@
 		"tuple": "c",
 		"variant": "c",
 		"cstdio": "c",
-		"ostream": "c"
+		"ostream": "c",
+		"get_next_line.h": "c",
+		"utils.h": "c"
 	}
 }

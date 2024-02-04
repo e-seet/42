@@ -132,24 +132,25 @@ int	main(int argc, char *argv[], char *envp[])
 
 //pipex, file1, cmd1, cmd2, file2
 
-// ./main  infile "grep this" "wc -w" outfile
 
 //compile 
 // gcc -o main main.c libftfiles.c
 
 // run
 // ./main infile "ls -l" "wc -l" outfile
+// comamnd
+// ls -l | wc -l > outfile
 
-// issue with this: #16
-// ./main infile2 "cat" "hostname" outfile
-// my first process is written in. But 
-//not the second. therefore missing hostname inside there
 
-// #18
-// ./main  "infile2" "grep Now" "head -2" outfile
+// ./main  infile "grep this" "wc -w" outfile
+
+// ./pipex infile "grep file" "wc -l" outfile
+
 
 //0:./main
 //1:infile
 //2:"ls -l"
 //3:"wc -l"
 //4:outfile
+
+// ./main infile "ls -l" "wc -l" outfile

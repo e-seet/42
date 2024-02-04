@@ -2,7 +2,7 @@
 
 void	setstructure(char *argv[], struct s_pipex *pipexstruct)
 {
-	pipexstruct->p2fd = open(argv[4], O_TRUNC | O_CREAT | O_RDWR, 0644);
+	pipexstruct->p2fd = open(argv[4],  O_APPEND | O_CREAT | O_RDWR, 0644);
 	if (pipexstruct->p2fd < 0)
 		perror("Error in opening file. Terminating now");
 	pipexstruct->p1fd = open(argv[1], O_RDONLY);
