@@ -1,5 +1,4 @@
 #include "utils.h"
-// #include "../libft/libft.h"
 
 char	*findprocesspath(char *path, char *paths[],
 struct s_pipex pipexstruct, int processnum)
