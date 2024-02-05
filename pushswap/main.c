@@ -1,23 +1,44 @@
 #include "utils.h"
 
-int main() {
-    t_stack myStack;
-    initStack(&myStack);
+int	main(int argc, char *argv[])
+{
+	t_stack	stack_a;
+	t_stack	stack_b;
+	int		i;
 
-    push(&myStack, 10);
-    push(&myStack, 20);
-    push(&myStack, 30);
+	printf("number of argc:%d\n", argc);
+	i = 1;
+	initstack(&stack_a);
+	initstack(&stack_b);
+	while (argv[i])
+	{
+		addtoback(&stack_a, ft_atoi(argv[i]));
+		i++;
+	}
+	// printf("origianl\n");
+	// displaystack(&stack_a);
+	// displaystack(&stack_b);
+	sa(&stack_a);
+	printf("After swapping first 2 element\n");
+	// pb(&stack_a, &stack_b);
+	// pb(&stack_a, &stack_b);
+	displaystack(&stack_a);
+	// printf("after bringing the first element to last\n");
+	// ra(&stack_a);
+	// rb(&stack_a);
+	
+	// rra(&stack_a);
 
-    printf("Popped: %d\n", pop(&myStack));
-    printf("Popped: %d\n", pop(&myStack));
+	// pa(&stack_a, &stack_b);
+	displaystack(&stack_a);
+	// displaystack(&stack_b);
 
-    if (!isEmpty(&myStack)) {
-        printf("Popped: %d\n", pop(&myStack));
-    }
-
-    return 0;
+	return (0);
 }
 
+// if (!isEmpty(&myStack)) {
+//     printf("Popped: %d\n", pop(&myStack));
+// }
 
 // /* for stack*/
 
@@ -94,7 +115,7 @@ int main() {
 // 		print_binary(number);
 // 		push(&stack, number);
 // 		printf("\n");
-		
+
 // 		i++;
 // 	}
 
@@ -103,8 +124,6 @@ int main() {
 // 		number = pop(&stack);
 // 		printf("num:%d\n", number);
 // 	}
-
-
 
 //     return 0;
 // }

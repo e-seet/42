@@ -37,3 +37,68 @@ The last element becomes the first one.
 - rrb (reverse rotate b): Shift down all elements of stack b by 1.
 The last element becomes the first one.
 - rrr : rra and rrb at the same time
+
+## examples of operations
+
+./pushswap 2 1 3 6 5 8
+
+init a and b
+2
+1
+3
+6
+5
+8
+a b
+
+after SA:
+1
+2
+3
+6
+5
+8
+a b
+
+PB, PB, PB:
+6 3
+5 2
+8 1
+a b
+
+RA, RB:
+5 2
+8 1
+6 3
+a b
+
+RRA RRB (equiv. to rrr):
+6 3
+5 2
+8 1
+a b
+
+SA:
+5 3
+6 2
+8 1
+a b
+
+Exec pa pa pa:
+1
+2
+3
+5
+6
+8
+a b
+
+./pushswap 2 1 3 6 5 8
+
+Means 2 is at the top of the stack. [Front of the linked list]
+
+### References
+
+> https://github.com/o-reo/push_swap_visualizer
+> https://medium.com/@jamierobertdawson/push-swap-the-least-amount-of-moves-with-two-stacks-d1e76a71789a
+> https://medium.com/nerd-for-tech/push-swap-tutorial-fa746e6aba1e
