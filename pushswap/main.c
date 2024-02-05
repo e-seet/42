@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "./utils/utils.h"
 
 int	main(int argc, char *argv[])
 {
@@ -18,7 +18,7 @@ int	main(int argc, char *argv[])
 	// printf("origianl\n");
 	// displaystack(&stack_a);
 	// displaystack(&stack_b);
-	sa(&stack_a);
+	// sa(&stack_a);
 	printf("After swapping first 2 element\n");
 	// pb(&stack_a, &stack_b);
 	// pb(&stack_a, &stack_b);

@@ -25,31 +25,35 @@ int		pop(t_stack *stack);
 void	displaystack(t_stack *stack);
 
 // Stack operations
-
-// Swap the first 2 elements at the top of stack a
+/*
+// Swap the first 2 elements at the top of stack
 void	sa(t_stack *a);
-// Swap the first 2 elements at the top of stack b
 void	sb(t_stack *b);
-// sa and sb at the same time
-void	ss(t_stack *a, t_stack *b);
+*/
+// void	swap_top_two(t_stack *stack);
+// void	ss(t_stack *a, t_stack *b);
+
+/*
+// Shift up all elements of stack by 1
+void	ra(t_stack *a);
+void	rb(t_stack *b);
+*/
+// void	rotate_stack(t_stack *stack);
+// void	rr(t_stack *a, t_stack *b);
+
+// void	reverse_rotate_stack(t_stack *stack);
+// void	rrr(t_stack *a, t_stack *b);
+// t_node	*ft_rralastnode(t_node *head, int tonull);
 
 // Take the first element at the top of b and put it at the top of a
-void	pa(t_stack *a, t_stack *b);
+// void	pa(t_stack *a, t_stack *b);
 // Take the first element at the top of a and put it at the top of b
-void	pb(t_stack *a, t_stack *b);
+// void	pb(t_stack *a, t_stack *b);
 
-// Shift up all elements of stack a by 1
-void	ra(t_stack *a);
-// Shift up all elements of stack b by 1
-void	rb(t_stack *b);
-// ra and rb at the same time
-void	rr(t_stack *a, t_stack *b);
-
-// Shift down all elements of stack a by 1
+/*
+// Shift down all elements of stack by 1
 void	rra(t_stack *a);
-// Shift down all elements of stack b by 1
 void	rrb(t_stack *b);
-// rra and rrb at the same time
-void	rrr(t_stack *a, t_stack *b);
+*/
 
 #endif
