@@ -1,4 +1,8 @@
-#include "./utils/utils.h"
+// #include "./utils/utils.h"
+#include "./utils/utils2.h"
+#include "./utils/timsort.h"
+#include "./utils/operations.h"
+#include "./utils/operations2.h"
 
 int	main(int argc, char *argv[])
 {
@@ -6,32 +10,40 @@ int	main(int argc, char *argv[])
 	t_stack	stack_b;
 	int		i;
 
-	printf("number of argc:%d\n", argc);
+	printf("number of argc:%d\n\n", argc);
+
+	// printf("minrun:%d\n", calculate_minrun(argc-1));
+
+
 	i = 1;
 	initstack(&stack_a);
 	initstack(&stack_b);
+
 	while (argv[i])
 	{
 		addtoback(&stack_a, ft_atoi(argv[i]));
 		i++;
 	}
-	// printf("origianl\n");
-	// displaystack(&stack_a);
-	// displaystack(&stack_b);
-	// sa(&stack_a);
-	printf("After swapping first 2 element\n");
-	// pb(&stack_a, &stack_b);
-	// pb(&stack_a, &stack_b);
-	displaystack(&stack_a);
-	// printf("after bringing the first element to last\n");
-	// ra(&stack_a);
-	// rb(&stack_a);
-	
-	// rra(&stack_a);
 
-	// pa(&stack_a, &stack_b);
-	displaystack(&stack_a);
-	// displaystack(&stack_b);
+	t_node *head = stack_a.top;
+	// printf("count elements in stack%d\n", countElementsinStack(head) );
+	// pb(&stack_a, &stack_b);
+	// head = stack_a.top;
+	// printf("count elements in stack%d\n", countElementsinStack(head) );
+
+	// To count min run first
+	int numofelements = countElementsinStack(head);
+	int minrun = calculate_minrun(numofelements);
+	printf("minrun:%d\n", minrun);
+
+	int numofrun = (argc -1) / minrun;
+	printf("number of runs that will be created:%d \n", numofrun);
+
+	// less than critical number of 64
+	if (numofrun == 1)
+	{
+
+	}
 
 	return (0);
 }

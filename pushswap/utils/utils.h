@@ -19,7 +19,7 @@ typedef struct s_stack
 void	initstack(t_stack *stack);
 int		isempty(t_stack *stack);
 
-void	push(t_stack *stack, int value);
+// void	push(t_stack *stack, int value);
 void	addtoback(t_stack *stack, int value);
 int		pop(t_stack *stack);
 void	displaystack(t_stack *stack);
