@@ -14,15 +14,38 @@ typedef struct s_node
 typedef struct s_stack
 {
 	t_node	*top;
+	t_node	*sec;
+	t_node	*bot;
+	int		numofelements;
 }	t_stack;
+
+// Store the stack data
+// top data, next data, last data
+typedef struct s_data
+{
+	int stack_a_top;
+	int stack_a_sec;
+	int stack_a_third;
+	int stack_a_last;
+	int stack_a_numofelements;
+
+	int stack_b_top;
+	int stack_b_sec;
+	int stack_b_third;
+	int stack_b_last;
+	int stack_b_numofelements;
+}	s_datastore;
 
 void	initstack(t_stack *stack);
 int		isempty(t_stack *stack);
 
-// void	push(t_stack *stack, int value);
+// void	push(t_stack *stack, int value, s_datastore *stackdetails);
+void	push(t_stack *stack, int value);
 void	addtoback(t_stack *stack, int value);
 int		pop(t_stack *stack);
 void	displaystack(t_stack *stack);
+
+void	initdatastore(s_datastore *stackdetails);
 
 // Stack operations
 /*

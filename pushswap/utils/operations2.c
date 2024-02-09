@@ -52,11 +52,18 @@ void	reverse_rotate_stack(t_stack *stack)
 
 	head = stack->top;
 	lastnode = ft_rralastnode(head, 1);
-	printf("check my lastnode:%d\n", lastnode->value);
+	// printf("check my lastnode:%d\n", lastnode->value);
 	lastnode -> next = head;
 	head = lastnode;
 	stack->top = head;
+	// manual check that next is present and then assign it to next
+	if (head -> next != NULL)
+	{
+		head = head->next;
+		stack->sec = head;
+	}	
 	lastnode = ft_rralastnode(head, 0);
+	stack->bot = lastnode;
 }
 
 // rra and rrb at the same time
@@ -79,6 +86,10 @@ void	pb(t_stack *a, t_stack *b)
 		if (topnode_a -> next != NULL)
 		{
 			a->top = topnode_a->next;
+			if ((topnode_a->next)->next != NULL)
+			{
+				a->sec = (topnode_a->next)->next;
+			}
 			topnode_a->next = topnode_b;
 			b->top = topnode_a;
 		}
@@ -98,6 +109,10 @@ void	pa(t_stack *a, t_stack *b)
 		if (topnode_b -> next != NULL)
 		{
 			b->top = topnode_b->next;
+			if ((topnode_b->next)->next != NULL)
+			{
+				b->sec = (topnode_b->next)->next;
+			}
 			topnode_b->next = topnode_a;
 			a->top = topnode_b;
 		}

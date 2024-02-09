@@ -1,5 +1,6 @@
 #include "operations.h"
 
+// the reference node for stack->top and stack->next did not change
 void	swap_top_two(t_stack *stack)
 {
 	t_node	*top;
@@ -99,11 +100,17 @@ void	rotate_stack(t_stack *stack)
 	stack -> top = lastnode -> next;
 	lastnode -> next = NULL;
 	curr = stack->top;
+	// may have issue here
+	if (curr -> next != NULL)
+		stack->sec = curr->next;
+	else
+		stack->sec = lastnode;
 	while (curr->next != NULL)
 	{
 		curr = curr->next;
 	}
 	curr->next = lastnode;
+	stack->bot = lastnode;
 }
 
 // ra and rb at the same time
