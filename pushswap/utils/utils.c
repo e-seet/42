@@ -6,7 +6,7 @@
 void	initstack(t_stack *stack)
 {
 	stack->top = NULL;
-	stack->next = NULL;
+	stack->sec = NULL;
 	stack->bot = NULL;
 	stack->numofelements = -1;
 }
@@ -101,7 +101,7 @@ void	push(t_stack *stack, int value)
 	}
 	else
 	{
-		stack->next = stack->top;
+		stack->sec = stack->top;
 		stack->numofelements += 1;
 	}
 

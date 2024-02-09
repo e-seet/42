@@ -97,6 +97,27 @@ void reverse_rotate_stack(t_stack *stack);
 void rrr(t_stack*a, t_stack *b);
 t_node*ft_rralastnode(t_node *head, int tonull);  // ignore this
 
+Currently working on:
+Sorting just 3 numbers:
+./pushswap 1 2 3
+./pushswap 1 3 2
+./pushswap 2 1 3
+./pushswap 2 3 1
+./pushswap 3 1 2
+./pushswap 3 2 1
+
+Work on 5 numbers
+Testing random combinations
+./pushswap 3 2 5 4 1
+./pushswap 4 1 5 3 2
+./pushswap 2 5 1 4 3
+./pushswap 5 3 1 2 4
+./pushswap 1 4 2 5 3
+./pushswap 3 5 2 1 4
+
+1. Push first 2 elements to stack b irregardless what.
+2. Then we sort the Stack 1 and insert into stack A if required from stack b.
+
 ## Operations
 
 - sa (swap a): Swap the first 2 elements at the top of stack a.
@@ -203,19 +224,3 @@ Tim sort
 >12 <https://medium.com/nerd-for-tech/push-swap-tutorial-fa746e6aba1e>
 
 important: 11, 12
-
-Currently:
-work on 3 numbers
-./pushswap 1 2 3
-./pushswap 1 3 2
-
-./pushswap 2 1 3
-./pushswap 2 3 1
-
-./pushswap 3 1 2
-./pushswap 3 2 1
-
-Work on 5 numbers
-
-1. Push first 2 elements to stack b irregardless what.
-2. Then we sort the Stack 1 and insert into stack A if required from stack b.

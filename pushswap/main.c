@@ -4,10 +4,136 @@
 #include "./utils/operations.h"
 #include "./utils/operations2.h"
 
-void sort3(t_stack *stack)
+/*
+void sort3(t_stack stack_a)
 {
-	printf("stack top %d", (stack->top)->value);
+	printf("top:%d, next:%d, bot:%d. \n\n", (stack_a.top)->value, (stack_a.sec)->value, (stack_a.bot)->value);
 
+	if ( (stack_a.bot)->value > (stack_a.sec)->value && (stack_a.sec)->value > (stack_a.top)->value)
+	{
+		printf("case 1\n");
+	}
+	else if ((stack_a.bot)->value > (stack_a.top)->value && (stack_a.top)->value > (stack_a.sec)->value)
+	{
+		printf("case 3\n");
+
+		swap_top_two(&stack_a);
+	}
+	else if ( ((stack_a.sec)->value > (stack_a.top)->value) && (stack_a.top->value > (stack_a.bot)->value) )
+	{
+		printf("case 4\n");
+
+		reverse_rotate_stack(&stack_a);
+	}
+	// take note that all 3 of them need a rotate_stack first
+	else 
+	{
+		if ((stack_a.top)->value > (stack_a.bot)->value &&  (stack_a.bot)->value > (stack_a.sec)->value)
+		{
+			printf("case 5\n");
+
+			rotate_stack(&stack_a);
+		}
+		// take note the latter 2 have a common swap_top_two
+		else if ((stack_a.top)->value > (stack_a.sec)->value && (stack_a.sec)->value > (stack_a.bot)->value)
+		{
+			printf("case 6\n");
+			
+			rotate_stack(&stack_a);
+
+			swap_top_two(&stack_a);
+		}
+		else
+		{
+			printf("case 2\n");
+
+			rotate_stack(&stack_a);
+			swap_top_two(&stack_a);
+			reverse_rotate_stack(&stack_a);
+		}
+	} 
+}
+*/
+
+void sort5(t_stack stack_a, t_stack stack_b)
+{
+
+	pb(&stack_a, &stack_b);
+	pb(&stack_a, &stack_b);
+	
+	printf("stack a:\n");
+	printf("top:%d\n", (stack_a.top)->value);
+	printf("next:%d\n", (stack_a.sec)->value);
+	printf("bot:%d\n\n", (stack_a.bot)->value);
+	
+	printf("stack b:\n");
+	if ((stack_b.top) != NULL)
+		printf("top:%d\n", (stack_b.top)->value);
+	if ((stack_b.sec) != NULL)
+		printf("next:%d\n", (stack_b.sec)->value);
+	if ((stack_b.bot) != NULL)
+		printf("bot:%d\n\n", (stack_b.bot)->value);
+
+	// printf("stack b\n");
+	// displaystack(&stack_b);
+	// printf("\n");
+
+	if ( (stack_a.bot)->value > (stack_a.sec)->value && (stack_a.sec)->value > (stack_a.top)->value)
+	{
+		printf("case 1\n");
+	}
+	else if ((stack_a.bot)->value > (stack_a.top)->value && (stack_a.top)->value > (stack_a.sec)->value)
+	{
+		printf("case 3\n");
+
+		// if ()
+
+		// else 
+			swap_top_two(&stack_a);
+	}
+	else if ( ((stack_a.sec)->value > (stack_a.top)->value) && (stack_a.top->value > (stack_a.bot)->value) )
+	{
+		printf("case 4\n");
+
+		reverse_rotate_stack(&stack_a);
+	}
+	// take note that all 3 of them need a rotate_stack first
+	else 
+	{
+		if ((stack_a.top)->value > (stack_a.bot)->value &&  (stack_a.bot)->value > (stack_a.sec)->value)
+		{
+			printf("case 5\n");
+
+			// for stack b: We try to get the top of the stack to be bigger one
+			if (stack_b.bot->value > stack_b.top->value)
+				rrr(&stack_a, &stack_b);
+			else
+				// for stack a
+				rotate_stack(&stack_a);
+
+			
+		}
+		// take note the latter 2 have a common swap_top_two
+		else if ((stack_a.top)->value > (stack_a.sec)->value && (stack_a.sec)->value > (stack_a.bot)->value)
+		{
+			printf("case 6\n");
+			
+			rotate_stack(&stack_a);
+
+			swap_top_two(&stack_a);
+		}
+		else
+		{
+			printf("case 2\n");
+
+			rotate_stack(&stack_a);
+			swap_top_two(&stack_a);
+			reverse_rotate_stack(&stack_a);
+		}
+	}
+
+	displaystack(&stack_a);
+	displaystack(&stack_b);
 }
 
 int	main(int argc, char *argv[])
@@ -41,8 +167,6 @@ int	main(int argc, char *argv[])
 
 	displaystack(&stack_a);
 
-
-
 	// t_node *head = stack_a.top;
 	// printf("count elements in stack%d\n", countElementsinStack(head) );
 	// pb(&stack_a, &stack_b);
@@ -58,6 +182,12 @@ int	main(int argc, char *argv[])
 	// printf("number of runs that will be created:%d \n", numofrun);
 
 	// we sort 3 numbers
+	// sort3(stack_a);
+	sort5(stack_a, stack_b);
+	printf("after sorting\n");
+	// displaystack(&stack_a);
+
+	/*
 	if (argc == 4)
 	{
 		printf("top:%d, next:%d, bot:%d. \n\n", (stack_a.top)->value, (stack_a.sec)->value, (stack_a.bot)->value);
@@ -102,11 +232,16 @@ int	main(int argc, char *argv[])
 				swap_top_two(&stack_a);
 				reverse_rotate_stack(&stack_a);
 			}
-		}
+		} 
+		
+
 
 		printf("top:%d, next:%d, bot:%d. \n\n", (stack_a.top)->value, (stack_a.sec)->value, (stack_a.bot)->value);
 		displaystack(&stack_a);
 	}
+	*/
+
+
 	// less than critical number of 64
 	// if (numofrun == 1)
 	// {

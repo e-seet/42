@@ -47,6 +47,7 @@ t_node	*ft_rralastnode(t_node *head, int tonull)
 // Shift down all elements of stack by 1
 void	reverse_rotate_stack(t_stack *stack)
 {
+	printf("RRA/RRB: reverse_rotate_stack\n");
 	t_node	*head;
 	t_node	*lastnode;
 
@@ -69,6 +70,7 @@ void	reverse_rotate_stack(t_stack *stack)
 // rra and rrb at the same time
 void	rrr(t_stack *a, t_stack *b)
 {
+	printf("RRR:");
 	reverse_rotate_stack(a);
 	reverse_rotate_stack(b);
 }
@@ -76,22 +78,32 @@ void	rrr(t_stack *a, t_stack *b)
 // Take the first element at the top of a and put it at the top of b
 void	pb(t_stack *a, t_stack *b)
 {
+	printf("PB\n");
 	t_node	*topnode_a;
 	t_node	*topnode_b;
 
 	topnode_a = a->top;
 	topnode_b = b->top;
+	// check not null
 	if (topnode_a != NULL)
 	{
+		// check there is 2nd node
 		if (topnode_a -> next != NULL)
 		{
+			// change the top ref
 			a->top = topnode_a->next;
+			// if there is third node, set it to second node
 			if ((topnode_a->next)->next != NULL)
 			{
 				a->sec = (topnode_a->next)->next;
 			}
+			// set new top node
 			topnode_a->next = topnode_b;
+			if (b->top != NULL)
+				b->sec = b->top;
+
 			b->top = topnode_a;
+			b->bot = ft_rralastnode(b->top, 0); 
 		}
 	}
 }
@@ -99,6 +111,7 @@ void	pb(t_stack *a, t_stack *b)
 // Take the first element at the top of b and put it at the top of a
 void	pa(t_stack *a, t_stack *b)
 {
+	printf("PA\n");
 	t_node	*topnode_a;
 	t_node	*topnode_b;
 

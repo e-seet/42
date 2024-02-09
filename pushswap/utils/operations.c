@@ -3,6 +3,7 @@
 // the reference node for stack->top and stack->next did not change
 void	swap_top_two(t_stack *stack)
 {
+	printf("SA/SB: swap top two\n");
 	t_node	*top;
 	t_node	*nextnode;
 	int		value;
@@ -19,6 +20,7 @@ void	swap_top_two(t_stack *stack)
 
 void	ss(t_stack *a, t_stack *b)
 {
+	printf("SS:");
 	swap_top_two(a);
 	swap_top_two(b);
 }
@@ -93,6 +95,7 @@ void	ss(t_stack *a, t_stack *b)
 // Shift up all elements of stack by 1
 void	rotate_stack(t_stack *stack)
 {
+	printf("RA/RB: rotate_stack\n");
 	t_node	*curr;
 	t_node	*lastnode;
 
@@ -116,6 +119,7 @@ void	rotate_stack(t_stack *stack)
 // ra and rb at the same time
 void	rr(t_stack *a, t_stack *b)
 {
+	printf("RR:");
 	rotate_stack(a);
 	rotate_stack(b);
 }
