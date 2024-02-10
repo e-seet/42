@@ -61,6 +61,9 @@ void sort5(t_stack stack_a, t_stack stack_b)
 	pb(&stack_a, &stack_b);
 	pb(&stack_a, &stack_b);
 	
+	displaystack(&stack_a);
+	displaystack(&stack_b);
+	/*
 	printf("stack a:\n");
 	printf("top:%d\n", (stack_a.top)->value);
 	printf("next:%d\n", (stack_a.sec)->value);
@@ -74,28 +77,36 @@ void sort5(t_stack stack_a, t_stack stack_b)
 	if ((stack_b.bot) != NULL)
 		printf("bot:%d\n\n", (stack_b.bot)->value);
 
-	// printf("stack b\n");
-	// displaystack(&stack_b);
-	// printf("\n");
+	printf("stack b\n");
+	displaystack(&stack_b);
+	printf("\n");
+	*/
 
 	if ( (stack_a.bot)->value > (stack_a.sec)->value && (stack_a.sec)->value > (stack_a.top)->value)
 	{
 		printf("case 1\n");
+
+		// sorting only stack b. I can use any of the methods.
+		if ( (stack_b.top)->value > stack_b.bot ->value)
+			swap_top_two(&stack_b);
 	}
 	else if ((stack_a.bot)->value > (stack_a.top)->value && (stack_a.top)->value > (stack_a.sec)->value)
 	{
 		printf("case 3\n");
 
-		// if ()
-
-		// else 
+		if (stack_b.top->value > stack_b.bot->value)
+			ss(&stack_a, &stack_b);
+		else
 			swap_top_two(&stack_a);
 	}
 	else if ( ((stack_a.sec)->value > (stack_a.top)->value) && (stack_a.top->value > (stack_a.bot)->value) )
 	{
 		printf("case 4\n");
 
-		reverse_rotate_stack(&stack_a);
+		if ((stack_b.top)->value > stack_b.bot ->value)
+			rrr(&stack_a, &stack_b);
+		else
+			reverse_rotate_stack(&stack_a);
 	}
 	// take note that all 3 of them need a rotate_stack first
 	else 
@@ -104,23 +115,23 @@ void sort5(t_stack stack_a, t_stack stack_b)
 		{
 			printf("case 5\n");
 
-			// for stack b: We try to get the top of the stack to be bigger one
-			if (stack_b.bot->value > stack_b.top->value)
-				rrr(&stack_a, &stack_b);
+			if (stack_b.bot->value < stack_b.top->value)
+				rr(&stack_a, &stack_b);
 			else
-				// for stack a
 				rotate_stack(&stack_a);
-
-			
 		}
-		// take note the latter 2 have a common swap_top_two
+		// take note case 2 and 6 have 2 common operations [rotate stack, swap top two].
 		else if ((stack_a.top)->value > (stack_a.sec)->value && (stack_a.sec)->value > (stack_a.bot)->value)
 		{
 			printf("case 6\n");
 			
 			rotate_stack(&stack_a);
 
-			swap_top_two(&stack_a);
+			if (stack_b.bot->value < stack_b.top->value)
+				ss(&stack_a, &stack_b);
+			else
+				swap_top_two(&stack_a);
+
 		}
 		else
 		{
@@ -132,8 +143,21 @@ void sort5(t_stack stack_a, t_stack stack_b)
 		}
 	}
 
-	displaystack(&stack_a);
-	displaystack(&stack_b);
+	// By now: Stack a is sorted [smallest on top]. Stack B is sorted [smallest on top]
+
+	// displaystack(&stack_a);
+	// displaystack(&stack_b);
+
+	// merging from stake b into stake a. 
+	// We try if this works. IF not we need to find some algo
+	
+	// while (stack_a->top > stack_b -> top)
+	// {
+
+	// }
+	// pa(&stack_a, &stack_b);	
+	// pa(&stack_a, &stack_b);	
+
 }
 
 int	main(int argc, char *argv[])
@@ -165,7 +189,7 @@ int	main(int argc, char *argv[])
 		i++;
 	}
 
-	displaystack(&stack_a);
+	// displaystack(&stack_a);
 
 	// t_node *head = stack_a.top;
 	// printf("count elements in stack%d\n", countElementsinStack(head) );

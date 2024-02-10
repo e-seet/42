@@ -108,12 +108,35 @@ Sorting just 3 numbers:
 
 Work on 5 numbers
 Testing random combinations
-./pushswap 3 2 5 4 1
-./pushswap 4 1 5 3 2
-./pushswap 2 5 1 4 3
+case 1:
 ./pushswap 5 3 1 2 4
-./pushswap 1 4 2 5 3
+./pushswap 5 3 1 4 2
+
+case 2 [not done]:
+./pushswap 2 5 1 4 3
+./pushswap 2 5 1 3 4
+
 ./pushswap 3 5 2 1 4
+./pushswap 3 5 2 4 1
+
+case 3:
+./pushswap 3 1 2 4 5
+./pushswap 3 1 2 5 4
+
+case 4:
+./pushswap 1 4 2 5 3
+./pushswap 1 4 2 3 5
+
+Case 5:
+./pushswap 3 2 5 4 1
+./pushswap 3 2 5 1 4
+
+./pushswap 4 1 5 3 2
+./pushswap 4 1 5 2 3
+
+case 6:
+./pushswap 1 2 3 5 4
+./pushswap 1 2 3 4 5
 
 1. Push first 2 elements to stack b irregardless what.
 2. Then we sort the Stack 1 and insert into stack A if required from stack b.
