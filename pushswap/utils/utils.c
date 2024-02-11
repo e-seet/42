@@ -137,11 +137,58 @@ void	displaylinkedlist(t_node *head)
 		printf("\n%d  ", current->value);
 		current = current->next;
 	}
-	printf("\n");
+	printf("\n\n");
 }
 
 // Function to display the elements in the stack (linked list)
 void	displaystack(t_stack *stack)
 {
 	displaylinkedlist(stack->top);
+}
+
+int scanSmallestNum(t_stack *stack)
+{
+	t_node *head = stack ->top;
+	int smallestnum;
+
+	smallestnum = INT_MAX;
+	while (head != NULL)
+	{
+		if (smallestnum > head->value)
+			smallestnum = head->value;
+		head = head->next;
+	}
+	return (smallestnum);
+}
+
+// just do a basic assignment for the first two number
+int scan2SmallestNum(t_stack *stack)
+{
+	t_node *head = stack ->top;
+	int smallestnum;
+	int secondsmallest;
+
+	if (head->next != NULL)
+	{
+		if ((head ->next)->value > head->value)
+		{
+			secondsmallest = head->value;
+			smallestnum = head->next->value;
+		}
+		else
+		{
+			smallestnum = head->value;
+		 	secondsmallest = head->next->value;
+		}
+	}
+	while (head != NULL)
+	{
+		if (smallestnum > head->value)
+		{
+			secondsmallest = smallestnum;
+			smallestnum = head->value;
+		}
+		head = head->next;
+	}
+	return (secondsmallest);
 }

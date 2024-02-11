@@ -76,28 +76,7 @@ utils2.c
 int countElements();
 
 Operations.c and Operations2.c
-These are for operations:
 
-<SA/SB> Swap first 2 elements
-void swap_top_two(t_stack *stack);
-void ss(t_stack*a, t_stack *b);
-
-<PA/PB> 
-PA: Take the first element at the top of b and put it at the top of a.
-PB: Take the first element at the top of a and put it at the top of b.
-void pb(t_stack*a, t_stack *b);
-void pa(t_stack*a, t_stack*b);
-
-<RA/RB>  First element becomes the last one.
-void rotate_stack(t_stack*stack);
-void rr(t_stack *a, t_stack*b);
-
-<RRA/RRB> last element becomes the first one.
-void reverse_rotate_stack(t_stack *stack);
-void rrr(t_stack*a, t_stack *b);
-t_node*ft_rralastnode(t_node *head, int tonull);  // ignore this
-
-Currently working on:
 Sorting just 3 numbers:
 ./pushswap 1 2 3
 ./pushswap 1 3 2

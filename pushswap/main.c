@@ -57,12 +57,18 @@ void sort3(t_stack stack_a)
 
 void sort5(t_stack stack_a, t_stack stack_b)
 {
+	printf("top:%d, 2nd top:%d", (stack_a.top)->value, (stack_a.sec)->value );
+	pb(&stack_a, &stack_b);
+	pb(&stack_a, &stack_b);
+	// displaystack(&stack_a);
+	// displaystack(&stack_b);
 
-	pb(&stack_a, &stack_b);
-	pb(&stack_a, &stack_b);
-	
-	displaystack(&stack_a);
-	displaystack(&stack_b);
+	// printf( "a smallest:%d\n" , scanSmallestNum(&stack_a));
+	// printf( "a 2nd smallest:%d\n" , scan2SmallestNum(&stack_a));
+
+
+	// printf( "b smallest:%d\n" , scanSmallestNum(&stack_b));
+	// printf( "b 2nd smallest:%d\n" , scan2SmallestNum(&stack_b));
 	/*
 	printf("stack a:\n");
 	printf("top:%d\n", (stack_a.top)->value);
@@ -137,27 +143,62 @@ void sort5(t_stack stack_a, t_stack stack_b)
 		{
 			printf("case 2\n");
 
-			rotate_stack(&stack_a);
-			swap_top_two(&stack_a);
-			reverse_rotate_stack(&stack_a);
+			if (stack_b.bot->value < stack_b.top->value)
+				rr(&stack_a, &stack_b);
+			else
+				rotate_stack(&stack_a);
+			
+			if (stack_b.bot->value < stack_b.top->value)
+				ss(&stack_a, &stack_b);
+			else
+				swap_top_two(&stack_a);
+		
+			// if (stack_b.bot->value < stack_b.top->value)
+			// 	rrr(&stack_a, &stack_b);
+			// else
+				reverse_rotate_stack(&stack_a);
 		}
 	}
 
 	// By now: Stack a is sorted [smallest on top]. Stack B is sorted [smallest on top]
 
-	// displaystack(&stack_a);
-	// displaystack(&stack_b);
 
 	// merging from stake b into stake a. 
 	// We try if this works. IF not we need to find some algo
 	
-	// while (stack_a->top > stack_b -> top)
-	// {
+	while (stack_b.top != NULL)
+	{
+		if (stack_a.top->value > stack_b.top->value)
+			pa(&stack_a, &stack_b);	
+		else
+			rotate_stack(&stack_a);
+	}
+	// displaystack(&stack_a);
+	// displaystack(&stack_b);
 
-	// }
-	// pa(&stack_a, &stack_b);	
-	// pa(&stack_a, &stack_b);	
+	while(stack_a.top->value != scanSmallestNum(&stack_a))
+	{
+		reverse_rotate_stack(&stack_a);
+	}
 
+	displaystack(&stack_a);
+	// displaystack(&stack_b);
+
+	// pa(&stack_a, &stack_b);	
+	// printf("stack b:\n");
+	// if ((stack_b.top) != NULL)
+	// 	printf("top:%d\n", (stack_b.top)->value);
+	// else
+	// 	printf("stack b top is null\n");
+	// if ((stack_b.sec) != NULL)
+	// 	printf("next:%d\n", (stack_b.sec)->value);
+	// else
+	// 	printf("stack b sec is null\n");
+	// if ((stack_b.bot) != NULL)
+	// 	printf("bot:%d\n\n", (stack_b.bot)->value);
+	// else
+	// 	printf("stack b bot is null\n");
+	
 }
 
 int	main(int argc, char *argv[])
@@ -167,7 +208,7 @@ int	main(int argc, char *argv[])
 	t_stack		stack_b;
 	// s_datastore	stackdetails;
 
-	printf("number of argc:%d\n\n", argc);
+	printf("c argc:%d\n\n", argc);
 
 	// printf("minrun:%d\n", calculate_minrun(argc-1));
 	// stackdetails.stack_a_last = ft_atoi(argv[1]);
@@ -207,8 +248,12 @@ int	main(int argc, char *argv[])
 
 	// we sort 3 numbers
 	// sort3(stack_a);
+
+	// displaystack(&stack_a);
+	// printf("smalest 2nd:%d", scan2SmallestNum(&stack_a));
+
 	sort5(stack_a, stack_b);
-	printf("after sorting\n");
+	// printf("after sorting\n");
 	// displaystack(&stack_a);
 
 	/*

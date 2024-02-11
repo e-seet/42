@@ -126,8 +126,15 @@ void	pa(t_stack *a, t_stack *b)
 			{
 				b->sec = (topnode_b->next)->next;
 			}
+
+		}
+		else
+		{
+			b->top = NULL;
+			b->sec = NULL;
+			b->bot = NULL;
+		}
 			topnode_b->next = topnode_a;
 			a->top = topnode_b;
-		}
 	}
 }

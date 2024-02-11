@@ -4,6 +4,7 @@
 # include "../libft/libft.h"
 # include <unistd.h>
 # include <stdio.h>
+# include <limits.h>
 
 typedef struct s_node
 {
@@ -78,5 +79,9 @@ void	rb(t_stack *b);
 void	rra(t_stack *a);
 void	rrb(t_stack *b);
 */
+
+int scanSmallestNum(t_stack *stack);
+int scan2SmallestNum(t_stack *stack);
+
 
 #endif
