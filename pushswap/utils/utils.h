@@ -83,5 +83,8 @@ void	rrb(t_stack *b);
 int scanSmallestNum(t_stack *stack);
 int scan2SmallestNum(t_stack *stack);
 
+int scanlargestNum(t_stack *stack);
+int scan2largestNum(t_stack *stack);
+
 
 #endif

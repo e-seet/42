@@ -165,22 +165,9 @@ int scanSmallestNum(t_stack *stack)
 int scan2SmallestNum(t_stack *stack)
 {
 	t_node *head = stack ->top;
-	int smallestnum;
-	int secondsmallest;
+	int smallestnum = INT_MAX;
+	int secondsmallest = INT_MAX;
 
-	if (head->next != NULL)
-	{
-		if ((head ->next)->value > head->value)
-		{
-			secondsmallest = head->value;
-			smallestnum = head->next->value;
-		}
-		else
-		{
-			smallestnum = head->value;
-		 	secondsmallest = head->next->value;
-		}
-	}
 	while (head != NULL)
 	{
 		if (smallestnum > head->value)
@@ -188,7 +175,56 @@ int scan2SmallestNum(t_stack *stack)
 			secondsmallest = smallestnum;
 			smallestnum = head->value;
 		}
+		else if (secondsmallest > head->value)
+			secondsmallest = head->value;
 		head = head->next;
 	}
-	return (secondsmallest);
+	if (secondsmallest != INT_MAX)
+		return (secondsmallest);
+	else
+		return (-1);
+}
+
+int scan2largestNum(t_stack *stack)
+{
+	t_node *head = stack ->top;
+	int biggestnum = INT_MIN;
+	int secondbiggest = INT_MIN;
+
+	while (head != NULL)
+	{
+		if (head->value > biggestnum)
+		{
+			secondbiggest = biggestnum;
+			biggestnum = head->value;
+		}
+		else if (head->value > secondbiggest)
+			secondbiggest = head->value;
+		head = head->next;
+	}
+	if (secondbiggest != INT_MAX)
+		return (secondbiggest);
+	else
+		return (-1);
+}
+
+int scanlargestNum(t_stack *stack)
+{
+	t_node *head = stack ->top;
+	int largest;
+
+	if (head != NULL)
+	{
+		largest = head->value;
+	}
+
+	while (head != NULL)
+	{
+		if (head->value > largest)
+		{
+			largest = head->value;
+		}
+		head = head->next;
+	}
+	return (largest);
 }
