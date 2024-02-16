@@ -146,85 +146,126 @@ void	displaystack(t_stack *stack)
 	displaylinkedlist(stack->top);
 }
 
-int scanSmallestNum(t_stack *stack)
-{
-	t_node *head = stack ->top;
-	int smallestnum;
+// int scanSmallestNumPos(t_stack *stack, int num)
+// {
+// 	t_node head;
+	
+// 	head = *stack->top;
+// 	int pos = 0;
 
-	smallestnum = INT_MAX;
-	while (head != NULL)
+// 	while(head.value != num)
+// 	{
+// 		head = *head.next;
+// 		pos ++;
+// 	}
+// 	return pos;
+// }
+
+int scanNumPos(t_stack *stack, int num)
+{
+	t_node head;
+	
+	head = *stack->top;
+	int pos = 0;
+
+	while(head.value != num)
 	{
-		if (smallestnum > head->value)
-			smallestnum = head->value;
-		head = head->next;
+		head = *head.next;
+		pos ++;
 	}
-	return (smallestnum);
+	return pos;
 }
 
-// just do a basic assignment for the first two number
-int scan2SmallestNum(t_stack *stack)
+void bringtobot(t_stack *stack, int *numberofop)
 {
-	t_node *head = stack ->top;
-	int smallestnum = INT_MAX;
-	int secondsmallest = INT_MAX;
-
-	while (head != NULL)
-	{
-		if (smallestnum > head->value)
-		{
-			secondsmallest = smallestnum;
-			smallestnum = head->value;
-		}
-		else if (secondsmallest > head->value)
-			secondsmallest = head->value;
-		head = head->next;
-	}
-	if (secondsmallest != INT_MAX)
-		return (secondsmallest);
-	else
-		return (-1);
+	rotate_stack(stack, numberofop)	;
+	rotate_stack(stack, numberofop)	;
 }
+// int scanSmallestNum(t_stack *stack)
+// {
+// 	t_node *head = stack ->top;
+// 	int smallestnum;
 
-int scan2largestNum(t_stack *stack)
-{
-	t_node *head = stack ->top;
-	int biggestnum = INT_MIN;
-	int secondbiggest = INT_MIN;
+// 	smallestnum = INT_MAX;
+// 	while (head != NULL)
+// 	{
+// 		if (smallestnum > head->value)
+// 			smallestnum = head->value;
+// 		head = head->next;
+// 	}
+// 	return (smallestnum);
+// }
 
-	while (head != NULL)
-	{
-		if (head->value > biggestnum)
-		{
-			secondbiggest = biggestnum;
-			biggestnum = head->value;
-		}
-		else if (head->value > secondbiggest)
-			secondbiggest = head->value;
-		head = head->next;
-	}
-	if (secondbiggest != INT_MAX)
-		return (secondbiggest);
-	else
-		return (-1);
-}
+// // just do a basic assignment for the first two number
+// int scan2SmallestNum(t_stack *stack)
+// {
+// 	t_node *head = stack ->top;
+// 	int smallestnum = INT_MAX;
+// 	int secondsmallest = INT_MAX;
 
-int scanlargestNum(t_stack *stack)
-{
-	t_node *head = stack ->top;
-	int largest;
+// 	while (head != NULL)
+// 	{
+// 		if (smallestnum > head->value)
+// 		{
+// 			secondsmallest = smallestnum;
+// 			smallestnum = head->value;
+// 		}
+// 		else if (secondsmallest > head->value)
+// 			secondsmallest = head->value;
+// 		head = head->next;
+// 	}
+// 	if (secondsmallest != INT_MAX)
+// 		return (secondsmallest);
+// 	else
+// 		return (-1);
+// }
 
-	if (head != NULL)
-	{
-		largest = head->value;
-	}
+// int scan2largestNum(t_stack *stack)
+// {
+// 	t_node *head = stack ->top;
+// 	int biggestnum = INT_MIN;
+// 	int secondbiggest = INT_MIN;
 
-	while (head != NULL)
-	{
-		if (head->value > largest)
-		{
-			largest = head->value;
-		}
-		head = head->next;
-	}
-	return (largest);
-}
+// 	while (head != NULL)
+// 	{
+// 		if (head->value > biggestnum)
+// 		{
+// 			secondbiggest = biggestnum;
+// 			biggestnum = head->value;
+// 		}
+// 		else if (head->value > secondbiggest)
+// 			secondbiggest = head->value;
+// 		head = head->next;
+// 	}
+// 	if (secondbiggest != INT_MAX)
+// 		return (secondbiggest);
+// 	else
+// 		return (-1);
+// }
+
+// int scanlargestNum(t_stack *stack)
+// {
+// 	t_node *head = stack ->top;
+// 	int largest;
+
+// 	if (head != NULL)
+// 	{
+// 		largest = head->value;
+// 	}
+
+// 	while (head != NULL)
+// 	{
+// 		if (head->value > largest)
+// 		{
+// 			largest = head->value;
+// 		}
+// 		head = head->next;
+// 	}
+// 	return (largest);
+// }
+
+// initElement
+
+// counting by rotate 
+
+//counting by reverse rotate

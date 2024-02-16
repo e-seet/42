@@ -80,11 +80,34 @@ void	rra(t_stack *a);
 void	rrb(t_stack *b);
 */
 
-int scanSmallestNum(t_stack *stack);
-int scan2SmallestNum(t_stack *stack);
+typedef struct s_element5
+{
+	int				smallest;
+	int				secondsmallest;
+	int				middle;
+	int				secondlargest;
+	int				largest;
 
-int scanlargestNum(t_stack *stack);
-int scan2largestNum(t_stack *stack);
+	int				smallestpos;
+	int				secondsmallestpos;
+	int				middlepos;
+	int				secondlargestpos;
+	int				largestpos;
 
+}	s_element5;
+
+
+// int scanSmallestNum(t_stack *stack);
+// int scan2SmallestNum(t_stack *stack);
+
+// int scanlargestNum(t_stack *stack);
+// int scan2largestNum(t_stack *stack);
+
+
+int	scanNumPos(t_stack *stack, int num);
+// int scanSmallestNumPos(t_stack *stack, int num);
+// int scanLargestNumPos(t_stack *stack, int num);
+
+void	bringtobot(t_stack	*stack, int *numberofop);
 
 #endif
