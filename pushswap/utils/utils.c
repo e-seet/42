@@ -31,32 +31,35 @@ void	initstack(t_stack *stack)
 // 	return (stack->top == NULL);
 // }
 
-// void	addtoback(t_stack *stack, int value)
-// {
-// 	t_node	*curr;
-// 	t_node	*newnode;
+void	addtoback(t_stack *stack, int value)
+{
+	t_node	*curr;
+	t_node	*newnode;
 
-// 	curr = stack->top;
-// 	newnode = (t_node *)malloc(sizeof(t_node));
-// 	if (newnode == NULL)
-// 	{
-// 		printf("Failed to allocate memory.\n");
-// 		return ;
-// 	}
-// 	newnode->value = value;
-// 	if (stack -> top == NULL)
-// 	{
-// 		stack->top = newnode;
-// 	}
-// 	else
-// 	{
-// 		while (curr -> next != NULL)
-// 		{
-// 			curr = curr ->next;
-// 		}
-// 		curr ->next = newnode;
-// 	}
-// }
+	curr = stack->top;
+	newnode = (t_node *)malloc(sizeof(t_node));
+	if (newnode == NULL)
+	{
+		printf("Failed to allocate memory.\n");
+		return ;
+	}
+	newnode->value = value;
+	newnode->next = NULL;
+	if (stack -> top == NULL)
+	{
+		stack->top = newnode;
+	}
+	else
+	{
+		while (curr -> next != NULL)
+		{
+			curr = curr ->next;
+		}
+		curr ->next = newnode;
+		stack->numofelements += 1;
+		stack->bot = newnode;
+	}
+}
 
 // void	push(t_stack *stack, int value, s_datastore *stackdetails)
 // {
@@ -179,6 +182,7 @@ int scanNumPos(t_stack *stack, int num)
 void bringtobot(t_stack *stack, int *numberofop)
 {
 	rotate_stack(stack, numberofop)	;
+	printf("after roate stack\n");
 	rotate_stack(stack, numberofop)	;
 }
 // int scanSmallestNum(t_stack *stack)

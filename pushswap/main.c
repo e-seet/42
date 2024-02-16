@@ -296,19 +296,19 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 	// 5 x x x x
 	if (element5->largestpos == 0)
 	{
-		printf("case 1\n");
 		// swap top 2 [at top: 4,5]
-		if (element5->secondlargest == 1)
+		if (element5->secondlargestpos == 1)
 		{
+			printf("\n1\n");
 			swap_top_two(&stack_a, numberofop);
 			bringtobot(&stack_a, numberofop);
 		}
 		// Swap top 2
 		// Rotate top to bot [5,4]
 		// Swap top 2 [At top: 4, 5]
-		else if (element5->secondlargest == 2)
+		else if (element5->secondlargestpos == 2)
 		{
-			printf("problem\n");
+			printf("problem 2\n");
 			swap_top_two(&stack_a, numberofop);
 			rotate_stack(&stack_a, numberofop);
 			swap_top_two(&stack_a, numberofop);			
@@ -317,17 +317,21 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 		// Rotate bot to top
 		// Swap top 2
 		// Rotate top to bot [At bot: 4,5]
-		else if (element5->secondlargest == 3)
+		else if (element5->secondlargestpos == 3)
 		{
 			reverse_rotate_stack(&stack_a, numberofop);
 			swap_top_two(&stack_a, numberofop);
 			rotate_stack(&stack_a, numberofop);
 		}
 		// Rotate top to bot [At bot: 4,5]
-		else if (element5->secondlargest == 4)
+		else if (element5->secondlargestpos == 4)
 		{
 			rotate_stack(&stack_a, numberofop);
 		}
+
+		printf("end of op\n");
+		displaystack(&stack_a);
+
 	}
 	// When the number 5 [largest number] is at the 2nd pos
 	// x 5 x x x
@@ -335,14 +339,14 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 	{
 		// No action needed
 		// at top [4,5]
-		if (element5->secondlargest == 0)
+		if (element5->secondlargestpos == 0)
 		{
 			printf("no action");
 			bringtobot(&stack_a, numberofop);
 		}
 		// Rotate top to bot
 		// Swap top 2 [At top:  4,5]
-		else if (element5->secondlargest == 2)
+		else if (element5->secondlargestpos == 2)
 		{
 			rotate_stack(&stack_a, numberofop);
 			swap_top_two(&stack_a, numberofop);
@@ -352,7 +356,7 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 		// Rotate bot to top
 		// Swap top two
 		// Rotate top to bot [At bot 4, 5]
-		else if (element5->secondlargest == 3)
+		else if (element5->secondlargestpos == 3)
 		{
 			swap_top_two(&stack_a, numberofop);
 			reverse_rotate_stack(&stack_a, numberofop);
@@ -361,11 +365,16 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 		}
 		// Swap top two
 		// Rotate top to bot [At bot: 4, 5]
-		else if (element5->secondlargest == 4)
+		else if (element5->secondlargestpos == 4)
 		{
 			swap_top_two(&stack_a, numberofop);
 			reverse_rotate_stack(&stack_a, numberofop);
+			bringtobot(&stack_a, numberofop);
 		}
+
+		printf("end of op\n");
+		displaystack(&stack_a);
+
 	}
 	// When the number 5 [largest number] is at the 3rd pos
 	// x x 5 x x
@@ -373,14 +382,14 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 	{
 		// 	Swap top two
 		// Rotate top to bot [At top: 4,5]
-		if (element5->secondlargest == 0)
+		if (element5->secondlargestpos == 0)
 		{
 			swap_top_two(&stack_a, numberofop);
 			rotate_stack(&stack_a, numberofop);
 			bringtobot(&stack_a, numberofop);
 		}	
 		// Rotate top to bot [At top 4,5]
-		else if (element5->secondlargest == 1)
+		else if (element5->secondlargestpos == 1)
 		{
 			rotate_stack(&stack_a, numberofop);
 			bringtobot(&stack_a, numberofop);
@@ -388,7 +397,7 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 		// Rotate top to bot
 		// Rotate top to bot
 		// Swap top two [At top: 4,5]
-		else if (element5->secondlargest == 3)
+		else if (element5->secondlargestpos == 3)
 		{
 			rotate_stack(&stack_a, numberofop);
 			rotate_stack(&stack_a, numberofop);
@@ -400,7 +409,7 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 		// Swap top two
 		// Rotate bot to top
 		// Swap top two [at top: 4, 5]
-		else if (element5->secondlargest == 4)
+		else if (element5->secondlargestpos == 4)
 		{
 			reverse_rotate_stack(&stack_a, numberofop);
 			reverse_rotate_stack(&stack_a, numberofop);
@@ -409,6 +418,10 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 			swap_top_two(&stack_a, numberofop);
 			bringtobot(&stack_a, numberofop);
 		}
+
+		printf("end of op\n");
+		displaystack(&stack_a);
+
 	}
 	// When the number 5 [largest number] is at the 4th pos
 	// x x x 5 x
@@ -418,7 +431,7 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 		// Swap top two
 		// Rotate bot to top
 		// Swap top two [At top: 4,5]
-		if (element5->secondlargest == 0)
+		if (element5->secondlargestpos == 0)
 		{
 			reverse_rotate_stack(&stack_a, numberofop);
 			swap_top_two(&stack_a, numberofop);
@@ -431,7 +444,7 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 		// Swap top two
 		// Rotate bot to top
 		// Swap top two [At top: 4,5]
-		else if (element5->secondlargest == 1)
+		else if (element5->secondlargestpos == 1)
 		{
 			swap_top_two(&stack_a, numberofop);
 			reverse_rotate_stack(&stack_a, numberofop);
@@ -441,20 +454,23 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 			bringtobot(&stack_a, numberofop);
 		}
 		// Rotate bot to top [At bot: 4,5]
-		else if (element5->secondlargest == 2)
+		else if (element5->secondlargestpos == 2)
 		{
 			reverse_rotate_stack(&stack_a, numberofop);
 		}
 		// 	Rotate bot to top
 		// Rotate bot to top
 		// Swap top two [At top: 4, 5]
-		else if (element5->secondlargest == 4)
+		else if (element5->secondlargestpos == 4)
 		{
 			reverse_rotate_stack(&stack_a, numberofop);
 			reverse_rotate_stack(&stack_a, numberofop);
 			swap_top_two(&stack_a, numberofop);
 			bringtobot(&stack_a, numberofop);
 		}
+
+		printf("end of op\n");
+		displaystack(&stack_a);
 	}
 	// When the number 5 [largest number] is at the 5th pos
 	// x x x x 5
@@ -462,7 +478,7 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 	{
 		// Rotate bot to top
 		// Swap top two [At top: 4,5]
-		if (element5->secondlargest == 0)
+		if (element5->secondlargestpos == 0)
 		{
 			reverse_rotate_stack(&stack_a, numberofop);
 			swap_top_two(&stack_a, numberofop);
@@ -471,7 +487,7 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 		// Swap top two
 		// Rotate bot to top
 		// Swap top two [At top: 4,5]
-		else if (element5->secondlargest == 1)
+		else if (element5->secondlargestpos == 1)
 		{
 			swap_top_two(&stack_a, numberofop);
 			reverse_rotate_stack(&stack_a, numberofop);
@@ -482,7 +498,7 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 		// Rotate bot to top
 		// Swap top two
 		// Rotate top to bot [At bot: 4,5]
-		else if (element5->secondlargest == 2)
+		else if (element5->secondlargestpos == 2)
 		{
 			reverse_rotate_stack(&stack_a, numberofop);
 			reverse_rotate_stack(&stack_a, numberofop);
@@ -490,15 +506,17 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 			rotate_stack(&stack_a, numberofop);
 		}
 		// No action
-		else if (element5->secondlargest == 3)
+		else if (element5->secondlargestpos == 3)
 		{
 			// no action 
 			printf("no action required");
 		}
+
+		printf("end of op\n");
+		displaystack(&stack_a);
 	}
 
-	// Bring the number [4,5] at top of stack to bottom of stack
-	// bringtobot(&stack_a, &numberofop);
+	// sort the top 3 numbers
 }
 
 
@@ -832,9 +850,9 @@ int	main(int argc, char *argv[])
 
 	while (argv[i])
 	{
-		// addtoback(&stack_a, ft_atoi(argv[i]));
+		addtoback(&stack_a, ft_atoi(argv[i]));
 		// push(&stack_a, ft_atoi(argv[i]), &stackdetails );
-		push(&stack_a, ft_atoi(argv[i]) );
+		// push(&stack_a, ft_atoi(argv[i]) );
 		i++;
 	}
 
@@ -862,7 +880,7 @@ int	main(int argc, char *argv[])
 
 	sort5(stack_a, stack_b, &numberofop, &element5);
 	// printf("after sorting\n");
-	displaystack(&stack_a);
+	// displaystack(&stack_a);
 
 	/*
 	if (argc == 4)
