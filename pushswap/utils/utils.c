@@ -36,7 +36,6 @@ void	addtoback(t_stack *stack, int value)
 	t_node	*curr;
 	t_node	*newnode;
 
-	curr = stack->top;
 	newnode = (t_node *)malloc(sizeof(t_node));
 	if (newnode == NULL)
 	{
@@ -45,12 +44,15 @@ void	addtoback(t_stack *stack, int value)
 	}
 	newnode->value = value;
 	newnode->next = NULL;
-	if (stack -> top == NULL)
+	curr = stack->top;
+	if (curr == NULL)
 	{
 		stack->top = newnode;
 	}
 	else
 	{
+		if (curr->next != NULL)
+			stack->sec = curr->next;
 		while (curr -> next != NULL)
 		{
 			curr = curr ->next;

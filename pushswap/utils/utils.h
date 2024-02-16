@@ -96,6 +96,19 @@ typedef struct s_element5
 
 }	s_element5;
 
+typedef struct s_element3
+{
+	int				smallest;
+	int				middle;
+	int				largest;
+
+	int				smallestpos;
+	int				middlepos;
+	int				largestpos;
+
+}	s_element3;
+
+
 
 // int scanSmallestNum(t_stack *stack);
 // int scan2SmallestNum(t_stack *stack);

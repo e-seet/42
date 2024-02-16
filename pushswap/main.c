@@ -24,6 +24,59 @@ int stackissorted(t_stack *stack)
 	return 0;
 }
 
+
+void init3Element(s_element3 *element3)
+{
+	element3->smallest =  INT_MAX;
+	element3->middle =  INT_MAX;
+	element3->largest = INT_MIN;
+
+	element3->smallestpos  =  -1;
+	element3->middlepos  = -1;
+	element3->largestpos  = -1;
+
+	// element3->smallestpos  = scanNumPos(&stack_a, element5->smallest);
+	// element3->middlepos  = scanNumPos(&stack_a, element5->middle);
+	// element3->largestpos  = scanNumPos(&stack_a, element5->largest);
+}
+
+void find3Numbers(t_node *head, s_element3 *element3)
+{
+
+	// struct s_node *current = head;
+	int temp;
+
+	element3->smallest = head->value;
+	element3->middle = head->next->value;
+	element3->largest = head->next->next->value;
+
+	if (element3->smallest > element3->middle)
+	{
+		temp = element3->smallest;
+		element3->smallest = element3->middle;
+		element3->middle = temp;
+	}
+	if (element3->smallest > element3->largest) {
+		temp = element3->smallest;
+		element3->smallest = element3->largest;
+		element3->largest = temp;
+	}
+	if (element3->middle > element3->largest) {
+		temp = element3->middle;
+		element3->middle = element3->largest;
+		element3->largest = temp;
+	}
+
+}
+
+void find3NumbersPos(t_stack *stack_a, s_element3 *element3)
+{
+	element3->smallestpos = scanNumPos(stack_a, element3->smallest);
+	element3->middlepos = scanNumPos(stack_a, element3->middle);
+	element3->largestpos = scanNumPos(stack_a, element3->largest);
+	
+}
+
 // /* original
 /*
 void sort5original(t_stack stack_a, t_stack stack_b)
@@ -138,84 +191,135 @@ void sort5original(t_stack stack_a, t_stack stack_b)
 }
 */
 
-void sort3(t_stack *stack_a, t_stack *stack_b, int *numberofop)
-{
-		if ( (stack_a->bot)->value > (stack_a->sec)->value && (stack_a->sec)->value > (stack_a->top)->value)
-	{
-		printf("case 1\n");
+// sorting with 2 stacks.
+// void sort3(t_stack *stack_a, t_stack *stack_b, int *numberofop)
+// {
+// 	if ( (stack_a->bot)->value > (stack_a->sec)->value && (stack_a->sec)->value > (stack_a->top)->value)
+// 	{
+// 		printf("case 1\n");
 
-		// sorting only stack b. I can use any of the methods.
-		if ( (stack_b->top)->value > stack_b->bot ->value)
-			swap_top_two(stack_b, numberofop);
-	}
-	else if ((stack_a->bot)->value > (stack_a->top)->value && (stack_a->top)->value > (stack_a->sec)->value)
-	{
-		printf("case 3\n");
+// 		// sorting only stack b. I can use any of the methods.
+// 		if ( (stack_b->top)->value > stack_b->bot ->value)
+// 			swap_top_two(stack_b, numberofop);
+// 	}
+// 	else if ((stack_a->bot)->value > (stack_a->top)->value && (stack_a->top)->value > (stack_a->sec)->value)
+// 	{
+// 		printf("case 3\n");
 
-		if (stack_b->top->value > stack_b->bot->value)
-			ss(stack_a, stack_b,numberofop);
-		else
-			swap_top_two(stack_a, numberofop);
-	}
-	else if ( ((stack_a->sec)->value > (stack_a->top)->value) && (stack_a->top->value > (stack_a->bot)->value) )
-	{
-		printf("case 4\n");
+// 		if (stack_b->top->value > stack_b->bot->value)
+// 			ss(stack_a, stack_b,numberofop);
+// 		else
+// 			swap_top_two(stack_a, numberofop);
+// 	}
+// 	else if ( ((stack_a->sec)->value > (stack_a->top)->value) && (stack_a->top->value > (stack_a->bot)->value) )
+// 	{
+// 		printf("case 4\n");
 
-		if ((stack_b->top)->value > stack_b->bot ->value)
-			rrr(stack_a, stack_b, numberofop);
-		else
-			reverse_rotate_stack(stack_a, numberofop);
-	}
-	// take note that all 3 of them need a rotate_stack first
-	else 
-	{
-		if ((stack_a->top)->value > (stack_a->bot)->value &&  (stack_a->bot)->value > (stack_a->sec)->value)
-		{
-			printf("case 5\n");
+// 		if ((stack_b->top)->value > stack_b->bot ->value)
+// 			rrr(stack_a, stack_b, numberofop);
+// 		else
+// 			reverse_rotate_stack(stack_a, numberofop);
+// 	}
+// 	// take note that all 3 of them need a rotate_stack first
+// 	else 
+// 	{
+// 		if ((stack_a->top)->value > (stack_a->bot)->value &&  (stack_a->bot)->value > (stack_a->sec)->value)
+// 		{
+// 			printf("case 5\n");
 
-			if (stack_b->bot->value < stack_b->top->value)
-				rr(stack_a, stack_b,numberofop);
-			else
-				rotate_stack(stack_a,numberofop);
-		}
-		// take note case 2 and 6 have 2 common operations [rotate stack, swap top two].
-		else if ((stack_a->top)->value > (stack_a->sec)->value && (stack_a->sec)->value > (stack_a->bot)->value)
-		{
-			printf("case 6\n");
+// 			if (stack_b->bot->value < stack_b->top->value)
+// 				rr(stack_a, stack_b,numberofop);
+// 			else
+// 				rotate_stack(stack_a,numberofop);
+// 		}
+// 		// take note case 2 and 6 have 2 common operations [rotate stack, swap top two].
+// 		else if ((stack_a->top)->value > (stack_a->sec)->value && (stack_a->sec)->value > (stack_a->bot)->value)
+// 		{
+// 			printf("case 6\n");
 			
-			rotate_stack(stack_a,numberofop);
+// 			rotate_stack(stack_a,numberofop);
 
-			if (stack_b->bot->value < stack_b->top->value)
-				ss(stack_a, stack_b,numberofop);
-			else
-				swap_top_two(stack_a,numberofop);
+// 			if (stack_b->bot->value < stack_b->top->value)
+// 				ss(stack_a, stack_b,numberofop);
+// 			else
+// 				swap_top_two(stack_a,numberofop);
 
-		}
-		else
-		{
-			printf("case 2\n");
+// 		}
+// 		else
+// 		{
+// 			printf("case 2\n");
 
-			// if (stack_b.bot->value < stack_b.top->value)
-				// rr(&stack_a, &stack_b);
-			// else
-				rotate_stack(stack_a,numberofop);
+// 			// if (stack_b.bot->value < stack_b.top->value)
+// 				// rr(&stack_a, &stack_b);
+// 			// else
+// 				rotate_stack(stack_a,numberofop);
 			
-			// if (stack_b.bot->value < stack_b.top->value)
-				// ss(&stack_a, &stack_b);
-			// else
-				swap_top_two(stack_a,numberofop);
+// 			// if (stack_b.bot->value < stack_b.top->value)
+// 				// ss(&stack_a, &stack_b);
+// 			// else
+// 				swap_top_two(stack_a,numberofop);
 		
-			// if (stack_b.bot->value < stack_b.top->value)
-			// 	rrr(&stack_a, &stack_b);
-			// else
-				reverse_rotate_stack(stack_a,numberofop);
-		}
+// 			// if (stack_b.bot->value < stack_b.top->value)
+// 			// 	rrr(&stack_a, &stack_b);
+// 			// else
+// 				reverse_rotate_stack(stack_a,numberofop);
+// 		}
+// 	}
+// }
+// s_element5 *element5
+
+void sort5elementstop3(t_stack *stack_a, int *numberofop, s_element3 *element3)
+{
+
+	// c1
+	if (element3->smallestpos == 0 && element3->largestpos == 2)
+	{
 	}
+	
+	//c2
+	else if (element3->smallestpos == 0 && element3->largestpos == 1)
+	{
+		rotate_stack(stack_a, numberofop);
+		swap_top_two(stack_a, numberofop);
+		reverse_rotate_stack(stack_a, numberofop);
+	}
+	// c3
+	else if (element3->smallestpos == 1 && element3->largestpos == 2)
+	{
+		swap_top_two(stack_a, numberofop);
+	}
+	// c4
+	// remove top, swap top two, return my top, swap top two
+	else if (element3->smallestpos == 2 && element3->largestpos == 1)
+	{
+		rotate_stack(stack_a, numberofop);
+		swap_top_two(stack_a, numberofop);
+		reverse_rotate_stack(stack_a, numberofop);
+		swap_top_two(stack_a, numberofop);
+	}
+	// c5
+	else if (element3->smallestpos == 1 && element3->largestpos == 0)
+	{
+		swap_top_two(stack_a, numberofop);
+		rotate_stack(stack_a, numberofop);
+		swap_top_two(stack_a, numberofop);
+		reverse_rotate_stack(stack_a, numberofop);
+	}
+	// c6
+	else if (element3->smallestpos == 2 && element3->largestpos == 0)
+	{
+		swap_top_two(stack_a, numberofop);
+		rotate_stack(stack_a, numberofop);
+		swap_top_two(stack_a, numberofop);
+		reverse_rotate_stack(stack_a, numberofop);
+		swap_top_two(stack_a, numberofop);
+	}
+
+	printf("final number of ops:%d\n", *numberofop);
 }
 
-
 // Function to find the smallest, 2nd smallest, middle, 2nd largest, and largest numbers in the linked list
-void findNumbers(t_node * head, s_element5 *element5)
+void find5Numbers(t_node * head, s_element5 *element5)
 {
     struct s_node *current = head;
 
@@ -275,7 +379,7 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 	// printf("smallest element %d", element5->smallest);
 
 	// Get all the numbers back from stack
-	findNumbers(stack_a.top, element5);
+	find5Numbers(stack_a.top, element5);
 	
 	// get all the position of the numbers in the stack
 	element5->smallestpos  = scanNumPos(&stack_a, element5->smallest);
@@ -516,7 +620,28 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 		displaystack(&stack_a);
 	}
 
+	s_element3	element3;
+	init3Element(&element3);
+
+	element3.smallest  = element5->smallest;
+	element3.middle  = element5->secondsmallest;
+	element3.largest  = element5->middle;
+
+	element3.smallestpos  = scanNumPos(&stack_a, element5->smallest);
+	element3.middlepos  = scanNumPos(&stack_a, element5->secondsmallest);
+	element3.largestpos  = scanNumPos(&stack_a, element5->middle);;
+
+
+	// element3->smallest  = element5->smallest;
+	// element3->middle  = element5->secondsmallest;
+	// element3->largest  = element5->middle;
+
+	// element3->smallestpos  = scanNumPos(&stack_a, element5->smallest);
+	// element3->middlepos  = scanNumPos(&stack_a, element5->secondsmallest);
+	// element3->largestpos  = scanNumPos(&stack_a, element5->middle);;
+	
 	// sort the top 3 numbers
+	sort5elementstop3(&stack_a, numberofop, &element3);
 }
 
 
@@ -822,6 +947,7 @@ void init5Element(s_element5 *element5)
 	element5->largest = INT_MIN;
 }
 
+
 int	main(int argc, char *argv[])
 {
 
@@ -845,8 +971,10 @@ int	main(int argc, char *argv[])
 	i = 1;
 	initstack(&stack_a);
 	initstack(&stack_b);
+
 	init5Element(&element5);
 	// initdatastore(&stackdetails);
+
 
 	while (argv[i])
 	{
@@ -877,8 +1005,17 @@ int	main(int argc, char *argv[])
 
 	// displaystack(&stack_a);
 	// printf("smalest 2nd:%d", scan2SmallestNum(&stack_a));
-
-	sort5(stack_a, stack_b, &numberofop, &element5);
+	if (argc == 4)
+	{
+		s_element3	element3;
+		init3Element(&element3);
+		find3Numbers(stack_a.top, &element3);
+		find3NumbersPos(&stack_a, &element3);
+		sort5elementstop3(&stack_a, &numberofop, &element3);
+		displaystack(&stack_a);
+	}
+	if (argc == 6)
+		sort5(stack_a, stack_b, &numberofop, &element5);
 	// printf("after sorting\n");
 	// displaystack(&stack_a);
 
@@ -965,94 +1102,3 @@ int	main(int argc, char *argv[])
 	return (0);
 }
 
-// if (!isEmpty(&myStack)) {
-//     printf("Popped: %d\n", pop(&myStack));
-// }
-
-// /* for stack*/
-
-// #define MAX_SIZE 100
-
-// // Define a stack structure
-// struct Stack {
-//     int items[MAX_SIZE];
-//     int top;
-// };
-
-// // Initialize the stack
-// void initialize(struct Stack *stack) {
-//     stack->top = -1;
-// }
-
-// // Check if the stack is empty
-// int isEmpty(struct Stack *stack) {
-//     return stack->top == -1;
-// }
-
-// // Check if the stack is full
-// int_fast16_t isFull(struct Stack *stack) {
-//     return stack->top == MAX_SIZE - 1;
-// }
-
-// // Push an item onto the stack
-// void push(struct Stack *stack, int value) {
-//     if (isFull(stack)) {
-//         printf("Stack overflow. Cannot push %d onto the stack.\n", value);
-//     } else {
-//         stack->items[++stack->top] = value;
-//     }
-// }
-
-// // Pop an item from the stack
-// int pop(struct Stack *stack) {
-//     if (isEmpty(stack)) {
-//         printf("Stack underflow. Cannot pop from an empty stack.\n");
-//         return -1; // Error value
-//     } else {
-//         return stack->items[stack->top--];
-//     }
-// }
-
-// // Peek at the top item of the stack without removing it
-// int peek(struct Stack *stack) {
-//     if (isEmpty(stack)) {
-//         printf("Stack is empty. Cannot peek.\n");
-//         return -1; // Error value
-//     } else {
-//         return stack->items[stack->top];
-//     }
-// }
-
-// void print_binary(signed char num) {
-//     for (int i = 7; i >= 0; i--) {
-//         putchar((num & (1 << i)) ? '1' : '0');
-//     }
-// }
-
-// int main(int argc, char *argv[])
-// {
-//     signed char 	number;
-// 	int 			i;
-// 	struct Stack	stack;
-
-// 	i = 1;
-//     initialize(&stack);
-
-// 	while (argc > i)
-// 	{
-// 		number = ft_atoi(argv[i]);
-// 		print_binary(number);
-// 		push(&stack, number);
-// 		printf("\n");
-
-// 		i++;
-// 	}
-
-// 	while (!isEmpty(&stack))
-// 	{
-// 		number = pop(&stack);
-// 		printf("num:%d\n", number);
-// 	}
-
-//     return 0;
-// }
