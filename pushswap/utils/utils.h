@@ -20,6 +20,35 @@ typedef struct s_stack
 	int		numofelements;
 }	t_stack;
 
+
+typedef struct s_element5
+{
+	int				smallest;
+	int				secondsmallest;
+	int				middle;
+	int				secondlargest;
+	int				largest;
+
+	int				smallestpos;
+	int				secondsmallestpos;
+	int				middlepos;
+	int				secondlargestpos;
+	int				largestpos;
+
+}	s_element5;
+
+typedef struct s_element3
+{
+	int				smallest;
+	int				middle;
+	int				largest;
+
+	int				smallestpos;
+	int				middlepos;
+	int				largestpos;
+
+}	s_element3;
+
 // Store the stack data
 // top data, next data, last data
 // typedef struct s_data
@@ -79,34 +108,6 @@ void	rb(t_stack *b);
 void	rra(t_stack *a);
 void	rrb(t_stack *b);
 */
-
-typedef struct s_element5
-{
-	int				smallest;
-	int				secondsmallest;
-	int				middle;
-	int				secondlargest;
-	int				largest;
-
-	int				smallestpos;
-	int				secondsmallestpos;
-	int				middlepos;
-	int				secondlargestpos;
-	int				largestpos;
-
-}	s_element5;
-
-typedef struct s_element3
-{
-	int				smallest;
-	int				middle;
-	int				largest;
-
-	int				smallestpos;
-	int				middlepos;
-	int				largestpos;
-
-}	s_element3;
 
 
 
