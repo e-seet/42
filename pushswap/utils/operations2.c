@@ -1,5 +1,8 @@
 #include "operations2.h"
 
+// break off the last node
+// set the 2nd last node's next to null [when 1]
+// Else, return the last node.
 t_node	*ft_rralastnode(t_node *head, int tonull)
 {
 	t_node	*prev;
@@ -25,14 +28,14 @@ void	reverse_rotate_stack(t_stack *stack,  int *numberofop)
 	lastnode = ft_rralastnode(head, 1);
 	// printf("check my lastnode:%d\n", lastnode->value);
 	lastnode -> next = head;
-	head = lastnode;
-	stack->top = head;
+	// head = lastnode;
+	stack->top = lastnode;
 	// manual check that next is present and then assign it to next
-	if (head -> next != NULL)
-	{
-		head = head->next;
-		stack->sec = head;
-	}	
+	// if (head -> next != NULL)
+	// {
+		// head = head->next;
+		// stack->sec = head;
+	// }	
 	lastnode = ft_rralastnode(head, 0);
 	stack->bot = lastnode;
 	*numberofop = *numberofop + 1;
@@ -66,11 +69,12 @@ void	pb(t_stack *a, t_stack *b,  int *numberofop)
 		{
 			// change the top ref
 			a->top = topnode_a->next;
+			topnode_a->next ->prev = topnode_a ->prev;
 			// if there is third node, set it to second node
-			if ((topnode_a->next)->next != NULL)
-			{
-				a->sec = (topnode_a->next)->next;
-			}
+			// if ((topnode_a->next)->next != NULL)
+			// {
+			// 	a->sec = (topnode_a->next)->next;
+			// }
 
 			// if (b->top != NULL)
 			// 	b->sec = b->top;
@@ -81,10 +85,12 @@ void	pb(t_stack *a, t_stack *b,  int *numberofop)
 		else
 		{
 			b->top = NULL;
-			b->sec = NULL;
+			// b->sec = NULL;
 			b->bot = NULL;
 		}
 			topnode_a->next = topnode_b;
+			topnode_a->prev = topnode_b ->prev;
+			topnode_b->prev = topnode_a;
 			b->top = topnode_a;
 	}
 	*numberofop = *numberofop + 1;
@@ -104,20 +110,17 @@ void	pa(t_stack *a, t_stack *b, int *numberofop)
 		if (topnode_b -> next != NULL)
 		{
 			b->top = topnode_b->next;
-			if ((topnode_b->next)->next != NULL)
-			{
-				b->sec = (topnode_b->next)->next;
-			}
-
+			(topnode_b->next)->prev  = topnode_b->prev;
 		}
 		else
 		{
 			b->top = NULL;
-			b->sec = NULL;
 			b->bot = NULL;
 		}
 			topnode_b->next = topnode_a;
-			a->top = topnode_b;
+			topnode_b->prev = topnode_a ->prev;
+			topnode_a->prev = topnode_b;
+			a->top = topnode_b; 
 	}
 	*numberofop = *numberofop +1;
 }

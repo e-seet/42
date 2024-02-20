@@ -6,15 +6,15 @@ void	swap_top_two(t_stack *stack,  int *numberofop)
 	printf("SA/SB: swap top two\n");
 	t_node	*top;
 	t_node	*nextnode;
-	int		value;
 
 	top = stack->top;
 	nextnode = top->next;
 	if (top != NULL && nextnode != NULL)
 	{
-		value = top->value;
-		top->value = nextnode->value;
-		nextnode->value = value;
+		top -> next = nextnode ->next;
+		nextnode ->prev = top->prev;
+		top -> prev = nextnode;
+		nextnode-> next = top;
 	}
 	*numberofop = *numberofop +1;
 }
@@ -27,6 +27,7 @@ void	ss(t_stack *a, t_stack *b,  int *numberofop)
 	*numberofop = *numberofop -1;
 	printf("\n\n");
 }
+
 // Shift up all elements of stack by 1
 void	rotate_stack(t_stack *stack,  int *numberofop)
 {
@@ -39,10 +40,10 @@ void	rotate_stack(t_stack *stack,  int *numberofop)
 	lastnode -> next = NULL;
 	curr = stack->top;
 	// may have issue here
-	if (curr -> next != NULL)
-		stack->sec = curr->next;
-	else
-		stack->sec = lastnode;
+	// if (curr -> next != NULL)
+		// stack->sec = curr->next;
+	// else
+		// stack->sec = lastnode;
 	while (curr->next != NULL)
 	{
 		curr = curr->next;

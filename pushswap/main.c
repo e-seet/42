@@ -6,23 +6,76 @@
 #include "./sort/sort3.h"
 #include "./sort/sort5.h"
 
-int stackissorted(t_stack *stack)
-{
-	t_node head ;
-	head = *stack->top;
-	int val = INT_MIN;
+int getLastBit(int num) {
+    // Get the last bit using bitwise AND with 1
+    int lastBit = num & 1;
+    return lastBit;
+}
 
-	while (head.next != NULL)
-	{
-		if (head.value > val)
-			val = head.value;
-		else
-		{
-			return 1;
-		}
-		head = *head.next;
-	}
-	return 0;
+int getSecLastBit(int num) {
+    // Get the last bit using bitwise AND with 1
+    int lastBit = (num >> 1) & 1;
+    return lastBit;
+}
+
+int getthirdLastBit(int num) {
+    // Get the last bit using bitwise AND with 1
+    int lastBit = (num >> 2) & 1;
+    return lastBit;
+}
+
+int get4LastBit(int num) {
+    // Get the last bit using bitwise AND with 1
+    int lastBit = (num >> 3) & 1;
+    return lastBit;
+}
+
+int get5LastBit(int num) {
+    // Get the last bit using bitwise AND with 1
+    int lastBit = (num >> 4) & 1;
+    return lastBit;
+}
+
+// void loopbit(int num)
+// {
+// 	int i = 0;
+// 	int bit;
+
+// 	while (i < 32)
+// 	{
+// 	    bit = (num >> i) & 1;
+// 		printf("i: %d, value:%d\n", i, bit);
+// 		i = i + 1;
+// 	}
+// }
+
+void loopbit(int num)
+{
+    int i = 0;
+    int bit;
+
+    while (i < 32) // Iterate through all 32 bits
+    {
+        bit = (num >> i) & 1;
+        printf("i: %d, value: %d\n", i, bit);
+        i = i + 1;
+    }
+}
+
+void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
+{
+	printf("%p%p%p \n", stack_a->top, stack_b->top, numberofop);
+
+	printf("value:%d \n 5:%d\n 4:%d\n 3:%d\n 2:%d,  1:%d \n", -5,get5LastBit(-5) ,get4LastBit(-5) ,getthirdLastBit(-5),getSecLastBit(-5), getLastBit(-5));
+
+	// printf("max int:%d", INT_MAX);
+	// loopbit(INT_MAX); // 32 bits as
+	// printf("\n\n");
+	// printf("min int:%d", INT_MIN);
+	// loopbit(INT_MIN); // 2s complement. Need 32 bits to store.
+
+	//if it is 1, push to stack b
+	
 }
 
 int	main(int argc, char *argv[])
@@ -54,19 +107,20 @@ int	main(int argc, char *argv[])
 	}
 
 	// t_node *head = stack_a.top;
-	// printf("count elements in stack%d\n", countElementsinStack(head) );
+	// printf("count elements in stack%d\n", count_elements_in_stack(head) );
 	// pb(&stack_a, &stack_b);
 	// head = stack_a.top;
-	// printf("count elements in stack%d\n", countElementsinStack(head) );
+	// printf("count elements in stack%d\n", count_elements_in_stack(head) );
 
 	// // To count min run first
-	// int numofelements = countElementsinStack(head);
+	// int numofelements = count_elements_in_stack(head);
 	// int minrun = calculate_minrun(numofelements);
 	// // printf("minrun:%d\n", minrun);
 
 	// int numofrun = (argc -1) / minrun;
 	// printf("number of runs that will be created:%d \n", numofrun);
 
+	// sort 3
 	if (argc == 4)
 	{
 		s_element3	element3;
@@ -75,12 +129,25 @@ int	main(int argc, char *argv[])
 		find3NumbersPos(&stack_a, &element3);
 		sort5elementstop3(&stack_a, &numberofop, &element3);
 		displaystack(&stack_a);
+	
 	}
+	// sort 4
+	else if (argc ==5)
+	{
+		// to do. Lazy to do now.
+	}
+	// sort 5
 	if (argc == 6)
 	{
 		init5Element(&element5);
 		sort5(stack_a, stack_b, &numberofop, &element5);
 		displaystack(&stack_a);
+	}
+	else 
+	{
+	// 	// try to do timsort
+		// tim_sort(&stack_a, &stack_b, &numberofop);
+		radix_sort(&stack_a, &stack_b, &numberofop);
 	}
 	// printf("after sorting\n");
 	// displaystack(&stack_a);

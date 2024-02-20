@@ -43,9 +43,9 @@ void find3Numbers(t_node *head, s_element3 *element3)
 
 void find3NumbersPos(t_stack *stack_a, s_element3 *element3)
 {
-	element3->smallestpos = scanNumPos(stack_a, element3->smallest);
-	element3->middlepos = scanNumPos(stack_a, element3->middle);
-	element3->largestpos = scanNumPos(stack_a, element3->largest);
+	element3->smallestpos = scan_num_pos(stack_a, element3->smallest);
+	element3->middlepos = scan_num_pos(stack_a, element3->middle);
+	element3->largestpos = scan_num_pos(stack_a, element3->largest);
 }
 
 

@@ -1,6 +1,6 @@
 # include "sort5.h"
 
-void init5Element(s_element5 *element5)
+void	init5Element(s_element5 *element5)
 {
 	element5->smallest =  INT_MAX;
 	element5->secondsmallest =  INT_MAX;
@@ -74,11 +74,11 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 	find5Numbers(stack_a.top, element5);
 	
 	// get all the position of the numbers in the stack
-	element5->smallestpos  = scanNumPos(&stack_a, element5->smallest);
-	element5->secondsmallestpos  = scanNumPos(&stack_a, element5->secondsmallest);
-	element5->middlepos  = scanNumPos(&stack_a, element5->middle);
-	element5->secondlargestpos  = scanNumPos(&stack_a, element5->secondlargest);
-	element5->largestpos  = scanNumPos(&stack_a, element5->largest);
+	element5->smallestpos  = scan_num_pos(&stack_a, element5->smallest);
+	element5->secondsmallestpos  = scan_num_pos(&stack_a, element5->secondsmallest);
+	element5->middlepos  = scan_num_pos(&stack_a, element5->middle);
+	element5->secondlargestpos  = scan_num_pos(&stack_a, element5->secondlargest);
+	element5->largestpos  = scan_num_pos(&stack_a, element5->largest);
 
 	// printf("\npositions\n");
     // printf("Smallest position: %d\n", element5->smallestpos);
@@ -317,9 +317,9 @@ void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *elemen
 	element3.middle  = element5->secondsmallest;
 	element3.largest  = element5->middle;
 
-	element3.smallestpos  = scanNumPos(&stack_a, element5->smallest);
-	element3.middlepos  = scanNumPos(&stack_a, element5->secondsmallest);
-	element3.largestpos  = scanNumPos(&stack_a, element5->middle);;
+	element3.smallestpos  = scan_num_pos(&stack_a, element5->smallest);
+	element3.middlepos  = scan_num_pos(&stack_a, element5->secondsmallest);
+	element3.largestpos  = scan_num_pos(&stack_a, element5->middle);;
 	
 	// sort the top 3 numbers
 	sort5elementstop3(&stack_a, numberofop, &element3);

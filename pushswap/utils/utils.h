@@ -10,12 +10,13 @@ typedef struct s_node
 {
 	int				value;
 	struct s_node	*next;
+	struct s_node	*prev;
 }	t_node;
 
 typedef struct s_stack
 {
 	t_node	*top;
-	t_node	*sec;
+	// t_node	*sec;
 	t_node	*bot;
 	int		numofelements;
 }	t_stack;
@@ -49,6 +50,30 @@ typedef struct s_element3
 
 }	s_element3;
 
+// init stack A and stack B
+void	initstack(t_stack *stack);
+
+// check if the stack is empty
+int		isempty(t_stack *stack);
+
+// push to the end of stack
+void	push(t_stack *stack, int value);
+
+// add to the back of linked list
+void	addtoback(t_stack *stack, int value);
+
+// print out everything from top to the end of the stack
+void	displaystack(t_stack *stack);
+
+// Find out the position of the number
+int	scan_num_pos(t_stack *stack, int num);
+
+// This is used for 5 elements
+// Bring the number 4 and 5 to the bottom of the stack
+void	bringtobot(t_stack	*stack, int *numberofop);
+
+t_node	*create_node(int value);
+
 // Store the stack data
 // top data, next data, last data
 // typedef struct s_data
@@ -66,14 +91,8 @@ typedef struct s_element3
 // 	int stack_b_numofelements;
 // }	s_datastore;
 
-void	initstack(t_stack *stack);
-int		isempty(t_stack *stack);
 
 // void	push(t_stack *stack, int value, s_datastore *stackdetails);
-void	push(t_stack *stack, int value);
-void	addtoback(t_stack *stack, int value);
-int		pop(t_stack *stack);
-void	displaystack(t_stack *stack);
 
 // void	initdatastore(s_datastore *stackdetails);
 
@@ -109,19 +128,14 @@ void	rra(t_stack *a);
 void	rrb(t_stack *b);
 */
 
-
-
 // int scanSmallestNum(t_stack *stack);
 // int scan2SmallestNum(t_stack *stack);
 
 // int scanlargestNum(t_stack *stack);
 // int scan2largestNum(t_stack *stack);
 
-
-int	scanNumPos(t_stack *stack, int num);
 // int scanSmallestNumPos(t_stack *stack, int num);
 // int scanLargestNumPos(t_stack *stack, int num);
-
-void	bringtobot(t_stack	*stack, int *numberofop);
+// int		pop(t_stack *stack);
 
 #endif

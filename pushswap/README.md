@@ -225,4 +225,17 @@ Tim sort
 > 11 <https://bugs.python.org/file4451/timsort.txt?ref=skerritt.blog>
 >12 <https://medium.com/nerd-for-tech/push-swap-tutorial-fa746e6aba1e>
 
+https://bugs.python.org/file4451/timsort.txt?ref=skerritt.blog
+https://gist.github.com/nandajavarma/a3a6b62f34e74ec4c31674934327bbd3
+https://gist.github.com/bee-san/f6ccc000ab6527769999fd0a9ebf59de
+https://dev.to/brandonskerritt/timsort-the-fastest-sorting-algorithm-you-ve-never-heard-of-2ake
+https://wiki.c2.com/?TimSort
 important: 11, 12
+
+pushswap
+https://sharkigamers.github.io/pushswap_epitech_project/
+https://medium.com/nerd-for-tech/push-swap-tutorial-fa746e6aba1e
+
+tester
+https://github.com/julien-ctx/push-swap-tester
+https://github.com/LeoFu9487/push_swap_tester
