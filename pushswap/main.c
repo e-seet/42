@@ -6,12 +6,50 @@
 #include "./sort/sort3.h"
 #include "./sort/sort5.h"
 
-void setpos(t_stack *stack_a)
+void setpos(t_stack *stack_a, int argc)
 {
-	t_node *head;
-	head = stack_a->top;
+	printf("set pos\n\n");
+	int i = 1;
 
-	printf("head %p\n\n", head);
+	int smallest;
+	t_node *curr = stack_a ->top;
+
+
+	while (argc > i)
+	{
+		// initial setting of smalelst value
+		while (curr->pos != 0)
+		{
+			curr = curr ->next;
+		}
+		smallest = curr->value;
+
+		// find the smallest for every iteration
+		while(curr ->next != stack_a->top)
+		{
+			if (smallest > curr->value && curr->pos == 0)
+			{
+				smallest = curr->value;
+			} 
+			curr = curr->next;
+		}
+		// check last item
+		if (smallest > curr->value && curr->pos == 0)
+		{
+			smallest = curr->value;
+		}
+		// find where the node of interest is and set pos
+		curr = stack_a->top;
+		while (curr->value != smallest)
+		{
+			curr = curr->next;
+		}
+		curr ->pos = i;
+		i++;
+	}
+
+	// printf("\n\n");
+	// displaylinkedlist2(stack_a->top);
 
 }
 
@@ -52,7 +90,7 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 	printf("%p%d \n\n",numberofop, i);
 	
 	// /*
-	while (32 > i)
+	while (5 > i)
 	{
 		// for the first time.
 		headA = stack_a->top;
@@ -82,8 +120,8 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 			}
 				headA = stack_a->top;	
 		}
-		printf("check A:\n");
-		displaylinkedlist2(stack_a->top);
+		// printf("check A:\n");
+		// displaylinkedlist2(stack_a->top);
 
 		// had to use this to check the last one
 		if (((headA->value >> i) & 1) == 0)
@@ -212,8 +250,8 @@ int	main(int argc, char *argv[])
 	{
 	// 	// try to do timsort
 		// tim_sort(&stack_a, &stack_b, &numberofop);
-		setpos(&stack_a);
-		// radix_sort(&stack_a, &stack_b, &numberofop);
+		setpos(&stack_a, argc);
+		radix_sort(&stack_a, &stack_b, &numberofop);
 	}
 	// printf("after sorting\n");
 	// displaystack(&stack_a);
