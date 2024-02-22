@@ -42,3 +42,31 @@ int	stack_is_sorted(t_stack *stack)
 		}
 	return (0);
 }
+
+int	stack_is_sorted2(t_stack *stack)
+{
+	t_node	*head;
+	t_node	*curr;
+	int		pos;
+
+	head = stack->top;
+	pos = head->pos;
+	curr = head->next;
+	while (curr->next != head)
+	{
+		if (curr->pos > pos)
+			pos = curr->pos;
+		else
+		{
+			return (1);
+		}
+		curr = curr->next;
+	}
+	if (curr->pos > pos)
+			pos = curr->pos;
+		else
+		{
+			return (1);
+		}
+	return (0);
+}

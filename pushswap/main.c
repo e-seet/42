@@ -14,10 +14,10 @@ void setpos(t_stack *stack_a, int argc)
 	int smallest;
 	t_node *curr = stack_a ->top;
 
-
 	while (argc > i)
 	{
 		// initial setting of smalelst value
+		curr = stack_a ->top;
 		while (curr->pos != 0)
 		{
 			curr = curr ->next;
@@ -49,7 +49,7 @@ void setpos(t_stack *stack_a, int argc)
 	}
 
 	// printf("\n\n");
-	// displaylinkedlist2(stack_a->top);
+	displaylinkedlist2(stack_a->top);
 
 }
 
@@ -92,11 +92,12 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 	// /*
 	while (5 > i)
 	{
+		printf("value of i :%d\n", i);
 		// for the first time.
 		headA = stack_a->top;
 		tailA = stack_a->bot;
 
-		if (stack_is_sorted(stack_a) == 0)
+		if (stack_is_sorted(stack_a) == 0 || stack_is_sorted2(stack_a) == 0)
 		{
 			break;
 		}
@@ -104,27 +105,31 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 		// can do partitioning here to maximise efficiency 
 		while (headA != tailA)
 		{ 
+			printf("first while loop\n");
 			// check if top is null
 			if (stack_a ->top != NULL)
 			{
 				headA = stack_a->top;
 			}
 
-			if (((headA->value >> i) & 1) == 0)
+
+
+			if (((headA->pos >> i) & 1) == 0)
 			{
+				printf("what is this? %d", (headA->pos >> i) & 1);
 				pb(stack_a,stack_b, numberofop);
 			} 
 			else
 			{
 				rotate_stack(stack_a, numberofop);
 			}
-				headA = stack_a->top;	
+			headA = stack_a->top;	
 		}
 		// printf("check A:\n");
 		// displaylinkedlist2(stack_a->top);
 
 		// had to use this to check the last one
-		if (((headA->value >> i) & 1) == 0)
+		if (((headA->pos >> i) & 1) == 0)
 		{
 			pb(stack_a,stack_b, numberofop);
 		} 
@@ -144,6 +149,7 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 			// pushback to stack a
 			while (headB != NULL)
 			{
+				printf("second while loop\n");
 				pa(stack_a, stack_b, numberofop);
 				// headB = headB->next;
 				headB = stack_b->top;
@@ -253,8 +259,8 @@ int	main(int argc, char *argv[])
 		setpos(&stack_a, argc);
 		radix_sort(&stack_a, &stack_b, &numberofop);
 	}
-	// printf("after sorting\n");
-	// displaystack(&stack_a);
+	printf("after sorting\n");
+	displaystack(&stack_a);
 
 	// less than critical number of 64
 	// if (numofrun == 1)
@@ -289,4 +295,14 @@ int	main(int argc, char *argv[])
 4:	0000000000000100
 8: 	0000000000001000
 10:	0000000000001010
+*/
+
+/*
+1:	0000000000000001
+2:	0000000000000010
+3:	0000000000000011
+4:	0000000000000100
+5:	0000000000000101
+6:	0000000000000110
+7:	0000000000000111
 */
