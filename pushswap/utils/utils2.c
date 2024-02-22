@@ -17,20 +17,28 @@ int	count_elements_in_stack(t_node *head)
 // sorted return 0
 int	stack_is_sorted(t_stack *stack)
 {
-	t_node	head;
+	t_node	*head;
+	t_node	*curr;
 	int		val;
 
-	head = *stack->top;
-	val = INT_MIN;
-	while (head.next != NULL)
+	head = stack->top;
+	val = head->value;
+	curr = head->next;
+	while (curr->next != head)
 	{
-		if (head.value > val)
-			val = head.value;
+		if (curr->value > val)
+			val = curr->value;
 		else
 		{
 			return (1);
 		}
-		head = *head.next;
+		curr = curr->next;
 	}
+	if (curr->value > val)
+			val = curr->value;
+		else
+		{
+			return (1);
+		}
 	return (0);
 }

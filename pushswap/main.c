@@ -6,48 +6,14 @@
 #include "./sort/sort3.h"
 #include "./sort/sort5.h"
 
-int getLastBit(int num) {
-    // Get the last bit using bitwise AND with 1
-    int lastBit = num & 1;
-    return lastBit;
+void setpos(t_stack *stack_a)
+{
+	t_node *head;
+	head = stack_a->top;
+
+	printf("head %p\n\n", head);
+
 }
-
-int getSecLastBit(int num) {
-    // Get the last bit using bitwise AND with 1
-    int lastBit = (num >> 1) & 1;
-    return lastBit;
-}
-
-int getthirdLastBit(int num) {
-    // Get the last bit using bitwise AND with 1
-    int lastBit = (num >> 2) & 1;
-    return lastBit;
-}
-
-int get4LastBit(int num) {
-    // Get the last bit using bitwise AND with 1
-    int lastBit = (num >> 3) & 1;
-    return lastBit;
-}
-
-int get5LastBit(int num) {
-    // Get the last bit using bitwise AND with 1
-    int lastBit = (num >> 4) & 1;
-    return lastBit;
-}
-
-// void loopbit(int num)
-// {
-// 	int i = 0;
-// 	int bit;
-
-// 	while (i < 32)
-// 	{
-// 	    bit = (num >> i) & 1;
-// 		printf("i: %d, value:%d\n", i, bit);
-// 		i = i + 1;
-// 	}
-// }
 
 void loopbit(int num)
 {
@@ -66,7 +32,6 @@ void loopbit(int num)
 void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 {
 	// printf("radix sort\n");
-	// printf("value:%d \n 5:%d\n 4:%d\n 3:%d\n 2:%d,  1:%d \n", -5,get5LastBit(-5) ,get4LastBit(-5) ,getthirdLastBit(-5),getSecLastBit(-5), getLastBit(-5));
 	// printf("max int:%d", INT_MAX);
 	// loopbit(INT_MAX); // 32 bits as // 0111
 	// printf("\n\n"); 
@@ -87,10 +52,11 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 	printf("%p%d \n\n",numberofop, i);
 	
 	// /*
-	while (4 > i)
+	while (32 > i)
 	{
 		// for the first time.
 		headA = stack_a->top;
+		tailA = stack_a->bot;
 
 		if (stack_is_sorted(stack_a) == 0)
 		{
@@ -106,7 +72,7 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 				headA = stack_a->top;
 			}
 
-			if (((headA->value >> i) & 1) == 1)
+			if (((headA->value >> i) & 1) == 0)
 			{
 				pb(stack_a,stack_b, numberofop);
 			} 
@@ -116,9 +82,11 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 			}
 				headA = stack_a->top;	
 		}
+		printf("check A:\n");
+		displaylinkedlist2(stack_a->top);
 
 		// had to use this to check the last one
-		if (((headA->value >> i) & 1) == 1)
+		if (((headA->value >> i) & 1) == 0)
 		{
 			pb(stack_a,stack_b, numberofop);
 		} 
@@ -126,8 +94,9 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 		{
 			rotate_stack(stack_a, numberofop);
 		}
+		displaylinkedlist2(stack_a->top);
 		
-		printf("after finish rotating A\n\n");
+		// printf("after finish rotating A\n\n");
 		// displaylinkedlist2(stack_a->top);
 		// displaylinkedlist2(stack_b->top);
 
@@ -142,16 +111,18 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 				headB = stack_b->top;
 			}
 		}
-
-		printf("\nthe %d from back\n",i);
-		printf("after finish pushing back to B\n\n");
+		printf("i:%d\n", i);
+		displaylinkedlist2(stack_a->top);
+		printf("\n\n");
+		// printf("\nthe %d from back\n",i);
+		// printf("after finish pushing back to B\n\n");
 		// displaylinkedlist2(stack_a->top);
 		// displaylinkedlist2(stack_b->top);
 		i = i+1;
 	}
 	// */
 
-	displaylinkedlist2(stack_a->top);
+	// displaylinkedlist2(stack_a->top);
 
 /*
 	headA = stack_a->top;
@@ -241,7 +212,8 @@ int	main(int argc, char *argv[])
 	{
 	// 	// try to do timsort
 		// tim_sort(&stack_a, &stack_b, &numberofop);
-		radix_sort(&stack_a, &stack_b, &numberofop);
+		setpos(&stack_a);
+		// radix_sort(&stack_a, &stack_b, &numberofop);
 	}
 	// printf("after sorting\n");
 	// displaystack(&stack_a);
