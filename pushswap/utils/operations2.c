@@ -61,42 +61,44 @@ void	pb(t_stack *a, t_stack *b,  int *numberofop)
 
 	topnode_a = a->top;
 	topnode_b = b->top;
-	// check not null
+
 	if (topnode_a != NULL)
 	{
-		// check there is 2nd node
-		if (topnode_a -> next != NULL)
+		if (topnode_a -> next != topnode_a)
 		{
-			// change the top ref
 			a->top = topnode_a->next;
-			topnode_a->next ->prev = topnode_a ->prev;
-			// if there is third node, set it to second node
-			// if ((topnode_a->next)->next != NULL)
-			// {
-			// 	a->sec = (topnode_a->next)->next;
-			// }
-
-			// if (b->top != NULL)
-			// 	b->sec = b->top;
-			// // set new top node
-			
-			// b->bot = ft_rralastnode(b->top, 0); 
+			(topnode_a->next)->prev = topnode_a ->prev;
+			(topnode_a->prev)->next = topnode_a ->next;
 		}
 		else
 		{
-			b->top = NULL;
-			// b->sec = NULL;
-			b->bot = NULL;
+			a->top = NULL;
+			a->bot = NULL;
 		}
+
+
+		if (topnode_b != NULL)
+		{
 			topnode_a->next = topnode_b;
-			topnode_a->prev = topnode_b ->prev;
+			if (topnode_b -> prev != NULL)
+			{
+				topnode_a->prev = topnode_b->prev;
+				(topnode_b->prev)->next = topnode_a;
+			}
 			topnode_b->prev = topnode_a;
+			b->top = topnode_a;
+		}
+		else
+		{
+			topnode_a->next = topnode_a;
+			topnode_a->prev = topnode_a;
+		}
 			b->top = topnode_a;
 	}
 	*numberofop = *numberofop + 1;
 }
 
-// Take the first element at the top of b and put it at the top of a
+// // Take the first element at the top of b and put it at the top of a
 void	pa(t_stack *a, t_stack *b, int *numberofop)
 {
 	printf("PA\n");
@@ -105,25 +107,53 @@ void	pa(t_stack *a, t_stack *b, int *numberofop)
 
 	topnode_a = a->top;
 	topnode_b = b->top;
+
 	if (topnode_b != NULL)
 	{
-		if (topnode_b -> next != NULL)
+		if (topnode_b->next != topnode_b)
 		{
 			b->top = topnode_b->next;
 			(topnode_b->next)->prev  = topnode_b->prev;
+			(topnode_b->prev)->next  = topnode_b->next;
 		}
 		else
 		{
 			b->top = NULL;
 			b->bot = NULL;
 		}
+
+		
+		if (topnode_a != NULL)
+		{
 			topnode_b->next = topnode_a;
-			topnode_b->prev = topnode_a ->prev;
+			if (topnode_a -> prev != NULL)
+			{
+				topnode_b->prev = topnode_a->prev;
+				(topnode_a->prev)->next = topnode_b;
+			}
 			topnode_a->prev = topnode_b;
-			a->top = topnode_b; 
+			a->top = topnode_b;
+		}
+		else
+		{
+			topnode_b->next = topnode_b;
+			topnode_b->prev = topnode_b;
+			a->top = topnode_b;
+		}
 	}
+	else
+	{
+		printf("top node B is null\n");
+		topnode_b->next = topnode_b;
+		topnode_b->prev = topnode_b;
+		a->top = topnode_b;
+	}
+	
 	*numberofop = *numberofop +1;
+
+	// printf("end of pa \n\n\n");
 }
+
 // Shift down all elements of stack a by 1
 // void rra(t_stack *a)
 // {

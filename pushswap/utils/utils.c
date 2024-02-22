@@ -29,28 +29,42 @@ t_node	*create_node(int value)
 
 void	addtoback(t_stack *stack, int value)
 {
+
+	t_node	*head;
 	t_node	*curr;
-	t_node	*prev;
+	// t_node	*prev = NULL;
 	t_node	*newnode;
 
 	newnode = create_node(value);
-	curr = stack->top;
-	if (curr == NULL)
+	head = stack->top;
+	// if there is no node
+	if (head == NULL)
 		stack->top = newnode;
 	else
 	{
-		// if (curr->next != NULL)
-		// 	stack->sec = curr->next;
-		while (curr -> next != NULL)
+		curr = head;
+		// if there is 1 node
+		if (curr->next == NULL)
 		{
-			prev = curr;
-			curr = curr ->next;
-			curr -> prev = prev;
+			printf("only 1 node\n");
+			curr -> next = newnode;
+			curr -> prev = newnode;
+			newnode -> next = curr;
+			newnode -> prev = curr;
 		}
-		curr ->next = newnode;
-		newnode -> prev = curr;
-		// newnode -> next = stack->top; // for now. Got issue with my current
-		stack->top -> prev = newnode;
+		// if there is 2 nodes
+		else
+		{
+			while (curr -> next != head)
+			{
+				curr = curr ->next;
+			}
+			curr -> next = newnode;
+			newnode -> next = head;
+			newnode -> prev = curr;
+			head->prev = newnode;
+		}
+		
 		stack->numofelements += 1;
 		stack->bot = newnode;
 	}
@@ -88,7 +102,9 @@ void	displaylinkedlist(t_node *head)
 
 	current = head;
 	printf("Linked List: ");
-	while (current != NULL)
+	printf("\n%d  ", current->value);
+	current = current ->next;	
+	while (current != head)
 	{
 		printf("\n%d  ", current->value);
 		current = current->next;
@@ -102,23 +118,71 @@ void	displaylinkedlist2(t_node *head)
 	t_node	*current;
 
 	current = head;
-	printf("Linked List: ");
-	while (current != NULL)
+	if (current == NULL)
 	{
+		// printf("curr is null\n");
+		return;
+	}
+
+	printf("Linked List: ");
+	printf("\n%d  ", current->value);
+	printf("\nprev:%p  ", current->prev);
+	printf("\ncurr:%p  ", current);
+	printf("\nnext:%p  ", current->next);
+	current = current->next;
+
+	int i = 0;
+
+	while (current != head)
+	{
+		// printf("\ncurr:%p  ", current);
 		printf("\n%d  ", current->value);
 		printf("\nprev:%p  ", current->prev);
 		printf("\ncurr:%p  ", current);
-		printf("\nnext:%p  ", current->next);
+		 printf("\nnext:%p  ", current->next);
+		// printf("\nnext:%p  ", current->next);
+		if (current == current->next || i >8)
+		{
+			printf("curr == curr->Next or i > 6\n");
+			break;
+		}
 		current = current->next;
+		i ++;
 	}
+
+	// printf("\n\nreverse it");
+	// printf("\n%d  ", current->value);
+	// printf("\nprev:%p  ", current->prev);
+	// printf("\ncurr:%p  ", current);
+	// printf("\nnext:%p  ", current->next);
+	// current = current->prev;
+	// while (current != head)
+	// {
+	// 	// printf("\ncurr:%p  ", current);
+	// 	printf("\n%d  ", current->value);
+	// 	printf("\nprev:%p  ", current->prev);
+	// 	printf("\ncurr:%p  ", current);
+	// 	 printf("\nnext:%p  ", current->next);
+	// 	// printf("\nnext:%p  ", current->next);
+	// 	if (current == current->prev || i > 20)
+	// 	{
+	// 		printf("curr == curr->prev or i > 12\n");
+	// 		break;
+	// 	}
+	// 	current = current->prev;
+	// 	i ++;
+	// }
+
 	printf("\n\n");
 }
 
 // Function to display the elements in the stack (linked list)
 void	displaystack(t_stack *stack)
 {
+	printf("display linked list:\n");
 	displaylinkedlist(stack->top);
-	displaylinkedlist2(stack->top);
+	// printf("display linked list2:\n");
+	// displaylinkedlist2(stack->top);
 }
 
 int	scan_num_pos(t_stack *stack, int num)

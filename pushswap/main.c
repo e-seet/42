@@ -57,25 +57,117 @@ void loopbit(int num)
     while (i < 32) // Iterate through all 32 bits
     {
         bit = (num >> i) & 1;
-        printf("i: %d, value: %d\n", i, bit);
+        printf("%d", bit);
+        // printf("i: %d, value: %d\n", i, bit);
         i = i + 1;
     }
 }
 
 void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 {
-	printf("%p%p%p \n", stack_a->top, stack_b->top, numberofop);
-
-	printf("value:%d \n 5:%d\n 4:%d\n 3:%d\n 2:%d,  1:%d \n", -5,get5LastBit(-5) ,get4LastBit(-5) ,getthirdLastBit(-5),getSecLastBit(-5), getLastBit(-5));
-
+	// printf("radix sort\n");
+	// printf("value:%d \n 5:%d\n 4:%d\n 3:%d\n 2:%d,  1:%d \n", -5,get5LastBit(-5) ,get4LastBit(-5) ,getthirdLastBit(-5),getSecLastBit(-5), getLastBit(-5));
 	// printf("max int:%d", INT_MAX);
-	// loopbit(INT_MAX); // 32 bits as
-	// printf("\n\n");
+	// loopbit(INT_MAX); // 32 bits as // 0111
+	// printf("\n\n"); 
 	// printf("min int:%d", INT_MIN);
-	// loopbit(INT_MIN); // 2s complement. Need 32 bits to store.
+	// loopbit(INT_MIN); // 2s complement. Need 32 bits to store. 1000.... 
 
-	//if it is 1, push to stack b
+	//if it is 1/0, push to stack b? To find out
+	int i = 0;
+	t_node *headA;
+	t_node *headB;
 	
+	t_node *tailA;
+	// t_node *tailB;
+	
+	tailA = stack_a->bot;
+	// tailB = stack_b->bot;
+	
+	printf("%p%d \n\n",numberofop, i);
+	
+	// /*
+	while (4 > i)
+	{
+		// for the first time.
+		headA = stack_a->top;
+
+		if (stack_is_sorted(stack_a) == 0)
+		{
+			break;
+		}
+
+		// can do partitioning here to maximise efficiency 
+		while (headA != tailA)
+		{ 
+			// check if top is null
+			if (stack_a ->top != NULL)
+			{
+				headA = stack_a->top;
+			}
+
+			if (((headA->value >> i) & 1) == 1)
+			{
+				pb(stack_a,stack_b, numberofop);
+			} 
+			else
+			{
+				rotate_stack(stack_a, numberofop);
+			}
+				headA = stack_a->top;	
+		}
+
+		// had to use this to check the last one
+		if (((headA->value >> i) & 1) == 1)
+		{
+			pb(stack_a,stack_b, numberofop);
+		} 
+		else
+		{
+			rotate_stack(stack_a, numberofop);
+		}
+		
+		printf("after finish rotating A\n\n");
+		// displaylinkedlist2(stack_a->top);
+		// displaylinkedlist2(stack_b->top);
+
+		headB = stack_b->top;
+		if (headB != NULL)
+		{
+			// pushback to stack a
+			while (headB != NULL)
+			{
+				pa(stack_a, stack_b, numberofop);
+				// headB = headB->next;
+				headB = stack_b->top;
+			}
+		}
+
+		printf("\nthe %d from back\n",i);
+		printf("after finish pushing back to B\n\n");
+		// displaylinkedlist2(stack_a->top);
+		// displaylinkedlist2(stack_b->top);
+		i = i+1;
+	}
+	// */
+
+	displaylinkedlist2(stack_a->top);
+
+/*
+	headA = stack_a->top;
+	headB = stack_b->top;
+
+	printf("head A:%p\n", headA);
+	printf("head B%p\n", headB);
+	// pa(stack_a, stack_b, numberofop);
+	pb(stack_a, stack_b, numberofop);
+	headA = stack_a->top;
+	printf("head A:%p\n", headA);
+*/
+	// printf("\n\n");
+	// displaylinkedlist2(stack_a->top);
+	// displaylinkedlist2(stack_b->top);
+
 }
 
 int	main(int argc, char *argv[])
@@ -98,8 +190,10 @@ int	main(int argc, char *argv[])
 	initstack(&stack_a);
 	initstack(&stack_b);
 
+	// addtoback(&stack_a, ft_atoi(argv[i]));
 	while (argv[i])
 	{
+		
 		addtoback(&stack_a, ft_atoi(argv[i]));
 		// push(&stack_a, ft_atoi(argv[i]), &stackdetails );
 		// push(&stack_a, ft_atoi(argv[i]) );
@@ -141,7 +235,7 @@ int	main(int argc, char *argv[])
 	{
 		init5Element(&element5);
 		sort5(stack_a, stack_b, &numberofop, &element5);
-		displaystack(&stack_a);
+		// displaystack(&stack_a);
 	}
 	else 
 	{
@@ -177,3 +271,12 @@ int	main(int argc, char *argv[])
 	return (0);
 }
 
+
+/*
+1:	0000000000000001
+2:	0000000000000010
+3:	0000000000000011
+4:	0000000000000100
+8: 	0000000000001000
+10:	0000000000001010
+*/

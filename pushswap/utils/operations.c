@@ -32,24 +32,22 @@ void	ss(t_stack *a, t_stack *b,  int *numberofop)
 void	rotate_stack(t_stack *stack,  int *numberofop)
 {
 	printf("RA/RB: rotate_stack\n");
-	t_node	*curr;
-	t_node	*lastnode;
+	// t_node	*oldlastnode;
+	t_node	*newlastnode;
 
-	lastnode = stack->top;
-	stack -> top = lastnode -> next;
-	lastnode -> next = NULL;
-	curr = stack->top;
-	// may have issue here
-	// if (curr -> next != NULL)
-		// stack->sec = curr->next;
-	// else
-		// stack->sec = lastnode;
-	while (curr->next != NULL)
-	{
-		curr = curr->next;
-	}
-	curr->next = lastnode;
-	stack->bot = lastnode;
+	newlastnode = stack->top;
+	stack -> top = newlastnode -> next;
+
+	// oldlastnode = stack->bot;
+	stack->bot = newlastnode;
+	// lastnode -> next = NULL;
+	// curr = stack->top;
+	// while (curr->next != NULL)
+	// {
+		// curr = curr->next;
+	// }
+	// curr->next = lastnode;
+	// stack->bot = lastnode;
 	*numberofop = *numberofop +1;
 }
 

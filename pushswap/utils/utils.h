@@ -72,6 +72,9 @@ int	scan_num_pos(t_stack *stack, int num);
 // Bring the number 4 and 5 to the bottom of the stack
 void	bringtobot(t_stack	*stack, int *numberofop);
 
+void	displaylinkedlist2(t_node *head);
+void	displaylinkedlist(t_node *head);
+
 t_node	*create_node(int value);
 
 // Store the stack data
