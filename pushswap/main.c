@@ -1,4 +1,4 @@
-// #include "./utils/utils.h"
+#include "./utils/utils.h"
 #include "./utils/utils2.h"
 #include "./utils/timsort.h"
 #include "./utils/operations.h"
@@ -8,12 +8,11 @@
 
 void setpos(t_stack *stack_a, int argc)
 {
-	printf("set pos\n\n");
-	int i = 1;
-
+	int i;
 	int smallest;
-	t_node *curr = stack_a ->top;
+	t_node *curr;
 
+	i = 1;
 	while (argc > i)
 	{
 		// initial setting of smalelst value
@@ -26,7 +25,7 @@ void setpos(t_stack *stack_a, int argc)
 
 		// find the smallest for every iteration
 		while(curr ->next != stack_a->top)
-		{
+  		{
 			if (smallest > curr->value && curr->pos == 0)
 			{
 				smallest = curr->value;
@@ -47,10 +46,8 @@ void setpos(t_stack *stack_a, int argc)
 		curr ->pos = i;
 		i++;
 	}
-
 	// printf("\n\n");
 	displaylinkedlist2(stack_a->top);
-
 }
 
 void loopbit(int num)
@@ -69,28 +66,15 @@ void loopbit(int num)
 
 void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 {
-	// printf("radix sort\n");
-	// printf("max int:%d", INT_MAX);
-	// loopbit(INT_MAX); // 32 bits as // 0111
-	// printf("\n\n"); 
-	// printf("min int:%d", INT_MIN);
-	// loopbit(INT_MIN); // 2s complement. Need 32 bits to store. 1000.... 
-
 	//if it is 1/0, push to stack b? To find out
 	int i = 0;
 	t_node *headA;
 	t_node *headB;
-	
 	t_node *tailA;
-	// t_node *tailB;
 	
 	tailA = stack_a->bot;
-	// tailB = stack_b->bot;
 	
-	printf("%p%d \n\n",numberofop, i);
-	
-	// /*
-	while (5 > i)
+	while (32 > i)
 	{
 		printf("value of i :%d\n", i);
 		// for the first time.
@@ -118,11 +102,11 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 			{
 				printf("what is this? %d", (headA->pos >> i) & 1);
 				pb(stack_a,stack_b, numberofop);
-			} 
+			}
 			else
 			{
 				rotate_stack(stack_a, numberofop);
-			}
+ 			}
 			headA = stack_a->top;	
 		}
 		// printf("check A:\n");
@@ -138,10 +122,6 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 			rotate_stack(stack_a, numberofop);
 		}
 		displaylinkedlist2(stack_a->top);
-		
-		// printf("after finish rotating A\n\n");
-		// displaylinkedlist2(stack_a->top);
-		// displaylinkedlist2(stack_b->top);
 
 		headB = stack_b->top;
 		if (headB != NULL)
@@ -158,30 +138,10 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 		printf("i:%d\n", i);
 		displaylinkedlist2(stack_a->top);
 		printf("\n\n");
-		// printf("\nthe %d from back\n",i);
-		// printf("after finish pushing back to B\n\n");
-		// displaylinkedlist2(stack_a->top);
-		// displaylinkedlist2(stack_b->top);
 		i = i+1;
 	}
 	// */
 
-	// displaylinkedlist2(stack_a->top);
-
-/*
-	headA = stack_a->top;
-	headB = stack_b->top;
-
-	printf("head A:%p\n", headA);
-	printf("head B%p\n", headB);
-	// pa(stack_a, stack_b, numberofop);
-	pb(stack_a, stack_b, numberofop);
-	headA = stack_a->top;
-	printf("head A:%p\n", headA);
-*/
-	// printf("\n\n");
-	// displaylinkedlist2(stack_a->top);
-	// displaylinkedlist2(stack_b->top);
 
 }
 
@@ -196,38 +156,15 @@ int	main(int argc, char *argv[])
 
 	numberofop = 0;
 
-	// printf("minrun:%d\n", calculate_minrun(argc-1));
-	// stackdetails.stack_a_last = ft_atoi(argv[1]);
-	// stackdetails.stack_a_top = ft_atoi(argv[argc-1]);
-	// printf("top of stack: %d, bottom of stack:%d\n", stackdetails.stack_a_top, stackdetails.stack_a_last);
-
 	i = 1;
 	initstack(&stack_a);
 	initstack(&stack_b);
 
-	// addtoback(&stack_a, ft_atoi(argv[i]));
 	while (argv[i])
 	{
-		
 		addtoback(&stack_a, ft_atoi(argv[i]));
-		// push(&stack_a, ft_atoi(argv[i]), &stackdetails );
-		// push(&stack_a, ft_atoi(argv[i]) );
 		i++;
 	}
-
-	// t_node *head = stack_a.top;
-	// printf("count elements in stack%d\n", count_elements_in_stack(head) );
-	// pb(&stack_a, &stack_b);
-	// head = stack_a.top;
-	// printf("count elements in stack%d\n", count_elements_in_stack(head) );
-
-	// // To count min run first
-	// int numofelements = count_elements_in_stack(head);
-	// int minrun = calculate_minrun(numofelements);
-	// // printf("minrun:%d\n", minrun);
-
-	// int numofrun = (argc -1) / minrun;
-	// printf("number of runs that will be created:%d \n", numofrun);
 
 	// sort 3
 	if (argc == 4)
@@ -262,28 +199,7 @@ int	main(int argc, char *argv[])
 	printf("after sorting\n");
 	displaystack(&stack_a);
 
-	// less than critical number of 64
-	// if (numofrun == 1)
-	// {
-
-		// first operation
-		// if (stackdetails.stack_a_top > stackdetails.stack_a_sec)
-			// pb(&stack_a, &stack_b);
-		// else
-			// rr(&stack_a, &stack_b);
-
-		// second operation
-		// if (stackdetails.stack_a_top > stackdetails.stack_a_sec)
-			// pb(&stack_a, &stack_b);
-		// else
-			// rr(&stack_a, &stack_b);
-		
-		// printf("\n");
-		// displaystack(&stack_a);
-		// displaystack(&stack_b);
-
-	// }
-
+	printf("ops:%d\n", numberofop);
 	return (0);
 }
 

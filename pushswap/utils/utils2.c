@@ -3,11 +3,15 @@
 int	count_elements_in_stack(t_node *head)
 {
 	int	i;
+	t_node *curr;
 
-	i = 0;
-	while (head != NULL)
+	curr = head;
+	i = 1;
+
+	curr = curr ->next;
+	while (curr != head)
 	{
-		head = head->next;
+		curr = curr->next;
 		i++;
 	}
 	return (i);

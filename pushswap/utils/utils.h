@@ -20,6 +20,7 @@ typedef struct s_stack
 	// t_node	*sec;
 	t_node	*bot;
 	int		numofelements;
+	int		originalnumber;
 }	t_stack;
 
 
