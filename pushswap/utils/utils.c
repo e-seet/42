@@ -126,7 +126,7 @@ void	displaylinkedlist2(t_node *head)
 	}
 
 	printf("Linked List: ");
-	printf("\nvalue%d", current->value);
+	printf("\n%d  ", current->value);
 	printf("+pos:%d  ", current->pos);
 	printf("\nprev:%p  ", current->prev);
 	printf("\ncurr:%p  ", current);
