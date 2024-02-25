@@ -47,10 +47,9 @@ void setpos(t_stack *stack_a, int argc)
 		i++;
 	}
 	stack_a ->originalnumber = argc -1;
-	// printf("\n\n");
-	// displaylinkedlist2(stack_a->top);
 }
 
+/*
 void loopbit(int num)
 {
     int i = 0;
@@ -63,7 +62,7 @@ void loopbit(int num)
         // printf("i: %d, value: %d\n", i, bit);
         i = i + 1;
     }
-}
+}*/
 
 int number_of_binary_digits(int num) {
     int count = 0;
@@ -94,37 +93,33 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop, int binaryd
 	t_node *headA;
 	t_node *headB;
 	t_node *tailA;
+	// t_node *tailB;
 	
 	tailA = stack_a->bot;
 	
-	while (binarydigit >= i)
+	while (binarydigit-2 >= i)
 	{
 		printf("\n\nvalue of i :%d\n", i);
-		
-
+		displaylinkedlist2(stack_a->top);
+		displaylinkedlist2(stack_b->top);
+		printf("\n\n");
 		// for the first time.
 		headA = stack_a->top;
 		tailA = stack_a->bot;
-		// if (stack_a->top == NULL)
-			// printf("something is wrong\n");
 
-		if (
-			// (stack_is_sorted(stack_a) == 0  && (stack_a->originalnumber == count_elements_in_stack(stack_a->top)))
-			// || 
-			(stack_is_sorted2(stack_a) == 0 && (stack_a->originalnumber == count_elements_in_stack(stack_a->top)))
-		)
+		printf("original number:%d\n",  stack_a->originalnumber);
+		printf("count element in a:%d\n", count_elements_in_stack(stack_a->top));
+
+		if ( (stack_is_sorted2(stack_a) == 0 && (stack_a->originalnumber == count_elements_in_stack(stack_a->top))))
 		{
 			break;
 		}
 
-		// printf("taila: %p",tailA);
-
 		// can do partitioning here to maximise efficiency 
 		while (headA != tailA)
 		{ 
-			printf("first while loop\n");
-			displaylinkedlist2(stack_a->top);
-
+			// printf("first while loop\n");
+			// displaylinkedlist2(stack_a->top);
 
 			// check if top is null
 			if (stack_a ->top != NULL)
@@ -132,16 +127,16 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop, int binaryd
 				headA = stack_a->top;
 			}
 
+			// dont rotate after pushing
 			if (((headA->pos >> i) & 1) == 0)
 			{
-				// printf("what is this? %d", (headA->pos >> i) & 1);
-				if (((headA->pos >> (i+1)) & 1) == 0)
-				{
 					pb(stack_a,stack_b, numberofop);
-					rotate_stack(stack_b, numberofop);
-				}
-				else
-					pb(stack_a,stack_b, numberofop);
+			}
+			// rotate down
+			else if (((headA->pos >> (i+1)) & 1) == 0)
+			{
+				pb(stack_a,stack_b, numberofop);
+				rotate_stack(stack_b, numberofop);
 			}
 			else
 			{
@@ -150,38 +145,51 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop, int binaryd
 			headA = stack_a->top;	
 		}
 
-		// have to add extra if to check 
+		// check last node
 		if (headA != NULL)
 		{
-			// had to use this to check the last one
+			// dont rotate after pushing
 			if (((headA->pos >> i) & 1) == 0)
 			{
-				// pb(stack_a,stack_b, numberofop);
-				if (((headA->pos >> (i+1)) & 1) == 0)
-				{
 					pb(stack_a,stack_b, numberofop);
-					rotate_stack(stack_b, numberofop);
-				}
-				else
-					pb(stack_a,stack_b, numberofop);
-			} 
+			}
+			// rotate down
+			else if (((headA->pos >> (i+1)) & 1) == 0)
+			{
+				pb(stack_a,stack_b, numberofop);
+				rotate_stack(stack_b, numberofop);
+			}
+			
 			else
 			{
 				rotate_stack(stack_a, numberofop);
-			}
-			// displaylinkedlist2(stack_a->top);
+ 			}
 		}
+		// end of pushing to b
 
-		// printf("display stack b\n");
-		// displaylinkedlist2(stack_b->top);
+		printf("end of Pushing to B\n");
+		printf("a\n");
+ 		displaylinkedlist2(stack_a->top);
+ 		printf("b\n");
+		displaylinkedlist2(stack_b->top);
+
+		
+		t_node *tailB;
+		
+		// push back to A
 		headB = stack_b->top;
+		tailB = stack_b->bot;
+		// tailB = stack_b->bot;
+		int breaknum = 0;
+
 		if (headB != NULL)
 		{
 			printf("second while loop\n");
 			// pushback to stack a
-			while (headB != NULL)
+			while (headB != tailB)
 			{
-				// printf("second while loop\n");
+				
+				// check that stack b is sorted or ready to push back to a. [unlikely]
 				if 
 				(
 					(stack_is_rev_sorted(stack_b) == 0 && (stack_a->originalnumber == count_elements_in_stack(stack_b->top))) ||
@@ -195,29 +203,101 @@ void radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop, int binaryd
 						headB = stack_b->top;
 					}
 					break;
+				
 				}
-				else if (((headB->pos >> (i)) & 1) == 0 && (((headB->pos >> (i+1)) & 1) != 0))
+				else if (((headB->pos >> (i)) & 1) == 0 )
 				{
-					printf("back back from stack b to stack a\n");
-					pa(stack_a, stack_b, numberofop);
+					while ((((headB->pos >> (i)) & 1) == 0))
+					{
+						pa(stack_a, stack_b, numberofop);
+						headB = stack_b->top;
+					}
+				
+
 				}
-				else if (((headB->pos >> (i+1)) & 1) == 0)
+				// else if (((headB->pos >> (i)) & 1) == 0 && (((headB->pos >> (i+1)) & 1) != 0))
+				// {
+				// 	// last digit is 0, and 2nd last is 1, push back to a
+				// 	while (((headB->pos >> (i)) & 1) == 0 && (((headB->pos >> (i+1)) & 1) != 0))
+				// 	{
+				// 		pa(stack_a, stack_b, numberofop);
+				// 		headB = stack_b->top;
+				// 		// printf("value :%d \n", headB->value);
+				// 		// printf("lsb: %d\n", (headB->pos >> (i)) & 1);
+				// 		// printf("2 lsb: %d\n", (headB->pos >> (i+1)) & 1);
+				// 	}
+
+					// when i am done with lsb = 0 and msb = 1. 
+					// Need to reverse rotate back so that the head becomes the tail? or tail becoems the head?
+					// basically everything should be retotated until it is done
+					
+					/*
+					tailB = stack_b ->bot;
+					headB = stack_b->top;
+					int breaknum2 = 0;
+					while (headB != stack_b->bot)
+					{
+						printf("Reverse rotate rotate back\n");
+						// reverse_rotate_stack(stack_b, numberofop);
+						if (breaknum2 == 7)
+							break;
+						// tailB = stack_b->bot;
+						breaknum2 = breaknum2 + 1;
+
+					}
+					printf("end of rotating: %d\n", tailB->value);*/
+				// }
+
+				// else if (((headB->pos >> (i)) & 1) == 0 && (((headB->pos >> (i+1)) & 1) != 0))
+				// else if ( (((headB->pos >> (i+1)) & 1) != 1))
+				// {
+				// 	printf("back back from stack b to stack a\n");
+				// 	pa(stack_a, stack_b, numberofop);
+				// }
+				// else if (((headB->pos >> (i+1)) & 1) == 0)
+				// {
+				// 	headB = stack_b->top;
+				// 	while (headB != tailB)
+				// 	{
+				// 		reverse_rotate_stack(stack_b, numberofop);
+				// 		headB = stack_b->top;
+				// 	}
+				// 	if (headB == tailB)
+				// 		break;
+				// }
+				else if (breaknum == 10)
+				{
 					break;
+				}
+				else
+				{
+					rotate_stack(stack_b, numberofop);
+
+				}
 				headB = stack_b->top;
+				breaknum = breaknum + 1;
 			}
 		}
 
 		// printf("i:%d\n", i);
-		// displaylinkedlist2(stack_a->top);
+		printf("end of pushing back to a| value of i:%d\n", i);
+		printf("a\n");
+		displaylinkedlist2(stack_a->top);
+		printf("b\n");
+		displaylinkedlist2(stack_b->top);
 		// printf("\n\n");
 		i = i+1;
 	}
 
+
 	headB = stack_b->top;
-	while (headB != NULL)
+	if (headB != NULL)
 	{
-		pa(stack_a, stack_b, numberofop);
-		headB = stack_b->top;
+		while (headB != NULL)
+		{
+			pa(stack_a, stack_b, numberofop);
+			headB = stack_b->top;
+		}
 	}
 
 	// */
@@ -281,7 +361,7 @@ int	main(int argc, char *argv[])
 
 	printf("after sorting\n");
 	// printf("a\n");
-	// displaylinkedlist2(stack_a.top);
+	displaylinkedlist2(stack_a.top);
 	// printf("b\n");
 	// displaylinkedlist2(stack_b.top);
 

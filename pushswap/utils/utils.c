@@ -125,12 +125,12 @@ void	displaylinkedlist2(t_node *head)
 		return;
 	}
 
-	printf("Linked List: ");
-	printf("\n%d  ", current->value);
-	printf("+pos:%d  ", current->pos);
-	printf("\nprev:%p  ", current->prev);
-	printf("\ncurr:%p  ", current);
-	printf("\nnext:%p  ", current->next);
+	printf("Linked List:\n");
+	// printf("\n%d  ", current->value);
+	printf("pos:%d  \n", current->pos);
+	// printf("prev:%p  \n", current->prev);
+	// printf("\ncurr:%p  ", current);
+	// printf("\nnext:%p  ", current->next);
 	current = current->next;
 
 	int i = 0;
@@ -138,11 +138,11 @@ void	displaylinkedlist2(t_node *head)
 	while (current != head)
 	{
 		// printf("\ncurr:%p  ", current);
-		printf("\n%d  ", current->value);
-		printf("+pos:%d  ", current->pos);
-		printf("\nprev:%p  ", current->prev);
-		printf("\ncurr:%p  ", current);
-		 printf("\nnext:%p  ", current->next);
+		// printf("\n%d  ", current->value);
+		printf("pos:%d  \n", current->pos);
+		// printf("prev:%p  \n", current->prev);
+		// printf("\ncurr:%p  ", current);
+		//  printf("\nnext:%p  ", current->next);
 		// printf("\nnext:%p  ", current->next);
 		if (current == current->next || i >8)
 		{

@@ -5,16 +5,18 @@
 // Else, return the last node.
 t_node	*ft_rralastnode(t_node *head, int tonull)
 {
-	t_node	*prev;
+	// t_node	*prev;
+	t_node	*curr;
 
-	while (head->next != NULL)
+	curr = head;
+	while (curr->next != head)
 	{
-		prev = head;
-		head = head->next;
+		// prev = curr;
+		curr = curr->next;
 	}
 	if (tonull == 1)
-		prev ->next = NULL;
-	return (head);
+		curr ->next = head;
+	return (curr);
 }
 
 // Shift down all elements of stack by 1
@@ -27,7 +29,7 @@ void	reverse_rotate_stack(t_stack *stack,  int *numberofop)
 	head = stack->top;
 	lastnode = ft_rralastnode(head, 1);
 	// printf("check my lastnode:%d\n", lastnode->value);
-	lastnode -> next = head;
+	// lastnode -> next = head;
 	// head = lastnode;
 	stack->top = lastnode;
 	// manual check that next is present and then assign it to next

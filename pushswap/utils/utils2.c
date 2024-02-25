@@ -129,7 +129,7 @@ int	stack_is_rev_sorted(t_stack *stack)
 			pos = curr->pos;
 	else
 	{
-		printf("end of sorted 2\n");
+		// printf("end of sorted 2\n");
 		return (1);
 	}
 	printf("end of sorted 2\n");
