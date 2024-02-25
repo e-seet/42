@@ -18,31 +18,24 @@ t_node	*ft_rralastnode(t_node *head, int tonull)
 }
 
 // Shift down all elements of stack by 1
-void	reverse_rotate_stack(t_stack *stack,  int *numberofop)
+void	reverse_rotate_stack(t_stack *stack, int *numberofop)
 {
-	printf("RRA/RRB: reverse_rotate_stack\n");
 	t_node	*head;
 	t_node	*lastnode;
 
+	printf("RRA/RRB: reverse_rotate_stack\n");
 	head = stack->top;
 	lastnode = ft_rralastnode(head, 1);
-	// printf("check my lastnode:%d\n", lastnode->value);
 	lastnode -> next = head;
-	// head = lastnode;
 	stack->top = lastnode;
 	// manual check that next is present and then assign it to next
-	// if (head -> next != NULL)
-	// {
-		// head = head->next;
-		// stack->sec = head;
-	// }	
 	lastnode = ft_rralastnode(head, 0);
 	stack->bot = lastnode;
 	*numberofop = *numberofop + 1;
 }
 
 // rra and rrb at the same time
-void	rrr(t_stack *a, t_stack *b,  int *numberofop)
+void	rrr(t_stack *a, t_stack *b, int *numberofop)
 {
 	printf("RRR:");
 	reverse_rotate_stack(a, numberofop);
@@ -53,15 +46,14 @@ void	rrr(t_stack *a, t_stack *b,  int *numberofop)
 
 // NOTE: pa and pb may have issues with regards to stack updates.
 // Take the first element at the top of a and put it at the top of b
-void	pb(t_stack *a, t_stack *b,  int *numberofop)
+void	pb(t_stack *a, t_stack *b, int *numberofop)
 {
-	printf("PB\n");
 	t_node	*topnode_a;
 	t_node	*topnode_b;
 
+	printf("PB\n");
 	topnode_a = a->top;
 	topnode_b = b->top;
-
 	if (topnode_a != NULL)
 	{
 		if (topnode_a -> next != topnode_a)
@@ -75,8 +67,6 @@ void	pb(t_stack *a, t_stack *b,  int *numberofop)
 			a->top = NULL;
 			a->bot = NULL;
 		}
-
-
 		if (topnode_b != NULL)
 		{
 			topnode_a->next = topnode_b;
@@ -93,7 +83,7 @@ void	pb(t_stack *a, t_stack *b,  int *numberofop)
 			topnode_a->next = topnode_a;
 			topnode_a->prev = topnode_a;
 		}
-			b->top = topnode_a;
+		b->top = topnode_a;
 	}
 	*numberofop = *numberofop + 1;
 }
@@ -101,28 +91,25 @@ void	pb(t_stack *a, t_stack *b,  int *numberofop)
 // // Take the first element at the top of b and put it at the top of a
 void	pa(t_stack *a, t_stack *b, int *numberofop)
 {
-	printf("PA\n");
 	t_node	*topnode_a;
 	t_node	*topnode_b;
 
+	printf("PA\n");
 	topnode_a = a->top;
 	topnode_b = b->top;
-
 	if (topnode_b != NULL)
 	{
 		if (topnode_b->next != topnode_b)
 		{
 			b->top = topnode_b->next;
-			(topnode_b->next)->prev  = topnode_b->prev;
-			(topnode_b->prev)->next  = topnode_b->next;
+			(topnode_b->next)->prev = topnode_b->prev;
+			(topnode_b->prev)->next = topnode_b->next;
 		}
 		else
 		{
 			b->top = NULL;
 			b->bot = NULL;
 		}
-
-		
 		if (topnode_a != NULL)
 		{
 			topnode_b->next = topnode_a;
@@ -148,10 +135,7 @@ void	pa(t_stack *a, t_stack *b, int *numberofop)
 		topnode_b->prev = topnode_b;
 		a->top = topnode_b;
 	}
-	
 	*numberofop = *numberofop +1;
-
-	// printf("end of pa \n\n\n");
 }
 
 // Shift down all elements of stack a by 1
@@ -183,4 +167,3 @@ void	pa(t_stack *a, t_stack *b, int *numberofop)
 // 	b->top = head;
 // 	lastnode = ft_rralastnode(head, 0);
 // }
-

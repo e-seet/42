@@ -1,12 +1,12 @@
 #include "operations.h"
 
 // the reference node for stack->top and stack->next did not change
-void	swap_top_two(t_stack *stack,  int *numberofop)
+void	swap_top_two(t_stack *stack, int *numberofop)
 {
-	printf("SA/SB: swap top two\n");
 	t_node	*top;
 	t_node	*nextnode;
 
+	printf("SA/SB: swap top two\n");
 	top = stack->top;
 	nextnode = top->next;
 	if (top != NULL && nextnode != NULL)
@@ -14,45 +14,34 @@ void	swap_top_two(t_stack *stack,  int *numberofop)
 		top -> next = nextnode ->next;
 		nextnode ->prev = top->prev;
 		top -> prev = nextnode;
-		nextnode-> next = top;
+		nextnode->next = top;
 	}
 	*numberofop = *numberofop +1;
 }
 
-void	ss(t_stack *a, t_stack *b,  int *numberofop)
+void	ss(t_stack *a, t_stack *b, int *numberofop)
 {
 	printf("SS:");
 	swap_top_two(a, numberofop);
-	swap_top_two(b,numberofop);
+	swap_top_two(b, numberofop);
 	*numberofop = *numberofop -1;
 	printf("\n\n");
 }
 
 // Shift up all elements of stack by 1
-void	rotate_stack(t_stack *stack,  int *numberofop)
+void	rotate_stack(t_stack *stack, int *numberofop)
 {
-	printf("RA/RB: rotate_stack\n");
-	// t_node	*oldlastnode;
 	t_node	*newlastnode;
 
+	printf("RA/RB: rotate_stack\n");
 	newlastnode = stack->top;
 	stack -> top = newlastnode -> next;
-
-	// oldlastnode = stack->bot;
 	stack->bot = newlastnode;
-	// lastnode -> next = NULL;
-	// curr = stack->top;
-	// while (curr->next != NULL)
-	// {
-		// curr = curr->next;
-	// }
-	// curr->next = lastnode;
-	// stack->bot = lastnode;
 	*numberofop = *numberofop +1;
 }
 
 // ra and rb at the same time
-void	rr(t_stack *a, t_stack *b,  int *numberofop)
+void	rr(t_stack *a, t_stack *b, int *numberofop)
 {
 	printf("RR:");
 	rotate_stack(a, numberofop);
@@ -128,4 +117,3 @@ void	rr(t_stack *a, t_stack *b,  int *numberofop)
 // 	}
 // 	curr->next = lastnode;
 // }
-

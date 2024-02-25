@@ -23,7 +23,6 @@ typedef struct s_stack
 	int		originalnumber;
 }	t_stack;
 
-
 typedef struct s_element5
 {
 	int				smallest;
@@ -38,7 +37,7 @@ typedef struct s_element5
 	int				secondlargestpos;
 	int				largestpos;
 
-}	s_element5;
+}	t_element5;
 
 typedef struct s_element3
 {
@@ -50,7 +49,7 @@ typedef struct s_element3
 	int				middlepos;
 	int				largestpos;
 
-}	s_element3;
+}	t_element3;
 
 // init stack A and stack B
 void	initstack(t_stack *stack);
@@ -68,7 +67,7 @@ void	addtoback(t_stack *stack, int value);
 void	displaystack(t_stack *stack);
 
 // Find out the position of the number
-int	scan_num_pos(t_stack *stack, int num);
+int		scan_num_pos(t_stack *stack, int num);
 
 // This is used for 5 elements
 // Bring the number 4 and 5 to the bottom of the stack
@@ -95,7 +94,6 @@ t_node	*create_node(int value);
 // 	int stack_b_last;
 // 	int stack_b_numofelements;
 // }	s_datastore;
-
 
 // void	push(t_stack *stack, int value, s_datastore *stackdetails);
 

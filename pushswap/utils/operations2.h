@@ -9,8 +9,8 @@ void	rrr(t_stack *a, t_stack *b, int *numberofop );
 
 t_node	*ft_rralastnode(t_node *head, int tonull);
 
-void	pb(t_stack *a, t_stack *b,  int *numberofop);
+void	pb(t_stack *a, t_stack *b, int *numberofop);
 
-void	pa(t_stack *a, t_stack *b,  int *numberofop);
+void	pa(t_stack *a, t_stack *b, int *numberofop);
 
 #endif

@@ -6,7 +6,6 @@
 void	initstack(t_stack *stack)
 {
 	stack->top = NULL;
-	// stack->sec = NULL;
 	stack->bot = NULL;
 	stack->numofelements = -1;
 }
@@ -30,10 +29,8 @@ t_node	*create_node(int value)
 
 void	addtoback(t_stack *stack, int value)
 {
-
 	t_node	*head;
 	t_node	*curr;
-	// t_node	*prev = NULL;
 	t_node	*newnode;
 
 	newnode = create_node(value);
@@ -65,7 +62,6 @@ void	addtoback(t_stack *stack, int value)
 			newnode -> prev = curr;
 			head->prev = newnode;
 		}
-		
 		stack->numofelements += 1;
 		stack->bot = newnode;
 	}
@@ -90,7 +86,6 @@ void	push(t_stack *stack, int value)
 	}
 	else
 	{
-		// stack->sec = stack->top;
 		stack->numofelements += 1;
 	}
 	stack->top = newnode;
@@ -104,7 +99,7 @@ void	displaylinkedlist(t_node *head)
 	current = head;
 	printf("Linked List: ");
 	printf("\n%d  ", current->value);
-	current = current ->next;	
+	current = current ->next;
 	while (current != head)
 	{
 		printf("\n%d  ", current->value);
@@ -117,14 +112,15 @@ void	displaylinkedlist(t_node *head)
 void	displaylinkedlist2(t_node *head)
 {
 	t_node	*current;
+	int		i;
 
 	current = head;
+	i = 0;
 	if (current == NULL)
 	{
 		// printf("curr is null\n");
-		return;
+		return ;
 	}
-
 	printf("Linked List: ");
 	printf("\nvalue%d", current->value);
 	printf("+pos:%d  ", current->pos);
@@ -132,9 +128,6 @@ void	displaylinkedlist2(t_node *head)
 	printf("\ncurr:%p  ", current);
 	printf("\nnext:%p  ", current->next);
 	current = current->next;
-
-	int i = 0;
-
 	while (current != head)
 	{
 		// printf("\ncurr:%p  ", current);
@@ -142,41 +135,38 @@ void	displaylinkedlist2(t_node *head)
 		printf("+pos:%d  ", current->pos);
 		printf("\nprev:%p  ", current->prev);
 		printf("\ncurr:%p  ", current);
-		 printf("\nnext:%p  ", current->next);
-		// printf("\nnext:%p  ", current->next);
-		if (current == current->next || i >8)
+		printf("\nnext:%p  ", current->next);
+		if (current == current->next || i > 8)
 		{
 			printf("curr == curr->Next or i > 6\n");
-			break;
+			break ;
 		}
 		current = current->next;
 		i ++;
 	}
-
-	// printf("\n\nreverse it");
-	// printf("\n%d  ", current->value);
-	// printf("\nprev:%p  ", current->prev);
-	// printf("\ncurr:%p  ", current);
-	// printf("\nnext:%p  ", current->next);
-	// current = current->prev;
-	// while (current != head)
-	// {
-	// 	// printf("\ncurr:%p  ", current);
-	// 	printf("\n%d  ", current->value);
-	// 	printf("\nprev:%p  ", current->prev);
-	// 	printf("\ncurr:%p  ", current);
-	// 	 printf("\nnext:%p  ", current->next);
-	// 	// printf("\nnext:%p  ", current->next);
-	// 	if (current == current->prev || i > 20)
-	// 	{
-	// 		printf("curr == curr->prev or i > 12\n");
-	// 		break;
-	// 	}
-	// 	current = current->prev;
-	// 	i ++;
-	// }
-
-	printf("\n\n");
+	/*printf("\n\nreverse it");
+	printf("\n%d  ", current->value);
+	printf("\nprev:%p  ", current->prev);
+	printf("\ncurr:%p  ", current);
+	printf("\nnext:%p  ", current->next);
+	current = current->prev;
+	while (current != head)
+	{
+		// printf("\ncurr:%p  ", current);
+		printf("\n%d  ", current->value);
+		printf("\nprev:%p  ", current->prev);
+		printf("\ncurr:%p  ", current);
+		 printf("\nnext:%p  ", current->next);
+		// printf("\nnext:%p  ", current->next);
+		if (current == current->prev || i > 20)
+		{
+			printf("curr == curr->prev or i > 12\n");
+			break;
+		}
+		current = current->prev;
+		i ++;
+	}
+	printf("\n\n");*/
 }
 
 // Function to display the elements in the stack (linked list)
@@ -184,8 +174,7 @@ void	displaystack(t_stack *stack)
 {
 	printf("display linked list:\n");
 	displaylinkedlist(stack->top);
-	// printf("display linked list2:\n");
-	// displaylinkedlist2(stack->top);
+	// /* displaylinkedlist2(stack->top);*/
 }
 
 int	scan_num_pos(t_stack *stack, int num)

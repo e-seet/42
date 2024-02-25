@@ -2,12 +2,11 @@
 
 int	count_elements_in_stack(t_node *head)
 {
-	int	i;
-	t_node *curr;
+	int		i;
+	t_node	*curr;
 
 	curr = head;
 	i = 1;
-
 	curr = curr ->next;
 	while (curr != head)
 	{
@@ -39,11 +38,11 @@ int	stack_is_sorted(t_stack *stack)
 		curr = curr->next;
 	}
 	if (curr->value > val)
-			val = curr->value;
-		else
-		{
-			return (1);
-		}
+		val = curr->value;
+	else
+	{
+		return (1);
+	}
 	return (0);
 }
 
@@ -67,10 +66,10 @@ int	stack_is_sorted2(t_stack *stack)
 		curr = curr->next;
 	}
 	if (curr->pos > pos)
-			pos = curr->pos;
-		else
-		{
-			return (1);
-		}
+		pos = curr->pos;
+	else
+	{
+		return (1);
+	}
 	return (0);
 }
