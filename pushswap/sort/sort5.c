@@ -14,6 +14,7 @@ void	init5_element(t_element5 *element5)
 // 2nd largest, and largest numbers in the linked list
 void	find5_numbers(t_node *head, t_element5 *element5)
 {
+	printf("find 5 numbers\n");
 	struct s_node	*current;
 	struct s_node	*head_ptr;
 
@@ -69,6 +70,7 @@ void	find5_numbers(t_node *head, t_element5 *element5)
 
 void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, t_element5 *element5)
 {
+	printf("sort 5\n");
 	t_element3	element3;
 
 	displaystack(&stack_a);

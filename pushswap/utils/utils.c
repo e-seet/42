@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "timsort.h"
+// #include "timsort.h"
 #include "operations.h"
 #include "operations2.h"
 
@@ -44,7 +44,6 @@ void	addtoback(t_stack *stack, int value)
 		// if there is 1 node
 		if (curr->next == NULL)
 		{
-			printf("only 1 node\n");
 			curr -> next = newnode;
 			curr -> prev = newnode;
 			newnode -> next = curr;
@@ -173,7 +172,9 @@ void	displaylinkedlist2(t_node *head)
 void	displaystack(t_stack *stack)
 {
 	printf("display linked list:\n");
-	displaylinkedlist(stack->top);
+	if (stack->top != NULL)
+		displaylinkedlist(stack->top);
+	
 	// /* displaylinkedlist2(stack->top);*/
 }
 
