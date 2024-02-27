@@ -5,6 +5,7 @@
 #include "./utils/operations2.h"
 #include "./sort/sort3.h"
 #include "./sort/sort5.h"
+#include "./sort/radix_sort.h"
 
 // Function to check for duplicates in a circular linked list
 int hasDuplicate(t_node *head)
@@ -73,48 +74,6 @@ int	ft_atoi_modified(const char *str, int *err)
 }
 
 
-void	setpos(t_stack *stack_a, int argc)
-{
-	int		i;
-	int		smallest;
-	t_node	*curr;
-
-	i = 1;
-	while (argc > i)
-	{
-		curr = stack_a ->top;
-		while (curr->pos != 0)
-		{
-			curr = curr ->next;
-		}
-		smallest = curr->value;
-		// find the smallest for every iteration
-		while (curr ->next != stack_a->top)
-		{
-			if (smallest > curr->value && curr->pos == 0)
-			{
-				smallest = curr->value;
-			}
-			curr = curr->next;
-		}
-		// check last item
-		if (smallest > curr->value && curr->pos == 0)
-		{
-			smallest = curr->value;
-		}
-		// find where the node of interest is and set pos
-		curr = stack_a->top;
-		while (curr->value != smallest)
-		{
-			curr = curr->next;
-		}
-		curr ->pos = i;
-		i++;
-	}
-	printf("set pos\n");
-	displaylinkedlist2(stack_a->top);
-}
-
 void	loopbit(int num)
 {
 	int	i;
@@ -126,61 +85,6 @@ void	loopbit(int num)
 	{
 		bit = (num >> i) & 1;
 		printf("%d", bit);
-		i = i + 1;
-	}
-}
-
-void	radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
-{
-	int		i;
-	t_node	*head_a;
-	t_node	*head_b;
-	t_node	*tail_a;
-
-	tail_a = stack_a->bot;
-	i = 0;
-	while (32 > i)
-	{
-		head_a = stack_a->top;
-		tail_a = stack_a->bot;
-		if (stack_is_sorted(stack_a) == 0 || stack_is_sorted2(stack_a) == 0)
-		{
-			break ;
-		}
-		while (head_a != tail_a)
-		{
-			if (stack_a ->top != NULL)
-			{
-				head_a = stack_a->top;
-			}
-			if (((head_a->pos >> i) & 1) == 0)
-			{
-				pb(stack_a, stack_b, numberofop);
-			}
-			else
-			{
-				rotate_stack(stack_a, numberofop);
-			}
-			head_a = stack_a->top;
-		}
-		if (((head_a->pos >> i) & 1) == 0)
-		{
-			pb(stack_a, stack_b, numberofop);
-		}
-		else
-		{
-			rotate_stack(stack_a, numberofop);
-		}
-		head_b = stack_b->top;
-		if (head_b != NULL)
-		{
-			while (head_b != NULL)
-			{
-				pa(stack_a, stack_b, numberofop);
-				head_b = stack_b->top;
-			}
-		}
-		displaylinkedlist2(stack_a->top);
 		i = i + 1;
 	}
 }
@@ -298,40 +202,3 @@ int	main(int argc, char *argv[])
 	printf("ops:%d\n", numberofop);
 	return (0);
 }
-
-
-// should not work
-//  should return "Error\n"
-// ./push_swap 1 3 dog 35 80 -3 
-// ./push_swap a
-
- //this need error? To check this test case
-// ./push_swap 1 2 3 5 67b778 947
-// .push_swap " 12 4 6 8 54fhd 4354"
-// ./push_swap 1 --    45 32 
-
-
-// The program should NOT work if it encounters a double number
-// ./push_swap 1 3 58 9 3
-// ./push_swap 3 03
-// ./push_swap " 49 128     50 38   49"
-// these examples should return "Error\n"
-
-// ./push_swap "95 99 -9 10 9"
-// this example should work because -9 & 9 are not equal
-
-// The program should work with INT MAX & INT MIN
-// ./push_swap 2147483647 2 4 7
-// ./push_swap 99 -2147483648 23 545
-// ./push_swap "2147483647 843 56544 24394"
-// these examples should work and sort your list
-
-// should not work since more than max
-// ./push_swap 54867543867438 3
-// ./push_swap -2147483647765 4 5
-// ./push_swap "214748364748385 28 47 29"
-// these examples should return "Error
-
-// Nothing has been specified when strings and int are mixed. It's up to you what you want to do
-// not done
-// ./push_swap "1 2 4 3" 76 90 "348 05

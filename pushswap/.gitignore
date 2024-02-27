@@ -6,17 +6,19 @@ x
 checker_Mac
 checker_linux
 pro_checker
-# push_swap_tester
 push_swap_test_linux.sh
 push_swap_test.sh
+push_swap_tester
+/Push-Swap-Tester
+script.checker_linux
+
 
 /ignore/*
 
 # timsort and all
 minrun.c
-script.checker_linux
 test
 test_check.txt
 timsort.md
-push_swap_tester
-Push-Swap-Tester
+
+script.c
