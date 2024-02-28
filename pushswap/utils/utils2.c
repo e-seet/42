@@ -89,6 +89,7 @@ int	ft_atoi_modified(const char *str, int *err)
 	int			sign;
 	long int	num;
 
+	printf("atoi\n");
 	i = 0;
 	sign = 1;
 	num = 0;

@@ -38,7 +38,9 @@ void	addtoback(t_stack *stack, int value)
 	head = stack->top;
 	// if there is no node
 	if (head == NULL)
+	{
 		stack->top = newnode;
+	}
 	else
 	{
 		curr = head;
