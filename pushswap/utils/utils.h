@@ -5,6 +5,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <limits.h>
+// # include "../sort/sort5.c"
 
 typedef struct s_node
 {
@@ -73,10 +74,13 @@ int		scan_num_pos(t_stack *stack, int num);
 // Bring the number 4 and 5 to the bottom of the stack
 void	bringtobot(t_stack	*stack, int *numberofop);
 
+void	displaylinkedlist3(t_node *head);
 void	displaylinkedlist2(t_node *head);
 void	displaylinkedlist(t_node *head);
 
 t_node	*create_node(int value);
+
+int	ft_lstsize2(t_node *head);
 
 // Store the stack data
 // top data, next data, last data

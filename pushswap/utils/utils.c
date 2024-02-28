@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "utils2.h"
 // #include "timsort.h"
 #include "operations.h"
 #include "operations2.h"
@@ -90,20 +91,62 @@ void	push(t_stack *stack, int value)
 	stack->top = newnode;
 }
 
+//temp
+int	ft_lstsize2(t_node *head)
+{
+	printf("ft_lstsize2\n");
+	int	i;
+	t_node *curr;
+
+	curr = head;
+	i = 0;
+	if (curr == NULL)
+		return (0);
+	else
+	{
+		printf("value: %d\n", curr->value );
+		i ++;
+		curr = curr -> next;
+
+		while (curr != head)
+		{
+			// printf("??\n");
+			printf("value: %d\n", curr->value );
+			curr = curr -> next;
+			if (i >8)
+			{
+				break;
+			}
+			i++;
+		}
+		printf("size i = %d\n\n", i);
+		return (i);
+	}
+}
+
 // Function to display the elements in the linked list
 void	displaylinkedlist(t_node *head)
 {
+	printf("ll\n");
 	t_node	*current;
+	int		i = 0;
+	int		size = ft_lstsize2(head);
 
 	current = head;
 	printf("Linked List: ");
-	printf("\n%d  ", current->value);
-	current = current ->next;
-	while (current != head)
+	// while (current->next != head)
+	while(size >= i)
 	{
 		printf("\n%d  ", current->value);
 		current = current->next;
+		i ++;
+
 	}
+	printf("\n%d  ", current->value);
+
+	printf("\nthe i number:%d\n", i);
+	printf ("size of linked list:%d\n",  ft_lstsize2(head));
+
 	printf("\n\n");
 }
 
@@ -112,6 +155,7 @@ void	displaylinkedlist2(t_node *head)
 {
 	t_node	*current;
 	int		i;
+	int		size = ft_lstsize2(head);
 
 	current = head;
 	i = 0;
@@ -120,14 +164,14 @@ void	displaylinkedlist2(t_node *head)
 		// printf("curr is null\n");
 		return ;
 	}
-	printf("Linked List: ");
-	printf("\nvalue%d", current->value);
-	printf("+pos:%d  ", current->pos);
-	printf("\nprev:%p  ", current->prev);
-	printf("\ncurr:%p  ", current);
-	printf("\nnext:%p  ", current->next);
-	current = current->next;
-	while (current != head)
+	printf("Linked List2: ");
+	// printf("\nvalue%d", current->value);
+	// printf("+pos:%d  ", current->pos);
+	// printf("\nprev:%p  ", current->prev);
+	// printf("\ncurr:%p  ", current);
+	// printf("\nnext:%p  ", current->next);
+	// while (current ->next != head)
+	while(size > i)
 	{
 		// printf("\ncurr:%p  ", current);
 		printf("\n%d  ", current->value);
@@ -137,6 +181,7 @@ void	displaylinkedlist2(t_node *head)
 		printf("\nnext:%p  ", current->next);
 		if (current == current->next || i > 8)
 		{
+			printf("con to breka\n");
 			printf("curr == curr->Next or i > 6\n");
 			break ;
 		}
@@ -168,6 +213,73 @@ void	displaylinkedlist2(t_node *head)
 	printf("\n\n");*/
 }
 
+// Function to display the elements in the linked list
+void	displaylinkedlist3(t_node *head)
+{
+	printf("LL3\n");
+	t_node	*current;
+	t_node	*prev;
+	t_node	*next;
+	int		i;
+	int		size = ft_lstsize2(head);
+
+	current = head;
+	prev = head->prev;
+	next = current ->next;
+
+	i = 0;
+	if (current == NULL)
+	{
+		// printf("curr is null\n");
+		return ;
+	}
+	printf("Linked List: ");
+	while(size > i)
+	{
+		// printf("\ncurr:%p  ", current);
+		// printf("\n%d  ", current->value);
+		// printf("+pos:%d  ", current->pos);
+		// printf("\nprev:%p  ", current->prev);
+		// printf("\ncurr:%p  ", current);
+		// printf("\nnext:%p  ", current->next);
+
+		if (current->prev == prev && current ->next == next)
+		{
+			printf("all ok\n");
+		}
+		else
+		{
+			printf("error\n");
+			printf("curr%p | value: %d\n", current, current->value);
+
+			if (current->prev != prev)
+			{
+				printf("prev:%p | value:%d\n", prev, prev->value);
+				printf("curr ->prev %p | value:%d\n", current->prev, current->value);
+			}
+			if (current->next != next)
+			{
+				printf("curr ->next %p\n", current->next);
+				printf("next: %p\n", next);
+
+			}
+			
+
+
+			break;
+		}
+
+		current = current->next;
+		prev = prev->next;
+		next = next->next;
+		i ++;
+	}
+	printf("size:%d\n", size);
+	printf("i:%d\n", i);
+
+}
+
+
 // Function to display the elements in the stack (linked list)
 void	displaystack(t_stack *stack)
 {
@@ -180,16 +292,31 @@ void	displaystack(t_stack *stack)
 
 int	scan_num_pos(t_stack *stack, int num)
 {
-	t_node	head;
+	t_node	*head;
 	int		pos;
+	int		size;
+	int		i;
 
-	head = *stack->top;
+	i = 0;
+	size = ft_lstsize_modified(stack->top);
+	head = stack->top;
 	pos = 0;
-	while (head.value != num)
+	while (size > i)
 	{
-		head = *head.next;
+		if(head->value == num)
+			break;
+		head = head->next;
 		pos ++;
+		i = i + 1;
 	}
+
+	// while (head->value != num)
+	// {
+	// 	head = head->next;
+	// 	pos ++;
+	// }
+	printf("number:%d", num);
+	printf("pos:%d\n", pos);
 	return (pos);
 }
 

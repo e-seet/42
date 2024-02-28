@@ -3,18 +3,30 @@
 // break off the last node
 // set the 2nd last node's next to null [when 1]
 // Else, return the last node.
-t_node	*ft_rralastnode(t_node *head, int tonull)
+// t_node	*ft_rralastnode(t_node *head, int tonull, t_Stack *stack)
+t_node	*ft_rralastnode(t_node *head, t_stack *stack)
 {
 	t_node	*prev;
+	t_node	*curr;
 
-	while (head->next != NULL)
+	curr = head;
+
+	while (curr->next != head)
 	{
-		prev = head;
-		head = head->next;
+		// printf("curr->next:%p\n", curr->next);
+		prev = curr;
+		curr = curr->next;
 	}
-	if (tonull == 1)
-		prev ->next = NULL;
-	return (head);
+	//this ends with the last node that points to the head
+	stack->bot = prev;
+	stack->top = curr;
+
+	// if (tonull == 1)
+	// {
+	// 	prev ->next = NULL;
+
+	// }
+	return (curr);
 }
 
 // Shift down all elements of stack by 1
@@ -24,14 +36,23 @@ void	reverse_rotate_stack(t_stack *stack, int *numberofop)
 	t_node	*lastnode;
 
 	printf("RRA/RRB: reverse_rotate_stack\n");
+	
 	head = stack->top;
-	lastnode = ft_rralastnode(head, 1);
+	// get the last node and set it to the top
+	lastnode = ft_rralastnode(head, stack);
 	lastnode -> next = head;
 	stack->top = lastnode;
-	// manual check that next is present and then assign it to next
-	lastnode = ft_rralastnode(head, 0);
-	stack->bot = lastnode;
+	
+	//get the last node and set as bottom
+	// lastnode = ft_rralastnode(head, stack);
+	// lastnode = 	stack->bot;
+	// lastnode = lastnode ->next;
+	// stack->bot = lastnode;
+	// printf("stack_a->bot:%p | %d\n\n", stack->bot, stack->bot->value);
+
+
 	*numberofop = *numberofop + 1;
+	printf("end of RRA/RRB\n");
 }
 
 // rra and rrb at the same time

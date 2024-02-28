@@ -3,19 +3,35 @@
 // the reference node for stack->top and stack->next did not change
 void	swap_top_two(t_stack *stack, int *numberofop)
 {
-	t_node	*top;
-	t_node	*nextnode;
+	t_node	*oldtop;
+	t_node	*newtop;
+	t_node	*bot;
+	t_node	*temp;
 
 	printf("SA/SB: swap top two\n");
-	top = stack->top;
-	nextnode = top->next;
-	if (top != NULL && nextnode != NULL)
+	oldtop = stack->top;
+	newtop = oldtop->next;
+
+	// printf("old top:%d\n", oldtop->value);
+	// printf("new top:%d\n", newtop->value);
+	
+	if (oldtop != NULL && newtop != NULL)
 	{
-		top -> next = nextnode ->next;
-		nextnode ->prev = top->prev;
-		top -> prev = nextnode;
-		nextnode->next = top;
+		newtop -> prev = stack->bot;
+		bot = newtop ->prev;
+		bot -> next = newtop;
+		oldtop -> prev = newtop;
+		temp = newtop->next;
+		oldtop ->next = newtop ->next;
+		newtop -> next = oldtop;
+		temp ->prev = oldtop;
+		stack->top = newtop;
 	}
+
+	// printf("what is the stack->top value:%d", stack->top->value);
+
+	//this ends with the last node that points to the head
+
 	*numberofop = *numberofop +1;
 }
 
