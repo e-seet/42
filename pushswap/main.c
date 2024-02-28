@@ -33,12 +33,6 @@ int	sort1n2(int argc, int *numberofop, t_stack *stack_a)
 	}
 }
 
-int	sort4(t_stack *stack_a, t_stack *stack_b, int *numberofop)
-{
-	sort4wrapper(stack_a, stack_b, numberofop);
-	return (0);
-}
-
 int	sort_wrapper(int argc, t_stack *stack_a, t_stack *stack_b)
 {
 	int			numberofop;
@@ -51,9 +45,7 @@ int	sort_wrapper(int argc, t_stack *stack_a, t_stack *stack_b)
 	else if (argc == 3)
 		return (sort3wrapper(stack_a, &numberofop));
 	else if (argc == 4)
-	{
-		sort4(stack_a, stack_b, &numberofop);
-	}
+		return (sort4wrapper(stack_a, stack_b, &numberofop));
 	else if (argc == 5)
 		return (sort5wrapper(stack_a, stack_b, &numberofop));
 	else if (argc <= 500)

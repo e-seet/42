@@ -1,4 +1,3 @@
-
 #include <limits.h>
 #include "sort3.h"
 // # include "../utils/utils.h"
@@ -10,7 +9,9 @@ int	sort3wrapper(t_stack *stack_a, int *numberofop)
 	printf("sort 3");
 	init3_element(&element3);
 	find3_numbers(stack_a->top, &element3);
-	find3_numbers_pos(stack_a, &element3);
+	element3.smallestpos = scan_num_pos(stack_a, element3.smallest);
+	element3.middlepos = scan_num_pos(stack_a, element3.middle);
+	element3.largestpos = scan_num_pos(stack_a, element3.largest);
 	sort5elementstop3(stack_a, numberofop, &element3);
 	displaystack(stack_a);
 	return (0);
@@ -53,43 +54,11 @@ void	find3_numbers(t_node *head, t_element3 *element3)
 	}
 }
 
-void	find3_numbers_pos(t_stack *stack_a, t_element3 *element3)
-{
-	element3->smallestpos = scan_num_pos(stack_a, element3->smallest);
-	element3->middlepos = scan_num_pos(stack_a, element3->middle);
-	element3->largestpos = scan_num_pos(stack_a, element3->largest);
-}
-
-void	sort5elementstop3(t_stack *stack_a, int *numberofop,
+void	sort5elementstop3_2(t_stack *stack_a, int *numberofop,
 	t_element3 *element3)
 {
-	if (element3->smallestpos == 0 && element3->largestpos == 2)
+	if (element3->smallestpos == 1 && element3->largestpos == 0)
 	{
-		printf("c1\n");
-	}
-	else if (element3->smallestpos == 0 && element3->largestpos == 1)
-	{
-		printf("c2\n");
-		rotate_stack(stack_a, numberofop);
-		swap_top_two(stack_a, numberofop);
-		reverse_rotate_stack(stack_a, numberofop);
-	}
-	else if (element3->smallestpos == 1 && element3->largestpos == 2)
-	{
-		printf("c3\n");
-		swap_top_two(stack_a, numberofop);
-	}
-	else if (element3->smallestpos == 2 && element3->largestpos == 1)
-	{
-		printf("c4: remove top, swap top two, return my top, swap top two\n");
-		rotate_stack(stack_a, numberofop);
-		swap_top_two(stack_a, numberofop);
-		reverse_rotate_stack(stack_a, numberofop);
-		swap_top_two(stack_a, numberofop);
-	}
-	else if (element3->smallestpos == 1 && element3->largestpos == 0)
-	{
-		printf("c5\n");
 		swap_top_two(stack_a, numberofop);
 		rotate_stack(stack_a, numberofop);
 		swap_top_two(stack_a, numberofop);
@@ -97,12 +66,36 @@ void	sort5elementstop3(t_stack *stack_a, int *numberofop,
 	}
 	else if (element3->smallestpos == 2 && element3->largestpos == 0)
 	{
-		printf("c6\n");
 		swap_top_two(stack_a, numberofop);
 		rotate_stack(stack_a, numberofop);
 		swap_top_two(stack_a, numberofop);
 		reverse_rotate_stack(stack_a, numberofop);
 		swap_top_two(stack_a, numberofop);
 	}
+}
+
+void	sort5elementstop3(t_stack *stack_a, int *numberofop,
+	t_element3 *element3)
+{
+	if (element3->smallestpos == 0 && element3->largestpos == 2)
+	{
+	}
+	else if (element3->smallestpos == 0 && element3->largestpos == 1)
+	{
+		rotate_stack(stack_a, numberofop);
+		swap_top_two(stack_a, numberofop);
+		reverse_rotate_stack(stack_a, numberofop);
+	}
+	else if (element3->smallestpos == 1 && element3->largestpos == 2)
+		swap_top_two(stack_a, numberofop);
+	else if (element3->smallestpos == 2 && element3->largestpos == 1)
+	{
+		rotate_stack(stack_a, numberofop);
+		swap_top_two(stack_a, numberofop);
+		reverse_rotate_stack(stack_a, numberofop);
+		swap_top_two(stack_a, numberofop);
+	}
+	else
+		sort5elementstop3_2(stack_a, numberofop, element3);
 	printf("final number of ops:%d\n", *numberofop);
 }
