@@ -1,34 +1,34 @@
 # Permutation for 4 and 5
 
 C1: 5 at top
-./pushswap 5 4 1 2 3
-./pushswap 5 1 4 2 3
-./pushswap 5 1 2 4 3
-./pushswap 5 1 2 3 4
+./push_swap 5 4 1 2 3
+./push_swap 5 1 4 2 3
+./push_swap 5 1 2 4 3
+./push_swap 5 1 2 3 4
 
 C2: 5 at 2nd
-./pushswap 4 5 1 2 3
-./pushswap 1 5 4 2 3
-./pushswap 1 5 2 4 3
-./pushswap 1 5 2 3 4
+./push_swap 4 5 1 2 3
+./push_swap 1 5 4 2 3
+./push_swap 1 5 2 4 3
+./push_swap 1 5 2 3 4
 
 C3:
-./pushswap 4 1 5 2 3
-./pushswap 1 4 5 2 3
-./pushswap 1 2 5 4 3
-./pushswap 1 2 5 3 4
+./push_swap 4 1 5 2 3
+./push_swap 1 4 5 2 3
+./push_swap 1 2 5 4 3
+./push_swap 1 2 5 3 4
 
 C4
-./pushswap 4 1 2 5 3
-./pushswap 1 4 2 5 3
-./pushswap 1 2 4 5 3
-./pushswap 1 2 3 5 4
+./push_swap 4 1 2 5 3
+./push_swap 1 4 2 5 3
+./push_swap 1 2 4 5 3
+./push_swap 1 2 3 5 4
 
 c5
-./pushswap 4 1 2 3 5
-./pushswap 1 4 2 3 5
-./pushswap 1 2 4 3 5
-./pushswap 1 3 2 4 5
+./push_swap 4 1 2 3 5
+./push_swap 1 4 2 3 5
+./push_swap 1 2 4 3 5
+./push_swap 1 3 2 4 5
 
 ## All permutation of 1 2 3 4 5
 

@@ -62,7 +62,11 @@ int sort_wrapper(int argc, t_stack *stack_a, t_stack *stack_b)
 		find3_numbers(stack_a->top, &element3);
 		find3_numbers_pos(stack_a, &element3);
 		sort5elementstop3(stack_a, &numberofop, &element3);
+		
+		// displaylinkedlist2(stack_a->top);
+		// displaylinkedlist3(stack_a->top);
 		displaystack(stack_a);
+
 		return -0;
 	}
 	else if (argc ==4)
@@ -76,6 +80,7 @@ int sort_wrapper(int argc, t_stack *stack_a, t_stack *stack_b)
 		printf("argc == 5\n");
 		init5_element(&element5);
 		sort5(stack_a, stack_b, &numberofop, &element5);
+		displaylinkedlist2(stack_a->top);
 	}
 	else if (argc < 500)
 	{
@@ -117,6 +122,7 @@ int	main(int argc, char *argv[])
 			}
 			i++;
 		}
+		i = i - 1;
 	}
 	else if (argc == 2)
 	{
@@ -135,7 +141,6 @@ int	main(int argc, char *argv[])
 			}
 			i++;
 		}
-		// to check and then sort accordingly.
 		// ./push_swap "3 4 6 8 9 74 -56 +495"
 
 		// return 0;

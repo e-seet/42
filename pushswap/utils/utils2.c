@@ -20,10 +20,12 @@ int	count_elements_in_stack(t_node *head)
 // sorted return 0
 int	stack_is_sorted(t_stack *stack)
 {
+	printf("stack is sorted\n");
 	t_node	*head;
 	t_node	*curr;
 	int		val;
 
+	displaylinkedlist3(stack->top);
 	head = stack->top;
 	val = head->value;
 	curr = head->next;
@@ -33,6 +35,7 @@ int	stack_is_sorted(t_stack *stack)
 			val = curr->value;
 		else
 		{
+			printf("err in sort1\n");
 			return (1);
 		}
 		curr = curr->next;
@@ -41,13 +44,16 @@ int	stack_is_sorted(t_stack *stack)
 		val = curr->value;
 	else
 	{
+		printf("err is sort2\n");
 		return (1);
 	}
+	printf("R 0 !");
 	return (0);
 }
 
 int	stack_is_sorted2(t_stack *stack)
 {
+	printf("sorted 2\n");
 	t_node	*head;
 	t_node	*curr;
 	int		pos;
@@ -61,6 +67,7 @@ int	stack_is_sorted2(t_stack *stack)
 			pos = curr->pos;
 		else
 		{
+			printf("err in sort\n");
 			return (1);
 		}
 		curr = curr->next;
@@ -69,8 +76,10 @@ int	stack_is_sorted2(t_stack *stack)
 		pos = curr->pos;
 	else
 	{
+		printf("err in sort\n");
 		return (1);
 	}
+	printf("R 0 2!!");
 	return (0);
 }
 

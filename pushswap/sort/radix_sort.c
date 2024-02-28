@@ -7,7 +7,7 @@ void	setpos(t_stack *stack_a, int argc)
 	t_node	*curr;
 
 	i = 1;
-	while (argc > i)
+	while (argc+1 > i)
 	{
 		curr = stack_a ->top;
 		while (curr->pos != 0)
@@ -29,6 +29,7 @@ void	setpos(t_stack *stack_a, int argc)
 		{
 			smallest = curr->value;
 		}
+		printf("smallest digit: %d\n", smallest);
 		// find where the node of interest is and set pos
 		curr = stack_a->top;
 		while (curr->value != smallest)
@@ -44,6 +45,7 @@ void	setpos(t_stack *stack_a, int argc)
 
 void	radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 {
+	printf("radix_sort\n");
 	int		i;
 	t_node	*head_a;
 	t_node	*head_b;
@@ -57,6 +59,7 @@ void	radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 		tail_a = stack_a->bot;
 		if (stack_is_sorted(stack_a) == 0 || stack_is_sorted2(stack_a) == 0)
 		{
+			printf("break here \n");
 			break ;
 		}
 		while (head_a != tail_a)
@@ -92,8 +95,8 @@ void	radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 				head_b = stack_b->top;
 			}
 		}
-		displaylinkedlist2(stack_a->top);
 		i = i + 1;
 	}
+	displaylinkedlist2(stack_a->top);
 }
 

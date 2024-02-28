@@ -299,12 +299,9 @@ void sort5(t_stack *stack_a, t_stack *stack_b, int *numberofop, t_element5 *elem
 		{
 			printf("this runs\n");
 			swap_top_two(stack_a, numberofop); //impt
-			// reverse_rotate_stack(stack_a, numberofop); //impt. This may be wrong.
-			// displaylinkedlist2(stack_a->top);
-			rotate_stack(stack_a, numberofop); // this is newly added. Should be correct.
+			reverse_rotate_stack(stack_a, numberofop); //impt. This may be wrong.
 			swap_top_two(stack_a, numberofop); //impt. This may be wrong.
 			bringtobot(stack_a, numberofop); //impt
-			// displaylinkedlist3(stack_a->top);
 		}
 		/*Rotate bot to top
 		Rotate bot to top

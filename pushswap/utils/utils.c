@@ -127,7 +127,7 @@ int	ft_lstsize2(t_node *head)
 // Function to display the elements in the linked list
 void	displaylinkedlist(t_node *head)
 {
-	printf("ll\n");
+	printf("\n\nll\n");
 	t_node	*current;
 	int		i = 0;
 	int		size = ft_lstsize2(head);
@@ -135,14 +135,14 @@ void	displaylinkedlist(t_node *head)
 	current = head;
 	printf("Linked List: ");
 	// while (current->next != head)
-	while(size >= i)
+	while(size > i)
 	{
 		printf("\n%d  ", current->value);
 		current = current->next;
 		i ++;
 
 	}
-	printf("\n%d  ", current->value);
+	// printf("\n%d  ", current->value);
 
 	printf("\nthe i number:%d\n", i);
 	printf ("size of linked list:%d\n",  ft_lstsize2(head));
