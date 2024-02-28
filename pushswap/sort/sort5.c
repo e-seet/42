@@ -1,6 +1,15 @@
 
 #include "sort5.h"
 
+int	sort5wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop)
+{
+	t_element5	element5;
+
+	init5_element(&element5);
+	sort5(stack_a, stack_b, numberofop, &element5);
+	return (0);
+}
+
 void	init5_element(t_element5 *element5)
 {
 	element5->smallest = INT_MAX;

@@ -1,5 +1,13 @@
 #include "radix_sort.h"
 
+int radix_sort_wrapper(int argc, t_stack *stack_a, t_stack *stack_b, int *numberofop)
+{
+
+	setpos(stack_a, argc);
+	radix_sort(stack_a, stack_b, numberofop);
+	return (0);
+}
+
 void	setpos(t_stack *stack_a, int argc)
 {
 	int		i;

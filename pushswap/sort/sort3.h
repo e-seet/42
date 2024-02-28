@@ -11,4 +11,6 @@ void	find3_numbers_pos(t_stack *stack_a, t_element3 *element3);
 void	sort5elementstop3(t_stack *stack_a, int *numberofop,
 			t_element3 *element3);
 
+int		sort3wrapper(t_stack *stack_a, int *numberofop);
+
 #endif

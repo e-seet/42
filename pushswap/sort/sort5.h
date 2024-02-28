@@ -6,6 +6,8 @@
 # include "../utils/utils.h"
 # include "./sort3.h"
 
+int		sort5wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop);
+
 void	init5_element(t_element5 *element5);
 void	find5_numbers(t_node *head, t_element5 *element5);
 void	sort5(t_stack *stack_a, t_stack *stack_b, int *numberofop,

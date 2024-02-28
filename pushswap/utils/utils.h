@@ -40,6 +40,20 @@ typedef struct s_element5
 
 }	t_element5;
 
+typedef struct s_element4
+{
+	int				smallest;
+	int				secondsmallest;
+	int				secondlargest;
+	int				largest;
+
+	int				smallestpos;
+	int				secondsmallestpos;
+	int				secondlargestpos;
+	int				largestpos;
+
+}	t_element4;
+
 typedef struct s_element3
 {
 	int				smallest;

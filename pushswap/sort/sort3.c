@@ -3,6 +3,19 @@
 #include "sort3.h"
 // # include "../utils/utils.h"
 
+int	sort3wrapper(t_stack *stack_a, int *numberofop)
+{
+	t_element3	element3;
+
+	printf("sort 3");
+	init3_element(&element3);
+	find3_numbers(stack_a->top, &element3);
+	find3_numbers_pos(stack_a, &element3);
+	sort5elementstop3(stack_a, numberofop, &element3);
+	displaystack(stack_a);
+	return (0);
+}
+
 void	init3_element(t_element3 *element3)
 {
 	element3->smallest = INT_MAX;
