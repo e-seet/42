@@ -18,7 +18,6 @@ typedef struct s_node
 typedef struct s_stack
 {
 	t_node	*top;
-	// t_node	*sec;
 	t_node	*bot;
 	int		numofelements;
 	int		originalnumber;
@@ -94,7 +93,7 @@ void	displaylinkedlist(t_node *head);
 
 t_node	*create_node(int value);
 
-int	ft_lstsize2(t_node *head);
+int		ft_lstsize2(t_node *head);
 
 // Store the stack data
 // top data, next data, last data

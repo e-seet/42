@@ -11,10 +11,6 @@ void	swap_top_two(t_stack *stack, int *numberofop)
 	printf("SA/SB: swap top two\n");
 	oldtop = stack->top;
 	newtop = oldtop->next;
-
-	// printf("old top:%d\n", oldtop->value);
-	// printf("new top:%d\n", newtop->value);
-	
 	if (oldtop != NULL && newtop != NULL)
 	{
 		newtop -> prev = stack->bot;
@@ -27,11 +23,6 @@ void	swap_top_two(t_stack *stack, int *numberofop)
 		temp ->prev = oldtop;
 		stack->top = newtop;
 	}
-
-	// printf("what is the stack->top value:%d", stack->top->value);
-
-	//this ends with the last node that points to the head
-
 	*numberofop = *numberofop +1;
 }
 
