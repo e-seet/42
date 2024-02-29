@@ -1,5 +1,7 @@
 #include "./utils/utils.h"
 #include "./utils/utils2.h"
+#include "./utils/utils3.h"
+#include "./utils/utils4.h"
 // #include "./utils/timsort.h"
 #include "./utils/operations.h"
 #include "./utils/operations2.h"
@@ -100,7 +102,7 @@ int	main(int argc, char *argv[])
 		printf("error in main. Return: err == 1\n");
 		return (1);
 	}
-	if (hasDuplicate(stack_a.top))
+	if (has_duplicate(stack_a.top))
 	{
 		printf("Linked list contains duplicate elements.\n");
 		printf("error");

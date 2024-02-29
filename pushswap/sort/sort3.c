@@ -13,7 +13,6 @@ int	sort3wrapper(t_stack *stack_a, int *numberofop)
 	element3.middlepos = scan_num_pos(stack_a, element3.middle);
 	element3.largestpos = scan_num_pos(stack_a, element3.largest);
 	sort5elementstop3(stack_a, numberofop, &element3);
-	displaystack(stack_a);
 	return (0);
 }
 

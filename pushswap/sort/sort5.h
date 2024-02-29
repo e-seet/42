@@ -5,11 +5,12 @@
 # include "../utils/operations2.h"
 # include "../utils/utils.h"
 # include "../utils/utils2.h"
+# include "../utils/utils3.h"
 # include "./sort3.h"
 # include "./sort5c.h"
 
+void	sort_5_top3(t_element5 *element5, t_stack *stack_a, int *numberofop);
 int		sort5wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop);
-
 void	find5_numbers(t_node *head, t_element5 *element5, t_stack *stack_a);
 void	find5_numbers_p2(t_node *head, t_element5 *element5, t_stack *stack_a);
 

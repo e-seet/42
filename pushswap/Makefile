@@ -13,8 +13,9 @@ CFLAGS := -Wall -Wextra -Werror
 # **************************************************************************** #
 # Source
 # **************************************************************************** #
-SRC_FILES			:=	main.c	./utils/utils.c	./utils/utils2.c	./utils/operations.c	./utils/operations2.c	\
-						./sort/sort3.c	./sort/sort5.c	./sort/sort5c.c	./sort/sort4.c	./sort/radix_sort.c	#./utils/timsort.c
+SRC_FILES			:=	main.c	./utils/utils.c	./utils/utils2.c	./utils/utils3.c	./utils/utils4.c	\
+						./utils/operations.c	./utils/operations2.c	./utils/operations3.c	\
+						./sort/sort3.c	./sort/sort5.c	./sort/sort5c.c	./sort/sort4.c	./sort/radix_sort.c		#./utils/timsort.c
 OBJS				=	$(SRC_FILES:.c=.o)
 
 # **************************************************************************** #

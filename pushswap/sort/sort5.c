@@ -1,4 +1,3 @@
-
 #include "sort5.h"
 
 void	sort_5_top3(t_element5 *element5, t_stack *stack_a, int *numberofop)
@@ -27,6 +26,7 @@ int	sort5wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 	element5.secondlargest = INT_MIN;
 	element5.largest = INT_MIN;
 	sort5(stack_a, stack_b, numberofop, &element5);
+	displaystack(stack_a);
 	return (0);
 }
 

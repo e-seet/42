@@ -5,6 +5,7 @@
 # include "../utils/operations2.h"
 # include "../utils/utils.h"
 # include "../utils/utils2.h"
+# include "../utils/utils3.h"
 # include "./sort3.h"
 
 int		sort4wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop);
