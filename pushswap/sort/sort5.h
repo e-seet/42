@@ -11,7 +11,6 @@
 # include "./sort5c.h"
 # include "../utils/exit.h"
 
-
 void	sort_5_top3(t_element5 *element5, t_stack *stack_a, int *numberofop);
 int		sort5wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop);
 void	find5_numbers(t_node *head, t_element5 *element5, t_stack *stack_a);

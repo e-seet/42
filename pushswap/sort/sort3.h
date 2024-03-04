@@ -13,6 +13,11 @@ void	sort5elementstop3(t_stack *stack_a, int *numberofop,
 void	sort5elementstop3_2(t_stack *stack_a, int *numberofop,
 			t_element3 *element3);
 
-int		sort3wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop);
+void	sort5elementstop3v1(t_stack *stack_a, int *numberofop,
+			t_element3 *element3);
+
+// int		sort3wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop);
+int		sort3wrapper(t_stack *stack_a, t_stack *stack_b,
+			int *numberofop, int sorttype);
 
 #endif

@@ -41,17 +41,10 @@ void	addtoback(t_stack *stack, int value)
 
 	newnode = create_node(value);
 	head = stack->top;
-	// printf("add to back. val:%d\n", value);
 	if (head == NULL)
-	{
-		// printf("check seg fault");
-		// printf("stacktp %d", stack->top ->value );
 		stack->top = newnode;
-
-	}
 	else
 	{
-		// printf("check seg fault2");
 		curr = head;
 		if (curr->next == NULL)
 		{
@@ -61,13 +54,10 @@ void	addtoback(t_stack *stack, int value)
 			newnode -> prev = curr;
 		}
 		else
-		{
 			addtoback2(curr, head, newnode);
-		}
 		stack->numofelements += 1;
 		stack->bot = newnode;
 	}
-
 }
 
 // void	push(t_stack *stack, int value)
