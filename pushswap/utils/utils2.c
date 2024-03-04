@@ -27,6 +27,8 @@ int	stack_is_sorted(t_stack *stack)
 	head = stack->top;
 	val = head->value;
 	curr = head->next;
+	if (curr == NULL)
+		return 1;
 	while (curr->next != head)
 	{
 		if (curr->value > val)
@@ -51,6 +53,8 @@ int	stack_is_sorted2(t_stack *stack)
 	head = stack->top;
 	pos = head->pos;
 	curr = head->next;
+	if (curr == NULL)
+		return 1;
 	while (curr->next != head)
 	{
 		if (curr->pos > pos)
@@ -82,16 +86,25 @@ int	ft_atoi_modified(const char *str, int *err)
 		sign = sign * -1;
 	if (str[i] == '-' || str[i] == '+')
 		i++;
+	// while (str[i] == '-' || str[i] == '+')
+	// {
+	// 	if (str[i] == '-')
+	// 		sign = sign * -1;
+	// 	i++;
+	// }
 	while (str[i] >= 48 && str[i] <= 57)
 	{
 		num = str[i] - 48 + num * 10;
 		i++;
 	}
 	if (i == 0 || str[i] != '\0' || num * sign > INT_MAX
-		|| num * sign < INT_MIN)
+		|| num * sign < INT_MIN || (i == 1 && num == 0))
 		*err = 1;
 	else
 		*err = 0;
+	
+	// printf(" i:%d, num:%ld, sign:%d\n", i, num, sign);
+	// printf("value returned: %ld\n", num * sign);
 	return (num * sign);
 }
 
@@ -102,9 +115,10 @@ int	has_duplicate(t_node *head)
 	t_node	*compare;
 
 	current = head->next;
-	if (head == NULL || head->next == head)
+	// printf("has dup\n");
+	if (head == NULL || head->next == head || current == NULL)
 		return (0);
-	while (current != head)
+	while (current != head && head != NULL)
 	{
 		compare = head;
 		while (compare != current)

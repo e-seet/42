@@ -64,13 +64,13 @@ void	radix_sort_a(t_stack *stack_a, t_stack *stack_b, int *numberofop, int i)
 		if (((head_a->pos >> i) & 1) == 0)
 			pb(stack_a, stack_b, numberofop);
 		else
-			rotate_stack(stack_a, numberofop);
+			rotate_stack(stack_a, numberofop, 0);
 		head_a = stack_a->top;
 	}
 	if (((head_a->pos >> i) & 1) == 0)
 		pb(stack_a, stack_b, numberofop);
 	else
-		rotate_stack(stack_a, numberofop);
+		rotate_stack(stack_a, numberofop, 0);
 }
 
 void	radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)

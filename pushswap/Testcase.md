@@ -49,7 +49,7 @@ Should return "Error\n"
 >these need error? For Now i put as error
 >To check these test case
 ./push_swap 1 2 3 5 67b778 947
-.push_swap " 12 4 6 8 54fhd 4354"
+./push_swap " 12 4 6 8 54fhd 4354"
 ./push_swap 1 --    45 32 
 
 >The program should NOT work if it encounters a double number
@@ -76,4 +76,4 @@ this example should work because -9 & 9 are not equal
 
 >Nothing has been specified when strings and int are mixed. It's up to you what you want to do. 
 >I put ERror
-./push_swap "1 2 4 3" 76 90 "348 05
+./push_swap "1 2 4 3" 76 90 "348 05"

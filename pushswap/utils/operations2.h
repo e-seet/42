@@ -3,7 +3,7 @@
 
 # include "utils.h"
 
-void	reverse_rotate_stack(t_stack *stack, int *numberofop);
+void	reverse_rotate_stack(t_stack *stack, int *numberofop, int print);
 
 void	rrr(t_stack *a, t_stack *b, int *numberofop );
 

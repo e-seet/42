@@ -7,6 +7,7 @@
 # include "../utils/utils2.h"
 # include "../utils/utils3.h"
 # include "./sort3.h"
+# include "../utils/exit.h"
 
 int		sort4wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop);
 void	find4_numbers(t_node *head, t_element4 *element4, int size);

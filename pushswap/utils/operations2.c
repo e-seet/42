@@ -21,12 +21,15 @@ t_node	*ft_rralastnode(t_node *head, t_stack *stack)
 }
 
 // Shift down all elements of stack by 1
-void	reverse_rotate_stack(t_stack *stack, int *numberofop)
+void	reverse_rotate_stack(t_stack *stack, int *numberofop, int print)
 {
 	t_node	*head;
 	t_node	*lastnode;
 
-	printf("RRA/RRB: reverse_rotate_stack\n");
+	if (stack -> alpha == 0 && print == 0)
+		write(1, "rra\n", 4);
+	else if (stack -> alpha == 1 && print == 0)
+		write(1, "rrb\n", 4);
 	head = stack->top;
 	lastnode = ft_rralastnode(head, stack);
 	lastnode -> next = head;
@@ -37,9 +40,9 @@ void	reverse_rotate_stack(t_stack *stack, int *numberofop)
 // rra and rrb at the same time
 void	rrr(t_stack *a, t_stack *b, int *numberofop)
 {
-	printf("RRR:");
-	reverse_rotate_stack(a, numberofop);
-	reverse_rotate_stack(b, numberofop);
+	write(1, "rrr\n", 4);
+	reverse_rotate_stack(a, numberofop, 1);
+	reverse_rotate_stack(b, numberofop, 1);
 	*numberofop = *numberofop - 1;
 }
 

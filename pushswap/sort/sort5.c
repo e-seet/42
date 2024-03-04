@@ -1,5 +1,6 @@
 #include "sort5.h"
 
+// sort the top 3 element of 5 elements
 void	sort_5_top3(t_element5 *element5, t_stack *stack_a, int *numberofop)
 {
 	t_element3	element3;
@@ -11,9 +12,7 @@ void	sort_5_top3(t_element5 *element5, t_stack *stack_a, int *numberofop)
 	element3.smallestpos = scan_num_pos(stack_a, element5->smallest);
 	element3.middlepos = scan_num_pos(stack_a, element5->secondsmallest);
 	element3.largestpos = scan_num_pos(stack_a, element5->middle);
-	printf("\nsort the top 3 numbers\n");
 	sort5elementstop3(stack_a, numberofop, &element3);
-	printf("end of sort 5\n\n");
 }
 
 int	sort5wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop)
@@ -27,6 +26,7 @@ int	sort5wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 	element5.largest = INT_MIN;
 	sort5(stack_a, stack_b, numberofop, &element5);
 	displaystack(stack_a);
+	exitsafe(stack_a, stack_b);
 	return (0);
 }
 
@@ -105,7 +105,6 @@ void	sort5(t_stack *stack_a, t_stack *stack_b, int *numberofop,
 		sort5_case4(stack_a, numberofop, element5);
 	else if (element5->largestpos == 4)
 		sort5_case5(stack_a, numberofop, element5);
-	printf("top of stack :%d\n", stack_a->top->value);
 	sort_5_top3(element5, stack_a, numberofop);
 }
 

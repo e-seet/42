@@ -27,7 +27,7 @@ void	pb(t_stack *a, t_stack *b, int *numberofop)
 	t_node	*topnode_a;
 	t_node	*topnode_b;
 
-	printf("PB\n");
+	write(1, "pb\n", 3);
 	topnode_a = a->top;
 	topnode_b = b->top;
 	if (topnode_a != NULL)
@@ -80,7 +80,7 @@ void	pa(t_stack *a, t_stack *b, int *numberofop)
 	t_node	*topnode_a;
 	t_node	*topnode_b;
 
-	printf("PA\n");
+	write(1, "pa\n", 3);
 	topnode_a = a->top;
 	topnode_b = b->top;
 	if (topnode_b != NULL)

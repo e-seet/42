@@ -11,7 +11,7 @@ t_node	*create_node(int value)
 	newnode = (t_node *)malloc(sizeof(t_node));
 	if (newnode == NULL)
 	{
-		printf("Failed to allocate memory.\n");
+		write(2, "Error\n", 6);
 		return (NULL);
 	}
 	newnode->value = value;
@@ -41,10 +41,17 @@ void	addtoback(t_stack *stack, int value)
 
 	newnode = create_node(value);
 	head = stack->top;
+	// printf("add to back. val:%d\n", value);
 	if (head == NULL)
+	{
+		// printf("check seg fault");
+		// printf("stacktp %d", stack->top ->value );
 		stack->top = newnode;
+
+	}
 	else
 	{
+		// printf("check seg fault2");
 		curr = head;
 		if (curr->next == NULL)
 		{
@@ -60,6 +67,7 @@ void	addtoback(t_stack *stack, int value)
 		stack->numofelements += 1;
 		stack->bot = newnode;
 	}
+
 }
 
 // void	push(t_stack *stack, int value)
@@ -90,23 +98,21 @@ int	ft_lstsize2(t_node *head)
 	int		i;
 	t_node	*curr;
 
-	printf("ft_lstsize2\n");
 	curr = head;
 	i = 0;
 	if (curr == NULL)
 		return (0);
+	else if (curr -> next == curr || curr -> next == NULL)
+		return (1);
 	else
 	{
-		printf("value: %d\n", curr->value);
 		i ++;
 		curr = curr -> next;
 		while (curr != head)
 		{
-			printf("value: %d\n", curr->value);
 			curr = curr -> next;
 			i++;
 		}
-		printf("size i = %d\n\n", i);
 		return (i);
 	}
 }
@@ -130,8 +136,6 @@ int	scan_num_pos(t_stack *stack, int num)
 		pos ++;
 		i = i + 1;
 	}
-	printf("number:%d", num);
-	printf("pos:%d\n", pos);
 	return (pos);
 }
 

@@ -12,7 +12,7 @@ int	sort4wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 	size = ft_lstsize_modified(stack_a->top);
 	find4_numbers(stack_a->top, &element4, size);
 	sort4_al(stack_a, stack_b, numberofop, &element4);
-	printf("ops:%d\n", *numberofop);
+	exitsafe(stack_a, stack_b);
 	return (0);
 }
 
@@ -70,13 +70,12 @@ void	sort4_al(t_stack *stack_a, t_stack *stack_b, int *numberofop,
 			element4->secondsmallest);
 	element4->secondlargestpos = scan_num_pos(stack_a, element4->secondlargest);
 	element4->largestpos = scan_num_pos(stack_a, element4->largest);
-	printf("num of op: %p", numberofop);
 	if (element4->largestpos == 0)
-		rotate_stack(stack_a, numberofop);
+		rotate_stack(stack_a, numberofop, 0);
 	else if (element4->largestpos == 1)
-		swap_top_two(stack_a, numberofop);
+		swap_top_two(stack_a, numberofop, 0);
 	else if (element4->largestpos == 2)
-		reverse_rotate_stack(stack_a, numberofop);
+		reverse_rotate_stack(stack_a, numberofop, 0);
 	else if (element4->largestpos == 3)
 	{
 	}

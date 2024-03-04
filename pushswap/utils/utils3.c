@@ -163,10 +163,10 @@ void	displaylinkedlist3(t_node *head)
 	while (ft_lstsize2(head) > i)
 	{
 		if (current->prev == prev && current ->next == next)
-			printf("all ok\n");
+		{
+		}
 		else
 		{
-			perror("curr prev != prev or curr next != next");
 			break ;
 		}
 		current = current->next;
@@ -179,7 +179,6 @@ void	displaylinkedlist3(t_node *head)
 // Function to display the elements in the stack (linked list)
 void	displaystack(t_stack *stack)
 {
-	printf("display linked list:\n");
 	if (stack->top != NULL)
 		displaylinkedlist(stack->top);
 }
