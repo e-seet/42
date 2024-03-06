@@ -21,9 +21,13 @@ output_file
 
 # For pushswap
 help/
-pushswap
+# pushswap
 .DS_Store
 settings.json
+pushswap/push_swap
+pushswap/checker_Mac
+pushswap/checker_Mac
+pushswap/checker_Mac
 
 
 # For pipex

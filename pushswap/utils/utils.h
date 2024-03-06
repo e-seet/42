@@ -5,6 +5,8 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <limits.h>
+// # include "utils3.h"
+// # include "../sort/sort5.c"
 
 typedef struct s_node
 {
@@ -17,12 +19,11 @@ typedef struct s_node
 typedef struct s_stack
 {
 	t_node	*top;
-	// t_node	*sec;
 	t_node	*bot;
+	int		alpha;
 	int		numofelements;
 	int		originalnumber;
 }	t_stack;
-
 
 typedef struct s_element5
 {
@@ -38,7 +39,21 @@ typedef struct s_element5
 	int				secondlargestpos;
 	int				largestpos;
 
-}	s_element5;
+}	t_element5;
+
+typedef struct s_element4
+{
+	int				smallest;
+	int				secondsmallest;
+	int				secondlargest;
+	int				largest;
+
+	int				smallestpos;
+	int				secondsmallestpos;
+	int				secondlargestpos;
+	int				largestpos;
+
+}	t_element4;
 
 typedef struct s_element3
 {
@@ -50,34 +65,27 @@ typedef struct s_element3
 	int				middlepos;
 	int				largestpos;
 
-}	s_element3;
-
-// init stack A and stack B
-void	initstack(t_stack *stack);
-
-// check if the stack is empty
-int		isempty(t_stack *stack);
-
-// push to the end of stack
-void	push(t_stack *stack, int value);
-
-// add to the back of linked list
-void	addtoback(t_stack *stack, int value);
-
-// print out everything from top to the end of the stack
-void	displaystack(t_stack *stack);
-
-// Find out the position of the number
-int	scan_num_pos(t_stack *stack, int num);
-
-// This is used for 5 elements
-// Bring the number 4 and 5 to the bottom of the stack
-void	bringtobot(t_stack	*stack, int *numberofop);
-
-void	displaylinkedlist2(t_node *head);
-void	displaylinkedlist(t_node *head);
+}	t_element3;
 
 t_node	*create_node(int value);
+// add to the back of linked list
+void	addtoback2(t_node *curr, t_node *head, t_node *newnode);
+void	addtoback(t_stack *stack, int value);
+int		ft_lstsize2(t_node *head);
+// Find out the position of the number
+int		scan_num_pos(t_stack *stack, int num);
+
+// check if the stack is empty
+// int		isempty(t_stack *stack);
+
+// push to the end of stack
+// void	push(t_stack *stack, int value);
+
+// print out everything from top to the end of the stack
+// void	displaystack(t_stack *stack);
+// This is used for 5 elements
+// Bring the number 4 and 5 to the bottom of the stack
+// void	bringtobot(t_stack	*stack, int *numberofop);
 
 // Store the stack data
 // top data, next data, last data
@@ -95,7 +103,6 @@ t_node	*create_node(int value);
 // 	int stack_b_last;
 // 	int stack_b_numofelements;
 // }	s_datastore;
-
 
 // void	push(t_stack *stack, int value, s_datastore *stackdetails);
 

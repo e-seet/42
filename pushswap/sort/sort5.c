@@ -1,326 +1,123 @@
-# include "sort5.h"
+#include "sort5.h"
 
-void	init5Element(s_element5 *element5)
+// sort the top 3 element of 5 elements
+void	sort_5_top3(t_element5 *element5, t_stack *stack_a, int *numberofop)
 {
-	element5->smallest =  INT_MAX;
-	element5->secondsmallest =  INT_MAX;
-	element5->middle =  INT_MAX;
-	element5->secondlargest = INT_MIN;
-	element5->largest = INT_MIN;
+	t_element3	element3;
+
+	init3_element(&element3);
+	element3.smallest = element5->smallest;
+	element3.middle = element5->secondsmallest;
+	element3.largest = element5->middle;
+	element3.smallestpos = scan_num_pos(stack_a, element5->smallest);
+	element3.middlepos = scan_num_pos(stack_a, element5->secondsmallest);
+	element3.largestpos = scan_num_pos(stack_a, element5->middle);
+	sort5elementstop3(stack_a, numberofop, &element3);
 }
 
-// Function to find the smallest, 2nd smallest, middle, 2nd largest, and largest numbers in the linked list
-void find5Numbers(t_node * head, s_element5 *element5)
+int	sort5wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 {
-    struct s_node *current = head;
+	t_element5	element5;
 
-    // Traverse the linked list
-    while (current != NULL) {
-        // Update smallest and second smallest
-        if (current->value < element5->smallest)
-		{
-            element5->secondsmallest = element5->smallest;
-            element5->smallest = current->value;
-        }
-		else if (current->value < element5->secondsmallest)
-		{
-            element5->secondsmallest = current->value;
-        }
+	element5.smallest = INT_MAX;
+	element5.secondsmallest = INT_MAX;
+	element5.middle = INT_MAX;
+	element5.secondlargest = INT_MIN;
+	element5.largest = INT_MIN;
+	sort5(stack_a, numberofop, &element5);
+	exitsafe(stack_a, stack_b);
+	return (0);
+}
 
-        // Update largest and second largest
-        if (current->value > element5->largest)
-		{
-            element5->secondlargest = element5->largest;
-            element5->largest = current->value;
-        }
-		else if (current->value > element5->secondlargest)
-		{
-            element5->secondlargest = current->value;
-        }
-        // Move to the next node
-        current = current->next;
-    }
+void	find5_numbers_p2(t_node *head, t_element5 *element5, t_stack *stack_a)
+{
+	int		i;
+	t_node	*head_ptr;
 
-	// another function
-    struct s_node *headPtr = head;
-	 while (headPtr != NULL)
-	 {
+	i = 0;
+	head_ptr = head;
+	while (ft_lstsize_modified(head) >= i)
+	{
 		if (
-			headPtr -> value != element5->smallest &&
-			headPtr -> value != element5->secondsmallest &&
-			headPtr -> value != element5->secondlargest &&
-			headPtr -> value != element5->largest
-			)
+			head_ptr -> value != element5->smallest
+			&& head_ptr -> value != element5->secondsmallest
+			&& head_ptr -> value != element5->secondlargest
+			&& head_ptr -> value != element5->largest
+		)
 		{
-			element5 ->middle = headPtr->value;
+			element5 ->middle = head_ptr->value;
 		}
-        headPtr = headPtr->next;
-    }
-
-    // Print the results
-    printf("Smallest: %d\n", element5->smallest);
-    printf("Second Smallest: %d\n", element5->secondsmallest);
-    printf("Middle: %d\n", element5->middle);
-    printf("Second Largest: %d\n", element5->secondlargest);
-    printf("Largest: %d\n\n", element5->largest);
+		head_ptr = head_ptr->next;
+		i = i + 1;
+	}
+	element5->smallestpos = scan_num_pos(stack_a, element5->smallest);
+	element5->secondsmallestpos = scan_num_pos(stack_a,
+			element5->secondsmallest);
+	element5->middlepos = scan_num_pos(stack_a, element5->middle);
+	element5->secondlargestpos = scan_num_pos(stack_a, element5->secondlargest);
+	element5->largestpos = scan_num_pos(stack_a, element5->largest);
 }
 
-void sort5(t_stack stack_a, t_stack stack_b, int *numberofop, s_element5 *element5)
+// Function to find the smallest, 2nd smallest, middle,
+// 2nd largest, and largest numbers in the linked list
+void	find5_numbers(t_node *head, t_element5 *element5, t_stack *stack_a)
 {
-	displaystack(&stack_a);
-	displaystack(&stack_b);
+	struct s_node	*current;
+	int				i;
 
-	// Get all the numbers back from stack
-	find5Numbers(stack_a.top, element5);
-	
-	// get all the position of the numbers in the stack
-	element5->smallestpos  = scan_num_pos(&stack_a, element5->smallest);
-	element5->secondsmallestpos  = scan_num_pos(&stack_a, element5->secondsmallest);
-	element5->middlepos  = scan_num_pos(&stack_a, element5->middle);
-	element5->secondlargestpos  = scan_num_pos(&stack_a, element5->secondlargest);
-	element5->largestpos  = scan_num_pos(&stack_a, element5->largest);
-
-	// printf("\npositions\n");
-    // printf("Smallest position: %d\n", element5->smallestpos);
-    // printf("Second Smallest  position: %d\n", element5->secondsmallestpos);
-    // printf("Middle  position: %d\n", element5->middlepos);
-    // printf("Second Largest  position: %d\n", element5->secondlargestpos);
-    // printf("Largest position: %d\n", element5->largestpos);
-
-	// When the number 5 [largest number] is at the top
-	// 5 x x x x
-	if (element5->largestpos == 0)
+	i = 0;
+	current = head;
+	while (ft_lstsize_modified(head) >= i)
 	{
-		// swap top 2 [at top: 4,5]
-		if (element5->secondlargestpos == 1)
+		if (current->value < element5->smallest)
 		{
-			printf("\n1\n");
-			swap_top_two(&stack_a, numberofop);
-			bringtobot(&stack_a, numberofop);
+			element5->secondsmallest = element5->smallest;
+			element5->smallest = current->value;
 		}
-		// Swap top 2
-		// Rotate top to bot [5,4]
-		// Swap top 2 [At top: 4, 5]
-		else if (element5->secondlargestpos == 2)
+		else if (current->value < element5->secondsmallest)
+			element5->secondsmallest = current->value;
+		if (current->value > element5->largest)
 		{
-			printf("problem 2\n");
-			swap_top_two(&stack_a, numberofop);
-			rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);			
-			bringtobot(&stack_a, numberofop);
+			element5->secondlargest = element5->largest;
+			element5->largest = current->value;
 		}
-		// Rotate bot to top
-		// Swap top 2
-		// Rotate top to bot [At bot: 4,5]
-		else if (element5->secondlargestpos == 3)
-		{
-			reverse_rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			rotate_stack(&stack_a, numberofop);
-		}
-		// Rotate top to bot [At bot: 4,5]
-		else if (element5->secondlargestpos == 4)
-		{
-			rotate_stack(&stack_a, numberofop);
-		}
-
-		printf("end of op\n");
-		displaystack(&stack_a);
+		else if (current->value > element5->secondlargest)
+			element5->secondlargest = current->value;
+		current = current->next;
+		i = i + 1;
 	}
-	// When the number 5 [largest number] is at the 2nd pos
-	// x 5 x x x
-	else if (element5->largestpos == 1)
-	{
-		// No action needed
-		// at top [4,5]
-		if (element5->secondlargestpos == 0)
-		{
-			printf("no action");
-			bringtobot(&stack_a, numberofop);
-		}
-		// Rotate top to bot
-		// Swap top 2 [At top:  4,5]
-		else if (element5->secondlargestpos == 2)
-		{
-			rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			bringtobot(&stack_a, numberofop);
-		}
-		// Swap top two
-		// Rotate bot to top
-		// Swap top two
-		// Rotate top to bot [At bot 4, 5]
-		else if (element5->secondlargestpos == 3)
-		{
-			swap_top_two(&stack_a, numberofop);
-			reverse_rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			rotate_stack(&stack_a, numberofop);
-		}
-		// Swap top two
-		// Rotate top to bot [At bot: 4, 5]
-		else if (element5->secondlargestpos == 4)
-		{
-			swap_top_two(&stack_a, numberofop);
-			reverse_rotate_stack(&stack_a, numberofop);
-			bringtobot(&stack_a, numberofop);
-		}
-
-		printf("end of op\n");
-		displaystack(&stack_a);
-
-	}
-	// When the number 5 [largest number] is at the 3rd pos
-	// x x 5 x x
-	else if (element5->largestpos == 2)
-	{
-		// 	Swap top two
-		// Rotate top to bot [At top: 4,5]
-		if (element5->secondlargestpos == 0)
-		{
-			swap_top_two(&stack_a, numberofop);
-			rotate_stack(&stack_a, numberofop);
-			bringtobot(&stack_a, numberofop);
-		}	
-		// Rotate top to bot [At top 4,5]
-		else if (element5->secondlargestpos == 1)
-		{
-			rotate_stack(&stack_a, numberofop);
-			bringtobot(&stack_a, numberofop);
-		}
-		// Rotate top to bot
-		// Rotate top to bot
-		// Swap top two [At top: 4,5]
-		else if (element5->secondlargestpos == 3)
-		{
-			rotate_stack(&stack_a, numberofop);
-			rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			bringtobot(&stack_a, numberofop);
-		}
-		// Rotate bot to top
-		// Rotate bot to top
-		// Swap top two
-		// Rotate bot to top
-		// Swap top two [at top: 4, 5]
-		else if (element5->secondlargestpos == 4)
-		{
-			reverse_rotate_stack(&stack_a, numberofop);
-			reverse_rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			reverse_rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			bringtobot(&stack_a, numberofop);
-		}
-
-		printf("end of op\n");
-		displaystack(&stack_a);
-
-	}
-	// When the number 5 [largest number] is at the 4th pos
-	// x x x 5 x
-	else if (element5->largestpos == 3)
-	{
-		// Rotate bot to top
-		// Swap top two
-		// Rotate bot to top
-		// Swap top two [At top: 4,5]
-		if (element5->secondlargestpos == 0)
-		{
-			reverse_rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			reverse_rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			bringtobot(&stack_a, numberofop);
-		}
-		// Swap top two
-		// Rotate bot to top
-		// Swap top two
-		// Rotate bot to top
-		// Swap top two [At top: 4,5]
-		else if (element5->secondlargestpos == 1)
-		{
-			swap_top_two(&stack_a, numberofop);
-			reverse_rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			reverse_rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			bringtobot(&stack_a, numberofop);
-		}
-		// Rotate bot to top [At bot: 4,5]
-		else if (element5->secondlargestpos == 2)
-		{
-			reverse_rotate_stack(&stack_a, numberofop);
-		}
-		// 	Rotate bot to top
-		// Rotate bot to top
-		// Swap top two [At top: 4, 5]
-		else if (element5->secondlargestpos == 4)
-		{
-			reverse_rotate_stack(&stack_a, numberofop);
-			reverse_rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			bringtobot(&stack_a, numberofop);
-		}
-
-		printf("end of op\n");
-		displaystack(&stack_a);
-	}
-	// When the number 5 [largest number] is at the 5th pos
-	// x x x x 5
-	else if (element5->largestpos == 4)
-	{
-		// Rotate bot to top
-		// Swap top two [At top: 4,5]
-		if (element5->secondlargestpos == 0)
-		{
-			reverse_rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			bringtobot(&stack_a, numberofop);
-		}
-		// Swap top two
-		// Rotate bot to top
-		// Swap top two [At top: 4,5]
-		else if (element5->secondlargestpos == 1)
-		{
-			swap_top_two(&stack_a, numberofop);
-			reverse_rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			bringtobot(&stack_a, numberofop);
-		}
-		// Rotate bot to top
-		// Rotate bot to top
-		// Swap top two
-		// Rotate top to bot [At bot: 4,5]
-		else if (element5->secondlargestpos == 2)
-		{
-			reverse_rotate_stack(&stack_a, numberofop);
-			reverse_rotate_stack(&stack_a, numberofop);
-			swap_top_two(&stack_a, numberofop);
-			rotate_stack(&stack_a, numberofop);
-		}
-		// No action
-		else if (element5->secondlargestpos == 3)
-		{
-			// no action 
-			printf("no action required");
-		}
-
-		printf("end of op\n");
-		displaystack(&stack_a);
-	}
-
-	s_element3	element3;
-	init3Element(&element3);
-
-	element3.smallest  = element5->smallest;
-	element3.middle  = element5->secondsmallest;
-	element3.largest  = element5->middle;
-
-	element3.smallestpos  = scan_num_pos(&stack_a, element5->smallest);
-	element3.middlepos  = scan_num_pos(&stack_a, element5->secondsmallest);
-	element3.largestpos  = scan_num_pos(&stack_a, element5->middle);;
-	
-	// sort the top 3 numbers
-	sort5elementstop3(&stack_a, numberofop, &element3);
+	find5_numbers_p2(head, element5, stack_a);
 }
+
+void	sort5(t_stack *stack_a, int *numberofop, t_element5 *element5)
+{
+	find5_numbers(stack_a->top, element5, stack_a);
+	if (element5->largestpos == 0)
+		sort5_case1(stack_a, numberofop, element5);
+	else if (element5->largestpos == 1)
+		sort5_case2(stack_a, numberofop, element5);
+	else if (element5->largestpos == 2)
+		sort5_case3(stack_a, numberofop, element5);
+	else if (element5->largestpos == 3)
+		sort5_case4(stack_a, numberofop, element5);
+	else if (element5->largestpos == 4)
+		sort5_case5(stack_a, numberofop, element5);
+	sort_5_top3(element5, stack_a, numberofop);
+}
+
+/*
+./push_swap "1 2 3 24394 2"
+displaylinkedlist2(stack_a->top);
+ft_lstsize2(stack_a->top);
+// printf("stack_a->bot:%p | %d\n", stack_a->bot, stack_a->bot->value);
+// printf("stack_a->top:%p | %d\n", stack_a->top, stack_a->top->value);
+exit(1);
+
+// printf("find 5 element\n");
+// printf("Smallest: %d\n", element5->smallest);
+// printf("Second Smallest: %d\n", element5->secondsmallest);
+// printf("Middle: %d\n", element5->middle);
+// printf("Second Largest: %d\n", element5->secondlargest);
+// printf("Largest: %d\n\n", element5->largest);
+// printf("end of find 5 element\n");
+*/
