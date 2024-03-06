@@ -1,97 +1,141 @@
-#include "utils.h"
-#include <stdio.h>
+#include "./utils/utils.h"
+#include "./utils/utils2.h"
+#include "./utils/utils3.h"
+#include "./utils/utils4.h"
+// #include "./utils/timsort.h"
+#include "./utils/operations.h"
+#include "./utils/operations2.h"
+#include "./utils/exit.h"
+#include "./sort/sort3.h"
+#include "./sort/sort4.h"
+#include "./sort/sort5.h"
+#include "./sort/radix_sort.h"
+// #include <errno.h>
 
-/* for stack*/
-
-#define MAX_SIZE 100
-
-// Define a stack structure
-struct Stack {
-    int items[MAX_SIZE];
-    int top;
-};
-
-// Initialize the stack
-void initialize(struct Stack *stack) {
-    stack->top = -1;
-}
-
-// Check if the stack is empty
-int isEmpty(struct Stack *stack) {
-    return stack->top == -1;
-}
-
-// Check if the stack is full
-int_fast16_t isFull(struct Stack *stack) {
-    return stack->top == MAX_SIZE - 1;
-}
-
-// Push an item onto the stack
-void push(struct Stack *stack, int value) {
-    if (isFull(stack)) {
-        printf("Stack overflow. Cannot push %d onto the stack.\n", value);
-    } else {
-        stack->items[++stack->top] = value;
-    }
-}
-
-// Pop an item from the stack
-int pop(struct Stack *stack) {
-    if (isEmpty(stack)) {
-        printf("Stack underflow. Cannot pop from an empty stack.\n");
-        return -1; // Error value
-    } else {
-        return stack->items[stack->top--];
-    }
-}
-
-// Peek at the top item of the stack without removing it
-int peek(struct Stack *stack) {
-    if (isEmpty(stack)) {
-        printf("Stack is empty. Cannot peek.\n");
-        return -1; // Error value
-    } else {
-        return stack->items[stack->top];
-    }
-}
-
-void print_binary(signed char num) {
-    for (int i = 7; i >= 0; i--) {
-        putchar((num & (1 << i)) ? '1' : '0');
-    }
-}
-
-int main(int argc, char *argv[])
+int	errormsg(t_stack *stack_a, t_stack *stack_b)
 {
-    signed char 	number;
-	int 			i;
-	struct Stack	stack;
+	exitsafe(stack_a, stack_b);
+	write(2, "Error\n", 6);
+	return (1);
+}
+
+// int	sort1n2(int argc, int *numberofop, t_stack *stack_a, t_stack *stack_b)
+int	sort1n2(int argc, t_stack *stack_a, t_stack *stack_b, int *numberofop)
+// the issues are all here.
+// int	sort1n2(int argc, t_stack *stack_a, t_stack *stack_b)
+{
+	if (argc == 2)
+	{
+		exitsafe(stack_a, stack_b);
+		return (0);
+	}
+	else
+	{
+		if ((stack_a->top)->value > ((stack_a->top)->next)->value)
+			swap_top_two(stack_a, numberofop, 0);
+		exitsafe(stack_a, stack_b);
+		return (0);
+	}
+}
+
+int	sort_wrapper(int argc, t_stack *stack_a, t_stack *stack_b)
+{
+	int			numberofop;
+
+	numberofop = 0;
+	if (argc == 0 || argc == 1)
+		return (errormsg(stack_a, stack_b));
+	else if (argc == 3 || argc == 2)
+		return (sort1n2(argc, stack_a, stack_b, &numberofop));
+	else if (argc == 4)
+		return (sort3wrapper(stack_a, stack_b, &numberofop, 0));
+	else if (argc == 5)
+		return (sort4wrapper(stack_a, stack_b, &numberofop));
+	else if (argc == 6)
+		return (sort5wrapper(stack_a, stack_b, &numberofop));
+	else if (argc > 6)
+		return (radix_sort_wrapper(argc, stack_a, stack_b, &numberofop));
+	else
+		return (errormsg(stack_a, stack_b));
+	return (0);
+}
+
+int	readarguments(int argc, char **argv, int *i, t_stack *stack_a)
+{
+	int		err;
+	int		internal;
+	char	**strs;
+
+	while (argc > *i)
+	{
+		internal = 0;
+		strs = ft_split(argv[*i], ' ');
+		while (strs[internal])
+		{
+			addtoback(stack_a, ft_atoi_modified(strs[internal], &err));
+			internal = internal + 1;
+		}
+		if (err == 1)
+		{
+			return (1);
+		}
+		*i = *i + 1;
+	}
+	return (0);
+}
+
+// int	readarguments(int argc, char **argv, int *i, t_stack *stack_a)
+// {
+// 	int	err;
+
+// 	// if (argc == 2)
+// 	// {
+// 	// 	*i = 0;
+// 	// }
+// 	while (argv[*i])
+// 	{
+// 		addtoback(stack_a, ft_atoi_modified(argv[*i], &err));
+// 		if (err == 1)
+// 		{
+// 			return (1);
+// 		}
+// 		*i = *i + 1;
+// 	}
+// 	// if (argc != 2)
+// 	// {
+// 	// 	*i = *i -1;
+// 	// }
+// 	return (0);
+// }
+
+int	main(int argc, char *argv[])
+{
+	int			i;
+	int			err;
+	t_stack		stack_a;
+	t_stack		stack_b;
 
 	i = 1;
-    initialize(&stack);
-
-	while (argc > i)
+	initstack(&stack_a, 0);
+	initstack(&stack_b, 1);
+	if (argc == 1)
 	{
-		number = ft_atoi(argv[i]);
-		print_binary(number);
-		push(&stack, number);
-		printf("\n");
-		
-		i++;
+		return (errormsg(&stack_a, &stack_b));
 	}
-
-	while (!isEmpty(&stack))
+	else
 	{
-		number = pop(&stack);
-		printf("num:%d\n", number);
+		err = readarguments(argc, argv, &i, &stack_a);
 	}
-
-
-
-    return 0;
+	if (err == 1)
+	{
+		return (errormsg(&stack_a, &stack_b));
+	}
+	if (has_duplicate(stack_a.top))
+	{
+		return (errormsg(&stack_a, &stack_b));
+	}
+	return (sort_wrapper(i, &stack_a, &stack_b));
 }
 
-// gcc -o main main.c  utils.c
-// 2 6 7 11 3
-// 22 5 1 4 20
-// >./main 2 1 3 6 5 8
+//error test case 9 got error. But idk what is the issue
+// go into sort1n2 and then expected arg ==2 to throw error

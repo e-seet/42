@@ -1,0 +1,24 @@
+a
+b
+x
+
+# 。/push_swap_tester
+checker_Mac
+checker_linux
+pro_checker
+push_swap_test_linux.sh
+push_swap_test.sh
+push_swap_tester
+/Push-Swap-Tester
+script.checker_linux
+
+
+/ignore/*
+
+# timsort and all
+minrun.c
+test
+test_check.txt
+timsort.md
+
+script.c
