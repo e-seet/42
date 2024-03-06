@@ -76,26 +76,49 @@ utils2.c
 int countElements();
 
 Operations.c and Operations2.c
-These are for operations:
 
-<SA/SB> Swap first 2 elements
-void swap_top_two(t_stack *stack);
-void ss(t_stack*a, t_stack *b);
+Sorting just 3 numbers:
+./pushswap 1 2 3
+./pushswap 1 3 2
+./pushswap 2 1 3
+./pushswap 2 3 1
+./pushswap 3 1 2
+./pushswap 3 2 1
 
-<PA/PB> 
-PA: Take the first element at the top of b and put it at the top of a.
-PB: Take the first element at the top of a and put it at the top of b.
-void pb(t_stack*a, t_stack *b);
-void pa(t_stack*a, t_stack*b);
+Work on 5 numbers
+Testing random combinations
+case 1:
+./pushswap 5 3 1 2 4
+./pushswap 5 3 1 4 2
 
-<RA/RB>  First element becomes the last one.
-void rotate_stack(t_stack*stack);
-void rr(t_stack *a, t_stack*b);
+case 2 [not done]:
+./pushswap 2 5 1 4 3
+./pushswap 2 5 1 3 4
 
-<RRA/RRB> last element becomes the first one.
-void reverse_rotate_stack(t_stack *stack);
-void rrr(t_stack*a, t_stack *b);
-t_node*ft_rralastnode(t_node *head, int tonull);  // ignore this
+./pushswap 3 5 2 1 4
+./pushswap 3 5 2 4 1
+
+case 3:
+./pushswap 3 1 2 4 5
+./pushswap 3 1 2 5 4
+
+case 4:
+./pushswap 1 4 2 5 3
+./pushswap 1 4 2 3 5
+
+Case 5:
+./pushswap 3 2 5 4 1
+./pushswap 3 2 5 1 4
+
+./pushswap 4 1 5 3 2
+./pushswap 4 1 5 2 3
+
+case 6:
+./pushswap 1 2 3 5 4
+./pushswap 1 2 3 4 5
+
+1. Push first 2 elements to stack b irregardless what.
+2. Then we sort the Stack 1 and insert into stack A if required from stack b.
 
 ## Operations
 
@@ -202,20 +225,17 @@ Tim sort
 > 11 <https://bugs.python.org/file4451/timsort.txt?ref=skerritt.blog>
 >12 <https://medium.com/nerd-for-tech/push-swap-tutorial-fa746e6aba1e>
 
+https://bugs.python.org/file4451/timsort.txt?ref=skerritt.blog
+https://gist.github.com/nandajavarma/a3a6b62f34e74ec4c31674934327bbd3
+https://gist.github.com/bee-san/f6ccc000ab6527769999fd0a9ebf59de
+https://dev.to/brandonskerritt/timsort-the-fastest-sorting-algorithm-you-ve-never-heard-of-2ake
+https://wiki.c2.com/?TimSort
 important: 11, 12
 
-Currently:
-work on 3 numbers
-./pushswap 1 2 3
-./pushswap 1 3 2
+pushswap
+https://sharkigamers.github.io/pushswap_epitech_project/
+https://medium.com/nerd-for-tech/push-swap-tutorial-fa746e6aba1e
 
-./pushswap 2 1 3
-./pushswap 2 3 1
-
-./pushswap 3 1 2
-./pushswap 3 2 1
-
-Work on 5 numbers
-
-1. Push first 2 elements to stack b irregardless what.
-2. Then we sort the Stack 1 and insert into stack A if required from stack b.
+tester
+https://github.com/julien-ctx/push-swap-tester
+https://github.com/LeoFu9487/push_swap_tester

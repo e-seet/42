@@ -3,14 +3,14 @@
 
 # include "utils.h"
 
-void	reverse_rotate_stack(t_stack *stack);
+void	reverse_rotate_stack(t_stack *stack, int *numberofop);
 
-void	rrr(t_stack *a, t_stack *b);
+void	rrr(t_stack *a, t_stack *b, int *numberofop );
 
 t_node	*ft_rralastnode(t_node *head, int tonull);
 
-void	pb(t_stack *a, t_stack *b);
+void	pb(t_stack *a, t_stack *b,  int *numberofop);
 
-void	pa(t_stack *a, t_stack *b);
+void	pa(t_stack *a, t_stack *b,  int *numberofop);
 
 #endif
