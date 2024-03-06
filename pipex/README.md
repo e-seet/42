@@ -12,6 +12,37 @@ make
 > ./pipex in_file "grep file" "wc -w" output_file
 > ./pipex in_file "grep file" "wc -l" output_file
 
+// pipex medic test
+./pipex in_file "grep Now" "cat" "outs/test-xx.txt"
+./pipex "in_file" "wc -w" "cat" "outs/test-xx.txt"
+
+./pipex in_file "grep Now" "cat" "test-xx.txt"
+./pipex "in_file" "wc -w" "cat" "test-xx.txt"
+
+
+Test 16:
+./pipex "in_file" "cat" "hostname" "outs/test-xx.txt"
+hostname
+
+Test 18:
+./pipex "in_file" "grep Now" "head -2" "outs/test-xx.txt"
+>grep "Now" in_file | head -2 
+
+20
+./pipex "in_file" "grep Now" "wc -w" "outs/test-xx.txt"
+>grep "Now" in_file | wc -w
+
+22
+./pipex "in_file" "grep Now" "cat" "outs/test-xx.txt"
+>grep "Now" in_file
+then:
+./pipex "in_file" "wc -w" "cat" "outs/test-xx.txt"
+>wc -w in_file
+
+Test 25
+./pipex "in_file" "notexisting" "wc" "outs/test-xx.txt"
+(notexisting is a command that is not supposed to exist)
+
 in_file:
 Hello, this is a sample input file.
 The file contains some text that can be processed by your program.

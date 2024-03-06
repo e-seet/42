@@ -99,14 +99,12 @@ char	*get_next_line(int fd)
 	if (!str)
 		return (NULL);
 	str = ft_read_and_join(str, fd, &bufferi);
-	// check if the str is empty or read failed.
 	if (str[0] == '\0' || bufferi == -1)
 	{
 		free(str);
 		str = NULL;
 		return (str);
 	}
-	// verify that the string is not empty
 	else if (str[0] != '\0')
 	{
 		line = ft_processline(str, line, ft_findline2(str));

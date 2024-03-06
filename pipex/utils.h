@@ -1,4 +1,3 @@
-
 #ifndef UTILS_H
 # define UTILS_H
 
@@ -8,6 +7,10 @@
 # include <unistd.h>
 //for read write, permission with files, creating files
 # include <fcntl.h>
+
+// For mkdir. Check if allowed
+# include <sys/stat.h>
+# include <errno.h>
 
 struct s_pipex {
 	int		pid1;

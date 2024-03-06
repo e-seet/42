@@ -132,7 +132,6 @@ int	main(int argc, char *argv[], char *envp[])
 
 //pipex, file1, cmd1, cmd2, file2
 
-
 //compile 
 // gcc -o main main.c libftfiles.c
 
@@ -141,11 +140,9 @@ int	main(int argc, char *argv[], char *envp[])
 // comamnd
 // ls -l | wc -l > outfile
 
-
 // ./main  infile "grep this" "wc -w" outfile
 
 // ./pipex infile "grep file" "wc -l" outfile
-
 
 //0:./main
 //1:infile
