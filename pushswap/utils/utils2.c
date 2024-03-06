@@ -34,14 +34,14 @@ int	stack_is_sorted(t_stack *stack)
 		if (curr->value > val)
 			val = curr->value;
 		else
-			return (1);
+			return (0);
 		curr = curr->next;
 	}
 	if (curr->value > val)
 		val = curr->value;
 	else
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }
 
 int	stack_is_sorted2(t_stack *stack)
@@ -60,14 +60,14 @@ int	stack_is_sorted2(t_stack *stack)
 		if (curr->pos > pos)
 			pos = curr->pos;
 		else
-			return (1);
+			return (0);
 		curr = curr->next;
 	}
 	if (curr->pos > pos)
 		pos = curr->pos;
 	else
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }
 
 int	ft_atoi_modified(const char *str, int *err)
@@ -92,7 +92,7 @@ int	ft_atoi_modified(const char *str, int *err)
 		i++;
 	}
 	if (i == 0 || str[i] != '\0' || num * sign > INT_MAX
-		|| num * sign < INT_MIN || (num == 0 && str[i] != '0'))
+		|| num * sign < INT_MIN || (num == 0 && str[0] != '0'))
 		*err = 1;
 	else
 		*err = 0;

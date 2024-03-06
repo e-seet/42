@@ -1,5 +1,10 @@
 #include "sort4.h"
 
+// printf("smallest:%d,\n second smallest:%d,\n 2nd large%d,\n
+// largest:%d\n", element4.smallest, element4.secondsmallest,
+// element4.secondlargest, element4.largest);
+// printf("sorted\n");
+// displaylinkedlist2(stack_a->top);
 int	sort4wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 {
 	t_element4	element4;
@@ -11,7 +16,7 @@ int	sort4wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 	element4.largest = INT_MIN;
 	size = ft_lstsize_modified(stack_a->top);
 	find4_numbers(stack_a->top, &element4, size);
-	sort4_al(stack_a, stack_b, numberofop, &element4);
+	sort4_al(stack_a, numberofop, &element4);
 	exitsafe(stack_a, stack_b);
 	return (0);
 }
@@ -58,13 +63,16 @@ void	sort_4_top3(t_element4 *element4, t_stack *stack_a, int *numberofop)
 	element3.middlepos = scan_num_pos(stack_a, element4->secondsmallest);
 	element3.largestpos = scan_num_pos(stack_a, element4->secondlargest);
 	sort5elementstop3(stack_a, numberofop, &element3);
-	displaylinkedlist2(stack_a->top);
 }
 
-void	sort4_al(t_stack *stack_a, t_stack *stack_b, int *numberofop,
+// void	sort4_al(t_stack *stack_a, t_stack *stack_b, int *numberofop,
+// printf("\npositions\n");
+// printf("smallest:%d,\nsecond smallest:%d,\n2nd large%d,\nlargest:%d\n\n", 
+// element4->smallestpos, element4->secondsmallestpos,
+// element4->secondlargestpos, element4->largestpos);
+void	sort4_al(t_stack *stack_a, int *numberofop,
 		t_element4 *element4)
 {
-	displaystack(stack_b);
 	element4->smallestpos = scan_num_pos(stack_a, element4->smallest);
 	element4->secondsmallestpos = scan_num_pos(stack_a,
 			element4->secondsmallest);
@@ -73,7 +81,10 @@ void	sort4_al(t_stack *stack_a, t_stack *stack_b, int *numberofop,
 	if (element4->largestpos == 0)
 		rotate_stack(stack_a, numberofop, 0);
 	else if (element4->largestpos == 1)
+	{
 		swap_top_two(stack_a, numberofop, 0);
+		rotate_stack(stack_a, numberofop, 0);
+	}
 	else if (element4->largestpos == 2)
 		reverse_rotate_stack(stack_a, numberofop, 0);
 	else if (element4->largestpos == 3)

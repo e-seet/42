@@ -24,8 +24,7 @@ int	sort5wrapper(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 	element5.middle = INT_MAX;
 	element5.secondlargest = INT_MIN;
 	element5.largest = INT_MIN;
-	sort5(stack_a, stack_b, numberofop, &element5);
-	displaystack(stack_a);
+	sort5(stack_a, numberofop, &element5);
 	exitsafe(stack_a, stack_b);
 	return (0);
 }
@@ -90,10 +89,8 @@ void	find5_numbers(t_node *head, t_element5 *element5, t_stack *stack_a)
 	find5_numbers_p2(head, element5, stack_a);
 }
 
-void	sort5(t_stack *stack_a, t_stack *stack_b, int *numberofop,
-		t_element5 *element5)
+void	sort5(t_stack *stack_a, int *numberofop, t_element5 *element5)
 {
-	displaystack(stack_b);
 	find5_numbers(stack_a->top, element5, stack_a);
 	if (element5->largestpos == 0)
 		sort5_case1(stack_a, numberofop, element5);

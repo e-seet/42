@@ -18,16 +18,6 @@ int	sort3wrapper(t_stack *stack_a, t_stack *stack_b,
 	return (0);
 }
 
-void	init3_element(t_element3 *element3)
-{
-	element3->smallest = INT_MAX;
-	element3->middle = INT_MAX;
-	element3->largest = INT_MIN;
-	element3->smallestpos = -1;
-	element3->middlepos = -1;
-	element3->largestpos = -1;
-}
-
 void	find3_numbers(t_node *head, t_element3 *element3)
 {
 	int	temp;

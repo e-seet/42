@@ -26,7 +26,7 @@ void	setpos(t_stack *stack_a, int argc, int i)
 	t_node	*curr;
 
 	i = 1;
-	while (argc + 1 > i)
+	while (argc > i)
 	{
 		curr = stack_a ->top;
 		while (curr->pos != 0)
@@ -51,26 +51,18 @@ void	setpos(t_stack *stack_a, int argc, int i)
 void	radix_sort_a(t_stack *stack_a, t_stack *stack_b, int *numberofop, int i)
 {
 	t_node	*head_a;
-	t_node	*tail_a;
+	int		rotates;
 
-	head_a = stack_a->top;
-	tail_a = stack_a->bot;
-	while (head_a != tail_a)
+	rotates = ft_lstsize2(stack_a->top);
+	while (rotates)
 	{
 		head_a = stack_a->top;
-		tail_a = stack_a->bot;
-		if (stack_a ->top != NULL)
-			head_a = stack_a->top;
 		if (((head_a->pos >> i) & 1) == 0)
 			pb(stack_a, stack_b, numberofop);
 		else
 			rotate_stack(stack_a, numberofop, 0);
-		head_a = stack_a->top;
+		rotates --;
 	}
-	if (((head_a->pos >> i) & 1) == 0)
-		pb(stack_a, stack_b, numberofop);
-	else
-		rotate_stack(stack_a, numberofop, 0);
 }
 
 void	radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
@@ -81,17 +73,14 @@ void	radix_sort(t_stack *stack_a, t_stack *stack_b, int *numberofop)
 	i = 0;
 	while (32 > i)
 	{
-		if (stack_is_sorted(stack_a) == 0 || stack_is_sorted2(stack_a) == 0)
+		if (stack_is_sorted2(stack_a) == 1)
 			break ;
 		radix_sort_a(stack_a, stack_b, numberofop, i);
 		head_b = stack_b->top;
-		if (head_b != NULL)
+		while (head_b != NULL)
 		{
-			while (head_b != NULL)
-			{
-				pa(stack_a, stack_b, numberofop);
-				head_b = stack_b->top;
-			}
+			pa(stack_a, stack_b, numberofop);
+			head_b = stack_b->top;
 		}
 		i = i + 1;
 	}

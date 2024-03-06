@@ -31,10 +31,7 @@ int	sort1n2(int argc, t_stack *stack_a, t_stack *stack_b, int *numberofop)
 	}
 	else
 	{
-		if (stack_is_sorted(stack_a) == 0 || stack_is_sorted2(stack_a) == 0)
-		{
-		}
-		else
+		if ((stack_a->top)->value > ((stack_a->top)->next)->value)
 			swap_top_two(stack_a, numberofop, 0);
 		exitsafe(stack_a, stack_b);
 		return (0);

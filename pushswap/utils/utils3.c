@@ -113,11 +113,11 @@ void	displaylinkedlist2(t_node *head)
 // 	{
 // 		return ;
 // 	}
-// 	printf("Linked List: ");
+// 	printf("Linked List:\n");
 // 	while (size > i)
 // 	{
 // 		if (current->prev == prev && current ->next == next)
-// 			printf("all ok\n");
+// 			printf("all ok. %d pos:%d\n", current->value, current->pos);
 // 		else
 // 		{
 // 			printf("error\n");
@@ -144,8 +144,6 @@ void	displaylinkedlist2(t_node *head)
 // 	printf("i:%d\n", i);
 // }
 
-//f
-//f
 // Function to display the elements in the linked list
 void	displaylinkedlist3(t_node *head)
 {

@@ -88,7 +88,9 @@ void	sort5_case4(t_stack *stack_a, int *numberofop, t_element5 *element5)
 		bringtobot(stack_a, numberofop);
 	}
 	else if (element5->secondlargestpos == 2)
+	{
 		reverse_rotate_stack(stack_a, numberofop, 0);
+	}
 	else if (element5->secondlargestpos == 4)
 	{
 		reverse_rotate_stack(stack_a, numberofop, 0);

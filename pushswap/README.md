@@ -11,6 +11,8 @@ find . -name "*.c" | entr make
 >ARG="4 67 3 87 23"; ./push_swap $ARG | ./checker_OS $ARG
 OK
 
+ARG="4 67 3 87 23"; ./push_swap $ARG | ./checker_Mac $ARG
+
 1. Push first 2 elements to stack b irregardless what.
 2. Then we sort the Stack 1 and insert into stack A if required from stack b.
 
