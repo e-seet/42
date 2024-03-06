@@ -20,8 +20,6 @@
 // sorted return 0
 int	stack_is_sorted(t_stack *stack)
 {
-	// printf("stack is sorted \n");
-
 	t_node	*head;
 	t_node	*curr;
 	int		val;
@@ -48,21 +46,13 @@ int	stack_is_sorted(t_stack *stack)
 
 int	stack_is_sorted2(t_stack *stack)
 {
-	// printf("stack is sorted 2 \n");
 	t_node	*head;
 	t_node	*curr;
 	int		pos;
 
 	head = stack->top;
 	if (head == NULL)
-	{
-		// printf("meow :%p \n", head);
-		// printf("meow :%d \n", head->pos); // the issue is here
-		// printf("meow :%p \n", head);
-
 		return (1);
-	}
-
 	pos = head->pos;
 	curr = head->next;
 	if (curr == NULL)
