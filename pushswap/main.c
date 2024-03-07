@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eseet <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/07 16:24:01 by eseet             #+#    #+#             */
+/*   Updated: 2024/03/07 16:24:02 by eseet            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./utils/utils.h"
 #include "./utils/utils2.h"
 #include "./utils/utils3.h"
@@ -74,6 +86,7 @@ int	readarguments(int argc, char **argv, int *i, t_stack *stack_a)
 		while (strs[internal])
 		{
 			addtoback(stack_a, ft_atoi_modified(strs[internal], &err));
+			free(strs[internal]);
 			internal = internal + 1;
 		}
 		if (err == 1)
