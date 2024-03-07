@@ -66,6 +66,7 @@ int	readarguments(int argc, char **argv, int *i, t_stack *stack_a)
 	int		internal;
 	char	**strs;
 
+	err = 0;
 	while (argc > *i)
 	{
 		internal = 0;
