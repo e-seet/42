@@ -12,7 +12,7 @@ make
 > ./pipex in_file "grep file" "wc -w" output_file
 > ./pipex in_file "grep file" "wc -l" output_file
 
-// pipex medic test
+// pipex test
 ./pipex in_file "grep Now" "cat" "outs/test-xx.txt"
 ./pipex "in_file" "wc -w" "cat" "outs/test-xx.txt"
 
@@ -39,6 +39,14 @@ then:
 ./pipex "in_file" "wc -w" "cat" "outs/test-xx.txt"
 >wc -w in_file
 
+from pipex-tester
+../pipex "assets/deepthought.txt" "grep Now" "cat" "outs/test-xx.txt"
+../pipex "assets/deepthought.txt" "wc -w" "cat" "outs/test-xx.txt"
+
+bash command:
+grep Now "assets/deepthought.txt" | cat > "outs/test-xx.txt"
+wc -w < "assets/deepthought.txt" > "outs/test-xx.txt"
+
 Test 25
 ./pipex "in_file" "notexisting" "wc" "outs/test-xx.txt"
 (notexisting is a command that is not supposed to exist)
@@ -47,6 +55,37 @@ in_file:
 Hello, this is a sample input file.
 The file contains some text that can be processed by your program.
 You can replace this file with the actual content you want to process.
+
+>pipex medic
+
+The following have errors as it does not have a file nor follow the required format. Should behave like: < infile ls -l | wc -l > outfile
+{ ARGS("grep Hello", "awk \"{count++} END {print count}\""), DEFAULT_ENV, "Hello World!\nHello World!\n" },
+{ ARGS("grep Hello", "awk '\"{count++} END {print count}\"'"), DEFAULT_ENV, "Hello World!\nHello World!\n" },
+{ ARGS("grep Hello", "awk \"'{count++} END {print count}'\""), DEFAULT_ENV, "Hello World!\nHello World!\n" }
+
+test 5
+{ ARGS("grep Hello", "awk '{count++} END {print count}'"), DEFAULT_ENV, "Hello World!\nHello World!\n" },
+
+echo -e 'Hello World!\nHello World!\n' | grep Hello | awk '{count++} END {print count}'
+
+test 6
+echo -e 'Hello World!\nHello World!\n' | grep Hello | awk '"{count++} END {print count}"'
+
+test 7 [syntax error]
+echo -e 'Hello World!\nHello World!\n' | grep Hello | awk '\"{count++} END {print count}\"'
+
+test 8
+echo -e 'Hello World!\nHello World!\n' | grep Hello | awk "\"'{count++} END {print count}'\""
+
+For the error set
+{ ARGS("grep Hello", "wc -l"), DEFAULT_ENV, NULL },
+{ ARGS("grep Hello", "wc -l"), NULL_ENV, "Hello World!\n" },
+{ ARGS("fizzBuzz", "ls -l src/"), DEFAULT_ENV, "Hello World!\n" },
+{ ARGS("ls -l src/", "buzzFizz"), DEFAULT_ENV, "Hello World!\n" },
+{ ARGS("fizzBuzz", "wc -l"), NULL_ENV, "Hello World!\n" },
+{ ARGS("grep Hello", "buzzFizz"), NULL_ENV, "Hello World!\n" }
+
+
 
 ## For bonus
 

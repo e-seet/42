@@ -26,15 +26,23 @@ struct s_pipex pipexstruct, int processnum)
 		else
 			path = ft_strjoin(path, pipexstruct.argvs2[0]);
 		if (access(path, F_OK) == 0)
+		{
 			break ;
+		}
 		free (path);
 		path = NULL;
 		i++;
 	}
 	if (access(path, F_OK) == 0)
+	{
+		// printf("path:%s",path);
 		return (path);
+	}
 	else
+	{
+		// printf("no path\n");
 		return (NULL);
+	}
 }
 // //Change from stdout(1) to fd[1] so that the data that 
 //supposed to go stdout will go to pipe instead
@@ -77,6 +85,7 @@ int	p2child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 	int		execveresult;
 
 	path = findprocesspath(path, paths, pipexstruct, 2);
+	// pipexstruct.argvs2[0] = path;
 	if (access(path, F_OK) != 0)
 	{
 		perror("command not found");
@@ -126,12 +135,33 @@ int	main(int argc, char *argv[], char *envp[])
 	if (pipe(pipexstruct.fdpipe) == -1)
 		return (1);
 	setstructure(argv, &pipexstruct);
+	int i = 0;
+	// while(pipexstruct.argvs2[i])
+	// {
+	// 	printf("argv[%d]:%s\n", i, pipexstruct.argvs2[i]);
+	// 	i++;
+	// }
+	while(pipexstruct.argvs2[0][i])
+	{
+		// printf("%c", pipexstruct.argvs2[0][i]);
+		i++;
+	}
+	// printf("i:%d\n", i);
+	// printf("pid1\n");
 	if (pipexstruct.pid1 != 0)
 		wait(NULL);
 	pipexstruct.pid1 = fork();
 	if (pipexstruct.pid1 == 0)
 		if (p1child(paths, path, envp, pipexstruct) == 1)
 			exit(1);
+	// printf("pid2\n");
+
+	int x = 0;
+	while(pipexstruct.argvs2[x])
+	{
+		// printf("vs2:%d :%s\n", x, pipexstruct.argvs2[x]);
+		x++;
+	}
 	pipexstruct.pid2 = fork();
 	if (pipexstruct.pid2 == 0)
 		if (p2child(paths, path, envp, pipexstruct) == 1)
@@ -141,6 +171,25 @@ int	main(int argc, char *argv[], char *envp[])
 	waitpid(pipexstruct.pid2, &pipexstruct.pid2status, 0);
 	return (0);
 }
+
+// { ARGS("grep Hello", "awk \"{count++} END {print count}\""), DEFAULT_ENV, "Hello World!\nHello World!\n" },
+// "awk \"{count++} END {print count}\""
+// { ARGS("grep Hello", "awk '\"{count++} END {print count}\"'"), DEFAULT_ENV, "Hello World!\nHello World!\n" },
+// "awk '\"{count++} END {print count}\"'"
+// { ARGS("grep Hello", "awk \"'{count++} END {print count}'\""), DEFAULT_ENV, "Hello World!\nHello World!\n" }
+// "awk \"'{count++} END {print count}'\""
+
+// ./pipex "in_file" "grep Hello" "awk \"{count++} END {print count}\"" outfile
+// becomes  "{count++} END {print count}"
+
+
+
+// NO ISSUES
+// ./pipex "in_file" "grep Hello" "awk \"{count++} END {print count}\"" outfile
+// ./pipex "in_file" "grep Hello" "awk '{count++} END {print count}'" outfile
+// ./pipex "in_file" "grep Hello" "awk '\"{count++} END {print count}\"'" outfile
+// ./pipex "in_file" "grep Hello" "awk \"'{count++} END {print count}'\"" outfile
+
 
 //pipex, file1, cmd1, cmd2, file2
 

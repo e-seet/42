@@ -2,7 +2,7 @@
 # Vars
 # **************************************************************************** #
 NAME        = pipex
-NAME_BONUS	= pipex_bonus
+# NAME_BONUS	= pipex_bonus
 
 # **************************************************************************** #
 # Comp and flags
@@ -67,7 +67,7 @@ $(OBJ_LIBFT): %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Declaring Bonus [Refer to line 51]
-$(NAME_BONUS):	$(OBJ_LIBFT) $(OBJS_BONUS)	$(OBJ_GNL)
+$(NAME_BONUS):	$(OBJ_LIBFT)	$(OBJ_GNL) $(OBJS_BONUS)
 		@$(CC) $(OBJ_LIBFT) $(OBJ_GNL)	$(OBJS_BONUS) -o $(NAME_BONUS)
 
 # Command to create 'Make bonus'
