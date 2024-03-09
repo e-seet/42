@@ -80,6 +80,22 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 //arg:  ["ls", "-l"]
 // change from stdin(0)  to listen to fd[0]
 
+// int ft_strncmp2(char *str, char *str2, int n)
+// {
+// 	int i = 0;
+// 	while (n > i)
+// 	{
+// 		if (str[i] != str2[i])
+// 		{
+// 			printf("Break!!\n i:%d\n", i);
+// 			printf("1:%c\n2:%c", str[i], str2[i]);
+// 			break;
+// 		}
+// 		i++;
+// 	}
+// 	return str2[i] - str[i];
+// }
+
 int	p2child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 {
 	int		execveresult;
@@ -94,12 +110,47 @@ int	p2child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 	dup2(pipexstruct.fdpipe[0], 0);
 	close(pipexstruct.fdpipe[1]);
 	dup2(pipexstruct.p2fd, 1);
+
+
+	// char *argvs[] = {pipexstruct.argvs2[0], "{count++} END {print count}", NULL}; // returns 2
+	// printf("%s", pipexstruct.argvs2[1]);
+
+	// execveresult = execve(path, argvs, envp);
 	execveresult = execve(path, pipexstruct.argvs2, envp);
 	if (execveresult == -1)
 		perror("smth wrong with executing. Terminate now");
 	free(path);
 	return (0);
 }
+
+// int	p2child2(char *paths[], char *path, struct s_pipex pipexstruct)
+// {
+// 	int		execveresult;
+
+// 	// < input grep Hello | awk '{count++} END {print count}' > output  //returns 2
+// 	// < input grep Hello | awk "{count++} END {print count}" > output  //returns 2
+// 	// < in_file  grep Hello | awk '{count++} END {print count}' > outfile //returns 2
+// 	char *argv[] = {pipexstruct.argvs2[0], "{count++} END {print count}", NULL}; // returns 2
+
+//     char *envp[] = {NULL};
+
+// 	path = findprocesspath(path, paths, pipexstruct, 2);
+// 	// pipexstruct.argvs2[0] = path;
+// 	if (access(path, F_OK) != 0)
+// 	{
+// 		perror("command not found");
+// 		return (1);
+// 	}
+// 	dup2(pipexstruct.fdpipe[0], 0);
+// 	close(pipexstruct.fdpipe[1]);
+// 	dup2(pipexstruct.p2fd, 1);
+// 	execveresult = execve(path, argv, envp);
+// 	if (execveresult == -1)
+// 		perror("smth wrong with executing. Terminate now");
+// 	free(path);
+// 	return (0);
+// }
+
 
 char	*findpath(char *envp[])
 {
@@ -129,23 +180,26 @@ int	main(int argc, char *argv[], char *envp[])
 	char			**paths;
 
 	if (argc != 5)
+	{
+		printf("not 5\n");
 		return (1);
+	}
 	path = findpath(envp);
 	paths = ft_split(path + 5, ':');
 	if (pipe(pipexstruct.fdpipe) == -1)
 		return (1);
 	setstructure(argv, &pipexstruct);
-	int i = 0;
+	// int i = 0;
 	// while(pipexstruct.argvs2[i])
 	// {
 	// 	printf("argv[%d]:%s\n", i, pipexstruct.argvs2[i]);
 	// 	i++;
 	// }
-	while(pipexstruct.argvs2[0][i])
-	{
-		// printf("%c", pipexstruct.argvs2[0][i]);
-		i++;
-	}
+	// while(pipexstruct.argvs2[0][i])
+	// {
+	// 	// printf("%c", pipexstruct.argvs2[0][i]);
+	// 	i++;
+	// }
 	// printf("i:%d\n", i);
 	// printf("pid1\n");
 	if (pipexstruct.pid1 != 0)
@@ -156,15 +210,19 @@ int	main(int argc, char *argv[], char *envp[])
 			exit(1);
 	// printf("pid2\n");
 
-	int x = 0;
-	while(pipexstruct.argvs2[x])
-	{
-		// printf("vs2:%d :%s\n", x, pipexstruct.argvs2[x]);
-		x++;
-	}
+	// int x = 0;
+	// while(pipexstruct.argvs2[x])
+	// {
+	// 	// printf("vs2:%d :%s\n", x, pipexstruct.argvs2[x]);
+	// 	x++;
+	// }
+	// printf("this is:%s\n",pipexstruct.argvs2[1]);
+	// char somestr[27] = "{count++} END {print count}";
+	// printf("comparison val:%d\n", ft_strncmp2(somestr, pipexstruct.argvs2[1],27));
 	pipexstruct.pid2 = fork();
 	if (pipexstruct.pid2 == 0)
 		if (p2child(paths, path, envp, pipexstruct) == 1)
+		// if (p2child2(paths, path, pipexstruct) == 1)
 			exit(1);
 	closepipes(&pipexstruct);
 	waitpid(pipexstruct.pid1, &pipexstruct.pid1status, 0);

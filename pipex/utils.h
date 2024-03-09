@@ -39,7 +39,7 @@ struct s_pipex {
 };
 
 char *ft_newstr(char *str);
-void ft_modify(char *str, struct s_pipex *pipexstruct);
+void ft_modify(char *str, struct s_pipex *pipexstruct, int n);
 
 void	setstructure(char *argv[], struct s_pipex *pipexstruct);
 void	closepipes(struct s_pipex *pipexstruct);

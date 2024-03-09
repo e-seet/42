@@ -63,19 +63,37 @@ The following have errors as it does not have a file nor follow the required for
 { ARGS("grep Hello", "awk '\"{count++} END {print count}\"'"), DEFAULT_ENV, "Hello World!\nHello World!\n" },
 { ARGS("grep Hello", "awk \"'{count++} END {print count}'\""), DEFAULT_ENV, "Hello World!\nHello World!\n" }
 
-test 5
-{ ARGS("grep Hello", "awk '{count++} END {print count}'"), DEFAULT_ENV, "Hello World!\nHello World!\n" },
+this works:
+./pipex "in_file" "grep Hello" "awk {count++} END {print count}" outfile
 
-echo -e 'Hello World!\nHello World!\n' | grep Hello | awk '{count++} END {print count}'
+test:
+./pipex "in_file" "grep Hello" "awk '{count++} END {print count}'" outfile
+
+test 5
+< input grep Hello | awk '{count++} END {print count}' > output
+ ./pipex input "grep Hello" "awk '{count++} END {print count}'" output
+<!-- returns 2 -->
 
 test 6
-echo -e 'Hello World!\nHello World!\n' | grep Hello | awk '"{count++} END {print count}"'
+< input grep Hello | awk "{count++} END {print count}" > output
+./pipex input "grep Hello" 'awk "{count++} END {print count}"' "output"
+<!-- returns 2 -->
 
-test 7 [syntax error]
-echo -e 'Hello World!\nHello World!\n' | grep Hello | awk '\"{count++} END {print count}\"'
 
-test 8
-echo -e 'Hello World!\nHello World!\n' | grep Hello | awk "\"'{count++} END {print count}'\""
+<!-- test 7 -->
+< input grep Hello | awk '"{count++} END {print count}"' > output 
+ 
+ <!-- return
+ Hello World 
+ Hello World-->
+
+./pipex in_file "grep Hello" awk {count++} END {print count}  "outfile"
+Failed ^
+
+
+test 8?
+< input grep Hello | awk "'{count++} END {print count}'" > output
+
 
 For the error set
 { ARGS("grep Hello", "wc -l"), DEFAULT_ENV, NULL },
