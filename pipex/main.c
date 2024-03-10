@@ -26,23 +26,15 @@ struct s_pipex pipexstruct, int processnum)
 		else
 			path = ft_strjoin(path, pipexstruct.argvs2[0]);
 		if (access(path, F_OK) == 0)
-		{
 			break ;
-		}
 		free (path);
 		path = NULL;
 		i++;
 	}
 	if (access(path, F_OK) == 0)
-	{
-		// printf("path:%s",path);
 		return (path);
-	}
 	else
-	{
-		// printf("no path\n");
 		return (NULL);
-	}
 }
 // //Change from stdout(1) to fd[1] so that the data that 
 //supposed to go stdout will go to pipe instead
@@ -60,10 +52,12 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 {
 	int		execveresult;
 
+	printf("p1 child\n");
 	path = findprocesspath(path, paths, pipexstruct, 1);
+	printf("path:%s", path);
 	if (access(path, F_OK) != 0)
 	{
-		perror("command not found");
+		perror("command not found p1path");
 		return (1);
 	}
 	dup2(pipexstruct.fdpipe[1], 1);
@@ -101,56 +95,20 @@ int	p2child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 	int		execveresult;
 
 	path = findprocesspath(path, paths, pipexstruct, 2);
-	// pipexstruct.argvs2[0] = path;
 	if (access(path, F_OK) != 0)
 	{
-		perror("command not found");
+		perror("Path not found");
 		return (1);
 	}
 	dup2(pipexstruct.fdpipe[0], 0);
 	close(pipexstruct.fdpipe[1]);
 	dup2(pipexstruct.p2fd, 1);
-
-
-	// char *argvs[] = {pipexstruct.argvs2[0], "{count++} END {print count}", NULL}; // returns 2
-	// printf("%s", pipexstruct.argvs2[1]);
-
-	// execveresult = execve(path, argvs, envp);
 	execveresult = execve(path, pipexstruct.argvs2, envp);
 	if (execveresult == -1)
 		perror("smth wrong with executing. Terminate now");
 	free(path);
 	return (0);
 }
-
-// int	p2child2(char *paths[], char *path, struct s_pipex pipexstruct)
-// {
-// 	int		execveresult;
-
-// 	// < input grep Hello | awk '{count++} END {print count}' > output  //returns 2
-// 	// < input grep Hello | awk "{count++} END {print count}" > output  //returns 2
-// 	// < in_file  grep Hello | awk '{count++} END {print count}' > outfile //returns 2
-// 	char *argv[] = {pipexstruct.argvs2[0], "{count++} END {print count}", NULL}; // returns 2
-
-//     char *envp[] = {NULL};
-
-// 	path = findprocesspath(path, paths, pipexstruct, 2);
-// 	// pipexstruct.argvs2[0] = path;
-// 	if (access(path, F_OK) != 0)
-// 	{
-// 		perror("command not found");
-// 		return (1);
-// 	}
-// 	dup2(pipexstruct.fdpipe[0], 0);
-// 	close(pipexstruct.fdpipe[1]);
-// 	dup2(pipexstruct.p2fd, 1);
-// 	execveresult = execve(path, argv, envp);
-// 	if (execveresult == -1)
-// 		perror("smth wrong with executing. Terminate now");
-// 	free(path);
-// 	return (0);
-// }
-
 
 char	*findpath(char *envp[])
 {
@@ -180,49 +138,21 @@ int	main(int argc, char *argv[], char *envp[])
 	char			**paths;
 
 	if (argc != 5)
-	{
-		printf("not 5\n");
 		return (1);
-	}
 	path = findpath(envp);
 	paths = ft_split(path + 5, ':');
 	if (pipe(pipexstruct.fdpipe) == -1)
 		return (1);
 	setstructure(argv, &pipexstruct);
-	// int i = 0;
-	// while(pipexstruct.argvs2[i])
-	// {
-	// 	printf("argv[%d]:%s\n", i, pipexstruct.argvs2[i]);
-	// 	i++;
-	// }
-	// while(pipexstruct.argvs2[0][i])
-	// {
-	// 	// printf("%c", pipexstruct.argvs2[0][i]);
-	// 	i++;
-	// }
-	// printf("i:%d\n", i);
-	// printf("pid1\n");
 	if (pipexstruct.pid1 != 0)
 		wait(NULL);
 	pipexstruct.pid1 = fork();
 	if (pipexstruct.pid1 == 0)
 		if (p1child(paths, path, envp, pipexstruct) == 1)
 			exit(1);
-	// printf("pid2\n");
-
-	// int x = 0;
-	// while(pipexstruct.argvs2[x])
-	// {
-	// 	// printf("vs2:%d :%s\n", x, pipexstruct.argvs2[x]);
-	// 	x++;
-	// }
-	// printf("this is:%s\n",pipexstruct.argvs2[1]);
-	// char somestr[27] = "{count++} END {print count}";
-	// printf("comparison val:%d\n", ft_strncmp2(somestr, pipexstruct.argvs2[1],27));
 	pipexstruct.pid2 = fork();
 	if (pipexstruct.pid2 == 0)
 		if (p2child(paths, path, envp, pipexstruct) == 1)
-		// if (p2child2(paths, path, pipexstruct) == 1)
 			exit(1);
 	closepipes(&pipexstruct);
 	waitpid(pipexstruct.pid1, &pipexstruct.pid1status, 0);
@@ -230,24 +160,32 @@ int	main(int argc, char *argv[], char *envp[])
 	return (0);
 }
 
-// { ARGS("grep Hello", "awk \"{count++} END {print count}\""), DEFAULT_ENV, "Hello World!\nHello World!\n" },
-// "awk \"{count++} END {print count}\""
-// { ARGS("grep Hello", "awk '\"{count++} END {print count}\"'"), DEFAULT_ENV, "Hello World!\nHello World!\n" },
-// "awk '\"{count++} END {print count}\"'"
-// { ARGS("grep Hello", "awk \"'{count++} END {print count}'\""), DEFAULT_ENV, "Hello World!\nHello World!\n" }
-// "awk \"'{count++} END {print count}'\""
+/*{ ARGS("grep Hello",
+ "awk \"{count++} 
+END {print count}\""), DEFAULT_ENV,
+"Hello World!\nHello World!\n" },
 
-// ./pipex "in_file" "grep Hello" "awk \"{count++} END {print count}\"" outfile
-// becomes  "{count++} END {print count}"
+"awk \"{count++} END {print count}\""
+{ ARGS("grep Hello", "awk '\"{count++} END {print count}\"'"), DEFAULT_ENV,
+ "Hello World!\nHello World!\n" },
+"awk '\"{count++} END {print count}\"'"
+{ ARGS("grep Hello", "awk \"'{count++} END {print count}'\""),
+ DEFAULT_ENV, "Hello World!\nHello World!\n" }
+"awk \"'{count++} END {print count}'\""
 
-
+./pipex "in_file" "grep Hello" "awk \"{count++} END {print count}\"" outfile
+becomes  "{count++} END {print count}"
+*/
 
 // NO ISSUES
-// ./pipex "in_file" "grep Hello" "awk \"{count++} END {print count}\"" outfile
-// ./pipex "in_file" "grep Hello" "awk '{count++} END {print count}'" outfile
-// ./pipex "in_file" "grep Hello" "awk '\"{count++} END {print count}\"'" outfile
-// ./pipex "in_file" "grep Hello" "awk \"'{count++} END {print count}'\"" outfile
-
+/*
+./pipex "in_file" "grep Hello" "awk \"{count++} END {print count}\"" outfile
+./pipex "in_file" "grep Hello" 
+"awk '{count++} END {print count}'" outfile
+./pipex "in_file" "grep Hello" 
+"awk '\"{count++} END {print count}\"'" outfile
+./pipex "in_file" "grep Hello" "awk \"'{count++} END {print count}'\"" outfile
+*/
 
 //pipex, file1, cmd1, cmd2, file2
 
