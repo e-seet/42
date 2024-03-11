@@ -43,7 +43,11 @@ void	dup2child( struct s_pipex *pipexstruct)
 	else if (pipexstruct->argc - 2 == pipexstruct->curr)
 	{
 		if (pipexstruct->curr % 2 == 1)
+		{
 			dup2(pipexstruct->fdpipe2[0], 0);
+			if (pipexstruct->opened == 2 && pipexstruct->curr ==3)
+				dup2(pipexstruct->fdpipe0[0], 0);
+		}
 		else
 			dup2(pipexstruct->fdpipe1[0], 0);
 		dup2(pipexstruct->p2fd, 1);
@@ -104,10 +108,8 @@ int	main(int argc, char *argv[], char *envp[])
 	setstructure(argc, argv, &pipexstruct, envp);
 	if (checkforheredoc(argv, &pipexstruct) == 1)
 		return (1);
-	printf("argc:%d\n\n", pipexstruct.argc);
 	while (pipexstruct.argc - 1 > pipexstruct.curr)
 	{
-		printf("curr:%d\n", pipexstruct.curr);
 		if (setuppipe(&pipexstruct) == 1)
 			return (1);
 		if (refactormain(pipexstruct, envp, argv) == 1)

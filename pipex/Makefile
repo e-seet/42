@@ -2,7 +2,7 @@
 # Vars
 # **************************************************************************** #
 NAME        = pipex
-# NAME_BONUS	= pipex_bonus
+NAME_BONUS	= pipexb
 
 # **************************************************************************** #
 # Comp and flags
@@ -35,7 +35,7 @@ OBJ_LIBFT				=	$(LIBFTSRC:.c=.o)
 # Get_Next_Line
 # **************************************************************************** #
 SRC_FILES_GNL		:=	get_next_line.c		get_next_line_utils.c
-GNL_DIR				=	../get_next_line/
+GNL_DIR				=	./get_next_line/
 GNLSRC				=	$(addprefix $(GNL_DIR), $(SRC_FILES_GNL))
 OBJ_GNL				=	$(GNLSRC:.c=.o)
 

@@ -18,26 +18,39 @@ void	dup2child2(struct s_pipex *pipexstruct)
 	}
 }
 
-void	dup2child( struct s_pipex *pipexstruct)
+void	dup2child(struct s_pipex *pipexstruct)
 {
+	// curr is the same as opened (2/3)
 	if (pipexstruct->curr == pipexstruct->opened)
 	{
 		dup2(pipexstruct->p1fd, 0);
+		// if is 0, use the pipe for out
 		if (pipexstruct->curr == 2)
 			dup2(pipexstruct->fdpipe0[1], 1);
 		else
 			dup2(pipexstruct->fdpipe1[1], 1);
 	}
+	// last process:
 	else if (pipexstruct->argc - 2 == pipexstruct->curr)
 	{
+		printf("\nend it\n");
 		if (pipexstruct->curr % 2 == 1)
+		{
 			dup2(pipexstruct->fdpipe2[0], 0);
+			if (pipexstruct->opened == 2 && pipexstruct->curr ==3)
+				dup2(pipexstruct->fdpipe0[0], 0);
+		}
 		else
+		{
+			printf("second\n");
 			dup2(pipexstruct->fdpipe1[0], 0);
+		}
+		// write acc
 		dup2(pipexstruct->p2fd, 1);
 	}
 	else
 	{
+		printf("Not ending yet\n");
 		dup2child2(pipexstruct);
 	}
 }
