@@ -24,34 +24,27 @@
 # include <sys/stat.h>
 # include <errno.h>
 
-struct s_pipex {
-	int		pid1;
-	int		pid1status;
-	int		p1fd;
-	char	**argvs1;
+# include "utils2.h"
+# include "pipex_struct.h"
 
-	int		pid2;
-	int		pid2status;
-	int		p2fd;
-	char	**argvs2;
+// void	freestuff2(struct s_pipex *pipexstruct);
 
-	int		fdpipe[2];
-};
-
-char	*ft_newstr(char *str);
+// char	*ft_newstr(char *str, struct s_pipex *pipexstruct);
+void	ft_newstr(char *str, struct s_pipex *pipexstruct, int n);
 void	ft_modify(char *str, struct s_pipex *pipexstruct, int n);
 
-void	setstructure(char *argv[], struct s_pipex *pipexstruct);
+void	setstructure(char *argv[], struct s_pipex *pipexstruct, char *path);
 void	closepipes(struct s_pipex *pipexstruct);
 
-char	*findprocesspath(char *path, char *paths[],
+char	*findprocesspath(char *path,
 			struct s_pipex pipexstruct, int processnum);
-int		p1child(char *paths[], char *path, char *envp[],
+int		p1child(char *path, char *envp[],
 			struct s_pipex pipexstruct);
 
-int		p2child(char *paths[], char *path, char *envp[],
+int		p2child(char *path, char *envp[],
 			struct s_pipex pipexstruct);
 
 char	*findpath(char *envp[]);
+void	freestuff(struct s_pipex *pipexstruct);
 
 #endif

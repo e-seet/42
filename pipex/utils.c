@@ -32,9 +32,8 @@
 // 	pipexstruct->argvs1 = ft_split(argv[2], ' ');
 // 	pipexstruct->argvs2 = ft_split(argv[3], ' ');
 // }
-#include <string.h>
 
-char	*ft_newstr(char *str)
+void	ft_newstr(char *str, struct s_pipex *pipexstruct, int n)
 {
 	int		i;
 	int		len;
@@ -46,9 +45,7 @@ char	*ft_newstr(char *str)
 	len = ft_strlen(str);
 	while (str[displace] == ' ' || str[displace] == '"'
 		|| str[displace] == '\'')
-	{
 		displace++;
-	}
 	newstr = (char *)malloc(sizeof(char) * (len - 2 - 2 * displace));
 	while ((len - displace) > i)
 	{
@@ -59,45 +56,11 @@ char	*ft_newstr(char *str)
 		newstr[i - 1] = '\0';
 	else
 		newstr[i] = '\0';
-	return (newstr);
+	if (n == 2)
+		pipexstruct->argvs2[1] = newstr;
+	else
+		pipexstruct->argvs1[1] = newstr;
 }
-
-// char *ft_newstr(char *str)
-// {
-// 	int		i;
-// 	int		len;
-// 	int		displace;
-// 	char	*newstr;
-
-// 	i = 0;
-// 	displace = 3;
-// 	len = ft_strlen(str);
-// 	while (str[displace] == ' ' || str[displace] == '"'
-//|| str[displace] == '\'')
-// 	{
-// 		displace ++;
-// 	}
-// 	newstr = (char *)malloc(sizeof(char)*(len-2 - 2*displace));
-// 	newstr[0] = '"';
-// 	while ((len-displace) > i)
-// 	{
-// 		newstr[1+i] = str[displace + i];
-// 		printf("d:%d char :%c\n", i, newstr[1+i]);
-// 		i++;
-// 	}
-// 	if (newstr[i-1] == '"')
-// 	{
-// 		newstr[i] = '"';
-// 		newstr[i] = '\0';
-// 	}
-// 	else
-// 	{
-// 		newstr[i] = '"';
-// 		newstr[i+1] = '\0';
-// 	}
-// 	printf("new str:%s\n", newstr);
-//     return newstr;
-// }
 
 void	ft_modify(char *str, struct s_pipex *pipexstruct, int n)
 {
@@ -112,8 +75,7 @@ void	ft_modify(char *str, struct s_pipex *pipexstruct, int n)
 			pipexstruct->argvs2[x] = NULL;
 			x ++;
 		}
-		pipexstruct->argvs2[1] = (char *) malloc (sizeof(char *));
-		pipexstruct->argvs2[1] = ft_newstr(str);
+		ft_newstr(str, pipexstruct, n);
 	}
 	else
 	{
@@ -123,18 +85,19 @@ void	ft_modify(char *str, struct s_pipex *pipexstruct, int n)
 			pipexstruct->argvs1[x] = NULL;
 			x ++;
 		}
-		pipexstruct->argvs1[1] = (char *) malloc (sizeof(char *));
-		pipexstruct->argvs1[1] = ft_newstr(str);
+		ft_newstr(str, pipexstruct, n);
 	}
 }
 
-void	setstructure(char *argv[], struct s_pipex *pipexstruct)
+void	setstructure(char *argv[], struct s_pipex *pipexstruct, char *path)
 {
 	pipexstruct->p2fd = open(argv[4], O_APPEND | O_CREAT | O_RDWR, 0644);
 	if (pipexstruct->p2fd < 0)
 		perror("Error in opening file. Terminating now");
 	if (ftruncate(pipexstruct->p2fd, 0) == -1)
-		perror("ftruncate");
+		perror("truncate file content failed");
+	pipexstruct->paths = ft_split(path + 5, ':');
+	path = NULL;
 	pipexstruct->p1fd = open(argv[1], O_RDONLY);
 	if (pipexstruct->p1fd < 0)
 		perror("Error in opening file. Terminating now");
@@ -150,4 +113,20 @@ void	closepipes(struct s_pipex *pipexstruct)
 {
 	close(pipexstruct->fdpipe[0]);
 	close(pipexstruct->fdpipe[1]);
+}
+
+void	freestuff(struct s_pipex *pipexstruct)
+{
+	int	i;
+
+	i = 0;
+	while (pipexstruct->paths && pipexstruct->paths[i])
+	{
+		free(pipexstruct->paths[i]);
+		pipexstruct->paths[i] = NULL;
+		i++;
+	}
+	free(pipexstruct->paths);
+	pipexstruct->paths = NULL;
+	freestuff2(pipexstruct);
 }

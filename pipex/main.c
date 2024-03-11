@@ -12,15 +12,15 @@
 
 #include "utils.h"
 
-char	*findprocesspath(char *path, char *paths[],
+char	*findprocesspath(char *path,
 struct s_pipex pipexstruct, int processnum)
 {
 	int	i;
 
 	i = 0;
-	while (paths[i])
+	while (pipexstruct.paths[i])
 	{
-		path = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(pipexstruct.paths[i], "/");
 		if (processnum == 1)
 			path = ft_strjoin(path, pipexstruct.argvs1[0]);
 		else
@@ -48,12 +48,11 @@ struct s_pipex pipexstruct, int processnum)
 //path: "/bin/ls"
 //arg:  ["ls", "-l"]
 
-int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
+int	p1child( char *path, char *envp[], struct s_pipex pipexstruct)
 {
 	int		execveresult;
 
-	printf("p1 child\n");
-	path = findprocesspath(path, paths, pipexstruct, 1);
+	path = findprocesspath(path, pipexstruct, 1);
 	printf("path:%s", path);
 	if (access(path, F_OK) != 0)
 	{
@@ -90,11 +89,11 @@ int	p1child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
 // 	return str2[i] - str[i];
 // }
 
-int	p2child(char *paths[], char *path, char *envp[], struct s_pipex pipexstruct)
+int	p2child(char *path, char *envp[], struct s_pipex pipexstruct)
 {
 	int		execveresult;
 
-	path = findprocesspath(path, paths, pipexstruct, 2);
+	path = findprocesspath(path, pipexstruct, 2);
 	if (access(path, F_OK) != 0)
 	{
 		perror("Path not found");
@@ -135,28 +134,27 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	struct s_pipex	pipexstruct;
 	char			*path;
-	char			**paths;
 
 	if (argc != 5)
 		return (1);
 	path = findpath(envp);
-	paths = ft_split(path + 5, ':');
 	if (pipe(pipexstruct.fdpipe) == -1)
 		return (1);
-	setstructure(argv, &pipexstruct);
+	setstructure(argv, &pipexstruct, path);
 	if (pipexstruct.pid1 != 0)
 		wait(NULL);
 	pipexstruct.pid1 = fork();
 	if (pipexstruct.pid1 == 0)
-		if (p1child(paths, path, envp, pipexstruct) == 1)
+		if (p1child(path, envp, pipexstruct) == 1)
 			exit(1);
 	pipexstruct.pid2 = fork();
 	if (pipexstruct.pid2 == 0)
-		if (p2child(paths, path, envp, pipexstruct) == 1)
+		if (p2child(path, envp, pipexstruct) == 1)
 			exit(1);
 	closepipes(&pipexstruct);
 	waitpid(pipexstruct.pid1, &pipexstruct.pid1status, 0);
 	waitpid(pipexstruct.pid2, &pipexstruct.pid2status, 0);
+	freestuff(&pipexstruct);
 	return (0);
 }
 

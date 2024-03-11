@@ -45,7 +45,7 @@ void	dup2child( struct s_pipex *pipexstruct)
 		if (pipexstruct->curr % 2 == 1)
 		{
 			dup2(pipexstruct->fdpipe2[0], 0);
-			if (pipexstruct->opened == 2 && pipexstruct->curr ==3)
+			if (pipexstruct->opened == 2 && pipexstruct->curr == 3)
 				dup2(pipexstruct->fdpipe0[0], 0);
 		}
 		else
