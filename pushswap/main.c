@@ -89,10 +89,10 @@ int	readarguments(int argc, char **argv, int *i, t_stack *stack_a)
 			free(strs[internal]);
 			internal = internal + 1;
 		}
+		free(strs);
+		strs = NULL;
 		if (err == 1)
-		{
 			return (1);
-		}
 		*i = *i + 1;
 	}
 	return (0);

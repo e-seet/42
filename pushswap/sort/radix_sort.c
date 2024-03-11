@@ -20,6 +20,7 @@ int	radix_sort_wrapper(int argc, t_stack *stack_a, t_stack *stack_b,
 	i = 1;
 	setpos(stack_a, argc, i);
 	radix_sort(stack_a, stack_b, numberofop);
+	exitsafe(stack_a, stack_b);
 	return (0);
 }
 
