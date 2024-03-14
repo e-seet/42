@@ -1,5 +1,5 @@
+#include "fractal.h"
 #include "utils.h"
-
 int	main(int argc, char *argv[])
 {
 	t_fractal	fractal;
@@ -21,6 +21,7 @@ int	main(int argc, char *argv[])
 		}	
 		else
 			exit(1);
+		
 		fractal.name = argv[1];
 		
 		// We could add in parameters for the window size if required in the argv

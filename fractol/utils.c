@@ -5,19 +5,24 @@
 // param3: old min max value: whatever the limit u set for screen
 // param4: new min value: -2
 // param5: new max value: 2
-double	scale(double num, double o_min, double o_max, double new_min, double new_max )
-{
-	printf("func scale \n");
-	double	olddistancefromo_min;
-	double	newscalefactor;
-	double	oldscalefactor;
-	
-	olddistancefromo_min = num - o_min;
-	newscalefactor = new_max - new_min;
-	oldscalefactor = o_max - o_min;
 
-	return	(((olddistancefromo_min / oldscalefactor) * newscalefactor) + new_min);
+double scale(double unscaled_num, double new_min, double new_max, double old_min, double old_max)
+{
+    return (new_max - new_min) * (unscaled_num - old_min) / (old_max - old_min) + new_min;
 }
+// double	scale(double num, double o_min, double o_max, double new_min, double new_max )
+// {
+// 	printf("func scale \n");
+// 	double	olddistancefromo_min;
+// 	double	newscalefactor;
+// 	double	oldscalefactor;
+	
+// 	olddistancefromo_min = num - o_min;
+// 	newscalefactor = new_max - new_min;
+// 	oldscalefactor = o_max - o_min;
+
+// 	return	(((olddistancefromo_min / oldscalefactor) * newscalefactor) + new_min);
+// }
 
 t_complex_num square_complex(t_complex_num z)
 {
@@ -37,14 +42,13 @@ t_complex_num sum_complex(t_complex_num z1, t_complex_num z2)
 	return result;
 }
 
+
 void paintpixel(int x, int y, t_data *img, int color)
 {
-	printf("func paint pixel \n");
 	int offset;
 
-	offset = y * img->line_length + x * (img->bits_per_pixel / 8);
+	offset = (y * img->line_length) + (x * (img->bits_per_pixel / 8));
 	*(unsigned int *) (img->addr + offset) = color;
-
 }
 
 void	setup(t_fractal *fractal)
@@ -100,57 +104,40 @@ void	setup(t_fractal *fractal)
 // z is the calculated points
 void handlecalculations(int x, int y, t_fractal *fractal)
 {
-	printf("func handlecalculations\n");
+	// printf("func handlecalculations\n");
 
-	t_complex_num c;
 	t_complex_num z;
-	
+	t_complex_num c;
+	int			i;
+	int color;
+
+	i = 0;
 	z.x = 0;
 	z.y = 0;
 
 	// 799 is some magical number that we should amend based off argv eventually
-	// c.x = scale(x, -2, 2, 0, 799);
-	// c.y = scale(y, 2, -2, 0, 799);
-
-	c.x = scale(x, 0, 799, -2, 2);
-	c.y = scale(y, 0, 799, 2, -2);
+	c.x = scale(x, -2, +2, 0, 799);
+	c.y = scale(y, 2, -2, 0, 799);
 
 	// to do a while loop to loop through the fractal
-	int i = 0;
 
 	while (fractal->iteration > i)
 	{
-		printf("i:%d\n", i);
-
-		// z = sum_complex(square_complex(z), c);
-
-		double	tmp_real;
-		tmp_real = (z.x * z.x) - (z.y * z.y);
-		z.y = 2 * z.x * z.y;
-		z.x = tmp_real;
-
-		//  add the c value
-		z.x += c.x;
-		z.y += c.y;
-		// printf("real:%f\nimaginary:%f\n\n", z.x, z.y);
+		z = sum_complex(square_complex(z), c);
 
 		// not escaped
-		if ( (z.x * z.x) * (z.y * z.y) > fractal->escape_val)
+		if ( (z.x * z.x) + (z.y * z.y) > fractal->escape_val)
 	 	{
-			// printf("haven't escapedd!\n");
-			double color = scale(i, 0, 255, 0, fractal->iteration);
-			// printf("i:%d\n", i);
-			// printf("i:%d color:%f\n", i, color);
-			//pixel put thingy.
+			color = scale(i, BLACK , WHITE, 0, fractal->iteration);
 			paintpixel(x, y, &fractal->img, color);
 			return ;
 		}
-		i++;
+		++i;
 	}
 
 	// mandelbrot set
-	paintpixel(x, y, &fractal->img, 0x00FF00);
-	// paintpixel(x, y, &fractal->img, 0x660066);
+	paintpixel(x, y, &fractal->img, WHITE);
+	// the main thing
 }
 
 void renderfractal(t_fractal *fractal)
@@ -170,7 +157,6 @@ void renderfractal(t_fractal *fractal)
 			handlecalculations(x, y, fractal);
 		}
 	}
-	// mlx_pixel_put(fractal->mlx_instance, fractal->mlx_win, x, y, black);
 
 	mlx_put_image_to_window(
 		fractal->mlx_instance,
@@ -179,5 +165,4 @@ void renderfractal(t_fractal *fractal)
 		0,
 		0
 	);
-
 }
