@@ -15,7 +15,7 @@ param 4: cx
 param 5: cy
 ./fract-ol julia "1.234" "-1.234" "800" "800"
 
-./fract-ol burningship 800 800
+./fract-ol burningship 800 800 x y
 
 ## Important
 

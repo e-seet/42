@@ -3,7 +3,7 @@
 
 double	returndouble(char *str)
 {
-	double value;
+	double	value;
 	int		i;
 	int		neg;
 	double	tenth;
@@ -12,15 +12,15 @@ double	returndouble(char *str)
 	i = 0;
 	neg = 1;
 	tenth = 1;
-	while(str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (str[i] == '+' || str[i] == '-')
 	{
 		if (str[i] == '-')
-			neg = neg *-1;
+			neg = neg * -1;
 		i++;
 	}
-	while(str[i] != '.' && (str[i] >= '0' && str[i] <= '9'))
+	while (str[i] != '.' && (str[i] >= '0' && str[i] <= '9'))
 	{
 		value = value * 10 + (str[i] - '0');
 		i ++;
@@ -70,7 +70,6 @@ int	main(int argc, char *argv[])
 			fractal.height = ft_atoi(argv[3]);
 			fractal.cx = returndouble(argv[4]);
 			fractal.cy = returndouble(argv[5]);
-	
 		}
 		else
 			exit(1);
