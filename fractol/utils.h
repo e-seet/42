@@ -10,6 +10,9 @@
 # include <stdlib.h>
 # include <stdio.h> // for printing stuff
 # include <limits.h> // for limits
+# include <math.h>  // check if this is allowed
+
+#include "X11/X.h"
 
 // mlx library
 #include "minilibxopengl/mlx.h"

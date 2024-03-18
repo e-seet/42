@@ -2,9 +2,20 @@
 
 ## How To run the file
 
-./fractol mandelbrot
-./fractol julia
-./fractol burningship
+param 1: type
+param 2: width
+param 3: height
+
+./fract-ol mandelbrot "800" "800"
+
+param 1: type
+param 2: width
+param 3: height
+param 4: cx
+param 5: cy
+./fract-ol julia "1.234" "-1.234" "800" "800"
+
+./fract-ol burningship 800 800
 
 ## Important
 
@@ -43,3 +54,6 @@ Manual:
 
 > https://github.com/GlThibault/Fractol/?source=post_page-----6664b6b045b5--------------------------------
 
+> https://harm-smits.github.io/42docs/libs/minilibx/events.html
+
+> https://gontjarow.github.io/MiniLibX/mlx-tutorial-create-image.html?source=post_page-----6664b6b045b5--------------------------------

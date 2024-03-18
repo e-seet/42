@@ -11,6 +11,8 @@
 #define	GREEN	0x00FF00
 #define	BLUE	0x0000FF
 #define MAGENTA_BURST   0xFF00FF  // A vibrant magenta
+# define COLOR_TUNDORA		0x444444
+# define COLOR_SILVER		0xCCCCCC
 
 // data to get from data address of current image 
 typedef struct	s_data {
@@ -27,6 +29,18 @@ typedef struct	s_fractal {
 	void	*mlx_win;
 	int		escape_val;
 	int		iteration;
+	int		iter;
+
+	double	xshift;
+	double	yshift;
+
+	int	width;
+	int	height;
+
+	double cx;
+	double cy;
+
+	double	zoom;
 	t_data	img;
 }				t_fractal;
 

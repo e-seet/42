@@ -36,12 +36,20 @@ OBJ_LIBFT				=	$(LIBFTSRC:.c=.o)
 # # **************************************************************************** #
 .PHONY: all bonus clean fclean re
 
+#$(NAME):	$(OBJ_LIBFT) $(OBJS)
+#			@$(CC) $(OBJ_LIBFT) $(OBJS) -Lminilibxopengl -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+
+#all: $(NAME)
+#$(OBJS): %.o: %.c
+#	@$(CC) $(CFLAGS) -I $(LIBFT_DIR) -I minilibxopengl -I/opt/X11/include -L/opt/X11/lib -lX11 -c $< -o $@
+
 $(NAME):	$(OBJ_LIBFT) $(OBJS)
-			@$(CC) $(OBJ_LIBFT) $(OBJS) -Lminilibxopengl -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+			@$(CC) $(OBJ_LIBFT) $(OBJS) -Lminilibxopengl -lmlx -L/opt/X11/lib -lX11 -framework OpenGL -framework AppKit -o $(NAME)
 
 all: $(NAME)
 $(OBJS): %.o: %.c
-	@$(CC) $(CFLAGS) -I $(LIBFT_DIR) -I minilibxopengl -c $< -o $@
+	@$(CC) $(CFLAGS) -I $(LIBFT_DIR) -I minilibxopengl -I/opt/X11/include -c $< -o $@
+
 
 # Libft file compilation
 $(OBJ_LIBFT): %.o: %.c
