@@ -1,5 +1,16 @@
 #include "utils.h"
 
+void		resetback(t_fractal *fractal)
+{
+	fractal->escape_val = 4;
+	fractal->iteration = 25;
+	fractal->iter = 0;
+
+	fractal->xshift = 0;
+	fractal->yshift = 0;
+	fractal->zoom = 1;
+}
+
 int	close_handler(t_fractal *fractal)
 {
 	mlx_destroy_image(fractal->mlx_instance, fractal->img.img);
@@ -47,7 +58,7 @@ int	mouse_handler(int button, int x, int y, t_fractal *fractal)
 // int (* f) (int keycode, void *param)
 int key_handler(int keyval, t_fractal *fractal)
 {
-	// printf("%d %p\n", keyval, fractal);
+	printf("%d %p\n", keyval, fractal);
 	// esc key val
 	if (keyval == 53)
 	{
@@ -81,13 +92,19 @@ int key_handler(int keyval, t_fractal *fractal)
 	else if (keyval == 24)
 	{
 		printf("key value 24\n");
-		fractal -> iteration += 30;
+		fractal -> iteration += 1;
 	}
 	//  -- 27
 	else if (keyval == 27)
 	{
 		printf("key value 27\n");
-		fractal -> iteration -= 30;
+		fractal -> iteration -= 1;
+	}
+	// r = 15
+	else if (keyval == 15)
+	{
+		printf("key value 15\n");
+		resetback(fractal);
 	}
 	renderfractal(fractal);
 	return 0;
@@ -229,6 +246,7 @@ void	setup(t_fractal *fractal)
 	
 	fractal->escape_val = 4;
 	fractal->iteration = 25;
+	fractal->iter = 0;
 
 	fractal->xshift = 0;
 	fractal->yshift = 0;
@@ -253,42 +271,16 @@ unsigned int map(int iter, t_fractal *fractal) {
     return 0xFFFFFF / iter; // Simple gradient for points outside the set
 }
 
-// void handlecalculations2(int x, int y, t_fractal *fractal)
-// {
-// 	// Map pixel coordinates to the complex plane
-// 	t_complex_num c = {
-// 		.x = (((x - fractal->width / 2.0) * 4.0) / fractal->width) * fractal->zoom +fractal->xshift,
-// 		.y = (((y - fractal->height / 2.0) * 3.0) / fractal->height)* fractal->zoom +fractal->yshift
-// 	};
-	
-// 	t_complex_num z = {0, 0};
-// 	fractal->iter = 0;
-
-// 	// Burning Ship iteration
-// 	while (z.x * z.x + z.y * z.y < 4 && fractal->iter < fractal->iteration)
-// 	{
-// 		double temp = z.x * z.x - z.y * z.y + c.x;
-// 		z.y = fabs(2 * z.x * z.y) + c.y;
-// 		z.x = fabs(temp);
-// 		fractal->iter = fractal->iter + 1;
-// 	}
-// 	// printf("max:%d ended calculations :%d", fractal->iteration ,iter);
-// 	paintpixel(x, y, &fractal->img ,map(fractal->iter));
-// }
-
-
-
-// this is the thing
 void render_burning_ship(int x, int y, t_fractal *fractal)
 {
+
 	t_complex_num c = {
-		.x = (((x - fractal->width / 2.0) * 4.0) / fractal->width) * fractal->zoom +fractal->xshift,
-		.y = (((y - fractal->height / 2.0) * 3.0) / fractal->height)* fractal->zoom +fractal->yshift
+		.x = fractal->cx+ (((x - fractal->width / 2.0) * 4.0) / fractal->width) * fractal->zoom +fractal->xshift,
+		.y = fractal->cy+ (((y - fractal->height / 2.0) * 3.0) / fractal->height)* fractal->zoom +fractal->yshift
 	};
 	t_complex_num z = {0, 0};
 	fractal->iter = 0;
 
-	// Burning Ship iteration
 	while (z.x * z.x + z.y * z.y < 4 && fractal->iter < fractal->iteration)
 	{
 		double temp = z.x * z.x - z.y * z.y + c.x;
@@ -296,6 +288,22 @@ void render_burning_ship(int x, int y, t_fractal *fractal)
 		z.x = fabs(temp);
 		fractal->iter = fractal->iter + 1;
 	}
+
+	// original
+	// t_complex_num c = {
+	// 	.x = (((x - fractal->width / 2.0) * 4.0) / fractal->width) * fractal->zoom +fractal->xshift,
+	// 	.y = (((y - fractal->height / 2.0) * 3.0) / fractal->height)* fractal->zoom +fractal->yshift
+	// };
+	// t_complex_num z = {0, 0};
+	// fractal->iter = 0;
+
+	// while (z.x * z.x + z.y * z.y < 4 && fractal->iter < fractal->iteration)
+	// {
+	// 	double temp = z.x * z.x - z.y * z.y + c.x;
+	// 	z.y = fabs(2 * z.x * z.y) + c.y;
+	// 	z.x = fabs(temp);
+	// 	fractal->iter = fractal->iter + 1;
+	// }
 	paintpixel(x, y, &fractal->img ,map(fractal->iter, fractal));
 }
 
