@@ -1,6 +1,24 @@
 #include "fractal.h"
 #include "utils.h"
 
+// math math
+void	parseinteger(char *str, int *i, int *neg, double *value)
+{
+	while (str[*i] == ' ' || (str[*i] >= 9 && str[*i] <= 13))
+		(*i)++;
+	if (str[*i] == '+' || str[*i] == '-')
+	{
+		if (str[*i] == '-')
+			*neg = *neg * -1;
+		(*i)++;
+	}
+	while (str[*i] != '.' && (str[*i] >= '0' && str[*i] <= '9'))
+	{
+		*value = *value * 10 + (str[*i] - '0');
+		(*i)++;
+	}
+}
+
 double	returndouble(char *str)
 {
 	double	value;
@@ -12,19 +30,7 @@ double	returndouble(char *str)
 	i = 0;
 	neg = 1;
 	tenth = 1;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '+' || str[i] == '-')
-	{
-		if (str[i] == '-')
-			neg = neg * -1;
-		i++;
-	}
-	while (str[i] != '.' && (str[i] >= '0' && str[i] <= '9'))
-	{
-		value = value * 10 + (str[i] - '0');
-		i ++;
-	}
+	parseinteger(str, &i, &neg, &value);
 	if (str[i] == '.')
 		i++;
 	while (str[i] != '.' && (str[i] >= '0' && str[i] <= '9'))
@@ -36,41 +42,32 @@ double	returndouble(char *str)
 	return (value * neg);
 }
 
+// setup fractals from arguments
+void	setupfractal(t_fractal *fractal, int argc, char *argv[])
+{
+	fractal->name = argv[1];
+	if (argc >= 3)
+		fractal->width = ft_atoi(argv[2]);
+	if (argc >= 4)
+		fractal->height = ft_atoi(argv[3]);
+	if (argc >= 5)
+		fractal->cx = returndouble(argv[4]);
+	if (argc >= 6)
+		fractal->cy = returndouble(argv[5]);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_fractal	fractal;
 
-	printf("argc:%d\n", argc);
 	if (argc < 7)
 	{
 		if (ft_strncmp("mandelbrot", argv[1], 10) == 0)
-		{
-			fractal.name = "mandelbrot";
-			fractal.width = ft_atoi(argv[2]);
-			fractal.height = ft_atoi(argv[3]);
-			printf("mandelbrot\n");
-		}
+			setupfractal(&fractal, argc, argv);
 		else if (ft_strncmp("julia", argv[1], 5) == 0)
-		{
-			fractal.name = argv[1];
-			printf("fractal name :%s\n", fractal.name);
-			fractal.width = ft_atoi(argv[2]);
-			fractal.height = ft_atoi(argv[3]);
-			fractal.cx = returndouble(argv[4]);
-			fractal.cy = returndouble(argv[5]);
-			printf("value1:%f\n", fractal.cx);
-			printf("value2:%f\n", fractal.cy);
-			printf("julia\n");
-		}
+			setupfractal(&fractal, argc, argv);
 		else if (ft_strncmp("burningship", argv[1], 11) == 0)
-		{
-			printf("burning ship\n");
-			fractal.name = argv[1];
-			fractal.width = ft_atoi(argv[2]);
-			fractal.height = ft_atoi(argv[3]);
-			fractal.cx = returndouble(argv[4]);
-			fractal.cy = returndouble(argv[5]);
-		}
+			setupfractal(&fractal, argc, argv);
 		else
 			exit(1);
 		fractal.name = argv[1];

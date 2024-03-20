@@ -14,18 +14,26 @@ int	close_handler(t_fractal *fractal)
 {
 	mlx_destroy_image(fractal->mlx_instance, fractal->img.img);
 	mlx_destroy_window(fractal->mlx_instance, fractal->mlx_win);
-	// mlx_destroy_display(fractal->mlx_instance); //missing in macos
 	free(fractal->mlx_instance);
 	exit(0);
 }
+//ubuntu
+// int	close_handler(t_fractal *fractal)
+// {
+// 	mlx_destroy_image(fractal->mlx_instance, fractal->img.img);
+// 	mlx_destroy_window(fractal->mlx_instance, fractal->mlx_win);
+// 	// mlx_destroy_display(fractal->mlx_instance); //missing in macos
+// 	free(fractal->mlx_instance);
+// 	exit(0);
+// }
 
 int	julia_track(int x, int y, t_fractal *fractal)
 {
 	if (!ft_strncmp(fractal->name, "julia", 5))
 	{
-		fractal->cx = (scale(x, -2, +2, 0, fractal->width)
+		fractal->cx = (scale(x, -2, +2, fractal->width)
 				* fractal->zoom) + fractal->xshift;
-		fractal->cy = (scale(y, +2, -2, 0, fractal->height)
+		fractal->cy = (scale(y, +2, -2, fractal->height)
 				* fractal->zoom) + fractal->yshift;
 		renderfractal(fractal);
 	}
@@ -54,47 +62,21 @@ int	key_handler(int keyval, t_fractal *fractal)
 {
 	printf("%d %p\n", keyval, fractal);
 	if (keyval == 53)
-	{
-		printf("esc and close!\n");
 		close_handler(fractal);
-	}
 	else if (keyval == 126)
-	{
-		printf("up key");
 		fractal -> yshift -= 0.5 * fractal->zoom;
-	}
 	else if (keyval == 125)
-	{
-		printf("down key");
 		fractal -> yshift += 0.5 * fractal->zoom;
-	}
 	else if (keyval == 123)
-	{
-		printf("left key");
-		printf("key value 24\n");
 		fractal -> xshift += 0.5 * fractal->zoom;
-	}
 	else if (keyval == 124)
-	{
-		printf("right key");
-		printf("key value 124\n");
 		fractal -> xshift -= 0.5 * fractal->zoom;
-	}
 	else if (keyval == 24)
-	{
-		printf("key value 24 | ++\n");
 		fractal -> iteration += 1;
-	}
 	else if (keyval == 27)
-	{
-		printf("key value 27|  --\n");
 		fractal -> iteration -= 1;
-	}
 	else if (keyval == 15)
-	{
-		printf("key value 15| r\n");
 		resetback(fractal);
-	}
 	renderfractal(fractal);
 	return (0);
 }
@@ -163,25 +145,19 @@ void	events_init(t_fractal *fractal)
 // 			fractal);
 // }
 
-double	scale(double unscaled_num, double new_min, double new_max, double old_min, double old_max)
+double	scale(double unscaled_num, double new_min, double new_max,
+	double old_max)
 {
+	double	old_min;
 	double	newscale;
 	double	oldscale;
 	double	number;
 
+	old_min = 0;
 	newscale = new_max - new_min;
 	oldscale = old_max - old_min;
 	number = unscaled_num - old_min;
 	return ((newscale * (number / oldscale)) + new_min);
-}
-
-t_complex_num	square_complex2(t_complex_num z)
-{
-	t_complex_num	result;
-
-	result.x = (z.x * z.x) - (z.y * z.y);
-	result.y = 2 * fabs(z.x) * fabs(z.y);
-	return (result);
 }
 
 t_complex_num	square_complex(t_complex_num z)
@@ -210,50 +186,82 @@ void	paintpixel(int x, int y, t_data *img, int color)
 	*(unsigned int *)(img->addr + offset) = color;
 }
 
+void	cleanup(t_fractal *fractal)
+{
+	mlx_destroy_image(fractal->mlx_instance, fractal->img.img);
+	free(fractal->img.img);
+	fractal->img.img = NULL;
+	mlx_destroy_window(fractal->mlx_instance, fractal->mlx_win);
+	free(fractal->mlx_win);
+	fractal->mlx_win = NULL;
+	free(fractal->mlx_instance);
+	fractal->mlx_instance = NULL;
+}
+
 void	setup(t_fractal *fractal)
 {
 	fractal->mlx_instance = mlx_init();
 	if (fractal->mlx_instance == NULL)
-	{
-		printf("mlx isntance is null\n");
-	}
+		return ;
 	fractal->mlx_win = mlx_new_window(fractal->mlx_instance,
 			fractal->width, fractal->height, fractal->name);
 	if (fractal->mlx_win == NULL)
-	{
-		// mlx_destroy_display(fractal->mlx_instance); //missing in lib
-		printf("mlx window failed\n");
-		mlx_destroy_window(fractal->mlx_instance,
-			fractal->mlx_win); //undeclared?
-		free(fractal->mlx_instance);
-		fractal->mlx_instance = NULL;
-	}
-	//  way to buffer the image you are rendering.
+		cleanup(fractal);
 	fractal->img.img = mlx_new_image(fractal->mlx_instance,
 			fractal->width, fractal->height);
 	if (fractal->img.img == NULL)
-	{
-		printf("mlx img faield \n");
-		// mlx_destroy_display(fractal->mlx_instance); // missing in lib.
-		mlx_destroy_image(fractal->mlx_instance, fractal->img.img);
-		free(fractal->img.img);
-		fractal->img.img = NULL;
-		mlx_destroy_window(fractal->mlx_instance, fractal->mlx_win);
-		free(fractal->mlx_instance);
-		fractal->mlx_instance = NULL;
-	}
-	printf("all ok\n");
+		cleanup(fractal);
 	fractal->img.addr = mlx_get_data_addr(fractal->img.img,
 			&fractal->img.bits_per_pixel, &fractal->img.line_length,
 			&fractal->img.endian);
-	fractal->escape_val = 4;
-	fractal->iteration = 25;
-	fractal->iter = 0;
-	fractal->xshift = 0;
-	fractal->yshift = 0;
-	fractal->zoom = 1;
+	resetback(fractal);
 	events_init(fractal);
 }
+//ubuntu
+// void	setup(t_fractal *fractal)
+// {
+// 	fractal->mlx_instance = mlx_init();
+// 	if (fractal->mlx_instance == NULL)
+// 	{
+// 		printf("mlx isntance is null\n");
+// 	}
+// 	fractal->mlx_win = mlx_new_window(fractal->mlx_instance,
+// 			fractal->width, fractal->height, fractal->name);
+// 	if (fractal->mlx_win == NULL)
+// 	{
+// 		// mlx_destroy_display(fractal->mlx_instance); //missing in lib
+// 		printf("mlx window failed\n");
+// 		mlx_destroy_window(fractal->mlx_instance,
+// 			fractal->mlx_win); //undeclared?
+// 		free(fractal->mlx_instance);
+// 		fractal->mlx_instance = NULL;
+// 	}
+// 	//  way to buffer the image you are rendering.
+// 	fractal->img.img = mlx_new_image(fractal->mlx_instance,
+// 			fractal->width, fractal->height);
+// 	if (fractal->img.img == NULL)
+// 	{
+// 		printf("mlx img faield \n");
+// 		// mlx_destroy_display(fractal->mlx_instance); // missing in lib.
+// 		mlx_destroy_image(fractal->mlx_instance, fractal->img.img);
+// 		free(fractal->img.img);
+// 		fractal->img.img = NULL;
+// 		mlx_destroy_window(fractal->mlx_instance, fractal->mlx_win);
+// 		free(fractal->mlx_instance);
+// 		fractal->mlx_instance = NULL;
+// 	}
+// 	printf("all ok\n");
+// 	fractal->img.addr = mlx_get_data_addr(fractal->img.img,
+// 			&fractal->img.bits_per_pixel, &fractal->img.line_length,
+// 			&fractal->img.endian);
+// 	fractal->escape_val = 4;
+// 	fractal->iteration = 25;
+// 	fractal->iter = 0;
+// 	fractal->xshift = 0;
+// 	fractal->yshift = 0;
+// 	fractal->zoom = 1;
+// 	events_init(fractal);
+// }
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -264,8 +272,8 @@ void	setup(t_fractal *fractal)
 unsigned int	map(int iter, t_fractal *fractal)
 {
 	if (iter == fractal->iteration)
-		return (0x000000); // Black for points inside the set
-	return (0xFFFFFF / iter); // Simple gradient for points outside the set
+		return (0x000000);
+	return (0xFFFFFF / iter);
 }
 
 void	render_burning_ship(int x, int y, t_fractal *fractal)
@@ -280,7 +288,6 @@ void	render_burning_ship(int x, int y, t_fractal *fractal)
 		* fractal->zoom + fractal->yshift;
 	z.x = 0;
 	z.y = 0;
-
 	fractal->iter = 0;
 	while (z.x * z.x + z.y * z.y < 4 && fractal->iter < fractal->iteration)
 	{
@@ -292,6 +299,18 @@ void	render_burning_ship(int x, int y, t_fractal *fractal)
 	paintpixel(x, y, &fractal->img, map(fractal->iter, fractal));
 }
 
+void	setupvariables(t_complex_num *c, t_fractal *fractal, int *i)
+{
+	c->x = 0;
+	c->y = 0;
+	*i = 0;
+	if (ft_strncmp("julia", fractal->name, 5) == 0)
+	{
+		c->x = fractal->cx;
+		c->y = fractal->cy;
+	}
+}
+
 // c is the actual starting point
 // z is the calculated points
 void	handlecalculations(int x, int y, t_fractal *fractal)
@@ -301,24 +320,17 @@ void	handlecalculations(int x, int y, t_fractal *fractal)
 	int				i;
 	int				color;
 
-	i = 0;
-	c.x = 0;
-	c.y = 0;
-	if (ft_strncmp("julia", fractal->name, 5) == 0)
-	{
-		c.x = fractal->cx;
-		c.y = fractal->cy;
-	}
-	z.x = (scale(x, -2, +2, 0, fractal->width)
+	setupvariables(&c, fractal, &i);
+	z.x = (scale(x, -2, +2, fractal->width)
 			* fractal->zoom) + fractal -> xshift;
-	z.y = (scale(y, 2, -2, 0, fractal->height)
+	z.y = (scale(y, 2, -2, fractal->height)
 			* fractal->zoom) + fractal -> yshift;
 	while (fractal->iteration > i)
 	{
 		z = sum_complex(square_complex(z), c);
 		if ((z.x * z.x) + (z.y * z.y) > fractal->escape_val)
 		{
-			color = scale(i, BLACK, WHITE, 0, fractal->iteration);
+			color = colorscale(i, BLACK, WHITE, fractal->iteration);
 			paintpixel(x, y, &fractal->img, color);
 			return ;
 		}
