@@ -1,46 +1,147 @@
-#include "fractal.h"
-#include "utils.h"
+#include "utils/fractal.h"
+#include "utils/utils.h"
 
-// math math
-void	parseinteger(char *str, int *i, int *neg, double *value)
+// change the mask from 0 back to mask. 
+// TO DO! TAKE note
+// mac version uses 0 as it does not matter
+void	events_init(t_fractal *fractal)
 {
-	while (str[*i] == ' ' || (str[*i] >= 9 && str[*i] <= 13))
-		(*i)++;
-	if (str[*i] == '+' || str[*i] == '-')
-	{
-		if (str[*i] == '-')
-			*neg = *neg * -1;
-		(*i)++;
-	}
-	while (str[*i] != '.' && (str[*i] >= '0' && str[*i] <= '9'))
-	{
-		*value = *value * 10 + (str[*i] - '0');
-		(*i)++;
-	}
+	mlx_hook(
+		fractal->mlx_win,
+		KeyPress,
+		0,
+		key_handler,
+		fractal
+		);
+	mlx_hook(fractal->mlx_win,
+		ButtonPress,
+		0,
+		mouse_handler,
+		fractal);
+	mlx_hook(fractal->mlx_win,
+		DestroyNotify,
+		0,
+		close_handler,
+		fractal);
+	mlx_hook(fractal->mlx_win,
+		MotionNotify,
+		0,
+		julia_track,
+		fractal);
 }
 
-double	returndouble(char *str)
-{
-	double	value;
-	int		i;
-	int		neg;
-	double	tenth;
+// ubuntu ver
+// void	events_init(t_fractal *fractal)
+// {
+// 	mlx_hook(
+// 		fractal->mlx_win,
+// 		KeyPress,
+// 		0,
+// 		// KeyPressMask,
+// 		key_handler,
+// 		fractal
+// 	);
 
-	value = 0;
-	i = 0;
-	neg = 1;
-	tenth = 1;
-	parseinteger(str, &i, &neg, &value);
-	if (str[i] == '.')
-		i++;
-	while (str[i] != '.' && (str[i] >= '0' && str[i] <= '9'))
-	{
-		tenth = tenth / 10;
-		value = value + ((str[i] - '0') * (tenth));
-		i++;
-	}
-	return (value * neg);
+// 	mlx_hook(fractal->mlx_win,
+// 			ButtonPress,
+// 			0,
+// 			// ButtonPressMask,
+// 			mouse_handler,
+// 			fractal);
+
+// 	// // destroy the window
+// 	mlx_hook(fractal->mlx_win,
+// 			DestroyNotify,
+// 			0,
+// 			// StructureNotifyMask,
+// 			close_handler,
+// 			fractal);
+
+// 	// tracking for julia
+// 		mlx_hook(fractal->mlx_win,
+// 			MotionNotify,
+// 			0,
+// 			// PointerMotionMask,
+// 			julia_track,
+// 			fractal);
+// }
+
+void	cleanup(t_fractal *fractal)
+{
+	mlx_destroy_image(fractal->mlx_instance, fractal->img.img);
+	free(fractal->img.img);
+	fractal->img.img = NULL;
+	mlx_destroy_window(fractal->mlx_instance, fractal->mlx_win);
+	free(fractal->mlx_win);
+	fractal->mlx_win = NULL;
+	free(fractal->mlx_instance);
+	fractal->mlx_instance = NULL;
 }
+
+void	setup(t_fractal *fractal)
+{
+	fractal->mlx_instance = mlx_init();
+	if (fractal->mlx_instance == NULL)
+		return ;
+	fractal->mlx_win = mlx_new_window(fractal->mlx_instance,
+			fractal->width, fractal->height, fractal->name);
+	if (fractal->mlx_win == NULL)
+		cleanup(fractal);
+	fractal->img.img = mlx_new_image(fractal->mlx_instance,
+			fractal->width, fractal->height);
+	if (fractal->img.img == NULL)
+		cleanup(fractal);
+	fractal->img.addr = mlx_get_data_addr(fractal->img.img,
+			&fractal->img.bits_per_pixel, &fractal->img.line_length,
+			&fractal->img.endian);
+	resetback(fractal);
+	events_init(fractal);
+}
+//ubuntu
+// void	setup(t_fractal *fractal)
+// {
+// 	fractal->mlx_instance = mlx_init();
+// 	if (fractal->mlx_instance == NULL)
+// 	{
+// 		printf("mlx isntance is null\n");
+// 	}
+// 	fractal->mlx_win = mlx_new_window(fractal->mlx_instance,
+// 			fractal->width, fractal->height, fractal->name);
+// 	if (fractal->mlx_win == NULL)
+// 	{
+// 		// mlx_destroy_display(fractal->mlx_instance); //missing in lib
+// 		printf("mlx window failed\n");
+// 		mlx_destroy_window(fractal->mlx_instance,
+// 			fractal->mlx_win); //undeclared?
+// 		free(fractal->mlx_instance);
+// 		fractal->mlx_instance = NULL;
+// 	}
+// 	//  way to buffer the image you are rendering.
+// 	fractal->img.img = mlx_new_image(fractal->mlx_instance,
+// 			fractal->width, fractal->height);
+// 	if (fractal->img.img == NULL)
+// 	{
+// 		printf("mlx img faield \n");
+// 		// mlx_destroy_display(fractal->mlx_instance); // missing in lib.
+// 		mlx_destroy_image(fractal->mlx_instance, fractal->img.img);
+// 		free(fractal->img.img);
+// 		fractal->img.img = NULL;
+// 		mlx_destroy_window(fractal->mlx_instance, fractal->mlx_win);
+// 		free(fractal->mlx_instance);
+// 		fractal->mlx_instance = NULL;
+// 	}
+// 	printf("all ok\n");
+// 	fractal->img.addr = mlx_get_data_addr(fractal->img.img,
+// 			&fractal->img.bits_per_pixel, &fractal->img.line_length,
+// 			&fractal->img.endian);
+// 	fractal->escape_val = 4;
+// 	fractal->iteration = 25;
+// 	fractal->iter = 0;
+// 	fractal->xshift = 0;
+// 	fractal->yshift = 0;
+// 	fractal->zoom = 1;
+// 	events_init(fractal);
+// }
 
 // setup fractals from arguments
 void	setupfractal(t_fractal *fractal, int argc, char *argv[])

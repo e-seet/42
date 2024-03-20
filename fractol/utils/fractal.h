@@ -1,7 +1,6 @@
 
 #ifndef FRACTAL_H
 # define FRACTAL_H
-
 // #define	black	0x000000
 // #define	white	0xFFFFFF
 # define BLACK       0x000000  // RGB(0, 0, 0)
