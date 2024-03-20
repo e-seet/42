@@ -42,7 +42,7 @@ OBJ_GNL				=	$(GNLSRC:.c=.o)
 # **************************************************************************** #
 # Bonus	Source
 # **************************************************************************** #
-BSRC_FILES			:=	main.c	utils.c	utils2.c
+BSRC_FILES			:=	main.c	utils/utils.c	utils/utils2.c
 BSRC_FILES_DIR		=	./bonus/
 BSRC				=	$(addprefix $(BSRC_FILES_DIR), $(BSRC_FILES))
 OBJS_BONUS			=	$(BSRC:.c=.o)

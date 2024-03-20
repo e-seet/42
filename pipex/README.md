@@ -4,13 +4,24 @@ make
 
 //pipex, file1, cmd1, cmd2, file2
 
-// compile
+compile in bash
 > find . -name "*.c" | entr make
-// execute
+
+Evaluation Test
+This test checks for character replacement
 > ./pipex in_file "tr a b" "tr b c" output_file
+
+This test check for the file n directory using ls -l.
+Then wc -l to find out how many lines are there
 > ./pipex in_file "ls -l" "wc -l" output_file
-> ./pipex in_file "grep file" "wc -w" output_file
-> ./pipex in_file "grep file" "wc -l" output_file
+
+This test checks for Hello in the in_file. 
+Then proceed with the command wc -w to count number of words
+> ./pipex in_file "grep Hello" "wc -w" output_file
+
+This test checks for Hello in the in_file. 
+Then proceed with the command wc -w to count number of lines
+> ./pipex in_file "grep Hello" "wc -l" output_file
 
 // for bonus
 make pipex_bonus
@@ -31,7 +42,6 @@ Second set of commands
 
 ./pipex in_file "grep Now" "cat" "test-xx.txt"
 ./pipex "in_file" "wc -w" "cat" "test-xx.txt"
-
 
 Test 16:
 ./pipex "in_file" "cat" "hostname" "outs/test-xx.txt"

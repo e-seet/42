@@ -55,6 +55,11 @@ char	*findprocesspath(struct s_pipex pipexstruct);
 
 char	*findpath(char *envp[]);
 
+
+int		p3child(char *envp[], struct s_pipex pipexstruct);
+
+int		checkforheredoc(char *argv[], struct s_pipex *pipexstruct);
+
 #endif
 // opened = 0. Haven't opened
 // opened = 1. Opened
