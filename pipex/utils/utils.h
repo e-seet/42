@@ -24,7 +24,7 @@
 # include <sys/stat.h>
 # include <errno.h>
 
-# include "utils2.h"
+// # include "utils2.h"
 # include "pipex_struct.h"
 
 // void	freestuff2(struct s_pipex *pipexstruct);
@@ -46,5 +46,7 @@ int		p2child(char *path, char *envp[],
 
 char	*findpath(char *envp[]);
 void	freestuff(struct s_pipex *pipexstruct);
+
+void	freestuff2(struct s_pipex *pipexstruct);
 
 #endif

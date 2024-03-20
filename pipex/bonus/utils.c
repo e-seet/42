@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "utils.h"
-#include "utils2.h"
+// #include "utils2.h"
 
 void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
 	char *envp[])

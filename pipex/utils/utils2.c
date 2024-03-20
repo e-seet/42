@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils2.h"
+#include "utils.h"
 
 void	freestuff2(struct s_pipex *pipexstruct)
 {

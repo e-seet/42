@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "utils/utils.h"
 
 char	*findprocesspath(char *path,
 struct s_pipex pipexstruct, int processnum)
