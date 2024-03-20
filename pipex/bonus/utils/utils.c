@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "utils.h"
-// #include "utils2.h"
 
 void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
 	char *envp[])
@@ -125,36 +124,3 @@ char	*findpath(char *envp[])
 	else
 		return (NULL);
 }
-
-// int	checkforheredoc(char *argv[], struct s_pipex *pipexstruct)
-// {
-// 	if (ft_strncmp("here_doc", argv[1], 8) == 0)
-// 	{
-// 		if (heredoccmd(pipexstruct) == 0)
-// 		{
-// 			pipexstruct->curr = 3 ;
-// 			pipexstruct->opened = 3 ;
-// 			pipexstruct->heredocreadfd = open("heredoctemp.txt", O_RDONLY);
-// 			if (pipexstruct->heredocreadfd == -1)
-// 			{
-// 				perror("heredocreadfd opened with error\n");
-// 				return (1);
-// 			}
-// 		}
-// 		else
-// 		{
-// 			perror("heredoccmd failed. Nothing inside\n");
-// 			return (1);
-// 		}
-// 	}
-// 	return (0);
-// }
-
-// void	closepipes(struct s_pipex *pipexstruct)
-// {
-// 	printf("close all pipes");
-// 	close(pipexstruct->fdpipe1[0]);
-// 	close(pipexstruct->fdpipe1[1]);
-// 	close(pipexstruct->fdpipe2[0]);
-// 	close(pipexstruct->fdpipe2[1]);
-// }

@@ -36,24 +36,12 @@ struct s_pipex pipexstruct, int processnum)
 	else
 		return (NULL);
 }
-// //Change from stdout(1) to fd[1] so that the data that 
-//supposed to go stdout will go to pipe instead
-// // then it will write into pipe. That's why fd[1]
-// dup2(pipexstruct.fdpipe[1], 1);
-// //close the pipe for reading
-// close(pipexstruct.fdpipe[0]);
-// //Change the stdin(0) to read the file's fd 
-//so that it will read from the file of interest
-// dup2(pipexstruct.p1fd, 0);
-//path: "/bin/ls"
-//arg:  ["ls", "-l"]
 
 int	p1child( char *path, char *envp[], struct s_pipex pipexstruct)
 {
 	int		execveresult;
 
 	path = findprocesspath(path, pipexstruct, 1);
-	printf("path:%s", path);
 	if (access(path, F_OK) != 0)
 	{
 		perror("command not found p1path");
@@ -68,26 +56,6 @@ int	p1child( char *path, char *envp[], struct s_pipex pipexstruct)
 	free(path);
 	return (0);
 }
-
-//path: "/bin/ls"
-//arg:  ["ls", "-l"]
-// change from stdin(0)  to listen to fd[0]
-
-// int ft_strncmp2(char *str, char *str2, int n)
-// {
-// 	int i = 0;
-// 	while (n > i)
-// 	{
-// 		if (str[i] != str2[i])
-// 		{
-// 			printf("Break!!\n i:%d\n", i);
-// 			printf("1:%c\n2:%c", str[i], str2[i]);
-// 			break;
-// 		}
-// 		i++;
-// 	}
-// 	return str2[i] - str[i];
-// }
 
 int	p2child(char *path, char *envp[], struct s_pipex pipexstruct)
 {
@@ -157,52 +125,3 @@ int	main(int argc, char *argv[], char *envp[])
 	freestuff(&pipexstruct);
 	return (0);
 }
-
-/*{ ARGS("grep Hello",
- "awk \"{count++} 
-END {print count}\""), DEFAULT_ENV,
-"Hello World!\nHello World!\n" },
-
-"awk \"{count++} END {print count}\""
-{ ARGS("grep Hello", "awk '\"{count++} END {print count}\"'"), DEFAULT_ENV,
- "Hello World!\nHello World!\n" },
-"awk '\"{count++} END {print count}\"'"
-{ ARGS("grep Hello", "awk \"'{count++} END {print count}'\""),
- DEFAULT_ENV, "Hello World!\nHello World!\n" }
-"awk \"'{count++} END {print count}'\""
-
-./pipex "in_file" "grep Hello" "awk \"{count++} END {print count}\"" outfile
-becomes  "{count++} END {print count}"
-*/
-
-// NO ISSUES
-/*
-./pipex "in_file" "grep Hello" "awk \"{count++} END {print count}\"" outfile
-./pipex "in_file" "grep Hello" 
-"awk '{count++} END {print count}'" outfile
-./pipex "in_file" "grep Hello" 
-"awk '\"{count++} END {print count}\"'" outfile
-./pipex "in_file" "grep Hello" "awk \"'{count++} END {print count}'\"" outfile
-*/
-
-//pipex, file1, cmd1, cmd2, file2
-
-//compile 
-// gcc -o main main.c libftfiles.c
-
-// run
-// ./main infile "ls -l" "wc -l" outfile
-// comamnd
-// ls -l | wc -l > outfile
-
-// ./main  infile "grep this" "wc -w" outfile
-
-// ./pipex infile "grep file" "wc -l" outfile
-
-//0:./main
-//1:infile
-//2:"ls -l"
-//3:"wc -l"
-//4:outfile
-
-// ./main infile "ls -l" "wc -l" outfile

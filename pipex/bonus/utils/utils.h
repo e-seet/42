@@ -13,13 +13,15 @@
 #ifndef UTILS_H
 # define UTILS_H
 
-# include <sys/wait.h>
-# include "../libft/libft.h"
-# include "../get_next_line/get_next_line.h"
-# include <stdio.h>
-# include <unistd.h>
 //for read write, permission with files, creating files
 # include <fcntl.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <sys/wait.h>
+
+# include "../libft/libft.h"
+# include "../get_next_line/get_next_line.h"
 
 struct s_pipex {
 	int		p1fd;
@@ -44,10 +46,6 @@ void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
 			char *envp[]);
 
 int		linechecker(char *str);
-
-// void	closepipes(struct s_pipex *pipexstruct);
-
-// int		checkforheredoc(char *argv[], struct s_pipex *pipexstruct);
 
 int		heredoccmd(struct s_pipex *pipexstruct);
 

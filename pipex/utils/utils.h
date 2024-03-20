@@ -13,23 +13,20 @@
 #ifndef UTILS_H
 # define UTILS_H
 
-# include <sys/wait.h>
-# include "../libft/libft.h"
-# include <stdio.h>
-# include <unistd.h>
 //for read write, permission with files, creating files
 # include <fcntl.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <sys/wait.h>
 
+# include "../libft/libft.h"
+
+// # include <errno.h>
 // For mkdir. Check if allowed
-# include <sys/stat.h>
-# include <errno.h>
-
-// # include "utils2.h"
+// # include <sys/stat.h>
 # include "pipex_struct.h"
 
-// void	freestuff2(struct s_pipex *pipexstruct);
-
-// char	*ft_newstr(char *str, struct s_pipex *pipexstruct);
 void	ft_newstr(char *str, struct s_pipex *pipexstruct, int n);
 void	ft_modify(char *str, struct s_pipex *pipexstruct, int n);
 
