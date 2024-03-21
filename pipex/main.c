@@ -44,7 +44,7 @@ int	p1child( char *path, char *envp[], struct s_pipex pipexstruct)
 	path = findprocesspath(path, pipexstruct, 1);
 	if (access(path, F_OK) != 0)
 	{
-		perror("command not found p1path");
+		perror("1command not found p1path");
 		return (1);
 	}
 	dup2(pipexstruct.fdpipe[1], 1);
@@ -113,12 +113,10 @@ int	main(int argc, char *argv[], char *envp[])
 		wait(NULL);
 	pipexstruct.pid1 = fork();
 	if (pipexstruct.pid1 == 0)
-		if (p1child(path, envp, pipexstruct) == 1)
-			exit(1);
+		p1child(path, envp, pipexstruct);
 	pipexstruct.pid2 = fork();
 	if (pipexstruct.pid2 == 0)
-		if (p2child(path, envp, pipexstruct) == 1)
-			exit(1);
+		p2child(path, envp, pipexstruct);
 	closepipes(&pipexstruct);
 	waitpid(pipexstruct.pid1, &pipexstruct.pid1status, 0);
 	waitpid(pipexstruct.pid2, &pipexstruct.pid2status, 0);

@@ -12,15 +12,8 @@
 
 #include "utils.h"
 
-void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
-	char *envp[])
+void	setstructurefd(struct s_pipex *pipexstruct, char *argv[])
 {
-	pipexstruct->path = findpath(envp);
-	pipexstruct->paths = ft_split(pipexstruct->path + 5, ':');
-	pipexstruct->curr = 2;
-	pipexstruct->opened = 2;
-	pipexstruct->argc = argc;
-	pipexstruct->p2fd = open(argv[argc - 1], O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (pipexstruct->p2fd < 0)
 		perror("Error in opening fd for p2fd. Terminating now");
 	if (ft_strncmp("here_doc", argv[1], 8) == 0)
@@ -39,7 +32,21 @@ void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
 		pipexstruct->p1fd = open(argv[1], O_RDONLY);
 		if (pipexstruct->p1fd < 0)
 			perror("Error in opening fd for p1fd. Terminating now");
+		if (ftruncate(pipexstruct->p2fd, 0) == -1)
+			perror("truncate file content failed");
 	}
+}
+
+void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
+	char *envp[])
+{
+	pipexstruct->path = findpath(envp);
+	pipexstruct->paths = ft_split(pipexstruct->path + 5, ':');
+	pipexstruct->curr = 2;
+	pipexstruct->opened = 2;
+	pipexstruct->argc = argc;
+	pipexstruct->p2fd = open(argv[argc - 1], O_RDWR | O_APPEND | O_CREAT, 0644);
+	setstructurefd(pipexstruct, argv);
 }
 
 //check if the last character is a \n and subtract accordingly
@@ -57,49 +64,24 @@ int	linechecker(char *str)
 		return (0);
 }
 
-int	heredoccmd(struct s_pipex *pipexstruct)
-{
-	char	*line;
-
-	if (pipexstruct->heredocwritefd < 0)
-	{
-		perror("invalid fd. quitting now\n");
-		exit(1);
-	}
-	while (1)
-	{
-		write(1, "heredoc>", 8);
-		line = get_next_line(0);
-		if ((ft_strncmp(line, pipexstruct->delimiter, ft_strlen(
-						pipexstruct->delimiter)) == 0) && (ft_strlen(line)
-				- linechecker(line)) == ft_strlen(pipexstruct->delimiter))
-		{
-			break ;
-		}
-		write(pipexstruct->heredocwritefd, line, ft_strlen(line));
-		write(1, line, ft_strlen(line));
-		line = NULL;
-	}
-	return (0);
-}
-
-char	*findprocesspath(struct s_pipex pipexstruct)
+char	*findprocesspath(struct s_pipex *pipexstruct)
 {
 	int	i;
 
 	i = 0;
-	while (pipexstruct.paths[i])
+	while (pipexstruct->paths[i])
 	{
-		pipexstruct.path = ft_strjoin(pipexstruct.paths[i], "/");
-		pipexstruct.path = ft_strjoin(pipexstruct.path, pipexstruct.argvs3[0]);
-		if (access(pipexstruct.path, F_OK) == 0)
+		pipexstruct->path = ft_strjoin(pipexstruct->paths[i], "/");
+		pipexstruct->path = ft_strjoin(pipexstruct->path,
+				pipexstruct->argvs3[0]);
+		if (access(pipexstruct->path, F_OK) == 0)
 			break ;
-		free (pipexstruct.path);
-		pipexstruct.path = NULL;
+		free (pipexstruct->path);
+		pipexstruct->path = NULL;
 		i++;
 	}
-	if (access(pipexstruct.path, F_OK) == 0)
-		return (pipexstruct.path);
+	if (access(pipexstruct->path, F_OK) == 0)
+		return (pipexstruct->path);
 	else
 		return (NULL);
 }

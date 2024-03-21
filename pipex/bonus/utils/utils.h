@@ -47,16 +47,15 @@ void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
 
 int		linechecker(char *str);
 
-int		heredoccmd(struct s_pipex *pipexstruct);
-
-char	*findprocesspath(struct s_pipex pipexstruct);
+char	*findprocesspath(struct s_pipex *pipexstruct);
 
 char	*findpath(char *envp[]);
 
-
-int		p3child(char *envp[], struct s_pipex pipexstruct);
+int		heredoccmd(struct s_pipex *pipexstruct);
 
 int		checkforheredoc(char *argv[], struct s_pipex *pipexstruct);
+
+int		p3child(char *envp[], struct s_pipex *pipexstruct);
 
 #endif
 // opened = 0. Haven't opened

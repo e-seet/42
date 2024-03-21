@@ -23,6 +23,13 @@ This test checks for Hello in the in_file.
 Then proceed with the command wc -w to count number of lines
 > ./pipex in_file "grep Hello" "wc -l" output_file
 
+Extra tests
+ < in_file tr a b | tr b c > output_file
+./pipex in_file "tr a b" "tr b c" output_file
+
+< in_file grep x | ls -l > output_file
+./pipex in_file "grep x" "ls -l" output_file
+
 // for bonus
 make pipex_bonus
 

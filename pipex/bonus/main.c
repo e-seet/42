@@ -76,27 +76,25 @@ int	setuppipe(struct s_pipex *pipexstruct)
 	return (0);
 }
 
-int	refactormain(struct s_pipex pipexstruct, char *envp[], char *argv[])
+int	refactormain(struct s_pipex *pipexstruct, char *envp[], char *argv[])
 {
-	pipexstruct.argvs3 = ft_split(argv[pipexstruct.curr], ' ');
-	pipexstruct.pid3 = fork();
-	if (pipexstruct.pid3 == 0)
+	pipexstruct->argvs3 = ft_split(argv[pipexstruct->curr], ' ');
+	pipexstruct->pid3 = fork();
+	if (pipexstruct->pid3 == 0)
 	{
-		dup2child(&pipexstruct);
+		dup2child(pipexstruct);
 		if (p3child(envp, pipexstruct) == 1)
-			exit(1);
+			perror("one of the pipe did not work\n");
 	}
 	else
 	{
-		if (pipexstruct.opened == 2 && pipexstruct.curr == 2)
-			close(pipexstruct.fdpipe0[1]);
-		if (pipexstruct.curr % 2 == 1)
-			close(pipexstruct.fdpipe1[1]);
-		else if (pipexstruct.curr % 2 == 0)
-			close(pipexstruct.fdpipe2[1]);
-		else
-			exit(1);
-		waitpid(pipexstruct.pid3, NULL, 0);
+		if (pipexstruct->opened == 2 && pipexstruct->curr == 2)
+			close(pipexstruct->fdpipe0[1]);
+		if (pipexstruct->curr % 2 == 1)
+			close(pipexstruct->fdpipe1[1]);
+		else if (pipexstruct->curr % 2 == 0)
+			close(pipexstruct->fdpipe2[1]);
+		waitpid(pipexstruct->pid3, NULL, 0);
 	}
 	return (0);
 }
@@ -112,8 +110,7 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		if (setuppipe(&pipexstruct) == 1)
 			return (1);
-		if (refactormain(pipexstruct, envp, argv) == 1)
-			return (1);
+		refactormain(&pipexstruct, envp, argv);
 		pipexstruct.curr = pipexstruct.curr +1;
 	}
 	return (0);

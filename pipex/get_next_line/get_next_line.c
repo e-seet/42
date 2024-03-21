@@ -126,4 +126,3 @@ char	*get_next_line(int fd)
 	else
 		return (NULL);
 }
-
