@@ -76,3 +76,34 @@ int	p3child(char *envp[], struct s_pipex *pipexstruct)
 	free(pipexstruct->path);
 	exit (0);
 }
+
+void	freeargv(struct s_pipex *pipexstruct)
+{
+	int	i;
+
+	i = 0;
+	while (pipexstruct->argvs3[i])
+	{
+		free(pipexstruct->argvs3[i]);
+		i++;
+	}
+	free(pipexstruct->argvs3);
+}
+
+void	freeall(struct s_pipex *pipexstruct)
+{
+	int	i;
+
+	i = 0;
+	if (pipexstruct->curr == 2)
+	{
+		free(pipexstruct->delimiter);
+	}
+	free(pipexstruct->path);
+	while (pipexstruct->paths[i])
+	{
+		free(pipexstruct->paths[i]);
+		i++;
+	}
+	free(pipexstruct->paths);
+}

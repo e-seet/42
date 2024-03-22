@@ -15,11 +15,11 @@ This test check for the file n directory using ls -l.
 Then wc -l to find out how many lines are there
 > ./pipex in_file "ls -l" "wc -l" output_file
 
-This test checks for Hello in the in_file. 
+This test checks for Hello in the in_file.
 Then proceed with the command wc -w to count number of words
 > ./pipex in_file "grep Hello" "wc -w" output_file
 
-This test checks for Hello in the in_file. 
+This test checks for Hello in the in_file.
 Then proceed with the command wc -w to count number of lines
 > ./pipex in_file "grep Hello" "wc -l" output_file
 
@@ -56,7 +56,7 @@ hostname
 
 Test 18:
 ./pipex "in_file" "grep Now" "head -2" "outs/test-xx.txt"
->grep "Now" in_file | head -2 
+>grep "Now" in_file | head -2
 
 20
 ./pipex "in_file" "grep Now" "wc -w" "outs/test-xx.txt"
@@ -109,10 +109,9 @@ test 6
 ./pipex input "grep Hello" 'awk "{count++} END {print count}"' "output"
 <!-- returns 2 -->
 
-
 <!-- test 7 -->
-< input grep Hello | awk '"{count++} END {print count}"' > output 
- 
+< input grep Hello | awk '"{count++} END {print count}"' > output
+
  <!-- return
  Hello World 
  Hello World-->
@@ -120,10 +119,8 @@ test 6
 ./pipex in_file "grep Hello" awk {count++} END {print count}  "outfile"
 Failed ^
 
-
 test 8?
 < input grep Hello | awk "'{count++} END {print count}'" > output
-
 
 For the error set
 { ARGS("grep Hello", "wc -l"), DEFAULT_ENV, NULL },
@@ -132,8 +129,6 @@ For the error set
 { ARGS("ls -l src/", "buzzFizz"), DEFAULT_ENV, "Hello World!\n" },
 { ARGS("fizzBuzz", "wc -l"), NULL_ENV, "Hello World!\n" },
 { ARGS("grep Hello", "buzzFizz"), NULL_ENV, "Hello World!\n" }
-
-
 
 ## For bonus
 

@@ -57,6 +57,9 @@ int		checkforheredoc(char *argv[], struct s_pipex *pipexstruct);
 
 int		p3child(char *envp[], struct s_pipex *pipexstruct);
 
+void	freeargv(struct s_pipex *pipexstruct);
+void	freeall(struct s_pipex *pipexstruct);
+
 #endif
 // opened = 0. Haven't opened
 // opened = 1. Opened

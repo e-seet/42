@@ -96,6 +96,7 @@ int	refactormain(struct s_pipex *pipexstruct, char *envp[], char *argv[])
 			close(pipexstruct->fdpipe2[1]);
 		waitpid(pipexstruct->pid3, NULL, 0);
 	}
+	freeargv(pipexstruct);
 	return (0);
 }
 
@@ -113,5 +114,6 @@ int	main(int argc, char *argv[], char *envp[])
 		refactormain(&pipexstruct, envp, argv);
 		pipexstruct.curr = pipexstruct.curr +1;
 	}
+	freeall(&pipexstruct);
 	return (0);
 }

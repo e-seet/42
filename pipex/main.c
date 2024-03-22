@@ -15,18 +15,20 @@
 char	*findprocesspath(char *path,
 struct s_pipex pipexstruct, int processnum)
 {
-	int	i;
+	int		i;
+	char	*temp;
 
 	i = 0;
 	while (pipexstruct.paths[i])
 	{
-		path = ft_strjoin(pipexstruct.paths[i], "/");
+		temp = ft_strjoin(pipexstruct.paths[i], "/");
 		if (processnum == 1)
-			path = ft_strjoin(path, pipexstruct.argvs1[0]);
+			path = ft_strjoin(temp, pipexstruct.argvs1[0]);
 		else
-			path = ft_strjoin(path, pipexstruct.argvs2[0]);
+			path = ft_strjoin(temp, pipexstruct.argvs2[0]);
 		if (access(path, F_OK) == 0)
 			break ;
+		free (temp);
 		free (path);
 		path = NULL;
 		i++;
