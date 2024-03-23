@@ -16,15 +16,26 @@ void	paintpixel(int x, int y, t_data *img, int color)
 	*(unsigned int *)(img->addr + offset) = color;
 }
 
-void	setupvariables(t_complex_num *c, t_fractal *fractal, int *i)
+void	setupvariables(t_complex_num *c, t_complex_num *z, t_fractal *fractal,
+	t_complex_num *temp)
 {
-	c->x = 0;
-	c->y = 0;
-	*i = 0;
 	if (ft_strncmp("julia", fractal->name, 5) == 0)
 	{
+		z->x = (scale(temp->x, -2, +2, fractal->width)
+				* fractal->zoom) + fractal -> xshift;
+		z->y = (scale(temp->y, 2, -2, fractal->height)
+				* fractal->zoom) + fractal -> yshift;
 		c->x = fractal->cx;
 		c->y = fractal->cy;
+	}
+	else
+	{
+		z->x = 0;
+		z->y = 0;
+		c->x = (scale(temp->x, -2, +2, fractal->width) * fractal->zoom)
+			+ fractal->xshift;
+		c->y = (scale(temp->y, 2, -2, fractal->height) * fractal->zoom)
+			+ fractal->yshift;
 	}
 }
 
@@ -36,12 +47,12 @@ void	handlecalculations(int x, int y, t_fractal *fractal)
 	t_complex_num	c;
 	int				i;
 	int				color;
+	t_complex_num	temp;
 
-	setupvariables(&c, fractal, &i);
-	z.x = (scale(x, -2, +2, fractal->width)
-			* fractal->zoom) + fractal -> xshift;
-	z.y = (scale(y, 2, -2, fractal->height)
-			* fractal->zoom) + fractal -> yshift;
+	temp.x = x;
+	temp.y = y;
+	i = 0;
+	setupvariables(&c, &z, fractal, &temp);
 	while (fractal->iteration > i)
 	{
 		z = sum_complex(square_complex(z), c);
@@ -75,6 +86,5 @@ void	renderfractal(t_fractal *fractal)
 	}
 	mlx_put_image_to_window(fractal->mlx_instance, fractal->mlx_win,
 		fractal->img.img, 0, 0);
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		460, 355, COLOR_SILVER, "Controls");
+	putstrings(fractal);
 }

@@ -3,7 +3,7 @@
 void	resetback(t_fractal *fractal)
 {
 	fractal->escape_val = 4;
-	fractal->iteration = 25;
+	fractal->iteration = 50;
 	fractal->iter = 0;
 	fractal->xshift = 0;
 	fractal->yshift = 0;

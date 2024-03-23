@@ -20,14 +20,24 @@ param 5: cy
 ## Keypress
 
 53 == escape
+
+yshift
 126 == upkey | yshift
 125 == downkey | yshift
+
+xshift
 123 == left | xshift
 124 == right | xshift
+
+Zoom
 24 == ++ | zoomin
 27 == -- | zoomout
+
 15 == r | reset
 
+## To figure out
+
+iteration, iter and escape_val
 
 ## Important
 
@@ -63,8 +73,6 @@ Manual:
 1. We can add in the parameters for the window size which will be the same as image size. 
 
 ### Reference
-
-> https://github.com/GlThibault/Fractol/?source=post_page-----6664b6b045b5--------------------------------
 
 > https://harm-smits.github.io/42docs/libs/minilibx/events.html
 

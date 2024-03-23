@@ -39,11 +39,18 @@ t_complex_num	sum_complex(t_complex_num z1, t_complex_num z2);
 //utils
 unsigned int	map(int iter, t_fractal *fractal);
 void			paintpixel(int x, int y, t_data *img, int color);
-void			setupvariables(t_complex_num *c, t_fractal *fractal, int *i);
+void			setupvariables(t_complex_num *c, t_complex_num *z,
+					t_fractal *fractal, t_complex_num *temp);
 void			handlecalculations(int x, int y, t_fractal *fractal);
 void			renderfractal(t_fractal *fractal);
 
 //bonus
 void			render_burning_ship(int x, int y, t_fractal *fractal);
+
+// utils2
+// convert double to char *
+char			*ft_itoadouble(double num);
+// void			ft_itoadouble_int(double num, double num2, char *str, int *z);
+void			putstrings(t_fractal *fractal);
 
 #endif
