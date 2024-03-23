@@ -143,10 +143,14 @@ void	setup(t_fractal *fractal)
 // 	events_init(fractal);
 // }
 
-// setup fractals from arguments
+// setup fractals wiith default values unless specified from arguments 
 void	setupfractal(t_fractal *fractal, int argc, char *argv[])
 {
 	fractal->name = argv[1];
+	fractal->width = 800;
+	fractal->height = 800;
+	fractal->cx = 0;
+	fractal->cy = 0;
 	if (argc >= 3)
 		fractal->width = ft_atoi(argv[2]);
 	if (argc >= 4)
@@ -161,13 +165,15 @@ int	main(int argc, char *argv[])
 {
 	t_fractal	fractal;
 
-	if (argc < 7)
+	if (argc == 1)
+		write(1, "mandelbrot\njulia\nburningship", 30);
+	else if (argc < 7)
 	{
-		if (ft_strncmp("mandelbrot", argv[1], 10) == 0)
+		if (ft_strncmp("mandelbrot", ft_lowercase(argv[1]), 10) == 0)
 			setupfractal(&fractal, argc, argv);
-		else if (ft_strncmp("julia", argv[1], 5) == 0)
+		else if (ft_strncmp("julia", ft_lowercase(argv[1]), 5) == 0)
 			setupfractal(&fractal, argc, argv);
-		else if (ft_strncmp("burningship", argv[1], 11) == 0)
+		else if (ft_strncmp("burningship", ft_lowercase(argv[1]), 11) == 0)
 			setupfractal(&fractal, argc, argv);
 		else
 			exit(1);

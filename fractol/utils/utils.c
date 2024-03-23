@@ -58,13 +58,13 @@ void	handlecalculations(int x, int y, t_fractal *fractal)
 		z = sum_complex(square_complex(z), c);
 		if ((z.x * z.x) + (z.y * z.y) > fractal->escape_val)
 		{
-			color = scale(i, BLACK, WHITE, fractal->iteration);
+			color = scale(i, DARK_HOT_PURPLE, GREEN, fractal->iteration);
 			paintpixel(x, y, &fractal->img, color);
 			return ;
 		}
 		++i;
 	}
-	paintpixel(x, y, &fractal->img, WHITE);
+	paintpixel(x, y, &fractal->img, BLACK);
 }
 
 void	renderfractal(t_fractal *fractal)

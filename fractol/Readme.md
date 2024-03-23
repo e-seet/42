@@ -29,9 +29,13 @@ xshift
 123 == left | xshift
 124 == right | xshift
 
-Zoom
-24 == ++ | zoomin
-27 == -- | zoomout
+iteration
+24 == ++ | more iteration
+27 == -- | lesser iteration
+
+Zoom (mouse)
+5 = zoom in (down)
+4 = zoom out (up)
 
 15 == r | reset
 
@@ -68,9 +72,10 @@ Manual:
 3. Check whether little or big endian
 4. write color value byte by byte into pixel array according to endian
 
-### Notes
+### To do
 
-1. We can add in the parameters for the window size which will be the same as image size. 
+1. Check memory leak
+2. whether it is the same for macos and ubuntu
 
 ### Reference
 

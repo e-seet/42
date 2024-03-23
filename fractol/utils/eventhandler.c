@@ -8,6 +8,7 @@ void	resetback(t_fractal *fractal)
 	fractal->xshift = 0;
 	fractal->yshift = 0;
 	fractal->zoom = 1;
+	// fractal->zoom = 300;
 }
 
 int	close_handler(t_fractal *fractal)
@@ -42,17 +43,12 @@ int	julia_track(int x, int y, t_fractal *fractal)
 
 int	mouse_handler(int button, int x, int y, t_fractal *fractal)
 {
-	printf("button:%d x:%d, y:%d\n", button, x, y);
+	(void) x;
+	(void) y;
 	if (button == 5)
-	{
-		printf("down");
 		fractal->zoom = fractal->zoom * 1.05;
-	}
 	else if (button == 4)
-	{
-		printf("up");
 		fractal->zoom = fractal->zoom * 0.95;
-	}
 	renderfractal(fractal);
 	return (0);
 }
@@ -60,7 +56,6 @@ int	mouse_handler(int button, int x, int y, t_fractal *fractal)
 // int (* f) (int keycode, void *param)
 int	key_handler(int keyval, t_fractal *fractal)
 {
-	printf("%d %p\n", keyval, fractal);
 	if (keyval == 53)
 		close_handler(fractal);
 	else if (keyval == 126)

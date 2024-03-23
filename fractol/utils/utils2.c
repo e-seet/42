@@ -84,6 +84,7 @@ char	*ft_itoadouble2(double num, char *str, int z, int i)
 }
 
 // size i = integer + range of decimal (17) + 1 null terminator
+// convert a double to str with 2 dp.
 char	*ft_itoadouble(double num)
 {
 	int		i;
@@ -117,4 +118,18 @@ void	putstrings(t_fractal *fractal)
 		5, 50, COLOR_SILVER, "iteration:	");
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 		80, 50, COLOR_SILVER, ft_itoa(fractal->iteration));
+}
+
+char	*ft_lowercase(char *str)
+{
+	int	i;
+
+	i = 0;
+	while ((str[i]>= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'))
+	{
+		if (str[i] >='A' && 'Z' >= str[i])
+			str[i] = str[i] + 32;
+		i ++;
+	}
+	return str;
 }

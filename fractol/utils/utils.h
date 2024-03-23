@@ -52,5 +52,6 @@ void			render_burning_ship(int x, int y, t_fractal *fractal);
 char			*ft_itoadouble(double num);
 // void			ft_itoadouble_int(double num, double num2, char *str, int *z);
 void			putstrings(t_fractal *fractal);
+char			*ft_lowercase(char *str);
 
 #endif

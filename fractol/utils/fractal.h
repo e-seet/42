@@ -1,16 +1,17 @@
 
 #ifndef FRACTAL_H
 # define FRACTAL_H
-// #define	black	0x000000
-// #define	white	0xFFFFFF
 # define BLACK       0x000000  // RGB(0, 0, 0)
 # define WHITE       0xFFFFFF  // RGB(255, 255, 255)
 
 # define RED		0xFF0000
 # define GREEN	0x00FF00
 # define BLUE	0x0000FF
-# define MAGENTA_BURST   0xFF00FF  // A vibrant magenta
-# define COLOR_TUNDORA		0x444444
+// # define MAGENTA_BURST   0xFF00FF  // A vibrant magenta
+// # define DARK_ELECTRIC_PINK 0xCC00CC
+# define DARK_NEON_GREEN 0x00CC00
+# define DARK_HOT_PURPLE 0x99004C
+
 # define COLOR_SILVER		0xCCCCCC
 
 // data to get from data address of current image 
