@@ -15,25 +15,30 @@
 void	setstructurefd(struct s_pipex *pipexstruct, char *argv[])
 {
 	if (pipexstruct->p2fd < 0)
-		perror("Error in opening fd for p2fd. Terminating now");
+		pipexstruct->err = 1;
+		// perror("Error in opening fd for p2fd. Terminating now");
 	if (ft_strncmp("here_doc", argv[1], 8) == 0)
 	{
 		pipexstruct->delimiter = argv[2];
 		pipexstruct->heredocwritefd = open("heredoctemp.txt", O_TRUNC | O_CREAT
 				| O_RDWR, 0644);
 		if (pipexstruct->heredocwritefd == -1)
-			perror("opening heredoctempt for writing failed in set structure");
+			pipexstruct->err = 1;
+			// perror("opening heredoctempt for writing failed in set structure");
 		pipexstruct->p1fd = open("heredoctemp.txt", O_RDONLY);
 		if (pipexstruct->p1fd < 0)
-			perror("Error in opening fd for p1fd. Terminating now");
+			pipexstruct->err = 1;
+			// perror("Error in opening fd for p1fd. Terminating now");
 	}
 	else
 	{
 		pipexstruct->p1fd = open(argv[1], O_RDONLY);
 		if (pipexstruct->p1fd < 0)
-			perror("Error in opening fd for p1fd. Terminating now");
+			pipexstruct->err = 1;
+			// perror("Error in opening fd for p1fd. Terminating now");
 		if (ftruncate(pipexstruct->p2fd, 0) == -1)
-			perror("truncate file content failed");
+			pipexstruct->err = 1;
+			// perror("truncate file content failed");
 	}
 }
 
@@ -45,6 +50,7 @@ void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
 	pipexstruct->curr = 2;
 	pipexstruct->opened = 2;
 	pipexstruct->argc = argc;
+	pipexstruct->err = 0;
 	pipexstruct->p2fd = open(argv[argc - 1], O_RDWR | O_APPEND | O_CREAT, 0644);
 	setstructurefd(pipexstruct, argv);
 }
@@ -66,21 +72,23 @@ int	linechecker(char *str)
 
 char	*findprocesspath(struct s_pipex *pipexstruct)
 {
-	int	i;
+	int		i;
+	char	*path;
 
 	i = 0;
 	while (pipexstruct->paths[i])
 	{
-		pipexstruct->path = ft_strjoin(pipexstruct->paths[i], "/");
-		pipexstruct->path = ft_strjoin(pipexstruct->path,
+		path = ft_strjoin(pipexstruct->paths[i], "/");
+		pipexstruct->path = ft_strjoin(path,
 				pipexstruct->argvs3[0]);
+		free(path);
 		if (access(pipexstruct->path, F_OK) == 0)
 			break ;
 		free (pipexstruct->path);
 		pipexstruct->path = NULL;
 		i++;
 	}
-	if (access(pipexstruct->path, F_OK) == 0)
+	if (pipexstruct->path != NULL && access(pipexstruct->path, F_OK) == 0)
 		return (pipexstruct->path);
 	else
 		return (NULL);

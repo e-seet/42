@@ -40,7 +40,9 @@ struct s_pipex {
 	int		heredocreadfd;
 	char	*path;
 	char	**paths;
+	int		err;
 };
+// opened: 2 for infile, 3 for heredoc
 
 void	setstructure(int argc, char *argv[], struct s_pipex *pipexstruct,
 			char *envp[]);

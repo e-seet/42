@@ -32,8 +32,11 @@ int	heredoccmd(struct s_pipex *pipexstruct)
 			break ;
 		write(pipexstruct->heredocwritefd, line, ft_strlen(line));
 		write(1, line, ft_strlen(line));
+		free(line);
 		line = NULL;
 	}
+	if (line != NULL)
+		free(line);
 	return (0);
 }
 
@@ -67,8 +70,12 @@ int	p3child(char *envp[], struct s_pipex *pipexstruct)
 
 	execveresult = -1;
 	pipexstruct->path = findprocesspath(pipexstruct);
-	if (access(pipexstruct->path, F_OK) != 0)
+	// if (access(pipexstruct->path, F_OK) != 0)
+	if (pipexstruct->path == NULL)
+	{
 		perror("3 Access Path not found");
+		return (1);
+	}
 	if ((pipexstruct->curr != pipexstruct -> opened) || pipexstruct->p1fd >= 0)
 		execveresult = execve(pipexstruct->path, pipexstruct->argvs3, envp);
 	if (execveresult == -1)
@@ -99,7 +106,7 @@ void	freeall(struct s_pipex *pipexstruct)
 	{
 		free(pipexstruct->delimiter);
 	}
-	free(pipexstruct->path);
+	// free(pipexstruct->path);
 	while (pipexstruct->paths[i])
 	{
 		free(pipexstruct->paths[i]);
