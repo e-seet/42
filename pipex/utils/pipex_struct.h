@@ -26,6 +26,7 @@ struct s_pipex {
 
 	int		fdpipe[2];
 	char	**paths;
+	int		err;
 };
 
 #endif

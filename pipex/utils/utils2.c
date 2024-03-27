@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "utils.h"
+
 void	freestuff3(struct s_pipex *pipexstruct)
 {
 	int	i;
@@ -23,8 +24,9 @@ void	freestuff3(struct s_pipex *pipexstruct)
 		i++;
 	}
 	free(pipexstruct->paths);
-	pipexstruct->paths = NULL;	
+	pipexstruct->paths = NULL;
 }
+
 void	freestuff2(struct s_pipex *pipexstruct)
 {
 	int	i;

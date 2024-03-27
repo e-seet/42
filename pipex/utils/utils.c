@@ -70,25 +70,22 @@ void	ft_modify(char *str, struct s_pipex *pipexstruct, int n)
 
 void	setstructure(char *argv[], struct s_pipex *pipexstruct, char *path)
 {
+	pipexstruct->err = 0;
 	pipexstruct->p2fd = open(argv[4], O_APPEND | O_CREAT | O_RDWR, 0644);
 	if (pipexstruct->p2fd < 0)
-		perror("Error in opening file. Terminating now");
+		pipexstruct->err = 1;
 	if (ftruncate(pipexstruct->p2fd, 0) == -1)
-		perror("truncate file content failed");
+		pipexstruct->err = 1;
 	pipexstruct->paths = ft_split(path + 5, ':');
 	path = NULL;
 	pipexstruct->p1fd = open(argv[1], O_RDONLY);
 	if (pipexstruct->p1fd < 0)
 	{
 		perror("Error in opening file. Terminating now");
-		freestuff3(pipexstruct);
+		pipexstruct->err = 1;
 	}
 	pipexstruct->argvs1 = ft_split(argv[2], ' ');
-	if (ft_strncmp(pipexstruct->argvs1[0], "awk", 3) == 0)
-		ft_modify(argv[2], pipexstruct, 1);
 	pipexstruct->argvs2 = ft_split(argv[3], ' ');
-	if (ft_strncmp(pipexstruct->argvs2[0], "awk", 3) == 0)
-		ft_modify(argv[3], pipexstruct, 2);
 }
 
 void	closepipes(struct s_pipex *pipexstruct)
@@ -102,6 +99,8 @@ void	freestuff(struct s_pipex *pipexstruct)
 	int	i;
 
 	i = 0;
+	if (pipexstruct->err == 1)
+		perror("Something went wrong! Terminating now");
 	while (pipexstruct->paths && pipexstruct->paths[i])
 	{
 		free(pipexstruct->paths[i]);
