@@ -45,5 +45,6 @@ char	*findpath(char *envp[]);
 void	freestuff(struct s_pipex *pipexstruct);
 
 void	freestuff2(struct s_pipex *pipexstruct);
+void	freestuff3(struct s_pipex *pipexstruct);
 
 #endif

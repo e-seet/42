@@ -79,7 +79,10 @@ void	setstructure(char *argv[], struct s_pipex *pipexstruct, char *path)
 	path = NULL;
 	pipexstruct->p1fd = open(argv[1], O_RDONLY);
 	if (pipexstruct->p1fd < 0)
+	{
 		perror("Error in opening file. Terminating now");
+		freestuff3(pipexstruct);
+	}
 	pipexstruct->argvs1 = ft_split(argv[2], ' ');
 	if (ft_strncmp(pipexstruct->argvs1[0], "awk", 3) == 0)
 		ft_modify(argv[2], pipexstruct, 1);
