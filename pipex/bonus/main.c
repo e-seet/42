@@ -37,9 +37,8 @@ void	dup2child( struct s_pipex *pipexstruct)
 		dup2(pipexstruct->p1fd, 0);
 		if (pipexstruct->curr == 2)
 			dup2(pipexstruct->fdpipe0[1], 1);
-		// may not be needed
-		// else 
-		// 	dup2(pipexstruct->fdpipe1[1], 1);
+		else
+			dup2(pipexstruct->fdpipe1[1], 1);
 	}
 	else if (pipexstruct->argc - 2 == pipexstruct->curr)
 	{
@@ -78,15 +77,14 @@ int	setuppipe(struct s_pipex *pipexstruct)
 	return (0);
 }
 
-int	refactormain(struct s_pipex *pipexstruct, char *envp[], char *argv[])
+void	refactormain(struct s_pipex *pipexstruct, char *envp[], char *argv[])
 {
 	pipexstruct->argvs3 = ft_split(argv[pipexstruct->curr], ' ');
 	pipexstruct->pid3 = fork();
 	if (pipexstruct->pid3 == 0)
 	{
 		dup2child(pipexstruct);
-		if (p3child(envp, pipexstruct) == 1)
-			perror("one of the pipe did not work\n");
+		p3child(envp, pipexstruct);
 	}
 	else
 	{
@@ -105,13 +103,14 @@ int	refactormain(struct s_pipex *pipexstruct, char *envp[], char *argv[])
 		waitpid(pipexstruct->pid3, NULL, 0);
 	}
 	freeargv(pipexstruct);
-	return (0);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
 	struct s_pipex	pipexstruct;
 
+	if (argc < 5)
+		return (1);
 	setstructure(argc, argv, &pipexstruct, envp);
 	if (pipexstruct.err == 1)
 	{

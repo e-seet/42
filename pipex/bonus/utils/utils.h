@@ -57,7 +57,7 @@ int		heredoccmd(struct s_pipex *pipexstruct);
 
 int		checkforheredoc(char *argv[], struct s_pipex *pipexstruct);
 
-int		p3child(char *envp[], struct s_pipex *pipexstruct);
+void	p3child(char *envp[], struct s_pipex *pipexstruct);
 
 void	freeargv(struct s_pipex *pipexstruct);
 void	freeall(struct s_pipex *pipexstruct);

@@ -64,17 +64,17 @@ int	checkforheredoc(char *argv[], struct s_pipex *pipexstruct)
 	return (0);
 }
 
-int	p3child(char *envp[], struct s_pipex *pipexstruct)
+void	p3child(char *envp[], struct s_pipex *pipexstruct)
 {
 	int		execveresult;
 
 	execveresult = -1;
 	pipexstruct->path = findprocesspath(pipexstruct);
-	// if (access(pipexstruct->path, F_OK) != 0)
 	if (pipexstruct->path == NULL)
 	{
 		perror("3 Access Path not found");
-		return (1);
+		free(pipexstruct->path);
+		exit (0);
 	}
 	if ((pipexstruct->curr != pipexstruct -> opened) || pipexstruct->p1fd >= 0)
 		execveresult = execve(pipexstruct->path, pipexstruct->argvs3, envp);
@@ -106,7 +106,6 @@ void	freeall(struct s_pipex *pipexstruct)
 	{
 		free(pipexstruct->delimiter);
 	}
-	// free(pipexstruct->path);
 	while (pipexstruct->paths[i])
 	{
 		free(pipexstruct->paths[i]);

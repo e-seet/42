@@ -16,7 +16,6 @@ void	setstructurefd(struct s_pipex *pipexstruct, char *argv[])
 {
 	if (pipexstruct->p2fd < 0)
 		pipexstruct->err = 1;
-		// perror("Error in opening fd for p2fd. Terminating now");
 	if (ft_strncmp("here_doc", argv[1], 8) == 0)
 	{
 		pipexstruct->delimiter = argv[2];
@@ -24,21 +23,17 @@ void	setstructurefd(struct s_pipex *pipexstruct, char *argv[])
 				| O_RDWR, 0644);
 		if (pipexstruct->heredocwritefd == -1)
 			pipexstruct->err = 1;
-			// perror("opening heredoctempt for writing failed in set structure");
 		pipexstruct->p1fd = open("heredoctemp.txt", O_RDONLY);
 		if (pipexstruct->p1fd < 0)
 			pipexstruct->err = 1;
-			// perror("Error in opening fd for p1fd. Terminating now");
 	}
 	else
 	{
 		pipexstruct->p1fd = open(argv[1], O_RDONLY);
 		if (pipexstruct->p1fd < 0)
 			pipexstruct->err = 1;
-			// perror("Error in opening fd for p1fd. Terminating now");
 		if (ftruncate(pipexstruct->p2fd, 0) == -1)
 			pipexstruct->err = 1;
-			// perror("truncate file content failed");
 	}
 }
 
