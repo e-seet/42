@@ -52,6 +52,7 @@ void	addtoback(t_stack *stack, int value)
 	t_node	*newnode;
 
 	newnode = create_node(value);
+	stack->numofelements += 1;
 	head = stack->top;
 	if (head == NULL)
 		stack->top = newnode;
@@ -67,7 +68,6 @@ void	addtoback(t_stack *stack, int value)
 		}
 		else
 			addtoback2(curr, head, newnode);
-		stack->numofelements += 1;
 		stack->bot = newnode;
 	}
 }

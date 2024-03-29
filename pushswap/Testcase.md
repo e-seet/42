@@ -6,7 +6,14 @@ Sorting just 3 numbers:
 ./push_swap 3 1 2
 ./push_swap 3 2 1
 
-Work on 5 numbers
+ARG="1 2 3"; ./push_swap $ARG | ./checker_linux $ARG
+ARG="1 3 2"; ./push_swap $ARG | ./checker_linux $ARG
+ARG="2 1 3"; ./push_swap $ARG | ./checker_linux $ARG
+ARG="2 3 1"; ./push_swap $ARG | ./checker_linux $ARG
+ARG="3 1 2"; ./push_swap $ARG | ./checker_linux $ARG
+ARG="3 2 1"; ./push_swap $ARG | ./checker_linux $ARG
+
+Work on 5 numbers. Check Testcase5
 Testing random combinations
 case 1:
 ./push_swap 5 3 1 2 4
@@ -43,14 +50,13 @@ case 6:
 >should not work.
 Should return "Error\n"
 
+non numeric
 ./push_swap 1 3 dog 35 80 -3
-./push_swap a
 
->these need error? For Now i put as error
->To check these test case
-./push_swap 1 2 3 5 67b778 947
-./push_swap " 12 4 6 8 54fhd 4354"
-./push_swap 1 --    45 32 
+duplicated number
+./push_swap 1 3 dog 35 80 3 -3
+
+./push_swap a
 
 >The program should NOT work if it encounters a double number
 >these examples should return "Error\n"
@@ -72,8 +78,37 @@ this example should work because -9 & 9 are not equal
 >these examples should return "Error
 ./push_swap 54867543867438 3
 ./push_swap -2147483647765 4 5
+
+Run push_swap without any parameters. The program must not
+display anything and give the prompt back. (Display nothing)
+./push_swap
+
+display nothing
+./push_swap 2 3
+
+display nothing
+./push_swap 0 1 2 3
+
+ display nothing 
+./push_swap 0 1 2 3 4 5 6 7 8 9
+
+Check that the checker program displays "OK" and that the
+size of the list of instructions from push_swap is 2 OR 3.
+ARG="2 1 0"; ./push_swap $ARG | ./checker_linux $ARG
+
+ARG="1 5 2 4 3"; ./push_swap $ARG | ./checker_linux $ARG
+
+
+to check
+>these need error? For Now i put as error
+>To check these test case
+./push_swap 1 2 3 5 67b778 947
+./push_swap " 12 4 6 8 54fhd 4354" // this is not done !! !important
+./push_swap 1 --    45 32  // this to checj
+
+more than max int.
 ./push_swap "214748364748385 28 47 29"
 
 >Nothing has been specified when strings and int are mixed. It's up to you what you want to do. 
->I put ERror
+>I put no error
 ./push_swap "1 2 4 3" 76 90 "348 05"

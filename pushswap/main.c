@@ -57,15 +57,15 @@ int	sort_wrapper(int argc, t_stack *stack_a, t_stack *stack_b)
 	numberofop = 0;
 	if (argc == 0 || argc == 1)
 		return (errormsg(stack_a, stack_b));
-	else if (argc == 3 || argc == 2)
+	else if (stack_a->numofelements == 1 || stack_a->numofelements == 2)
 		return (sort1n2(argc, stack_a, stack_b, &numberofop));
-	else if (argc == 4)
+	else if (stack_a->numofelements == 3)
 		return (sort3wrapper(stack_a, stack_b, &numberofop, 0));
-	else if (argc == 5)
+	else if (stack_a->numofelements == 4)
 		return (sort4wrapper(stack_a, stack_b, &numberofop));
-	else if (argc == 6)
+	else if (stack_a->numofelements == 5)
 		return (sort5wrapper(stack_a, stack_b, &numberofop));
-	else if (argc > 6)
+	else if (stack_a->numofelements > 5)
 		return (radix_sort_wrapper(argc, stack_a, stack_b, &numberofop));
 	else
 		return (errormsg(stack_a, stack_b));
