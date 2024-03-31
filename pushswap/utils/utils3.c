@@ -45,6 +45,8 @@ void	displaylinkedlist(t_node *head)
 	current = head;
 	while (size > i)
 	{
+		printf("curr :%d ", current->value);
+		printf("curr pos:%d\n", current->pos);
 		current = current->next;
 		i ++;
 	}

@@ -1,49 +1,8 @@
-Sorting just 3 numbers:
-./push_swap 1 2 3
-./push_swap 1 3 2
-./push_swap 2 1 3
-./push_swap 2 3 1
-./push_swap 3 1 2
-./push_swap 3 2 1
+# Test case
 
-ARG="1 2 3"; ./push_swap $ARG | ./checker_linux $ARG
-ARG="1 3 2"; ./push_swap $ARG | ./checker_linux $ARG
-ARG="2 1 3"; ./push_swap $ARG | ./checker_linux $ARG
-ARG="2 3 1"; ./push_swap $ARG | ./checker_linux $ARG
-ARG="3 1 2"; ./push_swap $ARG | ./checker_linux $ARG
-ARG="3 2 1"; ./push_swap $ARG | ./checker_linux $ARG
-
+Work on 3 numbers. Check Testcase3
+Work on 4 numbers. Check Testcase4
 Work on 5 numbers. Check Testcase5
-Testing random combinations
-case 1:
-./push_swap 5 3 1 2 4
-./push_swap 5 3 1 4 2
-
-case 2 [not done]:
-./push_swap 2 5 1 4 3
-./push_swap 2 5 1 3 4
-
-./push_swap 3 5 2 1 4
-./push_swap 3 5 2 4 1
-
-case 3:
-./push_swap 3 1 2 4 5
-./push_swap 3 1 2 5 4
-
-case 4:
-./push_swap 1 4 2 5 3
-./push_swap 1 4 2 3 5
-
-Case 5:
-./push_swap 3 2 5 4 1
-./push_swap 3 2 5 1 4
-
-./push_swap 4 1 5 3 2
-./push_swap 4 1 5 2 3
-
-case 6:
-./push_swap 1 2 3 5 4
-./push_swap 1 2 3 4 5
 
 ## Others
 
@@ -65,19 +24,25 @@ duplicated number
 ./push_swap 3 03
 ./push_swap " 49 128     50 38   49"
 
-./push_swap "95 99 -9 10 9"
 this example should work because -9 & 9 are not equal
+./push_swap "95 99 -9 10 9"
 
 >The program should work with INT MAX & INT MIN
 >these examples should work and sort your list
 ./push_swap 2147483647 2 4 7
 ./push_swap 99 -2147483648 23 545
-./push_swap "2147483647 843 56544 24394"
+./push_swap "2147483647 843 56544 24394" // this may have error
+
+ARG="2147483647 2 4 7"; ./push_swap $ARG | ./checker_Mac $ARG
+ARG="99 -2147483648 23 545"; ./push_swap $ARG | ./checker_Mac $ARG
+ARG="2147483647 843 56544 24394"; ./push_swap $ARG | ./checker_Mac $ARG
 
 >should not work since more than max
 >these examples should return "Error
 ./push_swap 54867543867438 3
 ./push_swap -2147483647765 4 5
+
+ARG="54867543867438 3"; ./push_swap $ARG | ./checker_Mac $ARG
 
 Run push_swap without any parameters. The program must not
 display anything and give the prompt back. (Display nothing)
@@ -89,26 +54,50 @@ display nothing
 display nothing
 ./push_swap 0 1 2 3
 
- display nothing 
+display nothing
 ./push_swap 0 1 2 3 4 5 6 7 8 9
 
 Check that the checker program displays "OK" and that the
 size of the list of instructions from push_swap is 2 OR 3.
 ARG="2 1 0"; ./push_swap $ARG | ./checker_linux $ARG
+ARG="2 1 0"; ./push_swap $ARG | ./checker_Mac $ARG
 
 ARG="1 5 2 4 3"; ./push_swap $ARG | ./checker_linux $ARG
+ARG="1 5 2 4 3"; ./push_swap $ARG | ./checker_Mac $ARG
 
 
 to check
 >these need error? For Now i put as error
 >To check these test case
 ./push_swap 1 2 3 5 67b778 947
-./push_swap " 12 4 6 8 54fhd 4354" // this is not done !! !important
+
+// this is not done !! important. This should break and not run
+./push_swap " 12 4 6 8 54fhd 4354"
+
 ./push_swap 1 --    45 32  // this to checj
 
-more than max int.
+more than max int. this should break and not run
 ./push_swap "214748364748385 28 47 29"
 
->Nothing has been specified when strings and int are mixed. It's up to you what you want to do. 
+>Nothing has been specified when strings and int are mixed. It's up to you what you want to do.
 >I put no error
 ./push_swap "1 2 4 3" 76 90 "348 05"
+
+gpt [ko for the following]:
+ARG=("1" "2" "4" "3" "76 90" "348 05"); ./push_swap "${ARG[@]}"
+ARG=("1" "2" "4" "3" "76 90" "348 05"); ./push_swap "${ARG[@]}" | ./checker_Mac "${ARG[@]}"
+1 2 4 3 76 90 348 05
+
+### To Check and try / fix
+
+// this is not done !! important. This should break and not run
+./push_swap " 12 4 6 8 54fhd 4354"
+
+fixed the below:
+more than max int. this should break and not run
+./push_swap "214748364748385 28 47 29"
+
+check output of this
+./push_swap "1 2 4 3" 76 90 "348 05"
+ARG="1 2 4 3" 76 90 "348 05"; ./push_swap $ARG | ./checker_Mac $ARG
+ARG="1 2 4 3 76 90 348 05"; ./push_swap $ARG | ./checker_Mac $ARG

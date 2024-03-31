@@ -12,7 +12,6 @@
 
 #include <limits.h>
 #include "sort3.h"
-// # include "../utils/utils.h"
 
 int	sort3wrapper(t_stack *stack_a, t_stack *stack_b,
 		int *numberofop, int sorttype)

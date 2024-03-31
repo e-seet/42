@@ -66,7 +66,7 @@ int	sort_wrapper(int argc, t_stack *stack_a, t_stack *stack_b)
 	else if (stack_a->numofelements == 5)
 		return (sort5wrapper(stack_a, stack_b, &numberofop));
 	else if (stack_a->numofelements > 5)
-		return (radix_sort_wrapper(argc, stack_a, stack_b, &numberofop));
+		return (radix_sort_wrapper(stack_a, stack_b, &numberofop));
 	else
 		return (errormsg(stack_a, stack_b));
 	return (0);
@@ -86,13 +86,13 @@ int	readarguments(int argc, char **argv, int *i, t_stack *stack_a)
 		while (strs[internal])
 		{
 			addtoback(stack_a, ft_atoi_modified(strs[internal], &err));
+			if (err == 1)
+				return (1);
 			free(strs[internal]);
 			internal = internal + 1;
 		}
 		free(strs);
 		strs = NULL;
-		if (err == 1)
-			return (1);
 		*i = *i + 1;
 	}
 	return (0);
@@ -134,7 +134,7 @@ int	main(int argc, char *argv[])
 	initstack(&stack_b, 1);
 	if (argc == 1)
 	{
-		return (errormsg(&stack_a, &stack_b));
+		return (0);
 	}
 	else
 	{
