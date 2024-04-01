@@ -86,9 +86,12 @@ int	readarguments(int argc, char **argv, int *i, t_stack *stack_a)
 		while (strs[internal])
 		{
 			addtoback(stack_a, ft_atoi_modified(strs[internal], &err));
-			if (err == 1)
-				return (1);
 			free(strs[internal]);
+			if (err == 1)
+			{
+				freestrs(strs, internal + 1);
+				return (1);
+			}
 			internal = internal + 1;
 		}
 		free(strs);

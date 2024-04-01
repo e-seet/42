@@ -13,7 +13,7 @@ non numeric
 ./push_swap 1 3 dog 35 80 -3
 
 duplicated number
-./push_swap 1 3 dog 35 80 3 -3
+./push_swap 1 3 35 80 3 3
 
 ./push_swap a
 
@@ -31,7 +31,7 @@ this example should work because -9 & 9 are not equal
 >these examples should work and sort your list
 ./push_swap 2147483647 2 4 7
 ./push_swap 99 -2147483648 23 545
-./push_swap "2147483647 843 56544 24394" // this may have error
+./push_swap "2147483647 843 56544 24394" // no error for this. Since 2147...7 is the max int
 
 ARG="2147483647 2 4 7"; ./push_swap $ARG | ./checker_Mac $ARG
 ARG="99 -2147483648 23 545"; ./push_swap $ARG | ./checker_Mac $ARG
@@ -78,18 +78,20 @@ to check
 
 more than max int. this should break and not run
 ./push_swap "214748364748385 28 47 29"
+valgrind --leak-check=full ./push_swap "214748364748385 28 47 29" 
 
 >Nothing has been specified when strings and int are mixed. It's up to you what you want to do.
 >I put no error
 ./push_swap "1 2 4 3" 76 90 "348 05"
 
-gpt [ko for the following]:
+the following is fixed
 ARG=("1" "2" "4" "3" "76 90" "348 05"); ./push_swap "${ARG[@]}"
 ARG=("1" "2" "4" "3" "76 90" "348 05"); ./push_swap "${ARG[@]}" | ./checker_Mac "${ARG[@]}"
 1 2 4 3 76 90 348 05
 
 ### To Check and try / fix
 
+// fixed
 // this is not done !! important. This should break and not run
 ./push_swap " 12 4 6 8 54fhd 4354"
 
@@ -100,4 +102,5 @@ more than max int. this should break and not run
 check output of this
 ./push_swap "1 2 4 3" 76 90 "348 05"
 ARG="1 2 4 3" 76 90 "348 05"; ./push_swap $ARG | ./checker_Mac $ARG
+// the above have error due to the string 
 ARG="1 2 4 3 76 90 348 05"; ./push_swap $ARG | ./checker_Mac $ARG

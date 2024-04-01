@@ -12,6 +12,16 @@
 
 #include "exit.h"
 
+void	freestrs(char **strs, int internal)
+{
+	while (strs[internal])
+	{
+		free(strs[internal]);
+		internal = internal + 1;
+	}
+	free(strs);
+}
+
 void	exitsafe(t_stack *stack_a, t_stack *stack_b)
 {
 	t_node	*prev;
