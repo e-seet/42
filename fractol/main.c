@@ -147,8 +147,8 @@ void	setup(t_fractal *fractal)
 void	setupfractal(t_fractal *fractal, int argc, char *argv[])
 {
 	fractal->name = argv[1];
-	fractal->width = 800;
-	fractal->height = 800;
+	fractal->width = 400;
+	fractal->height = 400;
 	fractal->cx = 0;
 	fractal->cy = 0;
 	if (argc >= 3)
