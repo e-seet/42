@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils4.h                                           :+:      :+:    :+:   */
+/*   pipex_struct.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eseet <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/07 16:21:14 by eseet             #+#    #+#             */
-/*   Updated: 2024/03/07 16:21:15 by eseet            ###   ########.fr       */
+/*   Created: 2024/03/19 17:59:07 by eseet             #+#    #+#             */
+/*   Updated: 2024/03/19 17:59:08 by eseet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS4_H
-# define UTILS4_H
+#ifndef PIPEX_STRUCT_H
+# define PIPEX_STRUCT_H
 
-# include "utils.h"
-# include "operations.h"
-# include "operations2.h"
-# include "operations3.h"
+struct s_pipex {
+	int		pid1;
+	int		pid1status;
+	int		p1fd;
+	char	**argvs1;
 
-void	initstack(t_stack *stack, int num);
-void	bringtobot(t_stack *stack, int *numberofop);
-void	init3_element(t_element3 *element3);
+	int		pid2;
+	int		pid2status;
+	int		p2fd;
+	char	**argvs2;
+
+	int		fdpipe[2];
+	char	**paths;
+	int		err;
+};
 
 #endif

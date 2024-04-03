@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils3.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eseet <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/07 16:21:22 by eseet             #+#    #+#             */
+/*   Updated: 2024/03/07 16:21:22 by eseet            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils3.h"
 
 // Function to display the elements in the linked list
@@ -33,6 +45,8 @@ void	displaylinkedlist(t_node *head)
 	current = head;
 	while (size > i)
 	{
+		printf("curr :%d ", current->value);
+		printf("curr pos:%d\n", current->pos);
 		current = current->next;
 		i ++;
 	}

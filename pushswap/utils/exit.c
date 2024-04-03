@@ -1,4 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eseet <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/07 16:23:06 by eseet             #+#    #+#             */
+/*   Updated: 2024/03/07 16:23:06 by eseet            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "exit.h"
+
+void	freestrs(char **strs, int internal)
+{
+	while (strs[internal])
+	{
+		free(strs[internal]);
+		internal = internal + 1;
+	}
+	free(strs);
+}
 
 void	exitsafe(t_stack *stack_a, t_stack *stack_b)
 {
