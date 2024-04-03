@@ -33,8 +33,6 @@ int	errormsg(t_stack *stack_a, t_stack *stack_b)
 
 // int	sort1n2(int argc, int *numberofop, t_stack *stack_a, t_stack *stack_b)
 int	sort1n2(int argc, t_stack *stack_a, t_stack *stack_b, int *numberofop)
-// the issues are all here.
-// int	sort1n2(int argc, t_stack *stack_a, t_stack *stack_b)
 {
 	if (argc == 2)
 	{
