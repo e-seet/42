@@ -55,12 +55,12 @@ void routine()
 int main(int argc, char **argv)
 {
 	struct s_philo **philos;
-	int		timer;
-	int		died;
+	// int		timer;
+	// int		died;
 
 	philos = NULL;
-	died = 0;
-	timer = 0;	
+	// died = 0;
+	// timer = 0;	
 	if (argc == 5 || argc == 6)
 	{
 		setstruct(philos, argc, argv);
