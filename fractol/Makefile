@@ -7,7 +7,7 @@ NAME        = fract-ol
 # # **************************************************************************** #
 # # Comp and flags
 # # **************************************************************************** #
-CC := gcc
+CC := cc
 CFLAGS := -Wall -Wextra -Werror
 
 # # **************************************************************************** #
@@ -43,12 +43,21 @@ OBJ_LIBFT				=	$(LIBFTSRC:.c=.o)
 #$(OBJS): %.o: %.c
 #	@$(CC) $(CFLAGS) -I $(LIBFT_DIR) -I minilibxopengl -I/opt/X11/include -L/opt/X11/lib -lX11 -c $< -o $@
 
+# Working!: This is for Macos
+#$(NAME):	$(OBJ_LIBFT) $(OBJS)
+#			@$(CC) $(OBJ_LIBFT) $(OBJS) -Lminilibxopengl -lmlx -L/opt/X11/lib -lX11 -framework OpenGL -framework AppKit -o $(NAME)
+
+# UBUNTU Version!
 $(NAME):	$(OBJ_LIBFT) $(OBJS)
-			@$(CC) $(OBJ_LIBFT) $(OBJS) -Lminilibxopengl -lmlx -L/opt/X11/lib -lX11 -framework OpenGL -framework AppKit -o $(NAME)
+			@$(CC) $(OBJ_LIBFT)	$(OBJS) -Lmlx_linux -lmlx_Linux -L/opt/X11/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
+
 
 all: $(NAME)
 $(OBJS): %.o: %.c
-	@$(CC) $(CFLAGS) -I $(LIBFT_DIR) -I minilibxopengl -I/opt/X11/include -c $< -o $@
+#ubuntu
+#	@$(CC) $(CFLAGS) -I $(LIBFT_DIR) -I minilibxopengl -I/opt/X11/include -c $< -o $@
+	@$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
+
 
 
 # Libft file compilation

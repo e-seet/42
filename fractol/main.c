@@ -4,67 +4,58 @@
 // change the mask from 0 back to mask. 
 // TO DO! TAKE note
 // mac version uses 0 as it does not matter
-void	events_init(t_fractal *fractal)
-{
-	mlx_hook(
-		fractal->mlx_win,
-		KeyPress,
-		0,
-		key_handler,
-		fractal
-		);
-	mlx_hook(fractal->mlx_win,
-		ButtonPress,
-		0,
-		mouse_handler,
-		fractal);
-	mlx_hook(fractal->mlx_win,
-		DestroyNotify,
-		0,
-		close_handler,
-		fractal);
-	mlx_hook(fractal->mlx_win,
-		MotionNotify,
-		0,
-		julia_track,
-		fractal);
-}
-
-// ubuntu ver
 // void	events_init(t_fractal *fractal)
 // {
 // 	mlx_hook(
 // 		fractal->mlx_win,
 // 		KeyPress,
 // 		0,
-// 		// KeyPressMask,
 // 		key_handler,
 // 		fractal
-// 	);
-
+// 		);
 // 	mlx_hook(fractal->mlx_win,
-// 			ButtonPress,
-// 			0,
-// 			// ButtonPressMask,
-// 			mouse_handler,
-// 			fractal);
-
-// 	// // destroy the window
+// 		ButtonPress,
+// 		0,
+// 		mouse_handler,
+// 		fractal);
 // 	mlx_hook(fractal->mlx_win,
-// 			DestroyNotify,
-// 			0,
-// 			// StructureNotifyMask,
-// 			close_handler,
-// 			fractal);
-
-// 	// tracking for julia
-// 		mlx_hook(fractal->mlx_win,
-// 			MotionNotify,
-// 			0,
-// 			// PointerMotionMask,
-// 			julia_track,
-// 			fractal);
+// 		DestroyNotify,
+// 		0,
+// 		close_handler,
+// 		fractal);
+// 	mlx_hook(fractal->mlx_win,
+// 		MotionNotify,
+// 		0,
+// 		julia_track,
+// 		fractal);
 // }
+
+// ubuntu ver
+void	events_init(t_fractal *fractal)
+{
+	mlx_hook(
+		fractal->mlx_win,
+		KeyPress,
+		KeyPressMask,
+		key_handler,
+		fractal
+	);
+	mlx_hook(fractal->mlx_win,
+			ButtonPress,
+			ButtonPressMask,
+			mouse_handler,
+			fractal);
+	mlx_hook(fractal->mlx_win,
+			DestroyNotify,
+			StructureNotifyMask,
+			close_handler,
+			fractal);
+		mlx_hook(fractal->mlx_win,
+			MotionNotify,
+			PointerMotionMask,
+			julia_track,
+			fractal);
+}
 
 void	cleanup(t_fractal *fractal)
 {
@@ -97,7 +88,8 @@ void	setup(t_fractal *fractal)
 	resetback(fractal);
 	events_init(fractal);
 }
-//ubuntu
+
+//ubuntu backup
 // void	setup(t_fractal *fractal)
 // {
 // 	fractal->mlx_instance = mlx_init();
@@ -166,7 +158,9 @@ int	main(int argc, char *argv[])
 	t_fractal	fractal;
 
 	if (argc == 1)
-		write(1, "mandelbrot\njulia\nburningship", 30);
+	{
+		write(1, "mandelbrot\njulia\nburningship", 29);
+	}
 	else if (argc < 7)
 	{
 		if (ft_strncmp("mandelbrot", ft_lowercase(argv[1]), 10) == 0)

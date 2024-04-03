@@ -56,21 +56,21 @@ int	mouse_handler(int button, int x, int y, t_fractal *fractal)
 // int (* f) (int keycode, void *param)
 int	key_handler(int keyval, t_fractal *fractal)
 {
-	if (keyval == 53)
+	if (keyval == 53 || keyval == 65307)
 		close_handler(fractal);
-	else if (keyval == 126)
+	else if (keyval == 126 || keyval == 65362)
 		fractal -> yshift -= 0.5 * fractal->zoom;
-	else if (keyval == 125)
+	else if (keyval == 125 ||  keyval == 65364)
 		fractal -> yshift += 0.5 * fractal->zoom;
-	else if (keyval == 123)
+	else if (keyval == 123 || keyval == 65361)
 		fractal -> xshift += 0.5 * fractal->zoom;
-	else if (keyval == 124)
+	else if (keyval == 124 || keyval == 65363)
 		fractal -> xshift -= 0.5 * fractal->zoom;
-	else if (keyval == 24)
+	else if (keyval == 24 || keyval == 61)
 		fractal -> iteration += 1;
-	else if (keyval == 27)
+	else if (keyval == 27 || keyval == 45)
 		fractal -> iteration -= 1;
-	else if (keyval == 15)
+	else if (keyval == 15 || keyval == 114)
 		resetback(fractal);
 	renderfractal(fractal);
 	return (0);

@@ -32,18 +32,40 @@ xshift
 iteration
 24 == ++ | more iteration
 27 == -- | lesser iteration
-
 Zoom (mouse)
 5 = zoom in (down)
 4 = zoom out (up)
 
 15 == r | reset
 
+ubuntu
+
+65307 == escape
+
+yshift
+65362 == upkey | yshift
+65364 == downkey | yshift
+
+xshift
+65361 == left | xshift
+65363 == right | xshift
+
+++: 61
+-- : 45
+
+Zoom (mouse)
+5 = zoom in (down)
+4 = zoom out (up)
+
+114== r | reset
+
 ## To figure out
 
 iteration, iter and escape_val
 
 ## Important
+
+To RAN MAKE IN THE library downloaded.
 
 How to draw pixels into the image?
 The pixel data is initialized to 0, meaning every pixel will be black without alpha.
@@ -81,5 +103,7 @@ Manual:
 
 ### Reference
 
+minilibxlinux
+> https://github.com/42Paris/minilibx-linux.git
 > <https://harm-smits.github.io/42docs/libs/minilibx/events.html>
 > <https://gontjarow.github.io/MiniLibX/mlx-tutorial-create-image.html?source=post_page-----6664b6b045b5-------------------------------->
