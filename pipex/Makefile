@@ -13,7 +13,7 @@ CFLAGS := -Wall -Wextra -Werror
 # **************************************************************************** #
 # Source
 # **************************************************************************** #
-SRC_FILES			:=	main.c	utils.c
+SRC_FILES			:=	main.c	utils/utils.c	utils/utils2.c
 OBJS				=	$(SRC_FILES:.c=.o)
 
 # **************************************************************************** #
@@ -35,14 +35,14 @@ OBJ_LIBFT				=	$(LIBFTSRC:.c=.o)
 # Get_Next_Line
 # **************************************************************************** #
 SRC_FILES_GNL		:=	get_next_line.c		get_next_line_utils.c
-GNL_DIR				=	../get_next_line/
-GNLSRC				=	$(addprefix $(GNL_DIR), $(SRC_FILES_GNL))
+GNL_DIR				=	get_next_line/
+GNLSRC				=	$(addprefix $(BSRC_FILES_DIR)$(GNL_DIR), $(SRC_FILES_GNL))
 OBJ_GNL				=	$(GNLSRC:.c=.o)
 
 # **************************************************************************** #
 # Bonus	Source
 # **************************************************************************** #
-BSRC_FILES			:=	main.c	utils.c	utils2.c
+BSRC_FILES			:=	main.c	utils/utils.c	utils/utils2.c
 BSRC_FILES_DIR		=	./bonus/
 BSRC				=	$(addprefix $(BSRC_FILES_DIR), $(BSRC_FILES))
 OBJS_BONUS			=	$(BSRC:.c=.o)
@@ -67,7 +67,7 @@ $(OBJ_LIBFT): %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Declaring Bonus [Refer to line 51]
-$(NAME_BONUS):	$(OBJ_LIBFT) $(OBJS_BONUS)	$(OBJ_GNL)
+$(NAME_BONUS):	$(OBJ_LIBFT)	$(OBJ_GNL) $(OBJS_BONUS)
 		@$(CC) $(OBJ_LIBFT) $(OBJ_GNL)	$(OBJS_BONUS) -o $(NAME_BONUS)
 
 # Command to create 'Make bonus'
