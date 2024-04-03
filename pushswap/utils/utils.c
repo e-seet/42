@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eseet <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/07 16:21:49 by eseet             #+#    #+#             */
+/*   Updated: 2024/03/07 16:21:49 by eseet            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 #include "utils2.h"
 #include "utils3.h"
@@ -40,6 +52,7 @@ void	addtoback(t_stack *stack, int value)
 	t_node	*newnode;
 
 	newnode = create_node(value);
+	stack->numofelements += 1;
 	head = stack->top;
 	if (head == NULL)
 		stack->top = newnode;
@@ -55,7 +68,6 @@ void	addtoback(t_stack *stack, int value)
 		}
 		else
 			addtoback2(curr, head, newnode);
-		stack->numofelements += 1;
 		stack->bot = newnode;
 	}
 }

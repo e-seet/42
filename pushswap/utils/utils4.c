@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils4.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eseet <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/07 16:21:18 by eseet             #+#    #+#             */
+/*   Updated: 2024/03/07 16:21:19 by eseet            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils4.h"
 
 void	initstack(t_stack *stack, int num)
 {
 	stack->top = NULL;
 	stack->bot = NULL;
-	stack->numofelements = -1;
+	stack->numofelements = 0;
 	stack->alpha = num;
 }
 

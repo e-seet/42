@@ -63,8 +63,6 @@ int	p2child(char *path, char *envp[], struct s_pipex pipexstruct)
 {
 	int		execveresult;
 
-	printf("p2child\n");
-	printf("p1:%d p2:%d\n", pipexstruct.pid1, pipexstruct.pid2);
 	path = findprocesspath(path, pipexstruct, 2);
 	if (path == NULL)
 	{
