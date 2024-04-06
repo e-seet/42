@@ -152,5 +152,19 @@ Round 2:
 5: Waits [Eaten R1]
 6: Takes 6 and 1
 
+Odd number [5]
+Feed odd number first 1,3. Exclude 5
+Feed even number: 2, 4
+Feed last number: 5
+
+Even number [6]
+Feed odd number first 1,3, 5
+Feed even number 2,4,6
+
+odd number [7]
+1,3,5 [1,2 - 3,4 - 5,6]
+2,4,6 [2,3 - 4,5, 6,7]
+7 [7,1]
+
 How does 1 philo eats?
 C0:|1

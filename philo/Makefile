@@ -12,7 +12,7 @@ CFLAGS := -Wall -Wextra -Werror
 # **************************************************************************** #
 # Source
 # **************************************************************************** #
-SRC_FILES			:=	main.c	
+SRC_FILES			:=	main.c
 OBJS				=	$(SRC_FILES:.c=.o)
 
 # **************************************************************************** #
@@ -41,8 +41,6 @@ $(NAME):	$(OBJ_LIBFT) $(OBJS)
 
 all: $(NAME)
 
-# Philo file compilation
-# -I to include the directory where the header files for libft are located
 $(OBJS): %.o: %.c
 	@$(CC) $(CFLAGS) -I $(LIBFT_DIR) -c $< -o $@
 
@@ -53,6 +51,7 @@ $(OBJ_LIBFT): %.o: %.c
 clean:
 	rm	-f	$(OBJS)
 	rm	-f	$(OBJ_LIBFT)
+
 
 fclean: clean
 	rm -f $(NAME)

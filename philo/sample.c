@@ -23,6 +23,7 @@ int main() {
     pthread_mutex_init(&mutex, NULL);
 
 	// create thread
+    // pthread_create(&thread1, NULL, thread_function, [arg for thread func]);
     pthread_create(&thread1, NULL, thread_function, NULL);
 	// create thread
     pthread_create(&thread2, NULL, thread_function, NULL);
