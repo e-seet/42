@@ -1,0 +1,56 @@
+id:1|curr:1712400155262 is sleeping:+200
+id:1|curr:1712400155462 is thinking:+1
+id:0|curr:1712400155462 is thinking:+1
+id:2|curr:1712400155462 is thinking:+1
+id:1|curr:1712400155463 last meal time:1712400155262
+id:0|curr:1712400155463 last meal time:0
+id:2|curr:1712400155463 last meal time:0
+id:1|curr:1712400155463 lastmealtime:1712400155663 just finished eating
+id:1|curr:1712400155463 vs last meal: 1712400155663
+id:1|curr:1712400155663 is sleeping:+200
+id:2|curr:1712400155463 lastmealtime:1712400155663 just finished eating
+id:2|curr:1712400155463 vs last meal: 1712400155663
+id:2|curr:1712400155663 is sleeping:+200
+id:0|curr:1712400155463 lastmealtime:1712400155663 just finished eating
+id:0|curr:1712400155463 vs last meal: 1712400155663
+id:0|curr:1712400155663 is sleeping:+200
+id:2|curr:1712400155863 is thinking:+1
+id:1|curr:1712400155863 is thinking:+1
+id:0|curr:1712400155863 is thinking:+1
+id:2|curr:1712400155864 last meal time:1712400155663
+id:1|curr:1712400155864 last meal time:1712400155663
+id:0|curr:1712400155864 last meal time:1712400155663
+id:1|curr:1712400155864 lastmealtime:1712400156064 just finished eating
+id:1|curr:1712400155864 vs last meal: 1712400156064
+id:2|curr:1712400155864 lastmealtime:1712400156064 just finished eating
+id:2|curr:1712400155864 vs last meal: 1712400156064
+id:1|curr:1712400156064 is sleeping:+200
+id:2|curr:1712400156064 is sleeping:+200
+id:0|curr:1712400155864 lastmealtime:1712400156064 just finished eating
+id:0|curr:1712400155864 vs last meal: 1712400156064
+id:0|curr:1712400156064 is sleeping:+200
+id:0|curr:1712400156264 is thinking:+1
+id:1|curr:1712400156264 is thinking:+1
+id:2|curr:1712400156264 is thinking:+1
+id:0|curr:1712400156265 last meal time:1712400156064
+id:1|curr:1712400156265 last meal time:1712400156064
+id:2|curr:1712400156265 last meal time:1712400156064
+id:0|curr:1712400156265 lastmealtime:1712400156465 just finished eating
+id:0|curr:1712400156265 vs last meal: 1712400156465
+id:1|curr:1712400156265 lastmealtime:1712400156465 just finished eating
+id:1|curr:1712400156265 vs last meal: 1712400156465
+philo1|Curr:1712400156465
+: finished eating.id:2|curr:1712400156265 lastmealtime:1712400156465 just finished eating
+id:2|curr:1712400156265 vs last meal: 1712400156465
+id:2|curr:1712400156465 is sleeping:+200
+id:0|curr:1712400156465 is sleeping:+200
+id:0|curr:1712400156665 is thinking:+1
+id:2|curr:1712400156665 is thinking:+1
+id:0|curr:1712400156666 last meal time:1712400156465
+id:2|curr:1712400156666 last meal time:1712400156465
+id:2|curr:1712400156666 lastmealtime:1712400156866 just finished eating
+id:2|curr:1712400156666 vs last meal: 1712400156866
+philo2|Curr:1712400156866
+: finished eating.id:0|curr:1712400156666 lastmealtime:1712400156866 just finished eating
+id:0|curr:1712400156666 vs last meal: 1712400156866
+philo0|Curr:1712400156866
