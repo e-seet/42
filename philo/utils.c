@@ -50,17 +50,21 @@ void * thread_function(void *arg)
 			break;
 		}
 
+
 		// Odd number of philo. Split to 3 groups
 		if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id != philo->max) && (philo->id %2 == 1))
 		{
+			printf("handle odd eating\n");
 			handle_odd_philo_eating(philo);
 		}
 		else if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id != philo->max) && (philo->id %2 == 0))
 		{
+			printf("handle odd sleeping\n");
 			handle_odd_philo_sleeping(philo);
 		}
 		else if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id == philo->max))
 		{
+			printf("handle odd thinking\n");
 			handle_odd_philo_thinking(philo);
 		}
 
@@ -97,9 +101,9 @@ void * thread_function(void *arg)
 		else if (philo->status == 3)
 		{
 			handle_philo_eating(philo);
-			// pthread_mutex_lock(&philo->l_mutex);
+			// pthread_mutex_lock(philo->l_mutex);
 			// printf("%ld %d has taken a fork | %lu\n", philo->curr, philo->id, get_current_time());
-			// pthread_mutex_lock(&philo->r_mutex);
+			// pthread_mutex_lock(philo->r_mutex);
 			// printf("%ld %d has taken a fork | %lu\n", philo->curr, philo->id, get_current_time());
 			// pthread_mutex_lock(&philo->eating_mutex);
 			// if ((philo->curr - philo->last_meal_time) + philo->time_to_eat > philo->time_to_die)			
@@ -126,13 +130,17 @@ void * thread_function(void *arg)
 			// 	philo->num_must_eat = philo->num_must_eat - 1;
 			// philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 			// pthread_mutex_unlock(&philo->eating_mutex);
-			// pthread_mutex_unlock(&philo->l_mutex);
-			// pthread_mutex_unlock(&philo->r_mutex);
+			// pthread_mutex_unlock(philo->l_mutex);
+			// pthread_mutex_unlock(philo->r_mutex);
 		}
 		if (philo->died == 1)
 		{
 			printf("philo %d died. Died at:%ld", philo->id, philo->time_of_death);
+			break;
 		}
+	
+		// if (philo->num_of_time_eaten == 1)
+			// break;
 	}
 
 	// end of the while loop
@@ -150,7 +158,6 @@ void *thread_function_original(void *arg)
 	//condition to break it
 	while (1)
 	{
-
 
 		pthread_mutex_lock(&philo->curr_mutex);
 		// ft_usleep(1);
@@ -179,8 +186,8 @@ void *thread_function_original(void *arg)
 		// Odd number of philo. Split to 3 groups
 		if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id != philo->max) && (philo->id %2 == 1))
 		{
-			pthread_mutex_lock(&philo->l_mutex);
-			pthread_mutex_lock(&philo->r_mutex);
+			pthread_mutex_lock(philo->l_mutex);
+			pthread_mutex_lock(philo->r_mutex);
 			pthread_mutex_lock(&philo->eating_mutex);
 			philo->last_meal_time = get_current_time();
 			// printf("last meal time:%lu\n", philo->last_meal_time);
@@ -190,8 +197,8 @@ void *thread_function_original(void *arg)
 				philo->num_must_eat = philo->num_must_eat - 1;
 			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 			pthread_mutex_unlock(&philo->eating_mutex);
-			pthread_mutex_unlock(&philo->l_mutex);
-			pthread_mutex_unlock(&philo->r_mutex);
+			pthread_mutex_unlock(philo->l_mutex);
+			pthread_mutex_unlock(philo->r_mutex);
 		}
 		else if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id != philo->max) && (philo->id %2 == 0))
 		{
@@ -217,8 +224,8 @@ void *thread_function_original(void *arg)
 			// printf("curr:%lu\n", philo->curr);
 			// printf("last meal time:%lu\n", philo->last_meal_time);
 			// eat
-			pthread_mutex_lock(&philo->l_mutex);
-			pthread_mutex_lock(&philo->r_mutex);
+			pthread_mutex_lock(philo->l_mutex);
+			pthread_mutex_lock(philo->r_mutex);
 			pthread_mutex_lock(&philo->eating_mutex);
 			philo->last_meal_time = get_current_time();
 			// printf("id:%d is eating\n", philo->id);
@@ -227,8 +234,8 @@ void *thread_function_original(void *arg)
 				philo->num_must_eat = philo->num_must_eat - 1;
 			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 			pthread_mutex_unlock(&philo->eating_mutex);
-			pthread_mutex_unlock(&philo->l_mutex);
-			pthread_mutex_unlock(&philo->r_mutex);
+			pthread_mutex_unlock(philo->l_mutex);
+			pthread_mutex_unlock(philo->r_mutex);
 		}
 		else if (philo->status == 0 && (philo->max % 2 == 0) && (philo->id %2 == 1))
 		{
@@ -281,9 +288,9 @@ void *thread_function_original(void *arg)
 			// printf("pid:%d curr:%lu\n", philo->id ,philo->curr);
 			printf("id:%d|curr:%ld last meal time:%lu\n", philo->id, philo->curr, philo->last_meal_time);
 			// update to next staus: 1
-			pthread_mutex_lock(&philo->l_mutex);
+			pthread_mutex_lock(philo->l_mutex);
 			printf("%ld %d has taken a fork | %lu\n", philo->curr, philo->id, get_current_time());
-			pthread_mutex_lock(&philo->r_mutex);
+			pthread_mutex_lock(philo->r_mutex);
 			printf("%ld %d has taken a fork | %lu\n", philo->curr, philo->id, get_current_time());
 			pthread_mutex_lock(&philo->eating_mutex);
 
@@ -318,9 +325,10 @@ void *thread_function_original(void *arg)
 				philo->num_must_eat = philo->num_must_eat - 1;
 			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 			pthread_mutex_unlock(&philo->eating_mutex);
-			pthread_mutex_unlock(&philo->l_mutex);
-			pthread_mutex_unlock(&philo->r_mutex);
+			pthread_mutex_unlock(philo->l_mutex);
+			pthread_mutex_unlock(philo->r_mutex);
 		}
+
 	}
 
 	// end of the while loop

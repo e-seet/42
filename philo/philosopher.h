@@ -28,8 +28,8 @@ struct s_philo {
 	unsigned long		curr;
 	int					status;
 
-	pthread_mutex_t		l_mutex;
-	pthread_mutex_t		r_mutex;
+	pthread_mutex_t		*l_mutex;
+	pthread_mutex_t		*r_mutex;
 
 	pthread_mutex_t		eating_mutex;
 	pthread_mutex_t		sleeping_mutex;

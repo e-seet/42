@@ -37,30 +37,42 @@ void	check_finished_eating(struct s_philo *philo)
 }
 
 // Checked the function below
+// added an extra check here for eating
 void	handle_odd_philo_eating(struct s_philo *philo)
 {
 	if (philo->status == 0 && (philo->max % 2 == 1)
 		&& (philo->id != philo->max) && (philo->id % 2 == 1))
 	{
-		pthread_mutex_lock(&philo->l_mutex);
-		pthread_mutex_lock(&philo->r_mutex);
-		pthread_mutex_lock(&philo->eating_mutex);
-		if (philo->time_to_eat > philo->time_to_die)
+		if ((void *)philo->r_mutex == (void *)philo->l_mutex)
 		{
+			pthread_mutex_lock(philo->l_mutex);
 			ft_usleep(philo->time_to_die);
 			philo->time_of_death = get_current_time();
 			philo->died = 1;
 		}
 		else
-			ft_usleep(philo->time_to_eat);
-		philo->last_meal_time = get_current_time();
-		philo->status = 1;
-		if (philo->num_must_eat > 0)
-			philo->num_must_eat = philo->num_must_eat - 1;
-		philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
-		pthread_mutex_unlock(&philo->eating_mutex);
-		pthread_mutex_unlock(&philo->l_mutex);
-		pthread_mutex_unlock(&philo->r_mutex);
+		{
+			pthread_mutex_lock(philo->l_mutex);
+			pthread_mutex_lock(philo->r_mutex);
+
+			pthread_mutex_lock(&philo->eating_mutex);
+			if (philo->time_to_eat > philo->time_to_die)
+			{
+				ft_usleep(philo->time_to_die);
+				philo->time_of_death = get_current_time();
+				philo->died = 1;
+			}
+			else
+				ft_usleep(philo->time_to_eat);
+			philo->last_meal_time = get_current_time();
+			philo->status = 1;
+			if (philo->num_must_eat > 0)
+				philo->num_must_eat = philo->num_must_eat - 1;
+			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
+			pthread_mutex_unlock(&philo->eating_mutex);
+			pthread_mutex_unlock(philo->l_mutex);
+			pthread_mutex_unlock(philo->r_mutex);
+		}
 	}
 }
 
@@ -112,8 +124,8 @@ void	handle_even_philo_eating(struct s_philo *philo)
 {
 	if (philo->status == 0 && (philo->max % 2 == 0) && (philo->id % 2 == 0))
 	{
-		pthread_mutex_lock(&philo->l_mutex);
-		pthread_mutex_lock(&philo->r_mutex);
+		pthread_mutex_lock(philo->l_mutex);
+		pthread_mutex_lock(philo->r_mutex);
 		pthread_mutex_lock(&philo->eating_mutex);
 		if (philo->time_to_eat > philo->time_to_die)
 		{
@@ -129,8 +141,8 @@ void	handle_even_philo_eating(struct s_philo *philo)
 			philo->num_must_eat = philo->num_must_eat - 1;
 		philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 		pthread_mutex_unlock(&philo->eating_mutex);
-		pthread_mutex_unlock(&philo->l_mutex);
-		pthread_mutex_unlock(&philo->r_mutex);
+		pthread_mutex_unlock(philo->l_mutex);
+		pthread_mutex_unlock(philo->r_mutex);
 	}
 }
 
@@ -206,39 +218,58 @@ void	handle_philo_eating(struct s_philo *philo)
 {
 	if (philo->status == 3)
 	{
-		pthread_mutex_lock(&philo->l_mutex);
-		printf("%ld %d has taken a fork | %lu\n",
-			philo->curr, philo->id, get_current_time());
-		pthread_mutex_lock(&philo->r_mutex);
-		printf("%ld %d has taken a fork | %lu\n",
-			philo->curr, philo->id, get_current_time());
-		pthread_mutex_lock(&philo->eating_mutex);
-		if ((philo->curr - philo->last_meal_time)
-			+ philo->time_to_eat > philo->time_to_die)
+		if ((void *)philo->r_mutex == (void *)philo->l_mutex)
 		{
-			printf("eating got issue!!!\n");
-			printf("check last meal time:%lu\n", philo->last_meal_time);
-			printf("value:%lu\n", (philo->curr - philo->last_meal_time)
-				+ philo->time_to_eat);
+			pthread_mutex_lock(philo->l_mutex);
+		
+			if ((philo->curr - philo->last_meal_time)
+				+ philo->time_to_eat > philo->time_to_die)
 			ft_usleep(philo->time_to_die
-				- (philo->curr - philo->last_meal_time));
+					- (philo->curr - philo->last_meal_time));
 			philo->time_of_death = get_current_time();
 			philo->died = 1;
+			philo->status = 1;
 		}
 		else
 		{
-			printf("%ld %d is eating | for %lu time %lu\n",
-				philo->curr, philo->id, philo->time_to_eat, get_current_time());
-			ft_usleep(philo->time_to_eat);
-			philo->last_meal_time = get_current_time();
-			if (philo->num_must_eat > 0)
-				philo->num_must_eat = philo->num_must_eat - 1;
-			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
+			pthread_mutex_lock(philo->l_mutex);
+			printf("%ld %d has taken a fork | %lu\n",
+				philo->curr, philo->id, get_current_time());
+			pthread_mutex_lock(philo->r_mutex);
+			printf("%ld %d has taken a fork | %lu\n",
+				philo->curr, philo->id, get_current_time());
+
+			// printf("checking left mutex:%p\n",  (void *) &philo->l_mutex);
+			// printf("checking right mutex:%p\n",  (void *) &philo->r_mutex);
+
+			pthread_mutex_lock(&philo->eating_mutex);
+			if ((philo->curr - philo->last_meal_time)
+				+ philo->time_to_eat > philo->time_to_die)
+			{
+				printf("eating got issue!!!\n");
+				printf("check last meal time:%lu\n", philo->last_meal_time);
+				printf("value:%lu\n", (philo->curr - philo->last_meal_time)
+					+ philo->time_to_eat);
+				ft_usleep(philo->time_to_die
+					- (philo->curr - philo->last_meal_time));
+				philo->time_of_death = get_current_time();
+				philo->died = 1;
+			}
+			else
+			{
+				printf("%ld %d is eating | for %lu time %lu\n",
+					philo->curr, philo->id, philo->time_to_eat, get_current_time());
+				ft_usleep(philo->time_to_eat);
+				philo->last_meal_time = get_current_time();
+				if (philo->num_must_eat > 0)
+					philo->num_must_eat = philo->num_must_eat - 1;
+				philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
+			}
+			philo->status = 1;
+			pthread_mutex_unlock(&philo->eating_mutex);
+			pthread_mutex_unlock(philo->l_mutex);
+			pthread_mutex_unlock(philo->r_mutex);
 		}
-		philo->status = 1;
-		pthread_mutex_unlock(&philo->eating_mutex);
-		pthread_mutex_unlock(&philo->l_mutex);
-		pthread_mutex_unlock(&philo->r_mutex);
 	}
 }
 
