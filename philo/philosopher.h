@@ -18,6 +18,7 @@ struct s_philo {
 
 	// break out
 	int					num_must_eat;
+	int					num_of_time_eaten;
 	int					died;
 	unsigned long		time_of_death;
 

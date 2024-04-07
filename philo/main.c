@@ -27,7 +27,8 @@ int setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *
 		philo->time_to_sleep = ft_atoi(argv[4]);
 		philo->last_meal_time = 0;
 		philo->curr_mutex = curr_mutex;
-
+		philo->died = 0;
+		philo->num_of_time_eaten = 0;
 		// printf("check value of max:%d\n\n", philo->max);
 		// 5
 

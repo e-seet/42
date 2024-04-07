@@ -166,5 +166,44 @@ odd number [7]
 2,4,6 [2,3 - 4,5, 6,7]
 7 [7,1]
 
-How does 1 philo eats?
+### Things to figure out
+
+1. How does 1 philo eats?
 C0:|1
+My answer: Just die
+
+2. What if i died while eating?
+My answer: Just die.
+
+3. If i died while sleeping, i shall release it gracefully.
+
+Current mechanism:
+
+1. I check if they will die. I let the process do until it is supposed to die.
+2. I can either continue with the process and release mutex or just prematurely end it. Which i prematurely end it
+3. I set thinking into 1 ms.
+4. Last meal time is set as the time started. If i eat immediately at the start, last_meal_time = curr + time to eat.
+
+### Test cases
+
+Do not test with more than 200 philosophers.
+
+Do not test with time_to_die or time_to_eat or time_to_sleep set to values lower than 60 ms.
+Test 1 800 200 200. The philosopher should not eat and should die.
+Test 5 800 200 200. No philosopher should die.
+Test 5 800 200 200 7. No philosopher should die and the simulation should stop when every philosopher has eaten at least 7 times.
+Test 4 410 200 200. No philosopher should die.
+Test 4 310 200 100. One philosopher should die.
+Test with 2 philosophers and check the different times: a death delayed by more than 10 ms is unacceptable.
+Test with any values of your choice to verify all the requirements. Ensure philosophers die at the right time, that they don't steal forks, and so forth.
+
+### Others stuff
+
+There are some tools we can use to help us detect thread-related errors like possible data races, deadlocks and lock order violations:
+
+The -fsanitize=thread -g flag we can add at compilation. The -g option displays the specific files and line numbers involved.
+The thread error detection tool Helgrind that we can run our program with, like this: valgrind --tool=helgrind ./philo >args<.
+DRD, another thread error detection tool that we can also run our program with, like this: valgrind --tool=drd ./philo >args<.
+Beware of using both -fsanitize=thread and valgrind, they do not play well together!
+
+And as always, we can’t forget to check for memory leaks with -fsanitize=address and valgrind!

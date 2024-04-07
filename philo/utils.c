@@ -19,6 +19,9 @@ int	ft_usleep(size_t milliseconds)
 	return (0);
 }
 
+// even
+
+
 void *thread_function(void *arg)
 {
 
@@ -29,12 +32,18 @@ void *thread_function(void *arg)
 	while (1)
 	{
 
+		
 		pthread_mutex_lock(&philo->curr_mutex);
 		// ft_usleep(1);
 		philo->curr = get_current_time();
 		printf("\n\npid:%d|updated time curr:%lu\n", philo->id, philo->curr);
 		pthread_mutex_unlock(&philo->curr_mutex);
 
+		// cases to break
+		// if (philo->died == 1)
+		// {
+		// 	break;
+		// }
 		if ((philo->last_meal_time > 0) && ((philo->curr - philo->last_meal_time) > philo->time_to_die))
 		{
 			philo->time_of_death = get_current_time();
@@ -48,6 +57,7 @@ void *thread_function(void *arg)
 		}
 
 
+		// Odd number of philo. Split to 3 groups
 		if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id != philo->max) && (philo->id %2 == 1))
 		{
 			pthread_mutex_lock(&philo->l_mutex);
@@ -59,17 +69,18 @@ void *thread_function(void *arg)
 			philo->status = 1;
 			if (philo->num_must_eat > 0)
 				philo->num_must_eat = philo->num_must_eat - 1;
+			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 			pthread_mutex_unlock(&philo->eating_mutex);
 			pthread_mutex_unlock(&philo->l_mutex);
 			pthread_mutex_unlock(&philo->r_mutex);
 		}
-		
 		else if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id != philo->max) && (philo->id %2 == 0))
 		{
 			pthread_mutex_lock(&philo->sleeping_mutex);
 			// printf("id:%d is sleeping for :%d\n", philo->id, philo->time_to_sleep);
 			ft_usleep(philo->time_to_sleep);
 			philo->status = 2;
+			philo->last_meal_time = philo->curr;
 			pthread_mutex_unlock(&philo->sleeping_mutex);
 		}
 		else if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id == philo->max))
@@ -77,10 +88,11 @@ void *thread_function(void *arg)
 			// printf("id:%d is thinking\n", philo->id);
 			pthread_mutex_lock(&philo->thinking_mutex);
 			philo->status = 3;
+			philo->last_meal_time = philo->curr;
 			pthread_mutex_unlock(&philo->thinking_mutex);
 		}
-		// for the first time
-		// check max is event and id is even
+
+		// even number of philo
 		else if (philo->status == 0 && (philo->max % 2 == 0) && (philo->id %2 == 0))
 		{
 			// printf("curr:%lu\n", philo->curr);
@@ -94,6 +106,7 @@ void *thread_function(void *arg)
 			philo->status = 1;
 			if (philo->num_must_eat > 0)
 				philo->num_must_eat = philo->num_must_eat - 1;
+			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 			pthread_mutex_unlock(&philo->eating_mutex);
 			pthread_mutex_unlock(&philo->l_mutex);
 			pthread_mutex_unlock(&philo->r_mutex);
@@ -108,7 +121,6 @@ void *thread_function(void *arg)
 			pthread_mutex_unlock(&philo->sleeping_mutex);
 			//set to think for status
 		}
-		// for the above, we are trying to split into the various grouping
 
 		// otherwise we check the previous status and do stuff
 		else if (philo->status == 1)
@@ -117,8 +129,18 @@ void *thread_function(void *arg)
 
 			//sleep
 			pthread_mutex_lock(&philo->sleeping_mutex);
-			printf("id:%d|curr:%ld is sleeping:+%d\n", philo->id, philo->curr, philo->time_to_sleep);
-			ft_usleep(philo->time_to_sleep);
+			// printf("id:%d|curr:%ld is sleeping:+%d\n", philo->id, philo->curr, philo->time_to_sleep);
+			printf("%ld %d is sleeping | for %d time %lu\n", philo->curr, philo->id, philo->time_to_sleep, get_current_time());
+			if ((philo->curr - philo->last_meal_time) + philo->time_to_sleep > philo->time_to_die)
+			{
+				ft_usleep((philo->time_to_die) - (philo->curr - philo->last_meal_time));
+				philo->time_of_death = get_current_time();
+				philo->died = 1;
+				// can continue with the process here if required
+				break;
+			}
+			else
+				ft_usleep(philo->time_to_sleep);
 			philo->status = 2;
 			pthread_mutex_unlock(&philo->sleeping_mutex);
 			//set to think for status
@@ -126,8 +148,10 @@ void *thread_function(void *arg)
 		else if (philo->status == 2)
 		{
 			// printf("\ncase status 2\n");
-			printf("id:%d|curr:%ld is thinking:+%d\n", philo->id, philo->curr, 1);
+			// printf("id:%d|curr:%ld is thinking:+%d\n", philo->id, philo->curr, 1);
 			pthread_mutex_lock(&philo->thinking_mutex);
+			printf("%ld %d is thinking | for %d time %lu\n", philo->curr, philo->id, 1, get_current_time());
+			printf("Thinking is set to 1 ms\n");
 			ft_usleep(1);
 			philo->status = 3;
 			pthread_mutex_unlock(&philo->thinking_mutex);
@@ -139,21 +163,49 @@ void *thread_function(void *arg)
 			printf("id:%d|curr:%ld last meal time:%lu\n", philo->id, philo->curr, philo->last_meal_time);
 			// update to next staus: 1
 			pthread_mutex_lock(&philo->l_mutex);
+			printf("%ld %d has taken a fork | %lu\n", philo->curr, philo->id, get_current_time());
 			pthread_mutex_lock(&philo->r_mutex);
+			printf("%ld %d has taken a fork | %lu\n", philo->curr, philo->id, get_current_time());
 			pthread_mutex_lock(&philo->eating_mutex);
-			ft_usleep(philo->time_to_eat);
-			philo->last_meal_time = get_current_time();
-			printf("id:%d|curr:%ld lastmealtime:%lu just finished eating\n", philo->id, philo->curr, philo->last_meal_time);
+
+			if ((philo->curr - philo->last_meal_time) + philo->time_to_eat > philo->time_to_die)			
+			{
+				printf("eating got issue!!!\n");
+				printf("curr:%lu\n", philo->curr);
+				printf("lastm:%lu\n", philo->last_meal_time);
+				printf("tte:%d\n", philo->time_to_eat);
+				printf("ttd:%lu\n", philo->time_to_die);
+				
+				// ft_usleep(philo->time_to_die - (philo->curr - philo->last_meal_time));
+				ft_usleep(1);
+				philo->time_of_death = get_current_time();
+				philo->died = 1;
+				// i can continue with the process here if required.
+				break;
+			}
+			else
+			{
+				printf("%ld %d is eating | for %d time %lu\n", philo->curr, philo->id, philo->time_to_eat, get_current_time());
+				ft_usleep(philo->time_to_eat);
+				philo->last_meal_time = get_current_time();
+
+			}
+			
+			// printf("id:%d|curr:%ld lastmealtime:%lu just finished eating\n", philo->id, philo->curr, philo->last_meal_time);
 			if (philo->last_meal_time > philo->curr)
 				printf("id:%d|curr:%ld vs last meal: %ld\n", philo->id, philo->curr, philo->last_meal_time);
 			philo->status = 1;
 			if (philo->num_must_eat > 0)
 				philo->num_must_eat = philo->num_must_eat - 1;
+			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 			pthread_mutex_unlock(&philo->eating_mutex);
 			pthread_mutex_unlock(&philo->l_mutex);
 			pthread_mutex_unlock(&philo->r_mutex);
 		}
 	}
 
+	// end of the while loop
+	printf("\nid:%d, num_must_eat:%d, numoftimeeaten:%d\n", philo->id, philo->num_must_eat, philo->num_of_time_eaten);
+	printf("Expected 1 if died:%d\n\n", philo->died);
     return NULL;
 }
