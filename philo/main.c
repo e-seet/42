@@ -1,10 +1,9 @@
 #include "utils.h"
 
-
-int setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *mutex)
+int	setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *mutex)
 {
-	int	num;
-	struct s_philo *philo;
+	int		num;
+	struct	s_philo *philo;
 
 	num = ft_atoi(argv[1]);
 	*philos = (struct s_philo **)malloc(sizeof(struct s_philo *) * num);
@@ -105,15 +104,11 @@ int main(int argc, char **argv)
 	int			num;
 	int			num2;
 	int			num3;
-	// struct 	thread_arg threadarg;
 
 	philos = NULL;
-	// died = 0;
-
 	num = ft_atoi(argv[1]);
 	pthread_t threads[num];
 	pthread_mutex_t mutex[num];
-
 
 	if (argc == 5 || argc == 6)
 		setstruct(&philos, argc, argv, mutex);
@@ -126,24 +121,20 @@ int main(int argc, char **argv)
 	printf("time needed to sleep:%d\n", philos[0]->time_to_sleep);
 	printf("status:%d\n\n", philos[0]->status);
 
-
 	while (1)
 	{
 		num2 = ft_atoi(argv[1]);		
-		while(num2--)
+		while (num2--)
 		{
 			// i send in each philo but as it is shared data structure
 			// there will be race condition
 			pthread_create(&threads[num2], NULL, thread_function, philos[num2]);
 		}
-
 		num3 = ft_atoi(argv[1]);
-		while(num3--)
+		while (num3--)
 		{
 			pthread_join(threads[num3], NULL);
 		}
-		
-		break;
+		break ;
 	}
-
 }
