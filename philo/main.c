@@ -30,8 +30,7 @@ int	setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *
 	*philos = (struct s_philo **)malloc(sizeof(struct s_philo *) * num);
 	if (philos == NULL)
 		return (-1);
-	pthread_mutex_t curr_mutex;
-	pthread_mutex_init(&curr_mutex, NULL);
+	pthread_mutex_t *curr_mutex;
 
 	printf("num:%d\n", num);
 	while (num--)
@@ -46,6 +45,9 @@ int	setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *
 		philo->time_to_eat = ft_atoi(argv[3]);
 		philo->time_to_sleep = ft_atoi(argv[4]);
 		philo->last_meal_time = 0;
+
+		curr_mutex =  malloc(sizeof(pthread_mutex_t));
+		pthread_mutex_init(curr_mutex, NULL);
 		philo->curr_mutex = curr_mutex;
 		philo->died = 0;
 		philo->num_of_time_eaten = 0;
@@ -124,6 +126,7 @@ int main(int argc, char **argv)
 		{
 			pthread_join(threads[num3], NULL);
 		}
+		freestuff(philos, ft_atoi(argv[1]));
 		break ;
 	}
 }

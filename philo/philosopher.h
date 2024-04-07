@@ -35,7 +35,7 @@ struct s_philo {
 	pthread_mutex_t		sleeping_mutex;
 	pthread_mutex_t		thinking_mutex;
 
-	pthread_mutex_t		curr_mutex;
+	pthread_mutex_t		*curr_mutex;
 };
 
 // store previous state

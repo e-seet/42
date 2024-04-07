@@ -159,11 +159,11 @@ void *thread_function_original(void *arg)
 	while (1)
 	{
 
-		pthread_mutex_lock(&philo->curr_mutex);
+		pthread_mutex_lock(philo->curr_mutex);
 		// ft_usleep(1);
 		philo->curr = get_current_time();
 		printf("\n\npid:%d|updated time curr:%lu\n", philo->id, philo->curr);
-		pthread_mutex_unlock(&philo->curr_mutex);
+		pthread_mutex_unlock(philo->curr_mutex);
 
 		// cases to break
 		// if (philo->died == 1)

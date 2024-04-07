@@ -1,19 +1,29 @@
 #include "utils.h"
 
+void	freestuff(struct s_philo **philos, int num)
+{
+	while (num --)
+	{
+		pthread_mutex_destroy(philos[num]->curr_mutex);
+		free(philos[num]->curr_mutex);
+		free(philos[num]);
+	}
+}
+
 void	update_current_time_now(struct s_philo *philo)
 {
-	pthread_mutex_lock(&philo->curr_mutex);
+	pthread_mutex_lock(philo->curr_mutex);
 	philo->curr = get_current_time();
 	printf("\n\npid:%d|updated time curr:%lu\n", philo->id, philo->curr);
-	pthread_mutex_unlock(&philo->curr_mutex);
+	pthread_mutex_unlock(philo->curr_mutex);
 }
 
 void	update_current_time(struct s_philo *philo)
 {
-	pthread_mutex_lock(&philo->curr_mutex);
+	pthread_mutex_lock(philo->curr_mutex);
 	philo->curr = get_current_time();
 	printf("\n\npid:%d|updated time curr:%lu\n", philo->id, philo->curr);
-	pthread_mutex_unlock(&philo->curr_mutex);
+	pthread_mutex_unlock(philo->curr_mutex);
 }
 
 void	check_death_condition(struct s_philo *philo)

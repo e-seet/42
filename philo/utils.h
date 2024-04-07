@@ -35,4 +35,6 @@ void handle_philo_eating(struct s_philo *philo);
 
 void	*thread_function(void *arg);
 
+void	freestuff(struct s_philo **philos, int num);
+
 #endif
