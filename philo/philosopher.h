@@ -10,11 +10,14 @@ struct s_philo {
 
 	//how long before i will die if i dont eat
 	unsigned long		time_to_die;
+	// int					time_to_die;
 
 	// how long i take to eat
-	int					time_to_eat;
+	// int					time_to_eat;
+	unsigned long			time_to_eat;
 	// how long i sleep
-	int					time_to_sleep;
+	// int					time_to_sleep;
+	unsigned long			time_to_sleep;
 
 	// break out
 	int					num_must_eat;

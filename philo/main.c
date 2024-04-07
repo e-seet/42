@@ -117,12 +117,13 @@ int main(int argc, char **argv)
 
 	printf("philo id:%d\n", philos[0]->id);
 	printf("time before dying:%lu\n", philos[0]->time_to_die);
-	printf("time needed to eat:%d\n", philos[0]->time_to_eat);
-	printf("time needed to sleep:%d\n", philos[0]->time_to_sleep);
+	printf("time needed to eat:%lu\n", philos[0]->time_to_eat);
+	printf("time needed to sleep:%lu\n", philos[0]->time_to_sleep);
 	printf("status:%d\n\n", philos[0]->status);
 
 	while (1)
 	{
+		break;
 		num2 = ft_atoi(argv[1]);		
 		while (num2--)
 		{

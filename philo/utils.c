@@ -43,10 +43,6 @@ void * thread_function(void *arg)
 		// 	printf("id%d\ntime of death:%lu.\nHow long since it passed:%lu\n", philo->id, philo->time_of_death, philo->curr - philo->last_meal_time);
 		// 	break;
 		// }
-		if (philo->died == 1)
-		{
-			printf("philo %d died. Died at:%ld", philo->id, philo->time_of_death);
-		}
 		// break case 2: using now to break
 		if (philo->num_must_eat == 0)
 		{
@@ -133,7 +129,10 @@ void * thread_function(void *arg)
 			// pthread_mutex_unlock(&philo->l_mutex);
 			// pthread_mutex_unlock(&philo->r_mutex);
 		}
-
+		if (philo->died == 1)
+		{
+			printf("philo %d died. Died at:%ld", philo->id, philo->time_of_death);
+		}
 	}
 
 	// end of the while loop
@@ -250,7 +249,7 @@ void *thread_function_original(void *arg)
 			//sleep
 			pthread_mutex_lock(&philo->sleeping_mutex);
 			// printf("id:%d|curr:%ld is sleeping:+%d\n", philo->id, philo->curr, philo->time_to_sleep);
-			printf("%ld %d is sleeping | for %d time %lu\n", philo->curr, philo->id, philo->time_to_sleep, get_current_time());
+			printf("%ld %d is sleeping | for %lu time %lu\n", philo->curr, philo->id, philo->time_to_sleep, get_current_time());
 			if ((philo->curr - philo->last_meal_time) + philo->time_to_sleep > philo->time_to_die)
 			{
 				ft_usleep((philo->time_to_die) - (philo->curr - philo->last_meal_time));
@@ -293,7 +292,7 @@ void *thread_function_original(void *arg)
 				printf("eating got issue!!!\n");
 				printf("curr:%lu\n", philo->curr);
 				printf("lastm:%lu\n", philo->last_meal_time);
-				printf("tte:%d\n", philo->time_to_eat);
+				printf("tte:%lu\n", philo->time_to_eat);
 				printf("ttd:%lu\n", philo->time_to_die);
 				
 				// ft_usleep(philo->time_to_die - (philo->curr - philo->last_meal_time));
@@ -305,7 +304,7 @@ void *thread_function_original(void *arg)
 			}
 			else
 			{
-				printf("%ld %d is eating | for %d time %lu\n", philo->curr, philo->id, philo->time_to_eat, get_current_time());
+				printf("%ld %d is eating | for %lu time %lu\n", philo->curr, philo->id, philo->time_to_eat, get_current_time());
 				ft_usleep(philo->time_to_eat);
 				philo->last_meal_time = get_current_time();
 
