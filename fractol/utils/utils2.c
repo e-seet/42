@@ -69,7 +69,7 @@ char	*ft_itoadouble_int(double *num, int *z, int *i)
 	return (str);
 }
 
-char	*ft_itoadouble2(double num, char *str, int z, int i)
+void	ft_itoadouble2(double num, char *str, int z, int i)
 {
 	int		digit;
 
@@ -92,7 +92,6 @@ char	*ft_itoadouble2(double num, char *str, int z, int i)
 		}
 		z ++;
 	}
-	return (str);
 }
 
 // size i = integer + range of decimal (17) + 1 null terminator
@@ -108,7 +107,7 @@ char	*ft_itoadouble(double num)
 	str = NULL;
 	str = ft_itoadouble_int(&num, &z, &i);
 	i = z;
-	str = ft_itoadouble2(num, str, z, i);
+	ft_itoadouble2(num, str, z, i);
 	return (str);
 }
 
@@ -124,12 +123,15 @@ void	putstrings(t_fractal *fractal)
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 		5, 40, COLOR_SILVER, "zoom:	");
 
+	// see if this changes anything
 	char *str1;
 	str1 = ft_itoadouble(fractal->xshift);
 	// the following causes memory leak. Very nice!
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 		80, 20, COLOR_SILVER, str1);
 	free(str1);
+	//end
+
 	// mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 	// 	80, 30, COLOR_SILVER, ft_itoadouble(fractal->yshift));
 	// mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
