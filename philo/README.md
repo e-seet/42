@@ -214,3 +214,14 @@ DRD, another thread error detection tool that we can also run our program with, 
 Beware of using both -fsanitize=thread and valgrind, they do not play well together!
 
 And as always, we can’t forget to check for memory leaks with -fsanitize=address and valgrind!
+
+#### Testers
+
+> https://github.com/dantonik/42-philosophers-tester?tab=readme-ov-file
+cd 42-philosophers-tester
+./test.sh
+./test.sh /path/to/philo
+
+#### Failed
+
+./Philo  4 410 200 200 10

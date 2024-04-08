@@ -32,7 +32,7 @@ int	setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *
 		return (-1);
 	pthread_mutex_t *curr_mutex;
 
-	printf("num:%d\n", num);
+	// printf("num:%d\n", num);
 	while (num--)
 	{
 		philo = (struct s_philo *) malloc (sizeof(struct s_philo));
