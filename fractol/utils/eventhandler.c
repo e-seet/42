@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   eventhandler.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eseet <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/08 17:17:42 by eseet             #+#    #+#             */
+/*   Updated: 2024/04/08 17:17:42 by eseet            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 void	resetback(t_fractal *fractal)
@@ -8,8 +20,8 @@ void	resetback(t_fractal *fractal)
 	fractal->xshift = 0;
 	fractal->yshift = 0;
 	fractal->zoom = 1;
-	// fractal->zoom = 300;
 }
+// fractal->zoom = 300;
 
 int	close_handler(t_fractal *fractal)
 {
@@ -60,7 +72,7 @@ int	key_handler(int keyval, t_fractal *fractal)
 		close_handler(fractal);
 	else if (keyval == 126 || keyval == 65362)
 		fractal -> yshift -= 0.5 * fractal->zoom;
-	else if (keyval == 125 ||  keyval == 65364)
+	else if (keyval == 125 || keyval == 65364)
 		fractal -> yshift += 0.5 * fractal->zoom;
 	else if (keyval == 123 || keyval == 65361)
 		fractal -> xshift += 0.5 * fractal->zoom;

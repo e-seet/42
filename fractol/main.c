@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eseet <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/08 17:16:16 by eseet             #+#    #+#             */
+/*   Updated: 2024/04/08 17:16:18 by eseet            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils/fractal.h"
 #include "utils/utils.h"
 
@@ -38,23 +50,22 @@ void	events_init(t_fractal *fractal)
 		KeyPress,
 		KeyPressMask,
 		key_handler,
-		fractal
-	);
+		fractal);
 	mlx_hook(fractal->mlx_win,
-			ButtonPress,
-			ButtonPressMask,
-			mouse_handler,
-			fractal);
+		ButtonPress,
+		ButtonPressMask,
+		mouse_handler,
+		fractal);
 	mlx_hook(fractal->mlx_win,
-			DestroyNotify,
-			StructureNotifyMask,
-			close_handler,
-			fractal);
-		mlx_hook(fractal->mlx_win,
-			MotionNotify,
-			PointerMotionMask,
-			julia_track,
-			fractal);
+		DestroyNotify,
+		StructureNotifyMask,
+		close_handler,
+		fractal);
+	mlx_hook(fractal->mlx_win,
+		MotionNotify,
+		PointerMotionMask,
+		julia_track,
+		fractal);
 }
 
 void	cleanup(t_fractal *fractal)

@@ -98,8 +98,9 @@ Manual:
 
 ### To do
 
-1. Check memory leak
-2. whether it is the same for macos and ubuntu
+1. Change event init when i am running on ubuntu
+2. Check the "setup" function. Whether i need to change.
+
 
 ### Reference
 

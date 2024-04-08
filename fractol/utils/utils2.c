@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eseet <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/08 17:18:19 by eseet             #+#    #+#             */
+/*   Updated: 2024/04/08 17:18:20 by eseet            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 char	*ft_itoadouble_int2(double *num, int *z, int *i)
@@ -118,18 +130,4 @@ void	putstrings(t_fractal *fractal)
 		5, 50, COLOR_SILVER, "iteration:	");
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 		80, 50, COLOR_SILVER, ft_itoa(fractal->iteration));
-}
-
-char	*ft_lowercase(char *str)
-{
-	int	i;
-
-	i = 0;
-	while ((str[i]>= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'))
-	{
-		if (str[i] >='A' && 'Z' >= str[i])
-			str[i] = str[i] + 32;
-		i ++;
-	}
-	return str;
 }
