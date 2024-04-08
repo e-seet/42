@@ -30,7 +30,10 @@
 # include "X11/X.h"
 
 // mlx library
-# include "../minilibxopengl/mlx.h"
+// # include "../minilibxopengl/mlx.h"
+// # include "../minilibx-linux/mlx.h"
+// utm
+# include "../mlx_linux/mlx.h"
 
 //eventhandler
 void			resetback(t_fractal *fractal);
@@ -60,7 +63,7 @@ void			render_burning_ship(int x, int y, t_fractal *fractal);
 
 // utils2
 // convert double to char *
-char			*ft_itoadouble(double num);
+void			ft_itoadouble(double num, char *str);
 // void			ft_itoadouble_int(double num, double num2, char *str, int *z);
 void			putstrings(t_fractal *fractal);
 char			*ft_lowercase(char *str);

@@ -12,11 +12,10 @@
 
 #include "utils.h"
 
-char	*ft_itoadouble_int2(double *num, int *z, int *i)
+void	ft_itoadouble_int2(double *num, int *z, int *i, char *str)
 {
 	int		sign;
 	double	num2;
-	char	*str;
 
 	num2 = *num;
 	sign = 1;
@@ -31,22 +30,16 @@ char	*ft_itoadouble_int2(double *num, int *z, int *i)
 		num2 = num2 / 10;
 		*i = *i + 1;
 	}
-	str = (char *) malloc (sizeof(char) * (*i + 17 + 1 + 1));
-	if (!str)
-		return (NULL);
 	if (sign == 1)
 		str[*z] = '+';
 	else
 		str[*z] = '-';
-	return (str);
 }
 
 // str size = int number  + null + sign +deci point + decimal numbers
-char	*ft_itoadouble_int(double *num, int *z, int *i)
+void	ft_itoadouble_int(double *num, int *z, int *i, char *str)
 {
-	char	*str;
-
-	str = ft_itoadouble_int2(num, z, i);
+	ft_itoadouble_int2(num, z, i, str);
 	*z = *z + 1;
 	if (*num < 1)
 	{
@@ -66,7 +59,6 @@ char	*ft_itoadouble_int(double *num, int *z, int *i)
 	}
 	str[*z] = '.';
 	*z = *z + 1;
-	return (str);
 }
 
 void	ft_itoadouble2(double num, char *str, int z, int i)
@@ -96,47 +88,63 @@ void	ft_itoadouble2(double num, char *str, int z, int i)
 
 // size i = integer + range of decimal (17) + 1 null terminator
 // convert a double to str with 2 dp.
-char	*ft_itoadouble(double num)
+void	ft_itoadouble(double num, char *str)
 {
 	int		i;
-	char	*str;
 	int		z;
+	int		n;
 
 	i = 0;
 	z = 0;
-	str = NULL;
-	str = ft_itoadouble_int(&num, &z, &i);
+	n = 0;
+	ft_itoadouble_int(&num, &z, &i, str);
 	i = z;
 	ft_itoadouble2(num, str, z, i);
-	return (str);
+	while (str[n])
+	{
+		if ((str[n] >= '0' && str[n] <= '9') || str[n] == '.')
+			n++;
+		else
+		{
+			str[n] = '\0';
+			break ;
+		}
+	}
 }
 
 void	putstrings(t_fractal *fractal)
 {
+	char	*str1;
+	char	*str2;
+	char	*str3;
+	char	*str4;
+
+	str1 = (char *) malloc (sizeof(char) * (32));
+	str2 = (char *) malloc (sizeof(char) * (32));
+	str3 = (char *) malloc (sizeof(char) * (32));
+	str4 = (char *) malloc (sizeof(char) * (32));
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 		5, 20, COLOR_SILVER, "xshift:	");
-
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 		5, 30, COLOR_SILVER, "yshift:	");
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 		5, 50, COLOR_SILVER, "iteration:	");
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 		5, 40, COLOR_SILVER, "zoom:	");
-
-	// see if this changes anything
-	char *str1;
-	str1 = ft_itoadouble(fractal->xshift);
-	// the following causes memory leak. Very nice!
+	ft_itoadouble(fractal->xshift, str1);
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 		80, 20, COLOR_SILVER, str1);
 	free(str1);
-	//end
-
-	// mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-	// 	80, 30, COLOR_SILVER, ft_itoadouble(fractal->yshift));
-	// mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-	// 	80, 40, COLOR_SILVER, ft_itoadouble(fractal->zoom));
-
-	// mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-	// 	80, 50, COLOR_SILVER, ft_itoa(fractal->iteration));
+	ft_itoadouble(fractal->yshift, str2);
+	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
+		80, 30, COLOR_SILVER, str2);
+	free(str2);
+	ft_itoadouble(fractal->zoom, str3);
+	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
+		80, 40, COLOR_SILVER, str3);
+	free(str3);
+	ft_itoadouble(fractal->iteration, str4);
+	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
+		80, 50, COLOR_SILVER, str4);
+	free(str4);
 }
