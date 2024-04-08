@@ -116,18 +116,25 @@ void	putstrings(t_fractal *fractal)
 {
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 		5, 20, COLOR_SILVER, "xshift:	");
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		80, 20, COLOR_SILVER, ft_itoadouble(fractal->xshift));
+
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 		5, 30, COLOR_SILVER, "yshift:	");
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		80, 30, COLOR_SILVER, ft_itoadouble(fractal->yshift));
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		5, 40, COLOR_SILVER, "zoom:	");
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		80, 40, COLOR_SILVER, ft_itoadouble(fractal->zoom));
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
 		5, 50, COLOR_SILVER, "iteration:	");
 	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		80, 50, COLOR_SILVER, ft_itoa(fractal->iteration));
+		5, 40, COLOR_SILVER, "zoom:	");
+
+	char *str1;
+	str1 = ft_itoadouble(fractal->xshift);
+	// the following causes memory leak. Very nice!
+	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
+		80, 20, COLOR_SILVER, str1);
+	free(str1);
+	// mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
+	// 	80, 30, COLOR_SILVER, ft_itoadouble(fractal->yshift));
+	// mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
+	// 	80, 40, COLOR_SILVER, ft_itoadouble(fractal->zoom));
+
+	// mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
+	// 	80, 50, COLOR_SILVER, ft_itoa(fractal->iteration));
 }

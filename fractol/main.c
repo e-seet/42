@@ -100,18 +100,17 @@ void	setup(t_fractal *fractal)
 	events_init(fractal);
 }
 
-//ubuntu backup
+// //ubuntu backup
 // void	setup(t_fractal *fractal)
 // {
 // 	fractal->mlx_instance = mlx_init();
 // 	if (fractal->mlx_instance == NULL)
-// 	{
-// 		printf("mlx isntance is null\n");
-// 	}
+// 		return ;
 // 	fractal->mlx_win = mlx_new_window(fractal->mlx_instance,
 // 			fractal->width, fractal->height, fractal->name);
 // 	if (fractal->mlx_win == NULL)
 // 	{
+// 		//to check
 // 		// mlx_destroy_display(fractal->mlx_instance); //missing in lib
 // 		printf("mlx window failed\n");
 // 		mlx_destroy_window(fractal->mlx_instance,
@@ -133,16 +132,16 @@ void	setup(t_fractal *fractal)
 // 		free(fractal->mlx_instance);
 // 		fractal->mlx_instance = NULL;
 // 	}
-// 	printf("all ok\n");
+
 // 	fractal->img.addr = mlx_get_data_addr(fractal->img.img,
 // 			&fractal->img.bits_per_pixel, &fractal->img.line_length,
 // 			&fractal->img.endian);
-// 	fractal->escape_val = 4;
-// 	fractal->iteration = 25;
-// 	fractal->iter = 0;
-// 	fractal->xshift = 0;
-// 	fractal->yshift = 0;
-// 	fractal->zoom = 1;
+// 	// fractal->escape_val = 4;
+// 	// fractal->iteration = 25;
+// 	// fractal->iter = 0;
+// 	// fractal->xshift = 0;
+// 	// fractal->yshift = 0;
+// 	// fractal->zoom = 1;
 // 	events_init(fractal);
 // }
 
@@ -154,6 +153,11 @@ void	setupfractal(t_fractal *fractal, int argc, char *argv[])
 	fractal->height = 400;
 	fractal->cx = 0;
 	fractal->cy = 0;
+	fractal->xshift = 1;
+	fractal->yshift = 1;
+	fractal->iteration = 50;
+	fractal->iter = 1;
+	fractal->zoom = 1;
 	if (argc >= 3)
 		fractal->width = ft_atoi(argv[2]);
 	if (argc >= 4)
