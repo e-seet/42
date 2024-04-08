@@ -24,6 +24,7 @@ struct s_philo {
 	int					num_of_time_eaten;
 	int					died;
 	unsigned long		time_of_death;
+	int					stop;
 
 	unsigned long		curr;
 	int					status;

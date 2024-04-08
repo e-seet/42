@@ -179,9 +179,9 @@ My answer: Just die.
 
 Current mechanism:
 
-1. I check if they will die. I let the process do until it is supposed to die.
+1. I check if they will die. I let the process do until it is supposed to die. This applies even if they are eating. If they are eating, i will release mutex before ending process.
 2. I can either continue with the process and release mutex or just prematurely end it. Which i prematurely end it
-3. I set thinking into 1 ms.
+3. Thinking have no mutex. There is no locking mechanism required for this.
 4. Last meal time is set as the time started. If i eat immediately at the start, last_meal_time = curr + time to eat.
 
 ### Test cases
@@ -225,3 +225,7 @@ cd 42-philosophers-tester
 #### Failed
 
 ./Philo  4 410 200 200 10
+
+#### To Do
+
+I need to figure out a way to break all of my other threads when one of the thread dies.

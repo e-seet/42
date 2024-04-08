@@ -50,6 +50,7 @@ int	setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *
 		pthread_mutex_init(curr_mutex, NULL);
 		philo->curr_mutex = curr_mutex;
 		philo->died = 0;
+		philo->stop = 0;
 		philo->num_of_time_eaten = 0;
 
 		if (philo->max == num +1)
@@ -94,6 +95,7 @@ int main(int argc, char **argv)
 	int			num;
 	int			num2;
 	int			num3;
+	int			num4;
 
 	philos = NULL;
 	num = ft_atoi(argv[1]);
@@ -113,20 +115,77 @@ int main(int argc, char **argv)
 	// printf("time needed to sleep:%lu\n", philos[0]->time_to_sleep);
 	// printf("status:%d\n\n", philos[0]->status);
 
+	// break;
+	num2 = ft_atoi(argv[1]);		
+	while (num2--)
+	{
+		pthread_create(&threads[num2], NULL, thread_function, philos[num2]);
+	}
+
+	int alldie = 0;
+	int	allend = 0;
+	// int tobreakafter5 = 0;
 	while (1)
 	{
-		// break;
-		num2 = ft_atoi(argv[1]);		
-		while (num2--)
+		alldie = 0;
+		allend = 0;
+		num4 = ft_atoi(argv[1]);
+		
+		// if (tobreakafter5 == 1000)
+		// 	break ;
+		// else
+		// 	tobreakafter5 ++;
+
+		while (num4 --)
 		{
-			pthread_create(&threads[num2], NULL, thread_function, philos[num2]);
+			// printf("check if anything died\n");
+			// check if anything died. If so break
+			// printf("philos died:%d\n", philos[num4]->died);
+			if (philos[num4]->died == 1)
+			{
+				alldie = 1;
+				break;
+			}
 		}
-		num3 = ft_atoi(argv[1]);
-		while (num3--)
+		//if a single thread even died
+		if (alldie == 1)
 		{
-			pthread_join(threads[num3], NULL);
+			alldie = 0;
+			num4 = ft_atoi(argv[1]);
+			while (num4 --)
+			{
+				alldie ++;
+				philos[num4]->stop = 1;
+			}
 		}
-		freestuff(philos, ft_atoi(argv[1]));
-		break ;
+		//otherwise check
+		else
+		{
+			// printf("else statement\n");
+			allend = 0;
+			num4 = ft_atoi(argv[1]);
+			while (num4 --)
+			{
+				if (philos[num4]->stop == 1)
+					allend ++;
+				else if (philos[num4]->num_must_eat == 0)
+					allend ++;
+			}
+			// printf("all end?\n");
+		}
+
+		if (alldie == ft_atoi(argv[1])-1)
+			break;
+		else if (allend == ft_atoi(argv[1])-1)
+			break;
 	}
+	// printf("all end:%d all died:%d\n", allend, alldie);
+
+
+	num3 = ft_atoi(argv[1]);
+	while (num3--)
+	{
+		pthread_join(threads[num3], NULL);
+	}
+	freestuff(philos, ft_atoi(argv[1]));
 }

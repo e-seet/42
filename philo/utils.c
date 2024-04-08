@@ -50,6 +50,18 @@ void * thread_function(void *arg)
 			break;
 		}
 
+		if (philo->died == 1)
+		{
+			printf("%ld %d died\n", philo->time_of_death, philo->id);
+			// printf("philo %d died. Died at:%ld", philo->id, philo->time_of_death);
+			break;
+		}
+		else if (philo->stop == 1)
+		{
+			printf("%d stop", philo->id);
+			break;
+		}
+
 
 		// Odd number of philo. Split to 3 groups
 		if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id != philo->max) && (philo->id %2 == 1))
@@ -133,15 +145,6 @@ void * thread_function(void *arg)
 			// pthread_mutex_unlock(philo->l_mutex);
 			// pthread_mutex_unlock(philo->r_mutex);
 		}
-		if (philo->died == 1)
-		{
-			printf("%ld %d died\n", philo->time_of_death, philo->id);
-			// printf("philo %d died. Died at:%ld", philo->id, philo->time_of_death);
-			break;
-		}
-	
-		// if (philo->num_of_time_eaten == 1)
-			// break;
 	}
 	// printf("%ld %d is died\n", philo->curr, philo->id);
 
