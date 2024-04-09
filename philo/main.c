@@ -1,26 +1,5 @@
 #include "utils.h"
 
-// void	checkmutex(struct s_philo ***philos, char **argv, pthread_mutex_t *mutexs)
-// {
-// 	struct	s_philo *philo;
-// 	int		num;
-
-// 	num = ft_atoi(argv[1]);
-// 	*philos = (struct s_philo **)malloc(sizeof(struct s_philo *) * num);
-// 	while (philos[num--])
-// 	{
-
-// 		if ((void *) &((philos[num])->l_mutex) == (void *) &((philos[num])->r_mutex))
-// 		{
-// 			printf("error\n");
-// 		}
-// 		else if ((void *)&mutexs[num] != (void *) &(philos[num])->l_mutex)
-// 		{
-// 			printf("error i think\n");
-// 		}
-// 	}
-// }
-
 int	setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *mutexs)
 {
 	int		num;
@@ -53,16 +32,21 @@ int	setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *
 		philo->stop = 0;
 		philo->num_of_time_eaten = 0;
 
-		if (philo->max == num +1)
+		philo->l_mutex = &mutexs[num];
+		if (philo->max - 1 == num)
 		{
 			philo->r_mutex = &mutexs[0];
+		// 	printf("r:%p\n", &mutexs[0]);
+		// 	printf("r:%p\n", philo->r_mutex);
 		}
 		else
-			philo->r_mutex = &mutexs[num +1];
-
-		philo->l_mutex = &mutexs[num];
-		pthread_mutex_init(philo->l_mutex, NULL);
-
+		{
+			philo->r_mutex = &mutexs[num + 1];
+			// printf("r:%p\n", &mutexs[num + 1]);
+			// printf("r:%p\n", philo->r_mutex);
+		}
+		// printf("l:%p\n", &mutexs[num]);
+		// printf("l:%p\n\n", (void *)philo->l_mutex);
 		// if ((void *)philo->r_mutex == (void *)philo->l_mutex)
 		// 	printf("got issue in mutex\n");
 
@@ -90,8 +74,6 @@ int	setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *
 int main(int argc, char **argv)
 {
 	struct s_philo **philos;
-	// int		timer;
-	// int		died;
 	int			num;
 	int			num2;
 	int			num3;
@@ -101,6 +83,11 @@ int main(int argc, char **argv)
 	num = ft_atoi(argv[1]);
 	pthread_t threads[num];
 	pthread_mutex_t mutex[num];
+
+	pthread_mutex_t *mutexs = malloc(num * sizeof(pthread_mutex_t));
+	for (int i = 0; i < num; i++) {
+		pthread_mutex_init(&mutexs[i], NULL);
+	}
 
 
 	if (argc == 5 || argc == 6)
@@ -124,18 +111,12 @@ int main(int argc, char **argv)
 
 	int alldie = 0;
 	int	allend = 0;
-	// int tobreakafter5 = 0;
 	while (1)
 	{
 		alldie = 0;
 		allend = 0;
 		num4 = ft_atoi(argv[1]);
 		
-		// if (tobreakafter5 == 1000)
-		// 	break ;
-		// else
-		// 	tobreakafter5 ++;
-
 		while (num4 --)
 		{
 			// printf("check if anything died\n");

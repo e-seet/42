@@ -229,3 +229,15 @@ cd 42-philosophers-tester
 #### To Do
 
 I need to figure out a way to break all of my other threads when one of the thread dies.
+
+#### Testers for running
+
+>https://github.com/newlinuxbot/Philosphers-42Project-Tester<
+cd Philosophers-42Project-Testers
+./start.sh ../../ [0/1/2/3]
+
+[philo-Test #1]: Given 4 310 200 100 arguments to philo, a philosopher should die !
+[philo-Test #5]: Given 2 60 60 60 arguments to philo, a philosopher should die !
+
+> https://github.com/dantonik/42-philosophers-tester?tab=readme-ov-file
+
