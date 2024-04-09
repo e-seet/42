@@ -102,7 +102,8 @@ void	ft_itoadouble(double num, char *str)
 	ft_itoadouble2(num, str, z, i);
 	while (str[n])
 	{
-		if ((str[n] >= '0' && str[n] <= '9') || str[n] == '.')
+		if ((str[n] >= '0' && str[n] <= '9') || str[n] == '.'
+			|| str[n] == '+' || str[n] == '-')
 			n++;
 		else
 		{
@@ -110,41 +111,4 @@ void	ft_itoadouble(double num, char *str)
 			break ;
 		}
 	}
-}
-
-void	putstrings(t_fractal *fractal)
-{
-	char	*str1;
-	char	*str2;
-	char	*str3;
-	char	*str4;
-
-	str1 = (char *) malloc (sizeof(char) * (32));
-	str2 = (char *) malloc (sizeof(char) * (32));
-	str3 = (char *) malloc (sizeof(char) * (32));
-	str4 = (char *) malloc (sizeof(char) * (32));
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		5, 20, COLOR_SILVER, "xshift:	");
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		5, 30, COLOR_SILVER, "yshift:	");
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		5, 50, COLOR_SILVER, "iteration:	");
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		5, 40, COLOR_SILVER, "zoom:	");
-	ft_itoadouble(fractal->xshift, str1);
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		80, 20, COLOR_SILVER, str1);
-	free(str1);
-	ft_itoadouble(fractal->yshift, str2);
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		80, 30, COLOR_SILVER, str2);
-	free(str2);
-	ft_itoadouble(fractal->zoom, str3);
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		80, 40, COLOR_SILVER, str3);
-	free(str3);
-	ft_itoadouble(fractal->iteration, str4);
-	mlx_string_put(fractal->mlx_instance, fractal->mlx_win,
-		80, 50, COLOR_SILVER, str4);
-	free(str4);
 }

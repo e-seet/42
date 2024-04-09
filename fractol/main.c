@@ -153,11 +153,11 @@ void	setupfractal(t_fractal *fractal, int argc, char *argv[])
 	fractal->height = 400;
 	fractal->cx = 0;
 	fractal->cy = 0;
-	fractal->xshift = 1;
-	fractal->yshift = 1;
+	fractal->xshift = 1.0;
+	fractal->yshift = 1.0;
 	fractal->iteration = 50;
-	fractal->iter = 1;
-	fractal->zoom = 1;
+	fractal->iter = 0.0;
+	fractal->zoom = 0.0;
 	if (argc >= 3)
 		fractal->width = ft_atoi(argv[2]);
 	if (argc >= 4)

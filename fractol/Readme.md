@@ -101,6 +101,10 @@ Manual:
 1. Change event init when i am running on ubuntu
 2. Check the "setup" function. Whether i need to change.
 
+### To run
+
+1. valgrind --leak-check=full ./fract-ol mandelbrot
+2. 
 
 ### Reference
 
