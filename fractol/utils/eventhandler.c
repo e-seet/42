@@ -28,7 +28,7 @@ int	close_handler(t_fractal *fractal)
 	mlx_destroy_image(fractal->mlx_instance, fractal->img.img);
 	mlx_destroy_window(fractal->mlx_instance, fractal->mlx_win);
 	mlx_destroy_display(fractal->mlx_instance);
-	free(fractal->img.img);
+	free(fractal->mlx_instance);
 	exit(0);
 }
 //ubuntu
