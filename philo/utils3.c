@@ -1,15 +1,32 @@
 #include "utils.h"
 
 
-size_t	get_current_time(void)
+u_int64_t	get_current_time(void)
 {
-	struct timeval	time;
-
-	if (gettimeofday(&time, NULL) == -1)
+	struct timeval	tv;
+	
+	if (gettimeofday(&tv, NULL) == -1)
 		write(2, "gettimeofday() error\n", 22);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	return ((tv.tv_sec * (u_int64_t)1000) + (tv.tv_usec / 1000));
 }
 
+int	ft_usleep(useconds_t time)
+{
+	u_int64_t	start;
+	start = get_current_time();
+	while ((get_current_time() - start) < time)
+		usleep(time / 10);
+	return(0);
+}
+
+// size_t	get_current_time(void)
+// {
+// 	struct timeval	time;
+
+// 	if (gettimeofday(&time, NULL) == -1)
+// 		write(2, "gettimeofday() error\n", 22);
+// 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+// }
 // int	ft_usleep(size_t milliseconds)
 // {
 // 	size_t	start;
@@ -26,15 +43,15 @@ size_t	get_current_time(void)
 // 	return (0);
 // }
 
-int	ft_usleep(size_t milliseconds)
-{
-	size_t	start;
+// int	ft_usleep(size_t milliseconds)
+// {
+// 	size_t	start;
 
-	start = get_current_time();
-	while ((get_current_time() - start) < milliseconds)
-		usleep(1000);
-	return (0);
-}
+// 	start = get_current_time();
+// 	while ((get_current_time() - start) < milliseconds)
+// 		usleep(1000);
+// 	return (0);
+// }
 
 void	freestuff(struct s_philo **philos, int num)
 {

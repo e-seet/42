@@ -190,12 +190,13 @@ void	handle_philo_eating(struct s_philo *philo)
 			if ((philo->curr - philo->last_meal_time)
 				+ philo->time_to_eat > philo->time_to_die)
 			{
-				// printf("eating got issue!!!\n");
-				// printf("check last meal time:%lu\n", philo->last_meal_time);
-				// printf("value:%lu\n", (philo->curr - philo->start - philo->last_meal_time)
-					// + philo->time_to_eat);
-				ft_usleep(philo->time_to_die
-					- (philo->curr - philo->last_meal_time));
+				if(philo->curr - philo->last_meal_time > philo->time_to_die)
+				{
+					printf("%ld %d is eating\n", philo->curr - philo->start, philo->id);
+					ft_usleep(philo->time_to_die
+						- (philo->curr - philo->last_meal_time));
+				}
+				
 				philo->time_of_death = get_current_time();
 				philo->died = 1;
 			}

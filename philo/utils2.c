@@ -2,10 +2,10 @@
 
 void	handle_odd_philo_sleeping(struct s_philo *philo)
 {
+	pthread_mutex_lock(&philo->sleeping_mutex);
 	if (philo->status == 0 && (philo->max % 2 == 1)
 		&& (philo->id != philo->max) && (philo->id % 2 == 0))
 	{
-		pthread_mutex_lock(&philo->sleeping_mutex);
 		philo->last_meal_time = (philo->curr);
 		printf("%ld %d is sleeping\n", philo->curr, philo->id);
 		if (philo->time_to_sleep > philo->time_to_die)
@@ -17,16 +17,16 @@ void	handle_odd_philo_sleeping(struct s_philo *philo)
 		else
 			ft_usleep(philo->time_to_sleep);
 		philo->status = 2;
-		pthread_mutex_unlock(&philo->sleeping_mutex);
 	}
+	pthread_mutex_unlock(&philo->sleeping_mutex);
 }
 
 void	handle_odd_philo_thinking(struct s_philo *philo)
 {
+	pthread_mutex_lock(&philo->thinking_mutex);
 	if (philo->status == 0 && (philo->max % 2 == 1)
 		&& (philo->id == philo->max))
 	{
-		// pthread_mutex_lock(&philo->thinking_mutex);
 		philo->last_meal_time = (philo->curr);
 		printf("%ld %d is thinking\n", (philo->curr - philo->start), philo->id);
 		philo->status = 3;
@@ -54,18 +54,15 @@ void	handle_odd_philo_thinking(struct s_philo *philo)
 				}
 			}
 		}
-
-		// while (1)
-
-		// pthread_mutex_unlock(&philo->thinking_mutex);
+		pthread_mutex_unlock(&philo->thinking_mutex);
 	}
 }
 
 void	handle_even_philo_sleeping(struct s_philo *philo)
 {
+	pthread_mutex_lock(&philo->sleeping_mutex);
 	if (philo->status == 0 && (philo->max % 2 == 0) && (philo->id % 2 == 1))
 	{
-		pthread_mutex_lock(&philo->sleeping_mutex);
 		printf("%ld %d is sleeping\n", philo->curr - philo->start, philo->id);
 		philo->last_meal_time = (philo->curr);
 		if (philo->time_to_sleep > philo->time_to_die)
@@ -77,15 +74,16 @@ void	handle_even_philo_sleeping(struct s_philo *philo)
 		else
 			ft_usleep(philo->time_to_sleep);
 		philo->status = 2;
-		pthread_mutex_unlock(&philo->sleeping_mutex);
 	}
+	pthread_mutex_unlock(&philo->sleeping_mutex);
+
 }
 
 void	handle_philo_sleeping(struct s_philo *philo)
 {
+	pthread_mutex_lock(&philo->sleeping_mutex);
 	if (philo->status == 1)
 	{
-		pthread_mutex_lock(&philo->sleeping_mutex);
 		printf("%ld %d is sleeping\n", (philo->curr - philo->start), philo->id);
 
 		// printf("%ld %d is sleeping | for %lu time %lu\n",
@@ -103,12 +101,13 @@ void	handle_philo_sleeping(struct s_philo *philo)
 			ft_usleep(philo->time_to_sleep);
 		}
 		philo->status = 2;
-		pthread_mutex_unlock(&philo->sleeping_mutex);
 	}
+	pthread_mutex_unlock(&philo->sleeping_mutex);
 }
 
 void	handle_philo_thinking(struct s_philo *philo)
 {
+	pthread_mutex_lock(&philo->thinking_mutex);
 	if (philo->status == 2)
 	{
 		printf("%ld %d is thinking\n", (philo->curr - philo->start), philo->id);
@@ -145,5 +144,6 @@ void	handle_philo_thinking(struct s_philo *philo)
 		}
 		philo->status = 3;
 	}
+	pthread_mutex_unlock(&philo->thinking_mutex);
 }
 
