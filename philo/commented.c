@@ -1,3 +1,77 @@
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#define NUM_PHILOSOPHERS 5
+#define NUM_FORKS NUM_PHILOSOPHERS
+
+pthread_mutex_t forks[NUM_FORKS];
+
+void* philosopher(void* arg) {
+    int id = *((int*)arg);
+    int left_fork = id;
+    int right_fork = (id + 1) % NUM_PHILOSOPHERS;
+
+    while (1) {
+        printf("Philosopher %d is thinking.\n", id);
+
+        // Acquire left fork
+        pthread_mutex_lock(&forks[left_fork]);
+        printf("Philosopher %d picked up left fork %d.\n", id, left_fork);
+
+        // Acquire right fork
+        pthread_mutex_lock(&forks[right_fork]);
+        printf("Philosopher %d picked up right fork %d.\n", id, right_fork);
+
+        // Eat (perform a task)
+        printf("Philosopher %d is eating.\n", id);
+        sleep(1); // Simulate time taken to eat
+
+        // Put down right fork
+        pthread_mutex_unlock(&forks[right_fork]);
+        printf("Philosopher %d put down right fork %d.\n", id, right_fork);
+
+        // Put down left fork
+        pthread_mutex_unlock(&forks[left_fork]);
+        printf("Philosopher %d put down left fork %d.\n", id, left_fork);
+
+        // Think (perform another task)
+        sleep(1); // Simulate time taken to think
+    }
+
+    return NULL;
+}
+
+int main() {
+    pthread_t philosophers[NUM_PHILOSOPHERS];
+    int ids[NUM_PHILOSOPHERS];
+
+    // Initialize the mutexes
+    for (int i = 0; i < NUM_FORKS; ++i) {
+        pthread_mutex_init(&forks[i], NULL);
+    }
+
+    // Create philosopher threads
+    for (int i = 0; i < NUM_PHILOSOPHERS; ++i) {
+        ids[i] = i;
+        pthread_create(&philosophers[i], NULL, philosopher, &ids[i]);
+    }
+
+    // Wait for philosopher threads to finish (they never will in this example)
+    for (int i = 0; i < NUM_PHILOSOPHERS; ++i) {
+        pthread_join(philosophers[i], NULL);
+    }
+
+    // Clean up mutexes
+    for (int i = 0; i < NUM_FORKS; ++i) {
+        pthread_mutex_destroy(&forks[i]);
+    }
+
+    return 0;
+}
+
+
 // void *thread_function_original(void *arg)
 // {
 
@@ -187,28 +261,28 @@
 // }
 
 // Later
-void	*thread_function_backup(void *arg)
-{
-	struct s_philo	*philo;
+// void	*thread_function_backup(void *arg)
+// {
+// 	struct s_philo	*philo;
 
-	philo = (struct s_philo *) arg;
-	while (1)
-	{
-		update_current_time(philo);
-		check_death_condition(philo);
-		check_finished_eating(philo);
-		handle_odd_philo_eating(philo);
-		handle_odd_philo_sleeping(philo);
-		handle_odd_philo_thinking(philo);
-		handle_even_philo_eating(philo);
-		handle_even_philo_sleeping(philo);
-		handle_philo_sleeping(philo);
-		handle_philo_thinking(philo);
-		handle_philo_eating(philo);
-		if (philo->died == 1)
-			break ;
-		if (philo->num_must_eat == 0)
-			break ;
-	}
-	return (NULL);
-}
+// 	philo = (struct s_philo *) arg;
+// 	while (1)
+// 	{
+// 		update_current_time(philo);
+// 		check_death_condition(philo);
+// 		check_finished_eating(philo);
+// 		handle_odd_philo_eating(philo);
+// 		handle_odd_philo_sleeping(philo);
+// 		handle_odd_philo_thinking(philo);
+// 		handle_even_philo_eating(philo);
+// 		handle_even_philo_sleeping(philo);
+// 		handle_philo_sleeping(philo);
+// 		handle_philo_thinking(philo);
+// 		handle_philo_eating(philo);
+// 		if (philo->died == 1)
+// 			break ;
+// 		if (philo->num_must_eat == 0)
+// 			break ;
+// 	}
+// 	return (NULL);
+// }

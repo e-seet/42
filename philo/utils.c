@@ -71,6 +71,7 @@ void * thread_function(void *arg)
 		{
 			handle_even_philo_sleeping(philo);
 		}
+
 		else if (philo->status == 1)
 		{
 			handle_philo_sleeping(philo);

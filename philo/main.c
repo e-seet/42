@@ -11,6 +11,13 @@ int	setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *
 		return (-1);
 	pthread_mutex_t *curr_mutex;
 
+	int *mutexs_i = malloc(num * sizeof(int));
+	while (num--)
+	{
+		mutexs_i[num] = 0;
+	}
+
+	num = ft_atoi(argv[1]);
 	// printf("num:%d\n", num);
 	while (num--)
 	{
@@ -24,20 +31,26 @@ int	setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *
 		philo->time_to_eat = ft_atoi(argv[3]);
 		philo->time_to_sleep = ft_atoi(argv[4]);
 		philo->last_meal_time = 0;
-
+		philo->mutexs_i = mutexs_i;
 		curr_mutex =  malloc(sizeof(pthread_mutex_t));
 		pthread_mutex_init(curr_mutex, NULL);
+		// philo->locked_l = NULL;
+		// philo->locked_r = NULL;
+		// locked == 1 for lock
 		philo->curr_mutex = curr_mutex;
 		philo->died = 0;
 		philo->stop = 0;
 		philo->num_of_time_eaten = 0;
 
+		// pthread_mutex_init(&mutexs[num], NULL);
+
 		philo->l_mutex = &mutexs[num];
+		pthread_mutex_init(philo->l_mutex, NULL);
 		if (philo->max - 1 == num)
 		{
 			philo->r_mutex = &mutexs[0];
-		// 	printf("r:%p\n", &mutexs[0]);
-		// 	printf("r:%p\n", philo->r_mutex);
+			// printf("r:%p\n", &mutexs[0]);
+			// printf("r:%p\n", philo->r_mutex);
 		}
 		else
 		{
@@ -77,23 +90,25 @@ int main(int argc, char **argv)
 	int			num;
 	int			num2;
 	int			num3;
-	int			num4;
 
 	philos = NULL;
 	num = ft_atoi(argv[1]);
 	pthread_t threads[num];
-	pthread_mutex_t mutex[num];
+	// pthread_mutex_t mutex[num];
 
 	pthread_mutex_t *mutexs = malloc(num * sizeof(pthread_mutex_t));
+	
 	for (int i = 0; i < num; i++) {
 		pthread_mutex_init(&mutexs[i], NULL);
 	}
 
 
 	if (argc == 5 || argc == 6)
-		setstruct(&philos, argc, argv, mutex);
+		setstruct(&philos, argc, argv, mutexs);
 	else
 	 return (-1);
+
+	//  return (-1);
 
 	// checkmutex(&philos, argv, mutex);
 	// printf("philo id:%d\n", philos[0]->id);
@@ -109,6 +124,8 @@ int main(int argc, char **argv)
 		pthread_create(&threads[num2], NULL, thread_function, philos[num2]);
 	}
 
+
+	int			num4;
 	int alldie = 0;
 	int	allend = 0;
 	while (1)
@@ -125,41 +142,44 @@ int main(int argc, char **argv)
 			if (philos[num4]->died == 1)
 			{
 				alldie = 1;
+				alldie = 0;
+				num4 = ft_atoi(argv[1]);
+				while (num4 --)
+				{
+					alldie ++;
+					philos[num4]->stop = 1;
+				}
 				break;
 			}
 		}
-		//if a single thread even died
-		if (alldie == 1)
+
+		int num5;
+		allend = 0;
+		num5 = ft_atoi(argv[1]);
+		while (num5 --)
 		{
-			alldie = 0;
-			num4 = ft_atoi(argv[1]);
-			while (num4 --)
-			{
-				alldie ++;
-				philos[num4]->stop = 1;
-			}
-		}
-		//otherwise check
-		else
-		{
-			// printf("else statement\n");
-			allend = 0;
-			num4 = ft_atoi(argv[1]);
-			while (num4 --)
-			{
-				if (philos[num4]->stop == 1)
-					allend ++;
-				else if (philos[num4]->num_must_eat == 0)
-					allend ++;
-			}
-			// printf("all end?\n");
+			if (philos[num5]->stop == 1)
+				allend ++;
+			else if (philos[num5]->num_must_eat == 0)
+				allend ++;
 		}
 
-		if (alldie == ft_atoi(argv[1])-1)
+
+		if (alldie == ft_atoi(argv[1]) )
+		{
 			break;
-		else if (allend == ft_atoi(argv[1])-1)
+		}
+		else if (allend == ft_atoi(argv[1]) )
+		{
 			break;
+		}
+		else
+		{
+			// printf("expected:%d all die :%d\n", alldie,ft_atoi(argv[1] - 1));
+			// printf("expected:%d all end :%d\n\n", allend ,ft_atoi(argv[1] - 1));
+		}
 	}
+	
 	// printf("all end:%d all died:%d\n", allend, alldie);
 
 

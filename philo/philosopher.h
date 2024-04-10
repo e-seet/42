@@ -30,7 +30,12 @@ struct s_philo {
 	int					status;
 
 	pthread_mutex_t		*l_mutex;
+	// int					locked_l;
+	// pthread_mutex_t		*locked_l;
 	pthread_mutex_t		*r_mutex;
+	// int					locked_r;
+	// pthread_mutex_t		*locked_r;
+	int					*mutexs_i;
 
 	pthread_mutex_t		eating_mutex;
 	pthread_mutex_t		sleeping_mutex;
