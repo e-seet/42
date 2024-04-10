@@ -20,8 +20,8 @@ void	handle_odd_philo_eating(struct s_philo *philo)
 		// {
 			pthread_mutex_lock(philo->l_mutex);
 			pthread_mutex_lock(philo->r_mutex);
-			printf("%ld %d has taken a fork\n",philo->curr, philo->id);
-			printf("%ld %d has taken a fork\n",philo->curr, philo->id);
+			printf("%ld %d has taken a fork\n",philo->curr - philo->start, philo->id);
+			printf("%ld %d has taken a fork\n",philo->curr - philo->start, philo->id);
 			
 			if (philo->max - 1 == philo->id)
 			{
@@ -35,7 +35,7 @@ void	handle_odd_philo_eating(struct s_philo *philo)
 			}
 			pthread_mutex_lock(&philo->eating_mutex);
 
-			printf("%ld %d is eating\n", philo->curr, philo->id);
+			printf("%ld %d is eating\n", philo->curr - philo->start, philo->id);
 			if (philo->time_to_eat > philo->time_to_die)
 			{
 				ft_usleep(philo->time_to_die);
@@ -78,8 +78,8 @@ void	handle_even_philo_eating(struct s_philo *philo)
 	{
 		pthread_mutex_lock(philo->l_mutex);
 		pthread_mutex_lock(philo->r_mutex);
-		printf("%ld %d has taken a fork\n",philo->curr, philo->id);
-		printf("%ld %d has taken a fork\n",philo->curr, philo->id);
+		printf("%ld %d has taken a fork\n",philo->curr - philo->start, philo->id);
+		printf("%ld %d has taken a fork\n",philo->curr - philo->start, philo->id);
 
 		if (philo->max - 1 == philo-> id)
 		{
@@ -93,7 +93,7 @@ void	handle_even_philo_eating(struct s_philo *philo)
 		}
 
 		// pthread_mutex_lock(&philo->eating_mutex);
-		printf("%ld %d is eating\n", philo->curr, philo->id);
+		printf("%ld %d is eating\n", philo->curr - philo->start, philo->id);
 		if (philo->time_to_eat > philo->time_to_die)
 		{
 			ft_usleep(philo->time_to_die);
@@ -143,11 +143,11 @@ void	handle_philo_eating(struct s_philo *philo)
 				philo->mutexs_i[philo->id] = 1;
 			}
 
-			printf("%ld %d has taken a fork\n",philo->curr, philo->id);
-			if ((philo->curr - philo->start - philo->last_meal_time)
+			printf("%ld %d has taken a fork\n",philo->curr - philo->start, philo->id);
+			if ((philo->curr- philo->last_meal_time)
 				+ philo->time_to_eat > philo->time_to_die)
 			ft_usleep(philo->time_to_die
-					- (philo->curr - philo->start - philo->last_meal_time));
+					- (philo->curr - philo->last_meal_time));
 			philo->time_of_death = get_current_time();
 			philo->died = 1;
 			philo->status = 1;
@@ -179,16 +179,15 @@ void	handle_philo_eating(struct s_philo *philo)
 			}
 			
 			printf("%ld %d has taken a fork\n",
-				philo->curr, philo->id);
+				philo->curr - philo->start, philo->id);
 			printf("%ld %d has taken a fork\n",
-				philo->curr, philo->id);
+				philo->curr - philo->start, philo->id);
 
 			// printf("checking left mutex:%p\n",  (void *) &philo->l_mutex);
 			// printf("checking right mutex:%p\n",  (void *) &philo->r_mutex);
 
 			// pthread_mutex_lock(&philo->eating_mutex);
-			printf("%ld %d is eating\n", philo->curr, philo->id);
-			if ((philo->curr - philo->start - philo->last_meal_time)
+			if ((philo->curr - philo->last_meal_time)
 				+ philo->time_to_eat > philo->time_to_die)
 			{
 				// printf("eating got issue!!!\n");
@@ -196,12 +195,13 @@ void	handle_philo_eating(struct s_philo *philo)
 				// printf("value:%lu\n", (philo->curr - philo->start - philo->last_meal_time)
 					// + philo->time_to_eat);
 				ft_usleep(philo->time_to_die
-					- (philo->curr - philo->start - philo->last_meal_time));
+					- (philo->curr - philo->last_meal_time));
 				philo->time_of_death = get_current_time();
 				philo->died = 1;
 			}
 			else
 			{
+				printf("%ld %d is eating\n", philo->curr - philo->start, philo->id);
 				// printf("%ld %d is eating | for %lu time %lu\n",
 					// philo->curr - philo->start, philo->id, philo->time_to_eat, get_current_time());
 				ft_usleep(philo->time_to_eat);

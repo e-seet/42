@@ -17,18 +17,17 @@ void * thread_function(void *arg)
 
 		if (philo->died == 1)
 		{
-			printf("%ld %d died\n", philo->time_of_death, philo->id);
+			printf("%ld %d died\n", philo->time_of_death - philo->start, philo->id);
 			break;
 		}
 		else if (philo->stop == 1)
 		{
 			break;
 		}
-		// else if (philo->curr - philo->start == 180000)
-		// {
-		// 	break;
-		// }
-
+		else if (philo->curr - philo->start == 180000)
+		{
+			break;
+		}	
 
 		// Odd number of philo. Split to 3 groups
 		if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id != philo->max) && (philo->id %2 == 1))

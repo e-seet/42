@@ -51,7 +51,7 @@ void	update_current_time_now(struct s_philo *philo)
 	pthread_mutex_lock(philo->curr_mutex);
 	if (philo->start == 0)
 		philo->start = get_current_time();
-	philo->curr = (get_current_time() - philo->start);
+	philo->curr = (get_current_time());
 
 	// printf("\n\npid:%d|updated time curr:%lu\n", philo->id, philo->curr);
 	pthread_mutex_unlock(philo->curr_mutex);
@@ -60,7 +60,7 @@ void	update_current_time_now(struct s_philo *philo)
 void	update_current_time(struct s_philo *philo)
 {
 	pthread_mutex_lock(philo->curr_mutex);
-	philo->curr = get_current_time() - philo->start;
+	philo->curr = get_current_time();
 	// printf("\n\npid:%d|updated time curr:%lu\n", philo->id, philo->curr);
 	pthread_mutex_unlock(philo->curr_mutex);
 }
@@ -70,7 +70,7 @@ void	check_death_condition(struct s_philo *philo)
 	if ((philo->last_meal_time > 0) && (( (philo->curr) - philo->last_meal_time)
 			> philo->time_to_die))
 	{
-		philo->time_of_death = get_current_time() - philo->start;
+		philo->time_of_death = get_current_time();
 		// printf("id%d\ntime of death:%lu.\nHow long since it passed:%lu\n",
 			// philo->id, philo->time_of_death,
 			// philo->curr - philo->last_meal_time);

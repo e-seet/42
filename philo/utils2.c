@@ -6,7 +6,7 @@ void	handle_odd_philo_sleeping(struct s_philo *philo)
 		&& (philo->id != philo->max) && (philo->id % 2 == 0))
 	{
 		pthread_mutex_lock(&philo->sleeping_mutex);
-		philo->last_meal_time = (philo->curr - philo->start);
+		philo->last_meal_time = (philo->curr);
 		printf("%ld %d is sleeping\n", philo->curr, philo->id);
 		if (philo->time_to_sleep > philo->time_to_die)
 		{
@@ -27,8 +27,8 @@ void	handle_odd_philo_thinking(struct s_philo *philo)
 		&& (philo->id == philo->max))
 	{
 		// pthread_mutex_lock(&philo->thinking_mutex);
-		philo->last_meal_time = (philo->curr - philo->start);
-		printf("%ld %d is thinking\n", (philo->curr), philo->id);
+		philo->last_meal_time = (philo->curr);
+		printf("%ld %d is thinking\n", (philo->curr - philo->start), philo->id);
 		philo->status = 3;
 
 		while (1)
@@ -66,8 +66,8 @@ void	handle_even_philo_sleeping(struct s_philo *philo)
 	if (philo->status == 0 && (philo->max % 2 == 0) && (philo->id % 2 == 1))
 	{
 		pthread_mutex_lock(&philo->sleeping_mutex);
-		printf("%ld %d is sleeping\n", philo->curr, philo->id);
-		philo->last_meal_time = (philo->curr - philo->start);
+		printf("%ld %d is sleeping\n", philo->curr - philo->start, philo->id);
+		philo->last_meal_time = (philo->curr);
 		if (philo->time_to_sleep > philo->time_to_die)
 		{
 			ft_usleep(philo->time_to_die);
@@ -86,15 +86,15 @@ void	handle_philo_sleeping(struct s_philo *philo)
 	if (philo->status == 1)
 	{
 		pthread_mutex_lock(&philo->sleeping_mutex);
-		printf("%ld %d is sleeping\n", (philo->curr), philo->id);
+		printf("%ld %d is sleeping\n", (philo->curr - philo->start), philo->id);
 
 		// printf("%ld %d is sleeping | for %lu time %lu\n",
 			// (philo->curr - philo->start), philo->id, philo->time_to_sleep, get_current_time());
-		if (((philo->curr - philo->start) - philo->last_meal_time)
+		if (((philo->curr) - philo->last_meal_time)
 			+ philo->time_to_sleep > philo->time_to_die)
 		{
 			ft_usleep((philo->time_to_die)
-				- ((philo->curr - philo->start) - philo->last_meal_time));
+				- ((philo->curr) - philo->last_meal_time));
 			philo->time_of_death = get_current_time();
 			philo->died = 1;
 		}
@@ -111,11 +111,11 @@ void	handle_philo_thinking(struct s_philo *philo)
 {
 	if (philo->status == 2)
 	{
-		printf("%ld %d is thinking\n", (philo->curr), philo->id);
+		printf("%ld %d is thinking\n", (philo->curr - philo->start), philo->id);
 		while (1)
 		{
 
-			if ((philo->curr - philo->start) - philo->last_meal_time > philo->time_to_die)
+			if ((philo->curr) - philo->last_meal_time > philo->time_to_die)
 			{
 				philo->time_of_death = (philo->curr);
 				philo->died = 1;
