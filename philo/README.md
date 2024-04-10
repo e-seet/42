@@ -236,7 +236,12 @@ I need to figure out a way to break all of my other threads when one of the thre
 cd Philosophers-42Project-Testers
 ./start.sh ../../ [0/1/2/3]
 
-[philo-Test #1]: Given 4 310 200 100 arguments to philo, a philosopher should die !
-[philo-Test #5]: Given 2 60 60 60 arguments to philo, a philosopher should die !
+philo-Test #1]: Given 4 310 200 100 arguments to philo, a philosopher should die !
+[philo-Test #2]: Given 4 410 200 200 arguments to philo, no philosopher should die !
+[philo-Test #3]: Given 4 800 200 200 arguments to philo, no philosopher should die !
+[philo-Test #4]: Given 4 410 200 200 7 arguments to philo, philo should only be stopped if each philosopher ate at least 7 times !
+[philo-Test #4]: Given 4 410 200 200 10 arguments to philo, philo should only be stopped if each philosopher ate at least 10 times !
+[philo-Test #4]: Given 4 410 200 200 12 arguments to philo, philo should only be stopped if each philosopher ate at least 12 times !
+[philo-Test #4]: Given 4 410 200 200 15 arguments to philo, philo should only be stopped if each philosopher ate at least 15 times !
 
-> https://github.com/dantonik/42-philosophers-tester?tab=readme-ov-file
+> https://github.com/dantonik/42-philosophers-tester
