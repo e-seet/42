@@ -26,6 +26,7 @@ void * thread_function(void *arg)
 		}
 		else if (philo->curr - philo->start == 180000)
 		{
+			printf("3min\n");
 			break;
 		}	
 

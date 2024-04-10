@@ -13,12 +13,13 @@
 # include "philosopher.h"
 # include "../libft/libft.h"
 
-// size_t	get_current_time(void);
+size_t	get_current_time(void);
 // int		ft_usleep(size_t milliseconds);
-// int		ft_usleep(size_t milliseconds);
+int		ft_usleep(size_t milliseconds);
+// int	ft_usleep(useconds_t time);
 
-u_int64_t	get_current_time(void);
-int	ft_usleep(useconds_t time);
+// u_int64_t	get_current_time(void);
+// int	ft_usleep(useconds_t time);
 
 void	freestuff(struct s_philo **philos, int num);
 void	update_current_time_now(struct s_philo *philo);
@@ -41,6 +42,7 @@ void	handle_even_philo_sleeping(struct s_philo *philo);
 void handle_philo_sleeping(struct s_philo *philo);
 void handle_philo_thinking(struct s_philo *philo);
 void handle_philo_eating(struct s_philo *philo);
+
 
 void	*thread_function(void *arg);
 

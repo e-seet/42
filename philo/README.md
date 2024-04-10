@@ -240,4 +240,3 @@ cd Philosophers-42Project-Testers
 [philo-Test #5]: Given 2 60 60 60 arguments to philo, a philosopher should die !
 
 > https://github.com/dantonik/42-philosophers-tester?tab=readme-ov-file
-

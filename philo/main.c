@@ -176,6 +176,7 @@ int main(int argc, char **argv)
 		}
 		else
 		{
+			ft_usleep(1);
 			// printf("expected:%d all die :%d\n", alldie,ft_atoi(argv[1] - 1));
 			// printf("expected:%d all end :%d\n\n", allend ,ft_atoi(argv[1] - 1));
 		}

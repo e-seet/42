@@ -1,57 +1,63 @@
 #include "utils.h"
 
 
-u_int64_t	get_current_time(void)
-{
-	struct timeval	tv;
+// u_int64_t	get_current_time(void)
+// {
+// 	struct timeval	tv;
 	
-	if (gettimeofday(&tv, NULL) == -1)
-		write(2, "gettimeofday() error\n", 22);
-	return ((tv.tv_sec * (u_int64_t)1000) + (tv.tv_usec / 1000));
-}
-
-int	ft_usleep(useconds_t time)
-{
-	u_int64_t	start;
-	start = get_current_time();
-	while ((get_current_time() - start) < time)
-		usleep(time / 10);
-	return(0);
-}
-
-// size_t	get_current_time(void)
-// {
-// 	struct timeval	time;
-
-// 	if (gettimeofday(&time, NULL) == -1)
+// 	if (gettimeofday(&tv, NULL) == -1)
 // 		write(2, "gettimeofday() error\n", 22);
-// 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+// 	return ((tv.tv_sec * (u_int64_t)1000) + (tv.tv_usec / 1000));
 // }
-// int	ft_usleep(size_t milliseconds)
+
+// int	ft_usleep(useconds_t time)
 // {
-// 	size_t	start;
-// 	size_t	elapsed;
-
+// 	u_int64_t	start;
 // 	start = get_current_time();
-// 	while (1)
-// 	{
-// 		elapsed = get_current_time() - start;
-// 		if (elapsed >= milliseconds)
-// 			break;
-// 		usleep(1000); // Sleep for 1 millisecond
-// 	}
-// 	return (0);
+// 	while ((get_current_time() - start) < time)
+// 		usleep(time / 10);
+// 	return(0);
 // }
 
-// int	ft_usleep(size_t milliseconds)
+size_t	get_current_time(void)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) == -1)
+		write(2, "gettimeofday() error\n", 22);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
+
+// int	ft_usleep(useconds_t time)
 // {
-// 	size_t	start;
-
+// 	u_int64_t	start;
 // 	start = get_current_time();
-// 	while ((get_current_time() - start) < milliseconds)
-// 		usleep(1000);
-// 	return (0);
+// 	while ((get_current_time() - start) < time)
+// 		usleep(time / 10);
+// 	return(get_current_time()-start);
 // }
+
+int	ft_usleep(size_t milliseconds)
+{
+	size_t	start;
+	size_t	elapsed;
+
+	// printf("how long to usleep :%zu\n", milliseconds);
+	start = get_current_time();
+	while (1)
+	{
+		elapsed = get_current_time() - start;
+		if (elapsed >= milliseconds)
+		{
+			return elapsed;
+			break;
+		}
+		// usleep(milliseconds/10);
+		usleep(1000); // 1000 = 1ms
+	}
+	return (0);
+}
+
 
 void	freestuff(struct s_philo **philos, int num)
 {
