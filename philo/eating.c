@@ -63,8 +63,8 @@ void	handle_odd_philo_eating(struct s_philo *philo)
 				philo->mutexs_i[philo->id + 1] = 0;
 			}
 
-			// printf("%ld %d has release a fork\n",philo->curr, philo->id);
-			// printf("%ld %d has release a fork\n",philo->curr, philo->id);
+			// printf("%ld %d has release a fork\n",philo->curr - philo->start, philo->id);
+			// printf("%ld %d has release a fork\n",philo->curr - philo->start, philo->id);
 			pthread_mutex_unlock(philo->l_mutex);
 			pthread_mutex_unlock(philo->r_mutex);
 
@@ -120,13 +120,9 @@ void	handle_even_philo_eating(struct s_philo *philo)
 			philo->mutexs_i[philo->id + 1] = 0;
 		}
 
-		// printf("%ld %d has release a fork\n",philo->curr, philo->id);
-		// printf("%ld %d has release a fork\n",philo->curr, philo->id);
-
 		pthread_mutex_unlock(philo->l_mutex);
 		pthread_mutex_unlock(philo->r_mutex);
-		// printf("%ld %d has return a fork\n",philo->curr, philo->id);
-		// printf("%ld %d has return a fork\n",philo->curr, philo->id);
+
 	}
 }
 
@@ -148,10 +144,10 @@ void	handle_philo_eating(struct s_philo *philo)
 			}
 
 			printf("%ld %d has taken a fork\n",philo->curr, philo->id);
-			if ((philo->curr - philo->last_meal_time)
+			if ((philo->curr - philo->start - philo->last_meal_time)
 				+ philo->time_to_eat > philo->time_to_die)
 			ft_usleep(philo->time_to_die
-					- (philo->curr - philo->last_meal_time));
+					- (philo->curr - philo->start - philo->last_meal_time));
 			philo->time_of_death = get_current_time();
 			philo->died = 1;
 			philo->status = 1;
@@ -164,7 +160,7 @@ void	handle_philo_eating(struct s_philo *philo)
 			{
 				philo->mutexs_i[philo->id] = 0;
 			}
-			// printf("%ld %d has release a fork\n",philo->curr, philo->id);
+			// printf("%ld %d has release a fork\n",philo->curr - philo->start, philo->id);
 			pthread_mutex_unlock(philo->l_mutex);
 		}
 		else
@@ -192,22 +188,22 @@ void	handle_philo_eating(struct s_philo *philo)
 
 			// pthread_mutex_lock(&philo->eating_mutex);
 			printf("%ld %d is eating\n", philo->curr, philo->id);
-			if ((philo->curr - philo->last_meal_time)
+			if ((philo->curr - philo->start - philo->last_meal_time)
 				+ philo->time_to_eat > philo->time_to_die)
 			{
 				// printf("eating got issue!!!\n");
 				// printf("check last meal time:%lu\n", philo->last_meal_time);
-				// printf("value:%lu\n", (philo->curr - philo->last_meal_time)
+				// printf("value:%lu\n", (philo->curr - philo->start - philo->last_meal_time)
 					// + philo->time_to_eat);
 				ft_usleep(philo->time_to_die
-					- (philo->curr - philo->last_meal_time));
+					- (philo->curr - philo->start - philo->last_meal_time));
 				philo->time_of_death = get_current_time();
 				philo->died = 1;
 			}
 			else
 			{
 				// printf("%ld %d is eating | for %lu time %lu\n",
-					// philo->curr, philo->id, philo->time_to_eat, get_current_time());
+					// philo->curr - philo->start, philo->id, philo->time_to_eat, get_current_time());
 				ft_usleep(philo->time_to_eat);
 				philo->last_meal_time = get_current_time();
 				if (philo->num_must_eat > 0)
@@ -228,8 +224,8 @@ void	handle_philo_eating(struct s_philo *philo)
 				philo->mutexs_i[philo->id + 1] = 0;
 			}
 
-			// printf("%ld %d has release a fork\n",philo->curr, philo->id);
-			// printf("%ld %d has release a fork\n",philo->curr, philo->id);
+			// printf("%ld %d has release a fork\n",philo->curr - philo->start, philo->id);
+			// printf("%ld %d has release a fork\n",philo->curr - philo->start, philo->id);
 			pthread_mutex_unlock(philo->l_mutex);
 			pthread_mutex_unlock(philo->r_mutex);
 		}

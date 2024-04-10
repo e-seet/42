@@ -39,6 +39,7 @@ int	setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *
 		// locked == 1 for lock
 		philo->curr_mutex = curr_mutex;
 		philo->died = 0;
+		philo->start = 0;
 		philo->stop = 0;
 		philo->num_of_time_eaten = 0;
 

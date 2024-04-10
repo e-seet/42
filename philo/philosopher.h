@@ -26,6 +26,7 @@ struct s_philo {
 	unsigned long		time_of_death;
 	int					stop;
 
+	unsigned long		start;
 	unsigned long		curr;
 	int					status;
 
