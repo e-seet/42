@@ -16,57 +16,57 @@
 // change the mask from 0 back to mask. 
 // TO DO! TAKE note
 // mac version uses 0 as it does not matter
-// void	events_init(t_fractal *fractal)
-// {
-// 	mlx_hook(
-// 		fractal->mlx_win,
-// 		KeyPress,
-// 		0,
-// 		key_handler,
-// 		fractal
-// 		);
-// 	mlx_hook(fractal->mlx_win,
-// 		ButtonPress,
-// 		0,
-// 		mouse_handler,
-// 		fractal);
-// 	mlx_hook(fractal->mlx_win,
-// 		DestroyNotify,
-// 		0,
-// 		close_handler,
-// 		fractal);
-// 	mlx_hook(fractal->mlx_win,
-// 		MotionNotify,
-// 		0,
-// 		julia_track,
-// 		fractal);
-// }
-
-// ubuntu ver
 void	events_init(t_fractal *fractal)
 {
 	mlx_hook(
 		fractal->mlx_win,
 		KeyPress,
-		KeyPressMask,
+		0,
 		key_handler,
-		fractal);
+		fractal
+		);
 	mlx_hook(fractal->mlx_win,
 		ButtonPress,
-		ButtonPressMask,
+		0,
 		mouse_handler,
 		fractal);
 	mlx_hook(fractal->mlx_win,
 		DestroyNotify,
-		StructureNotifyMask,
+		0,
 		close_handler,
 		fractal);
 	mlx_hook(fractal->mlx_win,
 		MotionNotify,
-		PointerMotionMask,
+		0,
 		julia_track,
 		fractal);
 }
+
+// ubuntu ver
+// void	events_init(t_fractal *fractal)
+// {
+// 	mlx_hook(
+// 		fractal->mlx_win,
+// 		KeyPress,
+// 		KeyPressMask,
+// 		key_handler,
+// 		fractal);
+// 	mlx_hook(fractal->mlx_win,
+// 		ButtonPress,
+// 		ButtonPressMask,
+// 		mouse_handler,
+// 		fractal);
+// 	mlx_hook(fractal->mlx_win,
+// 		DestroyNotify,
+// 		StructureNotifyMask,
+// 		close_handler,
+// 		fractal);
+// 	mlx_hook(fractal->mlx_win,
+// 		MotionNotify,
+// 		PointerMotionMask,
+// 		julia_track,
+// 		fractal);
+// }
 
 void	cleanup(t_fractal *fractal)
 {
