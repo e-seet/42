@@ -39,30 +39,28 @@ void	handle_even_philo_sleeping(struct s_philo *philo)
 		philo->status = 2;
 	}
 	pthread_mutex_unlock(&philo->sleeping_mutex);
-
 }
 
 void	handle_philo_sleeping(struct s_philo *philo)
 {
+	int	elapsed;
+
 	pthread_mutex_lock(&philo->sleeping_mutex);
-	int elapsed;
-	printf("normal sleep\n");
 	if (philo->status == 1)
 	{
 		printf("%ld %d is sleeping\n", (philo->curr - philo->start), philo->id);
-
-		// printf("%ld %d is sleeping | for %lu time %lu\n",
-			// (philo->curr - philo->start), philo->id, philo->time_to_sleep, get_current_time());
-		if (((philo->curr) - philo->last_meal_time) + philo->time_to_sleep > philo->time_to_die)
+		if (((philo->curr) - philo->last_meal_time)
+			+ philo->time_to_sleep > philo->time_to_die)
 		{
-			ft_usleep((philo->time_to_die) - ((philo->curr) - philo->last_meal_time));
+			ft_usleep((philo->time_to_die)
+				- ((philo->curr) - philo->last_meal_time));
 			philo->time_of_death = get_current_time();
 			philo->died = 1;
 		}
 		else
 		{
 			elapsed = ft_usleep(philo->time_to_sleep);
-			printf("sleep elapsed:%d\n", elapsed);
+			printf("%d sleep elapsed:%d\n", philo->id, elapsed);
 		}
 		philo->status = 2;
 	}

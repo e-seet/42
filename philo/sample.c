@@ -36,3 +36,10 @@ int main() {
     pthread_mutex_destroy(&mutex);
     return 0;
 }
+
+// checkmutex(&philos, argv, mutex);
+// printf("philo id:%d\n", philos[0]->id);
+// printf("time before dying:%lu\n", philos[0]->time_to_die);
+// printf("time needed to eat:%lu\n", philos[0]->time_to_eat);
+// printf("time needed to sleep:%lu\n", philos[0]->time_to_sleep);
+// printf("status:%d\n\n", philos[0]->status);

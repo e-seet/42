@@ -2,24 +2,26 @@
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
 
+//	how long before i will die if i dont eat
+// unsigned long		time_to_die;
+
+// how long i take to eat
+// unsigned long			time_to_eat;
+
+// how long i sleep
+// unsigned long			time_to_sleep;
+
 struct s_philo {
 	int					id;
 	int					max;
 
 	unsigned long		last_meal_time;
 
-	//how long before i will die if i dont eat
 	unsigned long		time_to_die;
-	// int					time_to_die;
 
-	// how long i take to eat
-	// int					time_to_eat;
-	unsigned long			time_to_eat;
-	// how long i sleep
-	// int					time_to_sleep;
-	unsigned long			time_to_sleep;
+	unsigned long		time_to_eat;
+	unsigned long		time_to_sleep;
 
-	// break out
 	int					num_must_eat;
 	int					num_of_time_eaten;
 	int					died;
@@ -31,11 +33,8 @@ struct s_philo {
 	int					status;
 
 	pthread_mutex_t		*l_mutex;
-	// int					locked_l;
-	// pthread_mutex_t		*locked_l;
 	pthread_mutex_t		*r_mutex;
-	// int					locked_r;
-	// pthread_mutex_t		*locked_r;
+
 	int					*mutexs_i;
 
 	pthread_mutex_t		eating_mutex;
