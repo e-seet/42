@@ -65,7 +65,10 @@ int	setstruct(struct s_philo ***philos, int argc, char **argv, pthread_mutex_t *
 		// 	printf("got issue in mutex\n");
 
 		if (argc == 6)
+		{
 			philo->num_must_eat = ft_atoi(argv[5]);
+			printf("philo num must eat:%d\n", philo->num_must_eat);
+		}
 		else
 			philo->num_must_eat = -1;
 		(*philos)[num] = philo;
@@ -133,16 +136,15 @@ int main(int argc, char **argv)
 	{
 		alldie = 0;
 		allend = 0;
+
+		// this segment check if anything died. If so, we go through and stop them all
 		num4 = ft_atoi(argv[1]);
-		
 		while (num4 --)
 		{
-			// printf("check if anything died\n");
-			// check if anything died. If so break
-			// printf("philos died:%d\n", philos[num4]->died);
 			if (philos[num4]->died == 1)
 			{
 				alldie = 1;
+				
 				alldie = 0;
 				num4 = ft_atoi(argv[1]);
 				while (num4 --)
@@ -154,16 +156,48 @@ int main(int argc, char **argv)
 			}
 		}
 
-		int num5;
+		// this segment check if all the philo ended, if so then i break out.
+		// for now i conmmnent out
+		// int num5;
+		// allend = 0;
+		// num5 = ft_atoi(argv[1]);
+		// while (num5 --)
+		// {
+		// 	if (philos[num5]->stop == 1)
+		// 		allend ++;
+		// }
+
+		
+
+		// Go through every philo and check whether 
+		// they have eaten the required amount
+		int num6;
 		allend = 0;
-		num5 = ft_atoi(argv[1]);
-		while (num5 --)
+		num6 = ft_atoi(argv[1]);
+		while (num6 --)
 		{
-			if (philos[num5]->stop == 1)
-				allend ++;
-			else if (philos[num5]->num_must_eat == 0)
+			if (philos[num6]->num_must_eat == 0)
 				allend ++;
 		}
+		// if eaten the required amount, then stop all
+		if (allend == ft_atoi(argv[1]))
+		{
+			num6 = ft_atoi(argv[1]);
+			while (num6 --)
+			{
+				philos[num6]->stop = 1;
+			}	
+		}
+
+		// do i need a final check? To be
+		// allend = 0;
+		// num6 = ft_atoi(argv[1]);
+		// while (num5 --)
+		// {
+		// 	if (philos[num5]->stop == 1)
+		// 		allend ++;
+		// }
+		// while loop to check this.
 
 
 		if (alldie == ft_atoi(argv[1]) )

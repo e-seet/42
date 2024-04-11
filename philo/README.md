@@ -232,7 +232,7 @@ I need to figure out a way to break all of my other threads when one of the thre
 
 #### Testers for running
 
->https://github.com/newlinuxbot/Philosphers-42Project-Tester<
+>https://github.com/newlinuxbot/Philosphers-42Project-Tester
 cd Philosophers-42Project-Testers
 ./start.sh ../../ [0/1/2/3]
 

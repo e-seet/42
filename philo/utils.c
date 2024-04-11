@@ -10,10 +10,13 @@ void * thread_function(void *arg)
 	{
 		update_current_time_now(philo);
 
-		if (philo->num_must_eat == 0)
-		{
-			break;
-		}
+		printf("%d,  num must eat%d\n", philo->id, philo->num_must_eat);
+		
+		// if (philo->num_must_eat == 0)
+		// {
+		// 	printf("%ld %d finished eating\n", philo->curr - philo->start, philo->id);
+		// 	// break;
+		// }
 
 		if (philo->died == 1)
 		{
@@ -22,6 +25,7 @@ void * thread_function(void *arg)
 		}
 		else if (philo->stop == 1)
 		{
+			printf("%ld %d stopped\n", philo->curr - philo->start, philo->id);
 			break;
 		}
 		else if (philo->curr - philo->start == 180000)
@@ -30,8 +34,21 @@ void * thread_function(void *arg)
 			break;
 		}	
 
+
+		if (philo->status == 1)
+		{
+			handle_philo_sleeping(philo);
+		}
+		else if (philo->status == 2)
+		{
+			handle_philo_thinking(philo);
+		}
+		else if (philo->status == 3)
+		{
+			handle_philo_eating(philo);
+		}
 		// Odd number of philo. Split to 3 groups
-		if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id != philo->max) && (philo->id %2 == 1))
+		else if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id != philo->max) && (philo->id %2 == 1))
 		{
 			// printf("handle odd eating\n");
 			handle_odd_philo_eating(philo);
@@ -57,18 +74,6 @@ void * thread_function(void *arg)
 			handle_even_philo_sleeping(philo);
 		}
 
-		else if (philo->status == 1)
-		{
-			handle_philo_sleeping(philo);
-		}
-		else if (philo->status == 2)
-		{
-			handle_philo_thinking(philo);
-		}
-		else if (philo->status == 3)
-		{
-			handle_philo_eating(philo);
-		}
 	}
     return NULL;
 }

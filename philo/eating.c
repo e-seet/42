@@ -47,7 +47,11 @@ void	handle_odd_philo_eating(struct s_philo *philo)
 			philo->last_meal_time = get_current_time();
 			philo->status = 1;
 			if (philo->num_must_eat > 0)
+			{
+				printf("%d num must eat before -1 :%d\n", philo->id, philo->num_must_eat);
 				philo->num_must_eat = philo->num_must_eat - 1;
+				printf("%d num must eat after -1:%d\n", philo->id, philo->num_must_eat);
+			}
 			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 			pthread_mutex_unlock(&philo->eating_mutex);
 
@@ -105,7 +109,12 @@ void	handle_even_philo_eating(struct s_philo *philo)
 		philo->last_meal_time = get_current_time();
 		philo->status = 1;
 		if (philo->num_must_eat > 0)
+		{
+			printf("%d num must eat before -1 :%d\n", philo->id, philo->num_must_eat);
 			philo->num_must_eat = philo->num_must_eat - 1;
+			printf("%d num must eat after -1:%d\n", philo->id, philo->num_must_eat);
+
+		}
 		philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 		// pthread_mutex_unlock(&philo->eating_mutex);
 
@@ -184,7 +193,11 @@ void	handle_philo_eating(struct s_philo *philo)
 					printf("eating elapsed: %d\n", elapsed);
 					philo->last_meal_time = get_current_time();
 					if (philo->num_must_eat > 0)
+					{
+						printf("%d num must eat before -1 :%d\n", philo->id, philo->num_must_eat);
 						philo->num_must_eat = philo->num_must_eat - 1;
+						printf("%d num must eat after -1:%d\n", philo->id, philo->num_must_eat);
+					}
 					philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 				}
 				philo->status = 1;
@@ -251,7 +264,11 @@ void	handle_philo_eating(struct s_philo *philo)
 					printf("eating elapsed: %d\n", elapsed);
 					philo->last_meal_time = get_current_time();
 					if (philo->num_must_eat > 0)
+					{
+						printf("%d num must eat before -1 :%d\n", philo->id, philo->num_must_eat);
 						philo->num_must_eat = philo->num_must_eat - 1;
+						printf("%d num must eat after -1:%d\n", philo->id, philo->num_must_eat);
+					}
 					philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 				}
 				philo->status = 1;
