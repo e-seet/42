@@ -5,6 +5,7 @@ void	init_philo_mutexs(struct s_philo *philo, int *mutexs_i,
 {
 	pthread_mutex_t	*curr_mutex;
 	int				num;
+	int				num2;
 
 	num = ft_atoi(argv[1]);
 	curr_mutex = malloc(sizeof(pthread_mutex_t));
@@ -17,14 +18,18 @@ void	init_philo_mutexs(struct s_philo *philo, int *mutexs_i,
 		philo->r_mutex = &mutexs[0];
 	else
 		philo->r_mutex = &mutexs[num + 1];
+	philo->routinesemaphore = (int *)malloc(sizeof(int) * 4);
+	num2 = 4;
+	while (--num2)
+	{
+		philo->routinesemaphore[num2] = 0;
+	}
+	philo->routinesemaphore[0] = 1; 
 }
 
-void	init_philo(struct s_philo *philo, char **argv, int argc)
+void	init_philo(struct s_philo *philo, char **argv, int argc, int id)
 {
-	int	num;
-
-	num = ft_atoi(argv[1]);
-	philo->id = num;
+	philo->id = id;
 	philo->status = 0;
 	philo->max = ft_atoi(argv[1]);
 	philo->time_to_die = ft_atoi(argv[2]);
@@ -63,8 +68,8 @@ int	setstruct(struct s_philo ***philos, int argc,
 		philo = (struct s_philo *) malloc (sizeof(struct s_philo));
 		if (philo == NULL)
 			return (-1);
-		init_philo(philo, argv, argc);
 		init_philo_mutexs(philo, mutexs_i, mutexs, argv);
+		init_philo(philo, argv, argc, num);
 		(*philos)[num] = philo;
 	}
 	return (0);
@@ -79,7 +84,7 @@ void	stopall(int num, struct s_philo **philos, int *allend)
 	}
 }
 
-void	initmutex(pthread_mutex_t *mutexs, int num)
+void	init_fork_mutex(pthread_mutex_t *mutexs, int num)
 {
 	int	i;
 
@@ -160,33 +165,43 @@ void	duringthreads(char **argv, struct s_philo **philos)
 int	main(int argc, char **argv)
 {
 	struct s_philo	**philos;
-	int				allend;
+	// int				allend;
 	pthread_mutex_t	*mutexs;
 	pthread_t		*threads;
 
 	philos = NULL;
 	threads = malloc(ft_atoi(argv[1]) * sizeof(pthread_t));
 	mutexs = malloc(ft_atoi(argv[1]) * sizeof(pthread_mutex_t));
-	initmutex(mutexs, ft_atoi(argv[1]));
+	init_fork_mutex(mutexs, ft_atoi(argv[1]));
 	if (argc == 5 || argc == 6)
 		setstruct(&philos, argc, argv, mutexs);
 	else
 		return (-1);
 	createthreads(threads, ft_atoi(argv[1]), philos);
+	// int num = ft_atoi(argv[1]);
+	// while (num--)
+	// {
+	// 	pthread_create(&threads[num], NULL, thread_function, philos[num]);
+	// }
 	duringthreads(argv, philos);
-	while (1)
-	{
-		allend = 0;
-		check_if_any_died(ft_atoi(argv[1]), philos, &allend);
-		if (allend == ft_atoi(argv[1]))
-			break ;
-		allend = 0;
-		check_if_all_ate(ft_atoi(argv[1]), philos, &allend);
-		if (allend == ft_atoi(argv[1]))
-			break ;
-		else
-			ft_usleep(1);
-	}
-	// jointhreads(threads, ft_atoi(argv[1]));
+	// while (1)
+	// {
+	// 	allend = 0;
+	// 	check_if_any_died(ft_atoi(argv[1]), philos, &allend);
+	// 	if (allend == ft_atoi(argv[1]))
+	// 		break ;
+	// 	allend = 0;
+	// 	check_if_all_ate(ft_atoi(argv[1]), philos, &allend);
+	// 	if (allend == ft_atoi(argv[1]))
+	// 		break ;
+	// 	else
+	// 		ft_usleep(1);
+	// }
+	jointhreads(threads, ft_atoi(argv[1]));
+	// num = ft_atoi(argv[1]);
+	// while (num--)
+	// {
+	// 	pthread_join(threads[num], NULL);
+	// }
 	freestuff(philos, ft_atoi(argv[1]));
 }
