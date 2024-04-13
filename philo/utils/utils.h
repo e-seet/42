@@ -2,7 +2,7 @@
 #ifndef UTILS_H
 # define UTILS_H
 
-# include "string.h" // may need to comment out for memset
+// # include "string.h" // may need to comment out for memset
 # include "stdio.h" // to remove for printf
 
 # include "stdlib.h"

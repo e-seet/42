@@ -36,7 +36,7 @@ struct s_philo {
 	pthread_mutex_t		*r_mutex;
 
 	int					*mutexs_i;
-
+	int					*whichroutine;
 	pthread_mutex_t		eating_mutex;
 	pthread_mutex_t		sleeping_mutex;
 	pthread_mutex_t		thinking_mutex;
