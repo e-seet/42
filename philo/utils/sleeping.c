@@ -1,5 +1,11 @@
 #include "utils.h"
 
+void	unlock_mutex_sleeping(struct s_philo *philo)
+{
+	pthread_mutex_unlock(&philo->sleeping_mutex);
+	pthread_mutex_unlock(philo->curr_mutex);
+}
+
 void	handle_odd_philo_sleeping(struct s_philo *philo)
 {
 	pthread_mutex_lock(&philo->sleeping_mutex);
@@ -22,8 +28,7 @@ void	handle_odd_philo_sleeping(struct s_philo *philo)
 		philo->routinesemaphore[0] = 0;
 		philo->routinesemaphore[2] = 1;
 	}
-	pthread_mutex_unlock(&philo->sleeping_mutex);
-	pthread_mutex_unlock(philo->curr_mutex);
+	unlock_mutex_sleeping(philo);
 }
 
 void	handle_even_philo_sleeping(struct s_philo *philo)
@@ -47,8 +52,7 @@ void	handle_even_philo_sleeping(struct s_philo *philo)
 		philo->routinesemaphore[0] = 0;
 		philo->routinesemaphore[2] = 1;
 	}
-	pthread_mutex_unlock(&philo->sleeping_mutex);
-	pthread_mutex_unlock(philo->curr_mutex);
+	unlock_mutex_sleeping(philo);
 }
 
 void	handle_philo_sleeping(struct s_philo *philo)
@@ -77,6 +81,5 @@ void	handle_philo_sleeping(struct s_philo *philo)
 		philo->routinesemaphore[0] = 0;
 		philo->routinesemaphore[2] = 1;
 	}
-	pthread_mutex_unlock(&philo->sleeping_mutex);
-	pthread_mutex_unlock(philo->curr_mutex);
+	unlock_mutex_sleeping(philo);
 }

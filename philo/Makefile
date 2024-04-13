@@ -12,7 +12,9 @@ CFLAGS := -Wall -Wextra -Werror
 # **************************************************************************** #
 # Source
 # **************************************************************************** #
-SRC_FILES			:=	main.c	utils/thread.c	utils/sleeping.c	utils/eating.c utils/eatingutils.c utils/thinking.c utils/utils.c
+SRC_FILES			:=	main.c				utils/setup.c		utils/thread.c	utils/sleeping.c	\
+						utils/eating.c		utils/eatingutils.c	utils/utils2.c	\
+						utils/thinking.c	utils/utils.c
 OBJS				=	$(SRC_FILES:.c=.o)
 
 # **************************************************************************** #
