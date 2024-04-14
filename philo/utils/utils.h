@@ -1,4 +1,3 @@
-
 #ifndef UTILS_H
 # define UTILS_H
 
@@ -46,5 +45,22 @@ void	*thread_function(void *arg);
 
 void	lock_bothforkmutex(struct s_philo *philo);
 void	unlock_bothforkmutex(struct s_philo *philo);
+
+//setup
+void	init_philo_mutexs(struct s_philo *philo, int *mutexs_i,
+int num, pthread_mutex_t *mutexs);
+
+void	init_philo(struct s_philo *philo, char **argv, int argc, int id);
+
+int		setstruct(struct s_philo ***philos, int argc,
+			char **argv, pthread_mutex_t *mutexs);
+
+void	init_fork_mutex(pthread_mutex_t *mutexs, int num);
+
+
+// checkers
+void	check_if_all_ate(int num, struct s_philo **philos, int *allend);
+void	check_if_any_died(int num, struct s_philo **philos, int *allend);
+void	stopall(int num, struct s_philo **philos, int *allend);
 
 #endif
