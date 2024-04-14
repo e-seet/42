@@ -12,10 +12,27 @@
 
 #include "utils.h"
 
+// routinesemaphore 1 2 3 for the thread's process
+// curr_routine_mutex is the mutex for the thread's routine.
+// at where  do what
+
+// for forks under: philo->l_mutex, r_mutex
+// mutexs[0]...
+
+// mutexs_i is array storing which forks are taken; 
+// to check which for available without mutex
+
+
 void	stopall(int num, struct s_philo **philos, int *allend)
 {
 	while (num --)
 	{
+		pthread_mutex_unlock(philos[num]->curr_routine_mutex);
+		if (philos[num]->status == 3)
+		{
+			pthread_mutex_unlock(philos[num]->l_mutex);
+			pthread_mutex_unlock(philos[num]->r_mutex);
+		}
 		philos[num]->stop = 1;
 		*allend = *allend + 1;
 	}

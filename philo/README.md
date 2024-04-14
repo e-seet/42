@@ -246,3 +246,5 @@ philo-Test #1]:  Given 4 310 200 100 arguments to philo, a philosopher should di
 [philo-Test #4]: Given 4 410 200 200 15 arguments to philo, philo should only be stopped if each philosopher ate at least 15 times!
 
 > https://github.com/dantonik/42-philosophers-tester
+valgrind --tool=helgrind ./philo 4 410 200 200 4
+valgrind --tool=drd ./philo 2 410 200 200 1

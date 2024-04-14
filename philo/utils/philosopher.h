@@ -50,9 +50,9 @@ struct s_philo {
 	int					*routinesemaphore;
 
 	pthread_mutex_t		*curr_routine_mutex;
-	pthread_mutex_t		eating_mutex;
-	pthread_mutex_t		sleeping_mutex;
-	pthread_mutex_t		thinking_mutex;
+	// pthread_mutex_t		eating_mutex;
+	// pthread_mutex_t		sleeping_mutex;
+	// pthread_mutex_t		thinking_mutex;
 
 	pthread_mutex_t		*curr_mutex;
 };

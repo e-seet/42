@@ -119,7 +119,7 @@ void	handle_odd_philo_thinking(struct s_philo *philo)
 {
 	int	breakval;
 
-	pthread_mutex_lock(&philo->thinking_mutex);
+	// pthread_mutex_lock(&philo->thinking_mutex);
 	pthread_mutex_lock(philo->curr_routine_mutex);
 	if (philo->status == 0 && philo->routinesemaphore[0] == 1
 		&& (philo->max % 2 == 1) && (philo->id == philo->max))
@@ -135,9 +135,10 @@ void	handle_odd_philo_thinking(struct s_philo *philo)
 			if (breakval == 1)
 				break ;
 		}
-		pthread_mutex_unlock(&philo->thinking_mutex);
-		pthread_mutex_unlock(philo->curr_routine_mutex);
+		// pthread_mutex_unlock(&philo->thinking_mutex);
 	}
+	pthread_mutex_unlock(philo->curr_routine_mutex);
+
 }
 
 void	change_thinking_semaphore(struct s_philo *philo)
@@ -149,7 +150,7 @@ void	change_thinking_semaphore(struct s_philo *philo)
 
 void	handle_philo_thinking(struct s_philo *philo)
 {
-	pthread_mutex_lock(&philo->thinking_mutex);
+	// pthread_mutex_lock(&philo->thinking_mutex);
 	pthread_mutex_lock(philo->curr_routine_mutex);
 	if (philo->status == 2 && philo->routinesemaphore[2] == 1
 	)
@@ -171,6 +172,6 @@ void	handle_philo_thinking(struct s_philo *philo)
 		}
 		change_thinking_semaphore(philo);
 	}
-	pthread_mutex_unlock(&philo->thinking_mutex);
+	// pthread_mutex_unlock(&philo->thinking_mutex);
 	pthread_mutex_unlock(philo->curr_routine_mutex);
 }

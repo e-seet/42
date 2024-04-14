@@ -31,7 +31,7 @@ int num, pthread_mutex_t *mutexs)
 	pthread_mutex_t	*curr_routine_mutex;
 	int				num2;
 
-	num2 = 4;
+	num2 = 5;
 	philo->mutexs_i = mutexs_i;
 	curr_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	curr_routine_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
@@ -48,6 +48,7 @@ int num, pthread_mutex_t *mutexs)
 	philo->routinesemaphore = (int *)malloc(sizeof(int) * 4);
 	while (num2-- > 0)
 	{
+		printf("num2:%d\n", num2);
 		philo->routinesemaphore[num2] = 0;
 	}
 	philo->routinesemaphore[0] = 1;

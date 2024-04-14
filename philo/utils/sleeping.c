@@ -14,13 +14,13 @@
 
 void	unlock_mutex_sleeping(struct s_philo *philo)
 {
-	pthread_mutex_unlock(&philo->sleeping_mutex);
+	// pthread_mutex_unlock(&philo->sleeping_mutex);
 	pthread_mutex_unlock(philo->curr_routine_mutex);
 }
 
 void	lock_mutex_sleeping(struct s_philo *philo)
 {
-	pthread_mutex_lock(&philo->sleeping_mutex);
+	// pthread_mutex_lock(&philo->sleeping_mutex);
 	pthread_mutex_lock(philo->curr_routine_mutex);
 }
 

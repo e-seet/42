@@ -30,7 +30,7 @@ void	lock_bothforkmutex(struct s_philo *philo)
 		philo->mutexs_i[philo->id] = 1;
 		philo->mutexs_i[philo->id + 1] = 1;
 	}
-	pthread_mutex_lock(&philo->eating_mutex);
+	// pthread_mutex_lock(&philo->eating_mutex);
 	pthread_mutex_lock(philo->curr_routine_mutex);
 	printf("%ld %d is eating\n",
 		philo->curr - philo->start, philo->id);
@@ -45,7 +45,7 @@ void	unlock_bothforkmutex(struct s_philo *philo)
 	philo->status = 1;
 	philo->routinesemaphore[1] = 1;
 	pthread_mutex_unlock(philo->curr_routine_mutex);
-	pthread_mutex_unlock(&philo->eating_mutex);
+	// pthread_mutex_unlock(&philo->eating_mutex);
 	pthread_mutex_unlock(philo->r_mutex);
 	pthread_mutex_unlock(philo->l_mutex);
 	if (philo->max - 1 == philo->id)

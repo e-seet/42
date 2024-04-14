@@ -25,11 +25,6 @@ int	breakfunction(struct s_philo *philo)
 		printf("%ld %d stopped\n", philo->curr - philo->start, philo->id);
 		return (1);
 	}
-	else if (philo->curr - philo->start == 180000)
-	{
-		printf("3min\n");
-		return (1);
-	}
 	else
 		return (0);
 }
