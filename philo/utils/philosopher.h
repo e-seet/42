@@ -57,9 +57,9 @@ struct s_philo {
 	pthread_mutex_t		*curr_mutex;
 };
 
-// store previous state
-// eat:1 sleep:2 think:3
-// status;
+//statuus 1 = sleeping
+// status 2 = thinking
+// status 3  = eating
 
 // i may something like array of forks for mutex.
 

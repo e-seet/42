@@ -21,7 +21,7 @@ void	unlock_mutex_sleeping(struct s_philo *philo)
 void	lock_mutex_sleeping(struct s_philo *philo)
 {
 	pthread_mutex_lock(&philo->sleeping_mutex);
-	pthread_mutex_lock(philo->curr_mutex);
+	pthread_mutex_lock(philo->curr_routine_mutex);
 }
 
 void	handle_odd_philo_sleeping(struct s_philo *philo)

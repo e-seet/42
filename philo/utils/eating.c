@@ -14,7 +14,9 @@
 
 void	lastfella(struct s_philo *philo, int *elapsed)
 {
-	if (philo->mutexs_i[philo->id] == 0 && (philo->mutexs_i[0] == 0))
+	if (philo->mutexs_i[philo->id] == 0 && (philo->mutexs_i[0] == 0)
+		&& (philo->routinesemaphore[3] == 1)
+		)
 	{
 		lock_bothforkmutex(philo);
 		if ((philo->curr - philo->last_meal_time)
@@ -86,9 +88,6 @@ void	handle_odd_philo_eating(struct s_philo *philo)
 		{
 			ft_usleep(philo->time_to_eat);
 			philo->last_meal_time = get_current_time();
-			philo->status = 1;
-			philo->routinesemaphore[0] = 0;
-			philo->routinesemaphore[1] = 1;
 			if (philo->num_must_eat > 0)
 				philo->num_must_eat = philo->num_must_eat - 1;
 			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;

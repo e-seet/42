@@ -38,13 +38,16 @@ void	lock_bothforkmutex(struct s_philo *philo)
 
 void	unlock_bothforkmutex(struct s_philo *philo)
 {
+	if (philo->routinesemaphore[0] == 1)
+		philo->routinesemaphore[0] = 0;
+	else
+		philo->routinesemaphore[3] = 0;
 	philo->status = 1;
-	philo->routinesemaphore[3] = 0;
 	philo->routinesemaphore[1] = 1;
-	pthread_mutex_unlock(&philo->eating_mutex);
 	pthread_mutex_unlock(philo->curr_routine_mutex);
-	pthread_mutex_unlock(philo->l_mutex);
+	pthread_mutex_unlock(&philo->eating_mutex);
 	pthread_mutex_unlock(philo->r_mutex);
+	pthread_mutex_unlock(philo->l_mutex);
 	if (philo->max - 1 == philo->id)
 	{
 		philo->mutexs_i[philo->id] = 0;
