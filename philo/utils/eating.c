@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   eating.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eseet <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/14 15:19:00 by eseet             #+#    #+#             */
+/*   Updated: 2024/04/14 15:19:01 by eseet            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 void	lastfella(struct s_philo *philo, int *elapsed)
@@ -59,8 +71,9 @@ void	normalfella(struct s_philo *philo, int *elapsed)
 
 void	handle_odd_philo_eating(struct s_philo *philo)
 {
-	if (philo->status == 0 && (philo->max % 2 == 1)
-		&& (philo->id != philo->max) && (philo->id % 2 == 1))
+	if (philo->status == 0 && philo->routinesemaphore[0] == 1
+		&& (philo->max % 2 == 1) && (philo->id != philo->max)
+		&& (philo->id % 2 == 1))
 	{
 		lock_bothforkmutex(philo);
 		if (philo->time_to_eat > philo->time_to_die)
@@ -74,6 +87,8 @@ void	handle_odd_philo_eating(struct s_philo *philo)
 			ft_usleep(philo->time_to_eat);
 			philo->last_meal_time = get_current_time();
 			philo->status = 1;
+			philo->routinesemaphore[0] = 0;
+			philo->routinesemaphore[1] = 1;
 			if (philo->num_must_eat > 0)
 				philo->num_must_eat = philo->num_must_eat - 1;
 			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
@@ -84,7 +99,8 @@ void	handle_odd_philo_eating(struct s_philo *philo)
 
 void	handle_even_philo_eating(struct s_philo *philo)
 {
-	if (philo->status == 0 && (philo->max % 2 == 0) && (philo->id % 2 == 0))
+	if (philo->status == 0 && philo->routinesemaphore[0] == 1
+		&& (philo->max % 2 == 0) && (philo->id % 2 == 0))
 	{
 		lock_bothforkmutex(philo);
 		if (philo->time_to_eat > philo->time_to_die)

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosopher.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eseet <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/14 15:19:15 by eseet             #+#    #+#             */
+/*   Updated: 2024/04/14 15:19:15 by eseet            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
@@ -38,6 +49,7 @@ struct s_philo {
 	int					*mutexs_i;
 	int					*routinesemaphore;
 
+	pthread_mutex_t		*curr_routine_mutex;
 	pthread_mutex_t		eating_mutex;
 	pthread_mutex_t		sleeping_mutex;
 	pthread_mutex_t		thinking_mutex;
