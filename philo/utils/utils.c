@@ -66,14 +66,27 @@ int	ft_usleep(size_t milliseconds)
 	return (0);
 }
 
-void	freestuff(struct s_philo **philos, int num)
+void	freestuff(struct s_philo **philos, int num, pthread_mutex_t *mutexs, pthread_t *threads)
 {
 	while (num --)
 	{
 		pthread_mutex_destroy(philos[num]->curr_mutex);
+		pthread_mutex_destroy(philos[num]->curr_routine_mutex);
+		pthread_mutex_destroy(philos[num]->l_mutex);
+		pthread_mutex_destroy(&mutexs[num]);
+
+		// issue freeing threads
+		free(&threads[num]); 
+		
+		free(&mutexs[num]); // is this mutex or int array. To find out
 		free(philos[num]->curr_mutex);
+		free(philos[num]->curr_routine_mutex);
+		free(philos[num]->l_mutex);
+
 		free(philos[num]);
 	}
+	free(philos);
+
 }
 
 void	update_current_time_now(struct s_philo *philo)

@@ -33,8 +33,8 @@ int num, pthread_mutex_t *mutexs)
 
 	num2 = 5;
 	philo->mutexs_i = mutexs_i;
-	curr_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	curr_routine_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	curr_mutex = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
+	curr_routine_mutex = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
 	pthread_mutex_init(curr_mutex, NULL);
 	philo->curr_mutex = curr_mutex;
 	pthread_mutex_init(curr_routine_mutex, NULL);
@@ -45,10 +45,10 @@ int num, pthread_mutex_t *mutexs)
 		philo->r_mutex = &mutexs[0];
 	else
 		philo->r_mutex = &mutexs[num + 1];
-	philo->routinesemaphore = (int *)malloc(sizeof(int) * 4);
+	// philo->routinesemaphore = (int *)malloc(sizeof(int) * 4);
+	philo->routinesemaphore = (int *)ft_calloc(4, sizeof(int));
 	while (num2-- > 0)
 	{
-		printf("num2:%d\n", num2);
 		philo->routinesemaphore[num2] = 0;
 	}
 	philo->routinesemaphore[0] = 1;
@@ -81,10 +81,12 @@ int	setstruct(struct s_philo ***philos, int argc,
 	int				*mutexs_i;
 
 	num = ft_atoi(argv[1]);
-	*philos = (struct s_philo **)malloc(sizeof(struct s_philo *) * num);
+	// *philos = (struct s_philo **)malloc(sizeof(struct s_philo *) * num);
+	*philos = (struct s_philo **)ft_calloc(num, sizeof(struct s_philo *));
+	
 	if (philos == NULL)
 		return (-1);
-	mutexs_i = malloc(num * sizeof(int));
+	mutexs_i = ft_calloc(num, sizeof(int));
 	while (num--)
 	{
 		mutexs_i[num] = 0;
@@ -92,7 +94,7 @@ int	setstruct(struct s_philo ***philos, int argc,
 	num = ft_atoi(argv[1]);
 	while (num--)
 	{
-		philo = (struct s_philo *) malloc (sizeof(struct s_philo));
+		philo = (struct s_philo *) ft_calloc (1, sizeof(struct s_philo));
 		if (philo == NULL)
 			return (-1);
 		init_philo(philo, argv, argc, num);

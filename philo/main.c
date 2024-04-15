@@ -12,14 +12,6 @@
 
 #include "utils/utils.h"
 
-void	jointhreads(pthread_t *threads, int num)
-{
-	while (num--)
-	{
-		pthread_join(threads[num], NULL);
-	}
-}
-
 void	createthreads(pthread_t *threads, int num, struct s_philo **philos)
 {
 	while (num--)
@@ -28,6 +20,13 @@ void	createthreads(pthread_t *threads, int num, struct s_philo **philos)
 	}
 }
 
+void	jointhreads(pthread_t *threads, int num)
+{
+	while (num--)
+	{
+		pthread_join(threads[num], NULL);
+	}
+}
 
 void *thread_observe(void *arg)
 {
@@ -91,19 +90,24 @@ int	main(int argc, char **argv)
 	pthread_t	thread1;
 	philos = NULL;
 	num = ft_atoi(argv[1]);
-	threads = malloc(num * sizeof(pthread_t));
-	mutexs = malloc(num * sizeof(pthread_mutex_t));
+	// threads = malloc(num * sizeof(pthread_t));
+	threads = ft_calloc(num, sizeof(pthread_t));
+	mutexs = ft_calloc(num, sizeof(pthread_mutex_t));
 	// init_fork_mutex(mutexs, num);
 	if (argc == 5 || argc == 6)
 		setstruct(&philos, argc, argv, mutexs);
 	else
 		return (-1);
+
+	//extra thread
     pthread_create(&thread1, NULL, thread_observe, philos);
+
+	// my bulk of philos	
 	createthreads(threads, ft_atoi(argv[1]), philos);
 	// duringthreads(argv, philos);
 	jointhreads(threads, ft_atoi(argv[1]));
 
 	pthread_join(thread1, NULL);
 
-	freestuff(philos, ft_atoi(argv[1]));
+	freestuff(philos, ft_atoi(argv[1]), mutexs, threads);
 }

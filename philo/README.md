@@ -217,7 +217,7 @@ And as always, we can’t forget to check for memory leaks with -fsanitize=addre
 
 #### Testers
 
-> https://github.com/dantonik/42-philosophers-tester?tab=readme-ov-file
+<https://github.com/dantonik/42-philosophers-tester?>
 cd 42-philosophers-tester
 ./test.sh
 ./test.sh /path/to/philo
@@ -232,7 +232,7 @@ I need to figure out a way to break all of my other threads when one of the thre
 
 #### Testers for running
 
->https://github.com/newlinuxbot/Philosphers-42Project-Tester
+<https://github.com/newlinuxbot/Philosphers-42Project-Tester>
 cd Philosophers-42Project-Testers
 ./start.sh ../../ [0/1/2/3]
 
@@ -245,6 +245,6 @@ philo-Test #1]:  Given 4 310 200 100 arguments to philo, a philosopher should di
 [philo-Test #4]: Given 4 410 200 200 12 arguments to philo, philo should only be stopped if each philosopher ate at least 12 times!
 [philo-Test #4]: Given 4 410 200 200 15 arguments to philo, philo should only be stopped if each philosopher ate at least 15 times!
 
-> https://github.com/dantonik/42-philosophers-tester
+<https://github.com/dantonik/42-philosophers-tester>
 valgrind --tool=helgrind ./philo 4 410 200 200 4
 valgrind --tool=drd ./philo 2 410 200 200 1

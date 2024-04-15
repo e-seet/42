@@ -33,7 +33,10 @@ void	stopall(int num, struct s_philo **philos, int *allend)
 			pthread_mutex_unlock(philos[num]->l_mutex);
 			pthread_mutex_unlock(philos[num]->r_mutex);
 		}
+		pthread_mutex_lock(philos[num]->curr_routine_mutex);
 		philos[num]->stop = 1;
+		pthread_mutex_unlock(philos[num]->curr_routine_mutex);
+
 		*allend = *allend + 1;
 	}
 }

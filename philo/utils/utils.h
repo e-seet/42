@@ -32,11 +32,9 @@ int		ft_usleep(size_t milliseconds);
 // u_int64_t	get_current_time(void);
 // int	ft_usleep(useconds_t time);
 
-void	freestuff(struct s_philo **philos, int num);
+// void	freestuff(struct s_philo **philos, int num);
+void	freestuff(struct s_philo **philos, int num, pthread_mutex_t *mutexs, pthread_t *threads);
 void	update_current_time_now(struct s_philo *philo);
-void	check_death_condition(struct s_philo *philo);
-void	check_finished_eating(struct s_philo *philo);
-
 void	check_death_condition(struct s_philo *philo);
 void	check_finished_eating(struct s_philo *philo);
 
