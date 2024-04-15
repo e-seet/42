@@ -67,7 +67,7 @@ char	*copycontent(const char *s, char c)
 		return (0);
 	i = 0;
 	len = wordlen(s, c);
-	str = malloc((len + 1) * sizeof(char));
+	str = ft_calloc((len + 1), sizeof(char));
 	if (!str)
 		return (NULL);
 	while (len > i)
@@ -97,7 +97,7 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	str = (char *) s;
 	num = numofwords(str, c);
-	strs = malloc(sizeof(char *) * (num + 1));
+	strs = ft_calloc((num + 1), sizeof(char *));
 	if (!strs)
 		return (0);
 	while (num > i)
