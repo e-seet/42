@@ -79,7 +79,10 @@ int	setstruct(struct s_philo ***philos, int argc,
 	int				num;
 	struct s_philo	*philo;
 	int				*mutexs_i;
+	pthread_mutex_t	*printf_mutex;
 
+	printf_mutex = ft_calloc(1, sizeof(pthread_mutex_t));
+	pthread_mutex_init(printf_mutex, NULL);
 	num = ft_atoi(argv[1]);
 	// *philos = (struct s_philo **)malloc(sizeof(struct s_philo *) * num);
 	*philos = (struct s_philo **)ft_calloc(num, sizeof(struct s_philo *));
@@ -99,6 +102,7 @@ int	setstruct(struct s_philo ***philos, int argc,
 			return (-1);
 		init_philo(philo, argv, argc, num);
 		init_philo_mutexs(philo, mutexs_i, num, mutexs);
+		philo->printf_mutex = printf_mutex;
 		philo->mutexs_i = mutexs_i;
 		(*philos)[num] = philo;
 	}

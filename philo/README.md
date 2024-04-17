@@ -247,4 +247,5 @@ philo-Test #1]:  Given 4 310 200 100 arguments to philo, a philosopher should di
 
 <https://github.com/dantonik/42-philosophers-tester>
 valgrind --tool=helgrind ./philo 4 410 200 200 4
+valgrind --tool=helgrind --history-level=approx ./philo 4 410 200 200 4
 valgrind --tool=drd ./philo 2 410 200 200 1

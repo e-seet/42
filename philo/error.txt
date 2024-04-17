@@ -1,0 +1,202 @@
+ Possible data race during write of size 1 at 0x4A491F4 by thread #3
+==12661== Locks held: 3, at addresses 0x4A49090 0x4A490C0 0x4A495A0
+==12661==    at 0x10BF5C: unlock_bothforkmutex (in /media/share/philo/philo)
+==12661==    by 0x10BC33: handle_even_philo_eating (in /media/share/philo/philo)
+==12661==    by 0x10AB1F: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661==  This conflicts with a previous access by thread #2, after
+==12661==    at 0x486D178: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10C277: handle_philo_thinking (in /media/share/philo/philo)
+==12661==    by 0x10A99F: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661==  but before
+==12661==    at 0x4951998: clock_nanosleep@@GLIBC_2.17 (clock_nanosleep.c:78)
+==12661==    by 0x4956B6B: nanosleep (nanosleep.c:25)
+==12661==    by 0x497F4B3: usleep (usleep.c:31)
+==12661==    by 0x10C3F7: ft_usleep (in /media/share/philo/philo)
+==12661==    by 0x10C003: sleeproutine (in /media/share/philo/philo)
+==12661==    by 0x10C2C3: handle_philo_thinking (in /media/share/philo/philo)
+==12661==    by 0x10A99F: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661==  Address 0x4a491f4 is 4 bytes inside a block of size 8 alloc'd
+==12661==    at 0x4866E08: malloc (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x1097BF: ft_calloc (in /media/share/philo/philo)
+==12661==    by 0x10AF2B: setstruct (in /media/share/philo/philo)
+==12661==    by 0x10A7E7: main (in /media/share/philo/philo)
+==12661==  Block was alloc'd by thread #1
+==12661== 
+201 0 is sleeping
+==12661== ----------------------------------------------------------------
+==12661== 
+==12661==  Lock at 0x4A49390 was first observed
+==12661==    at 0x4870824: pthread_mutex_init (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10ACA7: init_philo_mutexs (in /media/share/philo/philo)
+==12661==    by 0x10AFBF: setstruct (in /media/share/philo/philo)
+==12661==    by 0x10A7E7: main (in /media/share/philo/philo)
+==12661==  Address 0x4a49390 is 0 bytes inside a block of size 48 alloc'd
+==12661==    at 0x4866E08: malloc (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x1097BF: ft_calloc (in /media/share/philo/philo)
+==12661==    by 0x10AC7F: init_philo_mutexs (in /media/share/philo/philo)
+==12661==    by 0x10AFBF: setstruct (in /media/share/philo/philo)
+==12661==    by 0x10A7E7: main (in /media/share/philo/philo)
+==12661==  Block was alloc'd by thread #1
+==12661== 
+==12661== Possible data race during read of size 1 at 0x4A491F4 by thread #2
+==12661== Locks held: 1, at address 0x4A49390
+==12661==    at 0x10BFD4: sleeproutine (in /media/share/philo/philo)
+==12661==    by 0x10C2C3: handle_philo_thinking (in /media/share/philo/philo)
+==12661==    by 0x10A99F: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661==  This conflicts with a previous access by thread #3, after
+==12661==    at 0x486D178: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10BE63: lock_bothforkmutex (in /media/share/philo/philo)
+==12661==    by 0x10BB47: handle_even_philo_eating (in /media/share/philo/philo)
+==12661==    by 0x10AB1F: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661==  but before
+==12661==    at 0x486D178: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10BF6B: unlock_bothforkmutex (in /media/share/philo/philo)
+==12661==    by 0x10BC33: handle_even_philo_eating (in /media/share/philo/philo)
+==12661==    by 0x10AB1F: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661==  Address 0x4a491f4 is 4 bytes inside a block of size 8 alloc'd
+==12661==    at 0x4866E08: malloc (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x1097BF: ft_calloc (in /media/share/philo/philo)
+==12661==    by 0x10AF2B: setstruct (in /media/share/philo/philo)
+==12661==    by 0x10A7E7: main (in /media/share/philo/philo)
+==12661==  Block was alloc'd by thread #1
+==12661== 
+==12661== ----------------------------------------------------------------
+==12661== 
+==12661==  Lock at 0x4A49390 was first observed
+==12661==    at 0x4870824: pthread_mutex_init (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10ACA7: init_philo_mutexs (in /media/share/philo/philo)
+==12661==    by 0x10AFBF: setstruct (in /media/share/philo/philo)
+==12661==    by 0x10A7E7: main (in /media/share/philo/philo)
+==12661==  Address 0x4a49390 is 0 bytes inside a block of size 48 alloc'd
+==12661==    at 0x4866E08: malloc (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x1097BF: ft_calloc (in /media/share/philo/philo)
+==12661==    by 0x10AC7F: init_philo_mutexs (in /media/share/philo/philo)
+==12661==    by 0x10AFBF: setstruct (in /media/share/philo/philo)
+==12661==    by 0x10A7E7: main (in /media/share/philo/philo)
+==12661==  Block was alloc'd by thread #1
+==12661== 
+==12661== Possible data race during read of size 1 at 0x4A491F0 by thread #2
+==12661== Locks held: 1, at address 0x4A49390
+==12661==    at 0x10BFE8: sleeproutine (in /media/share/philo/philo)
+==12661==    by 0x10C2C3: handle_philo_thinking (in /media/share/philo/philo)
+==12661==    by 0x10A99F: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661==  This conflicts with a previous access by thread #3, after
+==12661==    at 0x486D178: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10BE63: lock_bothforkmutex (in /media/share/philo/philo)
+==12661==    by 0x10BB47: handle_even_philo_eating (in /media/share/philo/philo)
+==12661==    by 0x10AB1F: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661==  but before
+==12661==    at 0x486D178: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10BF6B: unlock_bothforkmutex (in /media/share/philo/philo)
+==12661==    by 0x10BC33: handle_even_philo_eating (in /media/share/philo/philo)
+==12661==    by 0x10AB1F: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661==  Address 0x4a491f0 is 0 bytes inside a block of size 8 alloc'd
+==12661==    at 0x4866E08: malloc (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x1097BF: ft_calloc (in /media/share/philo/philo)
+==12661==    by 0x10AF2B: setstruct (in /media/share/philo/philo)
+==12661==    by 0x10A7E7: main (in /media/share/philo/philo)
+==12661==  Block was alloc'd by thread #1
+==12661== 
+==12661== ----------------------------------------------------------------
+==12661== 
+==12661== Thread #2: lock order "0x4A49090 before 0x4A490C0" violated
+==12661== 
+==12661== Observed (incorrect) order is: acquisition of lock at 0x4A490C0
+==12661==    at 0x486CCC4: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10BCF7: lock_bothforkmutex (in /media/share/philo/philo)
+==12661==    by 0x10B6B7: lastfella (in /media/share/philo/philo)
+==12661==    by 0x10BC9F: handle_philo_eating (in /media/share/philo/philo)
+==12661==    by 0x10A9BB: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661== 
+==12661==  followed by a later acquisition of lock at 0x4A49090
+==12661==    at 0x486CCC4: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10BD03: lock_bothforkmutex (in /media/share/philo/philo)
+==12661==    by 0x10B6B7: lastfella (in /media/share/philo/philo)
+==12661==    by 0x10BC9F: handle_philo_eating (in /media/share/philo/philo)
+==12661==    by 0x10A9BB: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661== 
+==12661== Required order was established by acquisition of lock at 0x4A49090
+==12661==    at 0x486CCC4: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10BCF7: lock_bothforkmutex (in /media/share/philo/philo)
+==12661==    by 0x10BB47: handle_even_philo_eating (in /media/share/philo/philo)
+==12661==    by 0x10AB1F: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661== 
+==12661==  followed by a later acquisition of lock at 0x4A490C0
+==12661==    at 0x486CCC4: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10BD03: lock_bothforkmutex (in /media/share/philo/philo)
+==12661==    by 0x10BB47: handle_even_philo_eating (in /media/share/philo/philo)
+==12661==    by 0x10AB1F: routine (in /media/share/philo/philo)
+==12661==    by 0x10ABB7: thread_function (in /media/share/philo/philo)
+==12661==    by 0x486F41B: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x491D5C7: start_thread (pthread_create.c:442)
+==12661==    by 0x4985EDB: thread_start (clone.S:79)
+==12661== 
+==12661==  Lock at 0x4A49090 was first observed
+==12661==    at 0x4870824: pthread_mutex_init (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10ACEB: init_philo_mutexs (in /media/share/philo/philo)
+==12661==    by 0x10AFBF: setstruct (in /media/share/philo/philo)
+==12661==    by 0x10A7E7: main (in /media/share/philo/philo)
+==12661==  Address 0x4a49090 is 0 bytes inside a block of size 96 alloc'd
+==12661==    at 0x4866E08: malloc (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x1097BF: ft_calloc (in /media/share/philo/philo)
+==12661==    by 0x10A7B7: main (in /media/share/philo/philo)
+==12661==  Block was alloc'd by thread #1
+==12661== 
+==12661==  Lock at 0x4A490C0 was first observed
+==12661==    at 0x4870824: pthread_mutex_init (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x10ACEB: init_philo_mutexs (in /media/share/philo/philo)
+==12661==    by 0x10AFBF: setstruct (in /media/share/philo/philo)
+==12661==    by 0x10A7E7: main (in /media/share/philo/philo)
+==12661==  Address 0x4a490c0 is 48 bytes inside a block of size 96 alloc'd
+==12661==    at 0x4866E08: malloc (in /usr/libexec/valgrind/vgpreload_helgrind-arm64-linux.so)
+==12661==    by 0x1097BF: ft_calloc (in /media/share/philo/philo)
+==12661==    by 0x10A7B7: main (in /media/share/philo/philo)
+==12661==  Block was alloc'd by thread #1

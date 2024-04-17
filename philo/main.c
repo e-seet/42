@@ -87,7 +87,6 @@ int	main(int argc, char **argv)
 	pthread_mutex_t	*mutexs;
 	pthread_t		*threads;
 
-	pthread_t	thread1;
 	philos = NULL;
 	num = ft_atoi(argv[1]);
 	// threads = malloc(num * sizeof(pthread_t));
@@ -100,14 +99,15 @@ int	main(int argc, char **argv)
 		return (-1);
 
 	//extra thread
-    pthread_create(&thread1, NULL, thread_observe, philos);
+	// pthread_t	thread1;
+    // pthread_create(&thread1, NULL, thread_observe, philos);
 
 	// my bulk of philos	
 	createthreads(threads, ft_atoi(argv[1]), philos);
 	// duringthreads(argv, philos);
 	jointhreads(threads, ft_atoi(argv[1]));
 
-	pthread_join(thread1, NULL);
+	// pthread_join(thread1, NULL);
 
 	freestuff(philos, ft_atoi(argv[1]), mutexs, threads);
 }

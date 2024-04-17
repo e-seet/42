@@ -37,7 +37,7 @@ OBJ_LIBFT				=	$(LIBFTSRC:.c=.o)
 .PHONY: all bonus clean fclean re
 
 $(NAME):	$(OBJ_LIBFT) $(OBJS)
-			@$(CC) $(OBJ_LIBFT) $(OBJS) -o $(NAME)
+			$(CC) $(OBJ_LIBFT) $(OBJS) -o $(NAME)
 
 all: fclean	$(NAME)
 

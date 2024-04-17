@@ -55,6 +55,8 @@ struct s_philo {
 	// pthread_mutex_t		thinking_mutex;
 
 	pthread_mutex_t		*curr_mutex;
+	pthread_mutex_t		*printf_mutex;
+
 };
 
 //statuus 1 = sleeping

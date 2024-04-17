@@ -16,13 +16,17 @@ int	breakfunction(struct s_philo *philo)
 {
 	if (philo->died == 1)
 	{
+		pthread_mutex_lock(philo->printf_mutex);
 		printf("%ld %d died\n", philo->time_of_death
 			- philo->start, philo->id);
+		pthread_mutex_unlock(philo->printf_mutex);
 		return (1);
 	}
 	else if (philo->stop == 1)
 	{
+		pthread_mutex_lock(philo->printf_mutex);
 		printf("%ld %d stopped\n", philo->curr - philo->start, philo->id);
+		pthread_mutex_unlock(philo->printf_mutex);
 		return (1);
 	}
 	else
