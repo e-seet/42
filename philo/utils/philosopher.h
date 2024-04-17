@@ -46,15 +46,25 @@ struct s_philo {
 	pthread_mutex_t		*l_mutex;
 	pthread_mutex_t		*r_mutex;
 
+	// to check whether this is working as inteded.
+	// this stores all my status of mutexs whether the fork
+	// is locked or not.
+	// i should have a single lock for this too to ensure read write is sync.
 	int					*mutexs_i;
-	int					*routinesemaphore;
+	pthread_mutex_t		*mutexs_i_readlock;
 
+	// i dont really think this matters but keeping it first.
+	int					*routinesemaphore;
+	// to make sure 1 item at a time? May be useless
 	pthread_mutex_t		*curr_routine_mutex;
 	// pthread_mutex_t		eating_mutex;
 	// pthread_mutex_t		sleeping_mutex;
 	// pthread_mutex_t		thinking_mutex;
 
+	// For time, but may be useless too
 	pthread_mutex_t		*curr_mutex;
+
+	// for printf-ing stuff. Required
 	pthread_mutex_t		*printf_mutex;
 
 };

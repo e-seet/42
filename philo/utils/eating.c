@@ -73,10 +73,12 @@ void	normalfella(struct s_philo *philo, int *elapsed)
 		}
 	}
 	unlock_bothforkmutex(philo);
+
 }
 
 void	handle_odd_philo_eating(struct s_philo *philo)
 {
+	// pthread_mutex_lock(philo->curr_routine_mutex);
 	lock_bothforkmutex(philo);
 	if (philo->status == 0 && philo->routinesemaphore[0] == 1
 		&& (philo->max % 2 == 1) && (philo->id != philo->max)
@@ -98,10 +100,12 @@ void	handle_odd_philo_eating(struct s_philo *philo)
 		}
 	}
 	unlock_bothforkmutex(philo);
+	// pthread_mutex_unlock(philo->curr_routine_mutex);
 }
 
 void	handle_even_philo_eating(struct s_philo *philo)
 {
+	// pthread_mutex_lock(philo->curr_routine_mutex);
 	lock_bothforkmutex(philo);
 	if (philo->status == 0 && philo->routinesemaphore[0] == 1
 		&& (philo->max % 2 == 0) && (philo->id % 2 == 0))
@@ -121,7 +125,8 @@ void	handle_even_philo_eating(struct s_philo *philo)
 			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 		}
 	}
-	unlock_bothforkmutex(philo);
+	unlock_bothforkmutex(philo); //inside here data race
+	// pthread_mutex_unlock(philo->curr_routine_mutex);
 }
 
 void	handle_philo_eating(struct s_philo *philo)
@@ -129,6 +134,7 @@ void	handle_philo_eating(struct s_philo *philo)
 	int	elapsed;
 
 	elapsed = 0;
+	// pthread_mutex_lock(philo->curr_routine_mutex);
 	if (philo->status == 3)
 	{
 		if (philo->max - 1 == philo->id)
@@ -140,4 +146,5 @@ void	handle_philo_eating(struct s_philo *philo)
 			normalfella(philo, &elapsed);
 		}
 	}
+	// pthread_mutex_unlock(philo->curr_routine_mutex);
 }

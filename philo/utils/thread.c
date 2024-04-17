@@ -35,6 +35,7 @@ int	breakfunction(struct s_philo *philo)
 
 void	routine(struct s_philo *philo)
 {
+	pthread_mutex_lock(philo->curr_routine_mutex);
 	if (philo->status == 1)
 		handle_philo_sleeping(philo);
 	else if (philo->status == 2)
@@ -56,6 +57,8 @@ void	routine(struct s_philo *philo)
 	else if (philo->status == 0 && (philo->max % 2 == 0)
 		&& (philo->id % 2 == 1))
 		handle_even_philo_sleeping(philo);
+	pthread_mutex_unlock(philo->curr_routine_mutex);
+
 }
 
 void	*thread_function(void *arg)
