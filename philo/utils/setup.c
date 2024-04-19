@@ -67,6 +67,7 @@ void	init_philo(struct s_philo *philo, char **argv, int argc, int id)
 	philo->died = 0;
 	philo->start = 0;
 	philo->stop = 0;
+	philo->done = 0;
 	philo->num_of_time_eaten = 0;
 	if (argc == 6)
 		philo->num_must_eat = ft_atoi(argv[5]);
@@ -79,18 +80,24 @@ int	setstruct(struct s_philo ***philos, int argc,
 {
 	int				num;
 	struct s_philo	*philo;
+	struct s_philo	*philoExtra;
 	int				*mutexs_i;
 	pthread_mutex_t	*printf_mutex;
 	pthread_mutex_t	*mutexs_i_readlock;
+	pthread_mutex_t	*extrastructlock;
 
 	printf_mutex = ft_calloc(1, sizeof(pthread_mutex_t));
 	mutexs_i_readlock = ft_calloc(1, sizeof(pthread_mutex_t));
+	extrastructlock = ft_calloc(1, sizeof(pthread_mutex_t));
 	pthread_mutex_init(printf_mutex, NULL);
 	pthread_mutex_init(mutexs_i_readlock, NULL);
+	pthread_mutex_init(extrastructlock , NULL);
 	num = ft_atoi(argv[1]);
 	// *philos = (struct s_philo **)malloc(sizeof(struct s_philo *) * num);
-	*philos = (struct s_philo **)ft_calloc(num, sizeof(struct s_philo *));
-	
+
+
+
+	*philos = (struct s_philo **)ft_calloc(num+1, sizeof(struct s_philo *)); 
 	if (philos == NULL)
 		return (-1);
 	mutexs_i = ft_calloc(num, sizeof(int));
@@ -99,6 +106,41 @@ int	setstruct(struct s_philo ***philos, int argc,
 		mutexs_i[num] = 0;
 	}
 	num = ft_atoi(argv[1]);
+	
+	// for extra struct allocation
+	philoExtra = (struct s_philo *) ft_calloc (1, sizeof(struct s_philo));
+	if (philoExtra == NULL)
+			return (-1);
+	philoExtra->max = ft_atoi(argv[1]);
+	philoExtra->id = ft_atoi(argv[1]);
+	// extrastructlock just to read and write stuff in here
+	philoExtra->extrastructlock = extrastructlock;
+	philoExtra->printf_mutex = printf_mutex;
+ 	
+	// act as a flag. IF 1, kill all
+	philoExtra->died = 0;
+	 // check against number of philo and kill them all!! 
+	philoExtra->stop = 0;
+	philoExtra->num_of_time_eaten = 0; // use this to compare and count the number of them that have eaten.
+
+	// this should be the actual mechanism to track
+	int *stopped;
+
+	stopped = ft_calloc(ft_atoi(argv[1]), sizeof(int));
+	int temp = ft_atoi(argv[1]);
+	while (temp--)
+	{
+		stopped[temp] = 0;
+	}
+	philoExtra ->stopped = stopped;
+
+	if (argc == 6)
+		philoExtra->num_must_eat = ft_atoi(argv[5]);
+	else
+		philoExtra->num_must_eat = -1;
+	(*philos)[num] = philoExtra;
+	// end of struct
+
 	while (num--)
 	{
 		philo = (struct s_philo *) ft_calloc (1, sizeof(struct s_philo));
@@ -107,9 +149,12 @@ int	setstruct(struct s_philo ***philos, int argc,
 		init_philo(philo, argv, argc, num);
 		init_philo_mutexs(philo, mutexs_i, num, mutexs);
 		philo->printf_mutex = printf_mutex;
+		philo->extrastructlock = extrastructlock;
 		philo->mutexs_i = mutexs_i;
 		philo->mutexs_i_readlock = mutexs_i_readlock;
 		(*philos)[num] = philo;
 	}
+
+
 	return (0);
 }

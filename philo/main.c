@@ -14,9 +14,18 @@
 
 void	createthreads(pthread_t *threads, int num, struct s_philo **philos)
 {
+	int	max;
+
+	max = philos[0]->max;
+	
 	while (num--)
 	{
-		pthread_create(&threads[num], NULL, thread_function, philos[num]);
+		struct thread_args *args = ft_calloc(1, sizeof(struct thread_args));
+		args->philo1 = philos[num];
+		args->philo2 = philos[max];
+
+		// pthread_create(&threads[num], NULL, thread_function, philos[num]);
+		pthread_create(&threads[num], NULL, thread_function, args);
 	}
 }
 
@@ -28,56 +37,79 @@ void	jointhreads(pthread_t *threads, int num)
 	}
 }
 
-void *thread_observe(void *arg)
-{
-    struct s_philo **philos = (struct s_philo **)arg;
+// void *thread_observe(void *arg)
+// {
+//     struct s_philo **philos = (struct s_philo **)arg;
 
-	int	allend;
+// 	int	allend;
 
-	while (1)
-	{
-		allend = 0;
-		check_if_any_died(philos[0]->max, philos, &allend);
-		if (allend == philos[0]->max)
-			break ;
-		allend = 0;
-		check_if_all_ate(philos[0]->max, philos, &allend);
-		if (allend == philos[0]->max)
-			break ;
-		else
-			ft_usleep(100);
-	}
+// 	while (1)
+// 	{
+// 		allend = 0;
+// 		check_if_any_died(philos[0]->max, philos, &allend);
+// 		if (allend == philos[0]->max)
+// 			break ;
+// 		allend = 0;
+// 		check_if_all_ate(philos[0]->max, philos, &allend);
+// 		if (allend == philos[0]->max)
+// 			break ;
+// 		else
+// 			ft_usleep(100);
+// 	}
 
-	return (NULL);
-}
+// 	return (NULL);
+// }
 
 // void	singlethread(struct s_philo **philos)
 // {
 	
 // }
 
+
+// i can copy from thread routine
+void	duringthreads(char **argv, struct s_philo **philos)
+{
+
+	
+	// int max = ft_atoi(argv[1]);
+
+	
+	// pthread_mutex_lock(philos[max]->extrastructlock);
+
+
+	while (1)
+	{
+		printf("here");
+		if (philos[ft_atoi(argv[1])]->stop == ft_atoi(argv[1]))
+		{
+			pthread_mutex_unlock(philos[ft_atoi(argv[1])]->extrastructlock);
+			break ;
+		}
+		else
+			ft_usleep(5);
+	}
+	// pthread_mutex_unlock(philos[ft_atoi(argv[1])]->extrastructlock);
+
+}
+
 // void	duringthreads(char **argv, struct s_philo **philos)
 // {
-// 	ft_usleep(6000);
-// 	singlethread(philos);
-// 	printf("argv:%p", argv);
 
+// 	int	allend;
 
-// 	// int	allend;
-
-// 	// while (1)
-// 	// {
-// 	// 	allend = 0;
-// 	// 	check_if_any_died(ft_atoi(argv[1]), philos, &allend);
-// 	// 	if (allend == ft_atoi(argv[1]))
-// 	// 		break ;
-// 	// 	allend = 0;
-// 	// 	check_if_all_ate(ft_atoi(argv[1]), philos, &allend);
-// 	// 	if (allend == ft_atoi(argv[1]))
-// 	// 		break ;
-// 	// 	else
-// 	// 		ft_usleep(1);
-// 	// }
+// 	while (1)
+// 	{
+// 		allend = 0;
+// 		check_if_any_died(ft_atoi(argv[1]), philos, &allend);
+// 		if (allend == ft_atoi(argv[1]))
+// 			break ;
+// 		allend = 0;
+// 		check_if_all_ate(ft_atoi(argv[1]), philos, &allend);
+// 		if (allend == ft_atoi(argv[1]))
+// 			break ;
+// 		else
+// 			ft_usleep(1);
+// 	}
 // }
 
 int	main(int argc, char **argv)
@@ -93,6 +125,7 @@ int	main(int argc, char **argv)
 	threads = ft_calloc(num, sizeof(pthread_t));
 	mutexs = ft_calloc(num, sizeof(pthread_mutex_t));
 	// init_fork_mutex(mutexs, num);
+
 	if (argc == 5 || argc == 6)
 		setstruct(&philos, argc, argv, mutexs);
 	else
@@ -104,6 +137,7 @@ int	main(int argc, char **argv)
 
 	// my bulk of philos	
 	createthreads(threads, ft_atoi(argv[1]), philos);
+	// this is not a thread but can help us to stop everything
 	// duringthreads(argv, philos);
 	jointhreads(threads, ft_atoi(argv[1]));
 

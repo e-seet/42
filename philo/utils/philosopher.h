@@ -37,7 +37,8 @@ struct s_philo {
 	int					num_of_time_eaten;
 	int					died;
 	unsigned long		time_of_death;
-	int					stop;
+	int					stop; // to stop it completely
+	int					done; // done with eating
 
 	unsigned long		start;
 	unsigned long		curr;
@@ -67,6 +68,14 @@ struct s_philo {
 	// for printf-ing stuff. Required
 	pthread_mutex_t		*printf_mutex;
 
+	pthread_mutex_t		*extrastructlock;
+	int					*stopped;
+};
+
+
+struct thread_args {
+    struct s_philo *philo1;
+    struct s_philo *philo2;
 };
 
 //statuus 1 = sleeping

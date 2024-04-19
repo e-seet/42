@@ -68,8 +68,10 @@ int		setstruct(struct s_philo ***philos, int argc,
 void	init_fork_mutex(pthread_mutex_t *mutexs, int num);
 
 // checkers
-void	check_if_all_ate(int num, struct s_philo **philos, int *allend);
-void	check_if_any_died(int num, struct s_philo **philos, int *allend);
+void	check_if_all_ate(int num, struct s_philo **philos);
+void	check_if_any_died(int num, struct s_philo **philos);
+// void	check_if_all_ate(int num, struct s_philo **philos, int *allend);
+// void	check_if_any_died(int num, struct s_philo **philos, int *allend);
 void	stopall(int num, struct s_philo **philos, int *allend);
 
 #endif

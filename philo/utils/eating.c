@@ -45,6 +45,8 @@ void	lastfella(struct s_philo *philo)
 			philo->last_meal_time = get_current_time();
 			if (philo->num_must_eat > 0)
 				philo->num_must_eat = philo->num_must_eat - 1;
+			if (philo->num_must_eat == 0)
+				philo->done = 1;
 			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 		}
 	}
@@ -86,6 +88,8 @@ void	normalfella(struct s_philo *philo)
 			philo->last_meal_time = get_current_time();
 			if (philo->num_must_eat > 0)
 				philo->num_must_eat = philo->num_must_eat - 1;
+			if (philo->num_must_eat == 0)
+				philo->done = 1;
 			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 		}
 	}
@@ -113,6 +117,8 @@ void	handle_odd_philo_eating(struct s_philo *philo)
 			philo->last_meal_time = get_current_time();
 			if (philo->num_must_eat > 0)
 				philo->num_must_eat = philo->num_must_eat - 1;
+			if (philo->num_must_eat == 0)
+				philo->done = 1;
 			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 		}
 	}
@@ -139,6 +145,8 @@ void	handle_even_philo_eating(struct s_philo *philo)
 			philo->last_meal_time = get_current_time();
 			if (philo->num_must_eat > 0)
 				philo->num_must_eat = philo->num_must_eat - 1;
+			if (philo->num_must_eat == 0)
+				philo->done = 1;
 			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 		}
 	}
