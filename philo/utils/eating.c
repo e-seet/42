@@ -12,28 +12,35 @@
 
 #include "utils.h"
 
-void	lastfella(struct s_philo *philo, int *elapsed)
+void	lastfella(struct s_philo *philo)
 {
+	// printf("last fella eats\n");
+	int	elapsed;
+
+	elapsed = 0;
 	lock_bothforkmutex(philo);
-	if (philo->mutexs_i[philo->id] == 0 && (philo->mutexs_i[0] == 0)
+	if (philo->mutexs_i[philo->id] == 1 && (philo->mutexs_i[0] == 1)
 		&& (philo->routinesemaphore[3] == 1)
-		)
+	)
 	{
 		if ((philo->curr - philo->last_meal_time)
 			+ philo->time_to_eat > philo->time_to_die)
 		{
 			if (philo->curr - philo->last_meal_time
 				> philo->time_to_die)
-				ft_usleep(philo->time_to_die
-					- (philo->curr - philo->last_meal_time));
+			{
+				printf("weird chmap eating and dying\n");
+			ft_usleep(philo->time_to_die - (philo->curr - philo->last_meal_time));
+			}
+				
 			philo->time_of_death = get_current_time();
 			philo->died = 1;
 		}
 		else
 		{
-			*elapsed = ft_usleep(philo->time_to_eat);
+			elapsed = ft_usleep(philo->time_to_eat);
 			pthread_mutex_lock(philo->printf_mutex);
-			printf("%d eating elapsed: %d\n", philo->id, *elapsed);
+			printf("%d eating elapsed: %d\n", philo->id, elapsed);
 			pthread_mutex_unlock(philo->printf_mutex);
 			philo->last_meal_time = get_current_time();
 			if (philo->num_must_eat > 0)
@@ -41,14 +48,24 @@ void	lastfella(struct s_philo *philo, int *elapsed)
 			philo->num_of_time_eaten = philo->num_of_time_eaten + 1;
 		}
 	}
+	else
+	{
+		printf("ah what?? Error!\n");
+	
+	}
 	unlock_bothforkmutex(philo);
 }
 
-void	normalfella(struct s_philo *philo, int *elapsed)
-{
+void	normalfella(struct s_philo *philo)
+{	
+	// printf("normal fella eats\n");
+
+	int	elapsed;
+
+	elapsed = 0;
 	lock_bothforkmutex(philo);
-	if (philo->mutexs_i[philo->id] == 0
-		&& (philo->mutexs_i[philo->id + 1] == 0))
+	if (philo->mutexs_i[philo->id] == 1
+		&& (philo->mutexs_i[philo->id + 1] == 1))
 	{
 		if ((philo->curr - philo->last_meal_time)
 			+ philo->time_to_eat > philo->time_to_die)
@@ -62,9 +79,9 @@ void	normalfella(struct s_philo *philo, int *elapsed)
 		}
 		else
 		{
-			*elapsed = ft_usleep(philo->time_to_eat);
+			elapsed = ft_usleep(philo->time_to_eat);
 			pthread_mutex_lock(philo->printf_mutex);
-			printf("%d eating elapsed: %d\n", philo->id, *elapsed);
+			printf("%d eating elapsed: %d\n", philo->id, elapsed);
 			pthread_mutex_unlock(philo->printf_mutex);
 			philo->last_meal_time = get_current_time();
 			if (philo->num_must_eat > 0)
@@ -131,20 +148,17 @@ void	handle_even_philo_eating(struct s_philo *philo)
 
 void	handle_philo_eating(struct s_philo *philo)
 {
-	int	elapsed;
-
-	elapsed = 0;
 	// pthread_mutex_lock(philo->curr_routine_mutex);
 	if (philo->status == 3)
 	{
 		if (philo->max - 1 == philo->id)
 		{
-			lastfella(philo, &elapsed);
+			lastfella(philo);
+
 		}
 		else
 		{
-			normalfella(philo, &elapsed);
+			normalfella(philo);
 		}
 	}
-	// pthread_mutex_unlock(philo->curr_routine_mutex);
 }

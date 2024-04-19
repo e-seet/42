@@ -45,7 +45,7 @@ void *thread_observe(void *arg)
 		if (allend == philos[0]->max)
 			break ;
 		else
-			ft_usleep(1);
+			ft_usleep(100);
 	}
 
 	return (NULL);
@@ -109,5 +109,5 @@ int	main(int argc, char **argv)
 
 	// pthread_join(thread1, NULL);
 
-	freestuff(philos, ft_atoi(argv[1]), mutexs, threads);
+	// freestuff(philos, ft_atoi(argv[1]), mutexs, threads);
 }

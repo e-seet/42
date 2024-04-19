@@ -37,28 +37,50 @@ void	routine(struct s_philo *philo)
 {
 	pthread_mutex_lock(philo->curr_routine_mutex);
 	if (philo->status == 1)
+	{
+		// printf("\n philo sleeping\n");
 		handle_philo_sleeping(philo);
+	}
 	else if (philo->status == 2)
+	{
+		// printf("\n philo thinking\n");
 		handle_philo_thinking(philo);
+	}
 	else if (philo->status == 3)
+	{
+		// printf("\n philo eating\n");
 		handle_philo_eating(philo);
-	else if (philo->status == 0 && (philo->max % 2 == 1)
-		&& (philo->id != philo->max) && (philo->id % 2 == 1))
+	}
+	else if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id != philo->max) && (philo->id % 2 == 1))
+	{
+		// printf("\nodd philo eating\n");
 		handle_odd_philo_eating(philo);
-	else if (philo->status == 0 && (philo->max % 2 == 1)
-		&& (philo->id != philo->max) && (philo->id % 2 == 0))
+	}
+	else if (philo->status == 0 && (philo->max % 2 == 1) && (philo->id != philo->max) && (philo->id % 2 == 0))
+	{
+		// printf("\nodd philo sleeping\n");
 		handle_odd_philo_sleeping(philo);
+	}
 	else if (philo->status == 0 && (philo->max % 2 == 1)
 		&& (philo->id == philo->max))
+	{
+		// printf("\nodd philo thinking\n");
 		handle_odd_philo_thinking(philo);
+	}
 	else if (philo->status == 0 && (philo->max % 2 == 0)
 		&& (philo->id % 2 == 0))
+	{
+		// printf("\neven philo eating\n");
 		handle_even_philo_eating(philo);
+	}
 	else if (philo->status == 0 && (philo->max % 2 == 0)
 		&& (philo->id % 2 == 1))
+	{
+		// printf("\neven philo sleeping\n");
 		handle_even_philo_sleeping(philo);
+	}
+	ft_usleep(1);
 	pthread_mutex_unlock(philo->curr_routine_mutex);
-
 }
 
 void	*thread_function(void *arg)
