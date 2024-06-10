@@ -12,6 +12,9 @@
 
 #include "utils.h"
 
+// There is the issue in which someone who have been thinking for a long time did not break out
+// instead someone who have just started thinking break out and go to eat.
+// This is an issue and should be resolved.
 int	sleeproutine(struct s_philo *philo)
 {
 	// last fella
@@ -21,6 +24,7 @@ int	sleeproutine(struct s_philo *philo)
 		// i can move on to the next stage.
 		if (philo->mutexs_i[philo->id] == 0 && philo->mutexs_i[0] == 0)
 		{
+
 			pthread_mutex_unlock(philo->mutexs_i_readlock);
 			return (1);
 		}

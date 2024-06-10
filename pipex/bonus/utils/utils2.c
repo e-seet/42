@@ -70,6 +70,15 @@ void	p3child(char *envp[], struct s_pipex *pipexstruct)
 
 	execveresult = -1;
 	pipexstruct->path = findprocesspath(pipexstruct);
+	
+	printf("p3child\n\n");
+	int i = 0;
+	while(pipexstruct->argvs3[i])
+	{
+		printf("argv:%d %s\n", i, pipexstruct->argvs3[i]);
+		i++;
+	}
+	
 	if (pipexstruct->path == NULL)
 	{
 		perror("3 Access Path not found");

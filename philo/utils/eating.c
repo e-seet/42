@@ -29,7 +29,7 @@ void	lastfella(struct s_philo *philo)
 			if (philo->curr - philo->last_meal_time
 				> philo->time_to_die)
 			{
-				printf("weird chmap eating and dying\n");
+				// printf("weird chmap eating and dying\n");
 			ft_usleep(philo->time_to_die - (philo->curr - philo->last_meal_time));
 			}
 				

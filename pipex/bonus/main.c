@@ -80,6 +80,13 @@ int	setuppipe(struct s_pipex *pipexstruct)
 void	refactormain(struct s_pipex *pipexstruct, char *envp[], char *argv[])
 {
 	pipexstruct->argvs3 = ft_split(argv[pipexstruct->curr], ' ');
+	printf("refactor main\n");
+	int i = 0;
+	while(pipexstruct->argvs3[i])
+	{
+		printf("argv:%d %s\n", i, pipexstruct->argvs3[i]);
+		i++;
+	}
 	pipexstruct->pid3 = fork();
 	if (pipexstruct->pid3 == 0)
 	{
