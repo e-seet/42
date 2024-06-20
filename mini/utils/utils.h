@@ -159,12 +159,40 @@ void				move_to_nextnode(t_linkedlist **node);
 void				create_node(t_linkedlist **node,
 						char *str, int i, int strlen);
 
-// layer1
+// top layers
+// parsing
 struct s_AST_Node	*breakcommandline(t_linkedlist *node);
-// layer2
 struct s_AST_Node	*breakjob(t_linkedlist *node);
-// layer3
 struct s_AST_Node	*breakcommand(t_linkedlist *node);
+struct s_AST_Node	*simplecommand(t_linkedlist **node);
+
+// breakcommandline in parsing1
+struct s_AST_Node	*breakcommandline1(t_linkedlist *node);
+struct s_AST_Node	*breakcommandline2(t_linkedlist *node);
+struct s_AST_Node	*breakcommandline3(t_linkedlist *node);
+
+// break job in parsing2
+struct s_AST_Node	*breakjob1(t_linkedlist *node);
+struct s_AST_Node	*breakjob2(t_linkedlist *node);
+
+// parsing3.c
+// <<
+struct s_AST_Node	*breakcommand1(t_linkedlist *node);
+// <
+struct s_AST_Node	*breakcommand2(t_linkedlist *node);
+//>>
+struct s_AST_Node	*breakcommand3(t_linkedlist *node);
+//>
+struct s_AST_Node	*breakcommand4(t_linkedlist *node);
+struct s_AST_Node	*breakcommand5(t_linkedlist *node);
+
+// parsing4.c
+struct s_AST_Node	*breaktokenlist(t_linkedlist **node);
+struct s_AST_Node	*tokenlist1(t_linkedlist **node);
+struct	s_AST_Node	*tokenlist2(void);
+
+
+
 
 // parsingutils
 struct s_AST_Node	*breakcommandline(t_linkedlist *token);
@@ -174,14 +202,13 @@ struct s_AST_Node	*simplecommand(t_linkedlist **token);
 struct s_AST_Node	*breaktokenlist(t_linkedlist **token);
 
 // parsing utils
-void				free_ast(struct s_AST_Node *rootnode);
+// void				free_ast(struct s_AST_Node *rootnode);
 void				attachbinarybranch(struct s_AST_Node *root,
 						struct s_AST_Node *leftnode,
 						struct s_AST_Node *rightnode);
 void				nodesettype(struct s_AST_Node *node, e_NodeType nodetype);
 void				nodesetdata(struct s_AST_Node *node, char *data);
 void				nodedelete(struct s_AST_Node *node);
-
 int					term(int type, char **buffer, t_linkedlist **node);
 
 // execute
@@ -194,7 +221,7 @@ void				execute_syntax_tree(struct s_AST_Node *rootnode);
 #endif
 
 // top
-//parsing1
+//parsing
 // <command line>	::= 	<job> ';' <command line>
 // 					|	<job> ';'
 // 						<job>
@@ -203,7 +230,7 @@ void				execute_syntax_tree(struct s_AST_Node *rootnode);
 // <job>			::=		<command> '|' <job>
 // 					|	<command>
 
-//parsing3
+//parsing
 // <command>		::=		<simple command> '<' filename
 // 					|	<simple command> '>' filename
 // 					|	<simple command> '>>' filename
