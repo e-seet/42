@@ -1,10 +1,10 @@
 #include "../utils.h"
 
-struct AST_Node *breakjob1(s_linkedlist *node)
+struct s_AST_Node *breakjob1(t_linkedlist *node)
 {
-	struct AST_Node	*command_node;
-	struct AST_Node	*job_node;
-	struct AST_Node	*rootnode;
+	struct s_AST_Node	*command_node;
+	struct s_AST_Node	*job_node;
+	struct s_AST_Node	*rootnode;
 
 	command_node = breakcommand(node);
 	if (command_node == NULL)
@@ -25,36 +25,36 @@ struct AST_Node *breakjob1(s_linkedlist *node)
 		nodedelete(job_node);
 		return (NULL);
 	}
-	rootnode = malloc(sizeof(struct AST_Node));
+	rootnode = malloc(sizeof(struct s_AST_Node));
 	nodesettype(rootnode, NODE_PIPE);
 	attachbinarybranch(rootnode, command_node, job_node);
 	return (rootnode);
 }
 
-struct AST_Node *breakjob2(s_linkedlist *node)
+struct s_AST_Node *breakjob2(t_linkedlist *node)
 {
 	return (breakcommand(node));
 }
 
 // <job>			::=		<command> '|' <job>
 // 						|	<command>
-struct AST_Node *breakjob(s_linkedlist *node)
+struct s_AST_Node *breakjob(t_linkedlist *node)
 {
-	s_linkedlist	*saved;
-	struct AST_Node	*ast_node;
+	t_linkedlist	*saved;
+	struct s_AST_Node	*s_AST_Node;
 
 	saved = node;
-	ast_node = breakjob1(node);
-	if (ast_node != NULL)
+	s_AST_Node = breakjob1(node);
+	if (s_AST_Node != NULL)
 	{
-		return (ast_node);
+		return (s_AST_Node);
 	}
 	node = saved;
-	ast_node = breakjob2(node);
-	if (ast_node != NULL)
+	s_AST_Node = breakjob2(node);
+	if (s_AST_Node != NULL)
 	{
 		// printf("return null from breakjob parsing2\n");	
-		return (ast_node);
+		return (s_AST_Node);
 	}
 
 	return (NULL);

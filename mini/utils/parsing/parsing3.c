@@ -1,12 +1,12 @@
 #include "../utils.h"
 
 // <<
-struct AST_Node *breakcommand1(s_linkedlist *node)
+struct s_AST_Node *breakcommand1(t_linkedlist *node)
 {
 	// printf("\n\n\nthis should work for heredoc\n");
-	struct AST_Node	*simplecommand_node;
+	struct s_AST_Node	*simplecommand_node;
 	char			*filename;
-	struct AST_Node	*rootnode;
+	struct s_AST_Node	*rootnode;
 
 	simplecommand_node = simplecommand(&node);
 	if (simplecommand_node == NULL)
@@ -15,7 +15,7 @@ struct AST_Node *breakcommand1(s_linkedlist *node)
 		return (NULL);
 	}
 
-	// by here, it should have moved but didnot.
+	// by here, it should have moved but didnot.3
 
 	// printf("\nshould be 1002 \n");
 	if (!term(1002, NULL, &node))
@@ -37,7 +37,7 @@ struct AST_Node *breakcommand1(s_linkedlist *node)
 		return (NULL);
 	}
 	
-	rootnode = malloc(sizeof(struct AST_Node));
+	rootnode = malloc(sizeof(struct s_AST_Node));
 	nodesettype(rootnode, NODE_HEREDOC);
 	printf("set type:%d\n", NODETYPE((rootnode)->type));
 	
@@ -47,11 +47,11 @@ struct AST_Node *breakcommand1(s_linkedlist *node)
 }
 
 // <
-struct AST_Node *breakcommand2(s_linkedlist *node)
+struct s_AST_Node *breakcommand2(t_linkedlist *node)
 {
-	struct AST_Node	*simplecommand_node;
+	struct s_AST_Node	*simplecommand_node;
 	char			*filename;
-	struct AST_Node	*rootnode;
+	struct s_AST_Node	*rootnode;
 
 	simplecommand_node = simplecommand(&node);
 	if (simplecommand_node == NULL)
@@ -69,7 +69,7 @@ struct AST_Node *breakcommand2(s_linkedlist *node)
 		free(filename);
 		return (NULL);
 	}
-	rootnode = malloc(sizeof(struct AST_Node));
+	rootnode = malloc(sizeof(struct s_AST_Node));
 	nodesettype(rootnode, NODE_REDIRECT_IN);
 	printf("set type:%d\n", NODETYPE((rootnode)->type));
 	nodesetdata(rootnode, filename);
@@ -80,11 +80,11 @@ struct AST_Node *breakcommand2(s_linkedlist *node)
 // >>
 // to fix the permission for this
 // this needs to append and not overwrite like breakcommand4
-struct AST_Node *breakcommand3(s_linkedlist *node)
+struct s_AST_Node *breakcommand3(t_linkedlist *node)
 {
-	struct AST_Node	*simplecommand_node;
+	struct s_AST_Node	*simplecommand_node;
 	char			*filename;
-	struct AST_Node	*rootnode;
+	struct s_AST_Node	*rootnode;
 
 	simplecommand_node = simplecommand(&node);
 	if (simplecommand_node == NULL)
@@ -102,7 +102,7 @@ struct AST_Node *breakcommand3(s_linkedlist *node)
 		free(filename);
 		return (NULL);
 	}
-	rootnode = malloc(sizeof(struct AST_Node));
+	rootnode = malloc(sizeof(struct s_AST_Node));
 	nodesettype(rootnode, NODE_REDIRECT);
 	printf("set type:%d\n", NODETYPE((rootnode)->type));
 	
@@ -114,11 +114,11 @@ struct AST_Node *breakcommand3(s_linkedlist *node)
 
 
 // > 
-struct AST_Node *breakcommand4(s_linkedlist *node)
+struct s_AST_Node *breakcommand4(t_linkedlist *node)
 {
-	struct AST_Node	*simplecommand_node;
+	struct s_AST_Node	*simplecommand_node;
 	char			*filename;
-	struct AST_Node	*rootnode;
+	struct s_AST_Node	*rootnode;
 
 	simplecommand_node = simplecommand(&node);
 	if (simplecommand_node == NULL)
@@ -136,7 +136,7 @@ struct AST_Node *breakcommand4(s_linkedlist *node)
 		free(filename);
 		return (NULL);
 	}
-	rootnode = malloc(sizeof(struct AST_Node));
+	rootnode = malloc(sizeof(struct s_AST_Node));
 	nodesettype(rootnode, NODE_REDIRECT_OUT);
 	printf("set type:%d\n", NODETYPE((rootnode)->type));
 	
@@ -146,15 +146,15 @@ struct AST_Node *breakcommand4(s_linkedlist *node)
 }
 
 
-struct AST_Node *breakcommand5(s_linkedlist *node)
+struct s_AST_Node *breakcommand5(t_linkedlist *node)
 {
 	return simplecommand(&node);
 }
 
-struct AST_Node *breakcommand(s_linkedlist *node)
+struct s_AST_Node *breakcommand(t_linkedlist *node)
 {
-	s_linkedlist	*saved;
-	struct AST_Node	*ast_node;
+	t_linkedlist	*saved;
+	struct s_AST_Node	*ast_node;
 
 
 	saved = node;

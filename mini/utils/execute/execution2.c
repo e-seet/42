@@ -1,7 +1,7 @@
 #include "../utils.h"
 
 // to fix for << and >> 
-void execution2(s_parameters *parameters)
+void execution2(t_parameters *parameters)
 {
 	printf("execution2\n");
 

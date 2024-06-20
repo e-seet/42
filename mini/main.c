@@ -1,6 +1,6 @@
 #include "utils/utils.h"
 
-typedef struct node s_node;
+// typedef struct node s_node;
 
 //check if the last character is a \n and subtract accordingly
 // go to the position before \0 and check if it is a \n
@@ -117,7 +117,7 @@ int	checkforexit(char *envp[])
 			{
 				// token_list token_list;
 
-				s_node *node;
+				t_linkedlist *node;
 
 				// printf("lexical\n");
 				node = lexical(str);// this return a linked list
@@ -132,7 +132,7 @@ int	checkforexit(char *envp[])
 
 
 				// printf("parsing\n");
-				struct AST_Node *ast_node;
+				struct s_AST_Node *ast_node;
 				ast_node = breakcommandline(node);
 				execute_syntax_tree(ast_node);
 

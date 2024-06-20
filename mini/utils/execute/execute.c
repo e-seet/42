@@ -1,5 +1,7 @@
 #include "../utils.h"
 
+//check if the last character is a \n and subtract accordingly
+// go to the position before \0 and check if it is a \n
 int	linechecker(char *str)
 {
 	int	i;
@@ -15,7 +17,7 @@ int	linechecker(char *str)
 
 
 
-// int execution(s_parameters *parameters)
+// int execution(t_parameters *parameters)
 // {
 // 	if (parameters->argc < 0)
 // 	{
@@ -60,36 +62,29 @@ int	linechecker(char *str)
 // 	return 0;
 // }
 
-int init_command_internal(struct AST_Node *rootnode, s_parameters *parameters, char *file_in, char *file_out)
+int init_command_internal(struct s_AST_Node *rootnode, t_parameters *parameters, char *file_in, char *file_out)
 {
 	printf("init command structure\n");
 	printf("what is the value of nodetype:%d\n", NODETYPE((rootnode)->type));
 
     if (rootnode == NULL || !(NODETYPE(rootnode->type) == NODE_CMDPATH))
-	// mine
-	// if (rootnode == NULL || !(!(NODETYPE(rootnode->type) == NODE_CMDPATH)))
     {
         parameters->argc = 0;
 	
-		if (rootnode == NULL)
-		{
-			printf("root node is null\n");
-		}
-		else 
-		{
-			// printf("rootnode type :%d\n", rootnode->type);
-			printf("rootnode type :%d\n", NODETYPE(rootnode->type));
-		}
+		// if (rootnode == NULL)
+		// {
+		// 	printf("root node is null\n");
+		// }
+		// else 
+		// {
+		// 	printf("rootnode type :%d\n", NODETYPE(rootnode->type));
+		// }
 
-		printf("return -1\n");
+		printf("return -1 in internal\n");
         return -1;
     }
 
-    struct AST_Node *argNode = rootnode;
-
-
-	// (!(NODETYPE(argNode->type) == NODE_ARGUMENT) 
-	// || !(NODETYPE(argNode->type) == NODE_CMDPATH)))
+    struct s_AST_Node *argNode = rootnode;
 
 
 
@@ -179,48 +174,36 @@ int init_command_internal(struct AST_Node *rootnode, s_parameters *parameters, c
 	return 0;
 }
 
-// this for heredoc command init ba.
-// int init_command_internal2(struct AST_Node *rootnode, s_parameters *parameters, char *file_in, char *file_out)
-// {
-//     if (rootnode == NULL)
-//     {
-//         parameters->argc = 0;
-//         return -1;
-//     }
+void free_parameters(t_parameters *parameters)
+{
+	int i;
 
-//     struct AST_Node *argNode = rootnode;
+	i = 0;
+	
+	while (parameters->argc > i)
+	{
+		// printf("i loop:%d\n", i);
+		free(parameters->argv[i]);
+		i++;
+	}
+	// printf("free the var\n");
+	free(parameters->argv);
+    parameters->argc = 0;
 
-//     int i = 0;
-//     while (argNode != NULL && (NODETYPE(argNode->type) == NODE_ARGUMENT 
-// 	|| NODETYPE(argNode->type) == NODE_CMDPATH)) {
-//         argNode = argNode->right;
-//         i++;
-//     }
+	// printf("to free file in and out\n");
+	if (parameters->file_in)
+	{
+		free(parameters->file_in);
+	}
+	
+	if (parameters->file_out)
+	{
+		free(parameters->file_out);
+	}
+}
 
-//     parameters->argv = (char**)malloc(sizeof(char*) * (i + 1));
-//     argNode = rootnode;
-//     i = 0;
-
-//     while (argNode != NULL && (NODETYPE(argNode->type) == NODE_ARGUMENT || NODETYPE(argNode->type) == NODE_CMDPATH)) {
-//         parameters->argv[i] = (char*)malloc(ft_strlen(argNode->data) + 1);
-//         ft_strlcpy(parameters->argv[i], argNode->data, ft_strlen(argNode->data));
-
-//         argNode = argNode->right;
-//         i++;
-//     }
-
-// 	printf("init command number:%d\n", i);
-// 	parameters->argc = i;
-// 	parameters->argv[i] = NULL;
-
-// 	parameters->file_in = file_in;
-// 	parameters->file_out = file_out;
-// 	return 0;
-// }
-
-
-void execute_simple_command(struct AST_Node* rootnode,
-							s_parameters *parameters,
+void execute_simple_command(struct s_AST_Node* rootnode,
+							t_parameters *parameters,
                              char *redirect_in,
                              char *redirect_out
                             )
@@ -232,15 +215,14 @@ void execute_simple_command(struct AST_Node* rootnode,
 	{
 		execution2(parameters);
 	}
-	// printf("print numer for fun%d\n", errors);
 
-	// destroy_command_internal(parameters);
+	free_parameters(parameters);
 }
 
 
 
 // 5 cases
-void	execute_command(struct AST_Node **rootnode, s_parameters *parameters)
+void	execute_command(struct s_AST_Node **rootnode, t_parameters *parameters)
 {
 	   if ((*rootnode) == NULL)
 	   {
@@ -250,18 +232,12 @@ void	execute_command(struct AST_Node **rootnode, s_parameters *parameters)
 
 
 	// << 
-	// needs to be append
 	if (NODETYPE((*rootnode)->type) == NODE_HEREDOC)
 	{
 		printf("heredoc\n");
 		parameters->append = 1;
 		
 		execute_simple_command(((*rootnode)->right),
-		// execute_simple_command(((*rootnode)),
-							// async,
-							// readpipe,
-							// writepipe,
-							// fd,
 							parameters,
 							(*rootnode)->data, NULL
 							);
@@ -272,25 +248,17 @@ void	execute_command(struct AST_Node **rootnode, s_parameters *parameters)
 		printf("run <\n");
 		parameters->append = 0;
 		execute_simple_command(((*rootnode)->right),
-							// async,
-							// readpipe,
-							// writepipe,
-							// fd,
 							parameters,
 							(*rootnode)->data, NULL
 							);
 	}
 
-	// to do >>
+	// >>
     else if (NODETYPE((*rootnode)->type) == NODE_REDIRECT)
 	{
 		printf("run >>\n");
 		parameters->append = 1;
 		execute_simple_command(((*rootnode)->right),
-								// async,
-								// readpipe,
-								// writepipe,
-								// fd,
 								parameters,
 								NULL, (*rootnode)->data
 								);
@@ -303,25 +271,15 @@ void	execute_command(struct AST_Node **rootnode, s_parameters *parameters)
 		printf("run >\n");
 		parameters->append = 0;
 		execute_simple_command(((*rootnode)->right),
-							// async,
-							// readpipe,
-							// writepipe,
-							// fd,
 							parameters,
 							NULL, (*rootnode)->data
 							);
 	}
-    // else if (NODETYPE(rootnode->type) == NODE_REDIRECT)
-    // else if (NODETYPE(rootnode->type) == NODE_HEREDOC)
 	else
 	{
 			parameters->append = 0;
 			printf("else");
 			execute_simple_command((*rootnode),
-								// async,
-								// readpipe,
-								// writepipe,
-								// fd,
 								parameters,
 								NULL, NULL
 								);
@@ -335,10 +293,10 @@ void	execute_command(struct AST_Node **rootnode, s_parameters *parameters)
 
 // left node pipe to right node
 // the number 1 and 0 signifies whether we need the pipe read and write
-void	execute_pipe(struct AST_Node **rootnode, int async, s_parameters *parameters)
+void	execute_pipe(struct s_AST_Node **rootnode, int async, t_parameters *parameters)
 {
 	int 			fd[2];
-	struct AST_Node *jobnode;
+	struct s_AST_Node *jobnode;
 
 	pipe(fd);
 	parameters->readpipe = 0;
@@ -392,7 +350,7 @@ void	execute_pipe(struct AST_Node **rootnode, int async, s_parameters *parameter
 // <job>			::=		<command> '|' <job>
 // 						|	<command>
 // No need of pipes so all 4 parameters are 0
-void	execute_job(struct AST_Node **rootnode, int async, s_parameters *parameters)
+void	execute_job(struct s_AST_Node **rootnode, int async, t_parameters *parameters)
 {
 	// printf("ejob\n");
 	// printf("the value :%d\n", (*rootnode)->type);
@@ -451,7 +409,7 @@ void	execute_job(struct AST_Node **rootnode, int async, s_parameters *parameters
 
 		printf("what is the value of nodetype here for heredoc (rootnode):%d\n", NODETYPE((*rootnode)->type));
 
-		struct AST_Node *nextnode = (*rootnode) -> right;
+		struct s_AST_Node *nextnode = (*rootnode) -> right;
 		printf("curr node:%s\n", (*rootnode)->data);
 		nodesetdata(*rootnode, filein);
 		printf("curr node updated:%s\n", (*rootnode)->data);
@@ -490,7 +448,7 @@ void	execute_job(struct AST_Node **rootnode, int async, s_parameters *parameters
 }
 
 // top layer: job ; command line
-void	execute_cmdline(struct AST_Node **rootnode, s_parameters *parameters)
+void	execute_cmdline(struct s_AST_Node **rootnode, t_parameters *parameters)
 {
 
 	// printf("execute syntax tree\n");
@@ -518,11 +476,14 @@ void	execute_cmdline(struct AST_Node **rootnode, s_parameters *parameters)
 	}
 }
 
-void	execute_syntax_tree(struct AST_Node *rootnode)
-{
-	s_parameters parameters;
 
-	// struct AST_Node *testnode;
+
+
+void	execute_syntax_tree(struct s_AST_Node *rootnode)
+{
+	t_parameters parameters;
+
+	// struct s_AST_Node *testnode;
 	// testnode = rootnode;
 	// while (testnode)
 	// {
@@ -534,5 +495,8 @@ void	execute_syntax_tree(struct AST_Node *rootnode)
 
 
 	execute_cmdline(&rootnode, &parameters);
-
+	
+	//free ast here
+	// printf("before free ast\n");
+	// printf("free ast no issues\n");
 }

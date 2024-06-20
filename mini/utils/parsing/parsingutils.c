@@ -1,7 +1,22 @@
 #include "../utils.h"
 
-void	attachbinarybranch(struct AST_Node *root,
-	struct AST_Node *leftnode, struct AST_Node *rightnode)
+void free_ast(struct s_AST_Node *rootnode)
+{
+	if (rootnode == NULL)
+		return;
+
+	if (rootnode->type & NODE_DATA)
+		free(rootnode->data);
+	
+	free_ast(rootnode->left);
+	free_ast(rootnode->right);
+
+	free(rootnode);
+	rootnode = NULL;
+}
+
+void	attachbinarybranch(struct s_AST_Node *root,
+	struct s_AST_Node *leftnode, struct s_AST_Node *rightnode)
 {
 	// assert(root != NULL);
 	if (root != NULL)
@@ -11,14 +26,14 @@ void	attachbinarybranch(struct AST_Node *root,
 	}
 }
 
-void	nodesettype(struct AST_Node *node, NodeType nodetype)
+void	nodesettype(struct s_AST_Node *node, e_NodeType nodetype)
 {
 	// assert(node != NULL);
 	if (node != NULL)
 		node->type = nodetype;
 }
 
-void	nodesetdata(struct AST_Node *node, char *data)
+void	nodesetdata(struct s_AST_Node *node, char *data)
 {
 	// assert(node != NULL);
 	if (node != NULL)
@@ -32,23 +47,7 @@ void	nodesetdata(struct AST_Node *node, char *data)
 	}
 }
 
-void	nodereset(struct AST_Node *node)
-{
-	if (node->type & NODE_HEREDOC) {
-        free(node->data);
-        node->data = NULL;  // Reset data pointer to NULL after freeing
-    }
-
-    // Clear the type field
-    node->type = 0;  // Assuming 0 represents no flags set or an appropriate default
-
-	// if (node == NULL)
-	// 	return ;
-	// if (node->type & NODE_HEREDOC)
-	// 	free(node->data);
-}
-
-void	nodedelete(struct AST_Node *node)
+void	nodedelete(struct s_AST_Node *node)
 {
 	if (node == NULL)
 		return ;
