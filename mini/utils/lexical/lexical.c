@@ -59,14 +59,15 @@
 
 void	ft_breakup_str4(char *str, int *i, t_linkedlist **node, int *counter)
 {
-	if (ft_is_whitespaces(&str[*i]) == 1)
+	printf("str4\n");
+	if (ft_is_whitespaces(&str[(*i)]) == 1)
 	{
-		if (*counter > 0)
+		if ((*counter) > 0)
 		{
-			create_node(node, str, *i, *counter);
-			*counter = 0;
+			create_node(node, str, (*i), (*counter));
+			(*counter) = 0;
 		}
-		i ++;
+		(*i)++;
 	}
 	else
 	{
@@ -79,47 +80,48 @@ void	ft_breakup_str4(char *str, int *i, t_linkedlist **node, int *counter)
 void	ft_breakup_str3(char *str, int *i, t_linkedlist **node, int *counter)
 {
 	if (
-		(ft_is_output_redirect(&str[*i]) == 1)
-		|| (ft_is_input_redirect(&str[*i]) == 1)
-		|| (ft_is_pipe(&str[*i]) == 1)
+		(ft_is_output_redirect(&str[(*i)]) == 1)
+		|| (ft_is_input_redirect(&str[(*i)]) == 1)
+		|| (ft_is_pipe(&str[(*i)]) == 1)
 	)
 	{
 		if ((*counter) > 0)
 		{
-			create_node(node, str, *i, *counter);
-			create_node(node, str, *i + 1, 1);
-			*counter = 0;
+			create_node(node, str, (*i), (*counter));
+			create_node(node, str, (*i) + 1, 1);
+			(*counter) = 0;
 		}
 		else
 		{
-			create_node(node, str, *i + 1, 1);
+			create_node(node, str, (*i) + 1, 1);
 		}
 		(*i)++;
 	}
 	else
 	{
-		ft_breakup_str3(str, i, node, counter);
+		ft_breakup_str4(str, i, node, counter);
 	}
 }
 
 void	ft_breakup_str2(char *str, int *i, t_linkedlist **node, int *counter)
 {
+	printf("str2\n");
 	if (
-		(ft_is_append_output_redirect(&str[*i]) == 1)
-		|| (ft_is_heredoc_redirect(&str[*i]) == 1)
+		(ft_is_append_output_redirect(&str[(*i)]) == 1)
+		|| (ft_is_heredoc_redirect(&str[(*i)]) == 1)
 	)
 	{
-		if (*counter > 0)
+		if ((*counter) > 0)
 		{
-			create_node(node, str, *i, *counter);
-			create_node(node, str, *i + 2, 2);
-			counter = 0;
+			create_node(node, str, (*i), (*counter));
+			create_node(node, str, (*i) + 2, 2);
+			(*counter) = 0;
 		}
 		else
 		{
-			create_node(node, str, *i + 2, 2);
+			create_node(node, str, (*i) + 2, 2);
 		}
-		i = i + 2;
+		(*i) = (*i) + 2;
 	}
 	else
 		ft_breakup_str3(str, i, node, counter);

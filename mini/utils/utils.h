@@ -191,9 +191,6 @@ struct s_AST_Node	*breaktokenlist(t_linkedlist **node);
 struct s_AST_Node	*tokenlist1(t_linkedlist **node);
 struct	s_AST_Node	*tokenlist2(void);
 
-
-
-
 // parsingutils
 struct s_AST_Node	*breakcommandline(t_linkedlist *token);
 struct s_AST_Node	*breakjob(t_linkedlist *token);
@@ -212,11 +209,53 @@ void				nodedelete(struct s_AST_Node *node);
 int					term(int type, char **buffer, t_linkedlist **node);
 
 // execute
-// void	execute_job(struct AST_Node *rootnode, int async);
-void				execute_job(struct s_AST_Node **rootnode, int async,
+//executejob
+int					linechecker(char *str);
+void				heredocinput(char *input,
+						struct s_AST_Node **rootnode, int heredocwritefd);
+void				prepheredoc(struct s_AST_Node **rootnode);
+void				execute_job(struct s_AST_Node **rootnode,
+						int async, t_parameters *parameters);
+
+// execute simple command
+void				free_parameters(t_parameters *parameters);
+void				execute_simple_command(struct s_AST_Node *rootnode,
+						t_parameters *parameters,
+						char	*redirect_in,
+						char	*redirect_out
+						);
+void				execute_command2(struct s_AST_Node **rootnode,
 						t_parameters *parameters);
-void				execution2(t_parameters *parameters);
+void				execute_command(struct s_AST_Node **rootnode,
+						t_parameters *parameters);
+
+// execute.c
+void				execute_cmdline(struct s_AST_Node **rootnode,
+						t_parameters *parameters);
 void				execute_syntax_tree(struct s_AST_Node *rootnode);
+
+// executepipe.c
+void				execute_pipe_job(struct s_AST_Node **rootnode,
+						t_parameters *parameters,
+						struct s_AST_Node *jobnode, int fd[]);
+void				execute_pipe(struct s_AST_Node **rootnode,
+						int async, t_parameters *parameters);
+
+// execution_redir.c
+void	redirection_async(t_parameters *parameters);
+void	redirection_fileout(t_parameters *parameters);
+void	redirection_pipes(t_parameters *parameters);
+void	redirection(t_parameters *parameters);
+
+// executionprep
+void	init_command_internal_prep_argv(struct s_AST_Node *rootnode,
+		t_parameters *parameters, struct s_AST_Node *argnode, int *i);
+int					init_command_internal(struct s_AST_Node *rootnode,
+						t_parameters *parameters, char *file_in,
+						char *file_out);
+
+// execution.c
+void				execution2(t_parameters *parameters);
 
 #endif
 

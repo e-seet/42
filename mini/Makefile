@@ -24,7 +24,13 @@ SRC_FILES			:=	main.c	\
 						./utils/parsing/parsing3.c\
 						./utils/parsing/parsing4.c\
 						./utils/execute/execute.c\
-						./utils/execute/execution2.c\
+						./utils/execute/executejob.c\
+						./utils/execute/executesimplecommand.c\
+						./utils/execute/executepipe.c\
+						./utils/execution/execution_redir.c\
+						./utils/execution/execution.c\
+						./utils/execution/executionprep.c\
+
 
 
 OBJS				=	$(SRC_FILES:.c=.o)

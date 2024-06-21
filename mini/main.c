@@ -119,7 +119,7 @@ int	checkforexit(char *envp[])
 
 				t_linkedlist *node;
 
-				// printf("lexical\n");
+				printf("lexical\n");
 				node = lexical(str);// this return a linked list
 				// // pass the linked list into the parser
 
@@ -131,9 +131,10 @@ int	checkforexit(char *envp[])
 				// printf("end of lexical \n\n");
 
 
-				// printf("parsing\n");
 				struct s_AST_Node *ast_node;
+				printf("parsing\n");
 				ast_node = breakcommandline(node);
+				printf("execution\n");
 				execute_syntax_tree(ast_node);
 
 

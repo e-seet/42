@@ -20,3 +20,5 @@ cat << EOF
 2. Edge cases
 3. formatting
 
+Check why if i press up key after read doc it will seg fault. Is it due to read line or what.
+
