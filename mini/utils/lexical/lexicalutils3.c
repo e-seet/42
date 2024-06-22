@@ -65,3 +65,15 @@ void	create_node(t_linkedlist **node, char *str, int i, int strlen)
 	printf("the data:%s, %p\n", (*node)->data, (*node));
 	move_to_nextnode(node);
 }
+
+void	free_linkedlist(t_linkedlist *node)
+{
+	t_linkedlist	*prevnode;
+
+	while (node)
+	{
+		prevnode = node;
+		node = node ->next;
+		free(prevnode);
+	}
+}

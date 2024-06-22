@@ -28,6 +28,7 @@ struct s_AST_Node	*breakcommandline1(t_linkedlist *node)
 	}
 	rootnode = malloc(sizeof(struct s_AST_Node));
 	nodesettype(rootnode, NODE_SEQ);
+	nodesetdata(rootnode, NULL);
 	attachbinarybranch(rootnode, job_node, cmdline_node);
 	return (rootnode);
 }
@@ -49,6 +50,7 @@ struct s_AST_Node	*breakcommandline2(t_linkedlist *node)
 	}
 	rootnode = malloc(sizeof(struct s_AST_Node));
 	nodesettype(rootnode, NODE_SEQ);
+	nodesetdata(rootnode, NULL);
 	attachbinarybranch(rootnode, job_node, NULL);
 	return (rootnode);
 }

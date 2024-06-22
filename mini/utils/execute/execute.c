@@ -1,54 +1,10 @@
 #include "../utils.h"
 
-// int execution(t_parameters *parameters)
-// {
-// 	if (parameters->argc < 0)
-// 	{
-// 		return -1;
-// 	}
-
-// 	//execution
-// 	// fork
-// 	// pipe
-// 	int	pid;
-
-// 	pid = fork();
-
-// 	// child process
-// 	if (pid == 0)
-// 	{
-
-// 		// input
-
-// 		// stdin
-// 		// file input
-// 		// pipe read
-// 		// if (path == NULL)
-// 		// {
-// 		// 	perror("Path not found");
-// 		// 	return (1);
-// 		// }
-
-// 		// dup2(pipexstruct.fdpipe[1], 1);
-// 		// close(pipexstruct.fdpipe[0]);
-
-// 		// dup2(pipexstruct.p1fd, 0);
-
-// 		// execveresult = execve(path, pipexstruct.argvs1, envp);
-// 		// if (execveresult == -1)
-// 		// 	perror("Execve failed in P1child. Terminating Now");
-// 		// free(path);
-// 	}
-
-// 	return 0;
-// }
-
 // top layer: job ; command line
 void	execute_cmdline(struct s_AST_Node **rootnode, t_parameters *parameters)
 {
 	if ((*rootnode) == NULL)
 	{
-		printf("root node is null ?? wtf");
 		return ;
 	}
 	if (NODETYPE((*rootnode)->type) == NODE_SEQ)
@@ -65,11 +21,94 @@ void	execute_cmdline(struct s_AST_Node **rootnode, t_parameters *parameters)
 		execute_job((rootnode), 0, parameters);
 }
 
+int NODETYPE(enum e_NodeType type)
+{
+	return (type & (~NODE_DATA));
+}
+
+// check type of node
+// int isNodeType(int node, e_NodeType type)
+// {
+// 	if ((node & type) != 0)
+// 		return 1;
+// 	else
+// 		return 0;
+// }
+
+// int checktype(int nodeType)
+// {
+// 	if (isNodeType(nodeType, NODE_PIPE))
+// 	{
+// 		printf("Node is a PIPE.\n");
+// 		return 1;
+//     }
+//     else if (isNodeType(nodeType, NODE_BCKGRND)) {
+//         printf("Node is a BACKGROUND.\n");
+// 		return 1;
+//     }
+//     else  if (isNodeType(nodeType, NODE_SEQ)) {
+//         printf("Node is a SEQ.\n");
+// 		return 1;
+//     }
+//     else  if (isNodeType(nodeType, NODE_REDIRECT_IN)) {
+//         printf("Node is a REDIRECT_IN.\n");
+// 		return 1;
+//     }
+//     else  if (isNodeType(nodeType, NODE_REDIRECT_OUT)) {
+//         printf("Node is a REDIRECT_OUT.\n");
+// 		return 1;
+//     }
+//     else  if (isNodeType(nodeType, NODE_REDIRECT)) {
+//         printf("Node is a REDIRECT (appending).\n");
+// 		return 1;
+//     }
+//     else  if (isNodeType(nodeType, NODE_HEREDOC)) {
+//         printf("Node is a HEREDOC.\n");
+// 		return -1;
+//     }
+//     else  if (isNodeType(nodeType, NODE_CMDPATH)) {
+//         printf("Node is a CMDPATH.\n");
+// 		return 1;
+//     }
+//     else if (isNodeType(nodeType, NODE_ARGUMENT)) {
+//         printf("Node is an ARGUMENT.\n");
+// 		return 1;
+//     }
+//     else if (isNodeType(nodeType, NODE_DATA)) {
+//         printf("Node contains DATA.\n");
+// 		return 1;
+//     }
+// 	return 0;
+// }
+
+void	free_ast(struct s_AST_Node **rootnode, struct s_AST_Node *original)
+{
+	if (*rootnode == NULL)
+		return ;
+	else
+	{
+		if ((*rootnode)->left != NULL)
+			free_ast(&((*rootnode)->left), original);
+		else if ((*rootnode)->right != NULL)
+			free_ast(&((*rootnode)->right), original);
+	}
+	if ((*rootnode)->data != NULL)
+	{
+		if (*rootnode != original)
+		{
+			free((*rootnode)->data);
+			(*rootnode)->data = NULL;
+		}
+	}
+	free(*rootnode);
+}
+
 void	execute_syntax_tree(struct s_AST_Node *rootnode)
 {
 	t_parameters	parameters;
 
 	execute_cmdline(&rootnode, &parameters);
+	free_ast(&rootnode, rootnode);
 }
 // to free ast here
 // printf("before free ast\n");

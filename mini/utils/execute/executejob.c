@@ -39,7 +39,8 @@ void	heredocinput(char *input,
 			// write(1,  input, ft_strlen(input));
 			free(input);
 			input = NULL;
-			add_history(input);
+			// add_history(input);
+
 		}
 		free(input);
 	}

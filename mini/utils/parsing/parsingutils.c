@@ -1,17 +1,5 @@
 #include "../utils.h"
 
-// void	free_ast(struct s_AST_Node *rootnode)
-// {
-// 	if (rootnode == NULL)
-// 		return ;
-// 	if (rootnode->type & NODE_DATA)
-// 		free(rootnode->data);
-// 	free_ast(rootnode->left);
-// 	free_ast(rootnode->right);
-// 	free(rootnode);
-// 	rootnode = NULL;
-// }
-
 void	attachbinarybranch(struct s_AST_Node *root,
 	struct s_AST_Node *leftnode, struct s_AST_Node *rightnode)
 {
@@ -22,11 +10,24 @@ void	attachbinarybranch(struct s_AST_Node *root,
 	}
 }
 
-void	nodesettype(struct s_AST_Node *node, e_NodeType nodetype)
+void	nodesettype(struct s_AST_Node *node, t_NodeType nodetype)
 {
 	if (node != NULL)
 		node->type = nodetype;
 }
+
+// void	nodeoverridedata(struct s_AST_Node *node, char *data)
+// void	nodeoverridedata(struct s_AST_Node *rootnode)
+// {
+// 	char	*filein;
+// 	filein = ft_calloc(16, sizeof(char));
+// 	ft_strlcpy(filein, "heredoctemp.txt", ft_strlen("heredoctemp.txt") + 1);
+// 	if (rootnode->data != NULL)
+// 	{
+// 		free(rootnode->data);
+// 	}
+// 	nodesetdata(rootnode, filein);
+// }
 
 void	nodesetdata(struct s_AST_Node *node, char *data)
 {
@@ -37,6 +38,8 @@ void	nodesetdata(struct s_AST_Node *node, char *data)
 			node->data = data;
 			node->type |= NODE_DATA;
 		}
+		else
+			node->data = NULL;
 	}
 }
 

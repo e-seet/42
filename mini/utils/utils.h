@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 # define UTILS_H
 
-# define RED "\033[1;31m";
+# define RED "\033[1;31m"
 
 // libft
 # include "../libft/libft.h"
@@ -45,7 +45,7 @@
 
 //struct
 // astree
-typedef enum
+typedef enum e_NodeType
 {
 	// 1
 	NODE_PIPE			= (1 << 0),
@@ -72,13 +72,10 @@ typedef enum
 	NODE_ARGUMENT		= (1 << 8),
 	// 512
 	NODE_DATA			= (1 << 9),
-} e_NodeType;
-
-// illegal to fix
-# define NODETYPE(a) (a & (~NODE_DATA))	// get the type of the nodes
+}	t_NodeType;
 
 // for lexer below
-enum Token
+typedef enum Token
 {
 	PIPE = '|',
 	GREATER = '>',
@@ -91,7 +88,7 @@ enum Token
 	HEREDOC = 1002,
 	// CHAR_NULL = 0,
 	TOKEN	= -1,
-};
+}	t_Token;
 
 struct s_node
 {
@@ -158,6 +155,7 @@ int					returnint(char *str, int i);
 void				move_to_nextnode(t_linkedlist **node);
 void				create_node(t_linkedlist **node,
 						char *str, int i, int strlen);
+void				free_linkedlist(t_linkedlist *node);
 
 // top layers
 // parsing
@@ -203,7 +201,7 @@ struct s_AST_Node	*breaktokenlist(t_linkedlist **token);
 void				attachbinarybranch(struct s_AST_Node *root,
 						struct s_AST_Node *leftnode,
 						struct s_AST_Node *rightnode);
-void				nodesettype(struct s_AST_Node *node, e_NodeType nodetype);
+void				nodesettype(struct s_AST_Node *node, t_NodeType nodetype);
 void				nodesetdata(struct s_AST_Node *node, char *data);
 void				nodedelete(struct s_AST_Node *node);
 int					term(int type, char **buffer, t_linkedlist **node);
@@ -233,6 +231,9 @@ void				execute_command(struct s_AST_Node **rootnode,
 void				execute_cmdline(struct s_AST_Node **rootnode,
 						t_parameters *parameters);
 void				execute_syntax_tree(struct s_AST_Node *rootnode);
+// illegal to fix
+// # define NODETYPE(a) (a & (~NODE_DATA))	// get the type of the nodes
+int					NODETYPE(enum e_NodeType type);
 
 // executepipe.c
 void				execute_pipe_job(struct s_AST_Node **rootnode,
@@ -242,14 +243,15 @@ void				execute_pipe(struct s_AST_Node **rootnode,
 						int async, t_parameters *parameters);
 
 // execution_redir.c
-void	redirection_async(t_parameters *parameters);
-void	redirection_fileout(t_parameters *parameters);
-void	redirection_pipes(t_parameters *parameters);
-void	redirection(t_parameters *parameters);
+void				redirection_async(t_parameters *parameters);
+void				redirection_fileout(t_parameters *parameters);
+void				redirection_pipes(t_parameters *parameters);
+void				redirection(t_parameters *parameters);
 
 // executionprep
-void	init_command_internal_prep_argv(struct s_AST_Node *rootnode,
-		t_parameters *parameters, struct s_AST_Node *argnode, int *i);
+void				init_command_internal_prep_argv(struct s_AST_Node *rootnode,
+						t_parameters *parameters, struct s_AST_Node *argnode,
+						int *i);
 int					init_command_internal(struct s_AST_Node *rootnode,
 						t_parameters *parameters, char *file_in,
 						char *file_out);

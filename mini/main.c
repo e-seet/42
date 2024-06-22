@@ -1,7 +1,5 @@
 #include "utils/utils.h"
 
-// typedef struct node s_node;
-
 //check if the last character is a \n and subtract accordingly
 // go to the position before \0 and check if it is a \n
 // int	linechecker(char *str)
@@ -123,21 +121,17 @@ int	checkforexit(char *envp[])
 				node = lexical(str);// this return a linked list
 				// // pass the linked list into the parser
 
-				// while (node)
-				// {
-				// 	printf("%s\n", node->data);
-				// 	node = node ->next;
-				// }
-				// printf("end of lexical \n\n");
-
-
 				struct s_AST_Node *ast_node;
+
 				printf("parsing\n");
 				ast_node = breakcommandline(node);
+				printf("free linked list\n");
+				free_linkedlist(node);				
+
 				printf("execution\n");
 				execute_syntax_tree(ast_node);
 
-
+				// free my nodes
 
 
 

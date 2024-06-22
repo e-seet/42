@@ -59,7 +59,6 @@
 
 void	ft_breakup_str4(char *str, int *i, t_linkedlist **node, int *counter)
 {
-	printf("str4\n");
 	if (ft_is_whitespaces(&str[(*i)]) == 1)
 	{
 		if ((*counter) > 0)
@@ -105,7 +104,6 @@ void	ft_breakup_str3(char *str, int *i, t_linkedlist **node, int *counter)
 
 void	ft_breakup_str2(char *str, int *i, t_linkedlist **node, int *counter)
 {
-	printf("str2\n");
 	if (
 		(ft_is_append_output_redirect(&str[(*i)]) == 1)
 		|| (ft_is_heredoc_redirect(&str[(*i)]) == 1)
@@ -201,6 +199,7 @@ t_linkedlist	*ft_breakup_str(char *str)
 // 	}
 // }
 // printf("%p", node);
+
 t_linkedlist	*lexical(char *str)
 {
 	t_linkedlist	*node;
