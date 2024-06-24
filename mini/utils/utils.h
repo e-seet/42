@@ -234,6 +234,8 @@ void				execute_syntax_tree(struct s_AST_Node *rootnode);
 // illegal to fix
 // # define NODETYPE(a) (a & (~NODE_DATA))	// get the type of the nodes
 int					NODETYPE(enum e_NodeType type);
+void				free_ast(struct s_AST_Node **rootnode,
+						struct s_AST_Node *original);
 
 // executepipe.c
 void				execute_pipe_job(struct s_AST_Node **rootnode,
@@ -258,6 +260,33 @@ int					init_command_internal(struct s_AST_Node *rootnode,
 
 // execution.c
 void				execution2(t_parameters *parameters);
+
+// struct SigintHandlerParams {
+//     int heredoc;
+//     int process;
+//     // char param2[256]; // Example parameter
+// };
+// extern struct SigintHandlerParams sigintParams;
+
+// signal.c
+extern volatile sig_atomic_t sigint_received;
+
+// typedef union t_CustomUnion
+// {
+// 	t_linkedlist		data0;
+// 	struct s_AST_Node	data1;
+// 	// t_parameters		data2;
+// }	t_CustomUnion;
+
+void				setsignals(int sig);
+
+// void				setup_signal(
+// 						struct sigaction *sa1,
+// 						struct sigaction *sa2,
+// 						struct sigaction *sa3);
+// void				setup_signal1(void);
+// void				setup_signal2(void);
+// void				setup_signal3(void);
 
 #endif
 

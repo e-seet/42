@@ -15,10 +15,15 @@
 // 		return (0);
 // }
 
+volatile sig_atomic_t sigint_received = 0;
+
 // starts the program and get the input from user.
 int	checkforexit(char *envp[])
 {
-	char	*str;
+	char				*str;
+	t_linkedlist		*node;
+	struct s_AST_Node *ast_node;
+
 	// char	*paths;
 	// struct s_minishell *t_minishell;
 
@@ -31,9 +36,27 @@ int	checkforexit(char *envp[])
 	printf("%p", envp);
 
 	str = NULL;
-
+	node = NULL;
+	ast_node = NULL;
 	// initialize_readline();
 	rl_clear_history();
+
+	// setup signal here
+    // struct sigaction sa1;
+	// struct sigaction sa2;
+    // struct sigaction sa3;
+    // // int		use_sig_handler;
+
+	// // Flag to switch between handler1 and handler2
+	// // use_sig_handler = 1;  
+
+	// // setup_signal(&sa1, &sa2, &sa3);
+	// setup_signal1(&sa1);
+    
+	// either or
+	// sigaction(SIGINT, &sa1, NULL);
+
+	setsignals(0);
 
 	// Change from top:
 	while (1)
@@ -41,11 +64,22 @@ int	checkforexit(char *envp[])
 		str = readline("minishell>");
 		if (!str)
 			break;
-
-		// if input is not just an empty str
-		// add to history
 		if (*str)
 			add_history(str);
+
+		// sigint
+		if (sigint_received == -1
+			// || sigint_received == 2
+			// || sigint_received == 3
+			)
+		{
+			printf("sigint received: %d", sigint_received);
+			printf("free both\n");
+			free_linkedlist(node);
+			free_ast(&ast_node, ast_node);
+			printf("reset to 0\n");
+			sigint_received = 0;
+		}
 
 		// To do: Check the first 2
         if (strcmp(str, "clear") == 0)
@@ -114,40 +148,45 @@ int	checkforexit(char *envp[])
 			else
 			{
 				// token_list token_list;
-
-				t_linkedlist *node;
+				
+				// set up signal
+				
 
 				printf("lexical\n");
 				node = lexical(str);// this return a linked list
 				// // pass the linked list into the parser
 
-				struct s_AST_Node *ast_node;
-
 				printf("parsing\n");
 				ast_node = breakcommandline(node);
-				printf("free linked list\n");
-				free_linkedlist(node);				
 
 				printf("execution\n");
 				execute_syntax_tree(ast_node);
 
-				// free my nodes
 
+				// sigint
+				if (sigint_received == -1
+					// || sigint_received == 2
+					// || sigint_received == 3
+					)
+				{
+					// printf("sigint received: %d\n", sigint_received);
+					printf("free both\n");
+					free_linkedlist(node);
+					free_ast(&ast_node, ast_node);
+					node = NULL;
+					ast_node = NULL;
+					printf("reset to 0\n");
+					sigint_received = 0;
+				}
+				else
+				{
+					free_linkedlist(node);
+					free_ast(&ast_node, ast_node);
+					node = NULL;
+					ast_node = NULL;
+				}
 
-
-				// the value may have issue.
-				// int numoftoken = lexical(str, t_minishell, ft_strlen(str), &token_list);
-
-				// struct AST_Node* exectree;
-
-				// if (!numoftoken || parsingthis(token_list.token_ll, &exectree) != 0)
-				// {
-				// 	continue;
-				// }
-
-				// //execute it accordingly 
-				// execute_syntax_tree(exectree);
-
+				// free ast_nodes inside execution.c
 
 			}
         }
@@ -157,8 +196,6 @@ int	checkforexit(char *envp[])
         // rl_redisplay(); // Redisplay the line (useful if line was replaced)
         
         free(str); // Free the input string allocated by readline
- 
-		
 	}
 
 	// clear the history

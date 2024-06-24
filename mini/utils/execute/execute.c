@@ -10,6 +10,8 @@ void	execute_cmdline(struct s_AST_Node **rootnode, t_parameters *parameters)
 	if (NODETYPE((*rootnode)->type) == NODE_SEQ)
 	{
 		execute_job(&((*rootnode)->left), 0, parameters);
+		if (sigint_received == -1)
+			return ;
 		execute_cmdline(&((*rootnode)->right), parameters);
 	}
 	// else if (NODETYPE(rootnode->type) == NODE_BCKGRND)
@@ -19,6 +21,8 @@ void	execute_cmdline(struct s_AST_Node **rootnode, t_parameters *parameters)
 	// }
 	else
 		execute_job((rootnode), 0, parameters);
+	if (sigint_received == -1)
+		return ;
 }
 
 int NODETYPE(enum e_NodeType type)
@@ -108,7 +112,6 @@ void	execute_syntax_tree(struct s_AST_Node *rootnode)
 	t_parameters	parameters;
 
 	execute_cmdline(&rootnode, &parameters);
-	free_ast(&rootnode, rootnode);
 }
 // to free ast here
 // printf("before free ast\n");

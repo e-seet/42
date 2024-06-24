@@ -15,20 +15,18 @@ int	linechecker(char *str)
 		return (0);
 }
 
+// probably need a flag to show that heredoc should be break
 void	heredocinput(char *input,
 	struct s_AST_Node **rootnode, int heredocwritefd)
 {
-	while (1)
+	// while (1 && sigint_received != -1)
+	while (sigint_received != -1)
 	{
 		input = readline(">>:");
 		if (input == NULL)
-		{
-			printf("Ctrl + D pressed outside heredoc\n");
 			break ;
-		}
 		if (input[0] != '\0' || input != NULL)
 		{
-			// To break
 			if (((strncmp(input, (*rootnode)->data, strlen(
 								(*rootnode)->data)) == 0) && (strlen(input)
 						- linechecker(input)) == strlen((*rootnode)->data)))
@@ -36,11 +34,9 @@ void	heredocinput(char *input,
 				break ;
 			}
 			write(heredocwritefd, input, ft_strlen(input));
-			// write(1,  input, ft_strlen(input));
 			free(input);
 			input = NULL;
 			// add_history(input);
-
 		}
 		free(input);
 	}
@@ -55,7 +51,13 @@ void	prepheredoc(struct s_AST_Node **rootnode)
 	heredocwritefd = open("heredoctemp.txt", O_TRUNC
 			| O_CREAT | O_RDWR, 0644);
 	input = NULL;
+	setsignals(2);
 	heredocinput(input, rootnode, heredocwritefd);
+	if (sigint_received == -1)
+	{
+		printf("exit prepheredoc\n");
+		return ;
+	}
 	if (input != NULL)
 		free(input);
 	filein = ft_calloc(16, sizeof(char));
@@ -76,6 +78,8 @@ void	execute_job(struct s_AST_Node **rootnode,
 	else if (NODETYPE((*rootnode)->type) == NODE_HEREDOC)
 	{
 		prepheredoc(rootnode);
+		if (sigint_received == -1)
+			return ;
 		parameters->readpipe = 0;
 		parameters->writepipe = 0;
 		parameters->piperead = 0;

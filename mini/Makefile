@@ -30,6 +30,7 @@ SRC_FILES			:=	main.c	\
 						./utils/execution/execution_redir.c\
 						./utils/execution/execution.c\
 						./utils/execution/executionprep.c\
+						./utils/signal.c\
 
 
 
