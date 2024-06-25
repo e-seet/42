@@ -70,7 +70,7 @@ int	checkforexit(char *envp[])
 		// sigint
 		if (sigint_received == -1
 			// || sigint_received == 2
-			// || sigint_received == 3
+			|| sigint_received == -3
 			)
 		{
 			printf("sigint received: %d", sigint_received);
@@ -78,17 +78,20 @@ int	checkforexit(char *envp[])
 			free_linkedlist(node);
 			free_ast(&ast_node, ast_node);
 			printf("reset to 0\n");
+			if (sigint_received == -3)
+				exit(0);
 			sigint_received = 0;
 		}
 
 		// To do: Check the first 2
-        if (strcmp(str, "clear") == 0)
-		{
-            // Clear the screen if the command 'clear' is entered
-            rl_replace_line("", 0); // Clear the readline line buffer
-            system("clear"); // Use system call to clear the terminal screen // Check if this is allowed
-        }
-		else if (strcmp(str, "reset_hist") == 0)
+        // if (strcmp(str, "clear") == 0)
+		// {
+        //     // Clear the screen if the command 'clear' is entered
+        //     // rl_replace_line("", 0); // Clear the readline line buffer
+        //     // system("clear"); // Use system call to clear the terminal screen // Check if this is allowed
+        // }
+		// not using this if statement??
+		if (strcmp(str, "reset_hist") == 0)
 		{
             // Reset the history if 'reset_hist' command is entered
 			// clearhistory();
@@ -101,8 +104,8 @@ int	checkforexit(char *envp[])
             // Handle other commands
             printf("You entered: %s\n", str);
 	
-			if (ft_strncmp(str, "env", ft_strlen("env")) == 0)
-			{
+			// if (ft_strncmp(str, "env", ft_strlen("env")) == 0)
+			// {
 				// if just env [Based off eval]
 				// int i = 0;
 				// while (t_minishell->envp[i])
@@ -123,30 +126,30 @@ int	checkforexit(char *envp[])
 				// 5. setting env variable for a command
 				// env -u VAR1 -i VAR2=value command
 
-			}
+			// }
 			// Export and set don't really need clean up since they are more or less fixed
 			// eg: Export MY_VAR="smth" || unset MY_VAR
-			else if (ft_strncmp(str, "export", ft_strlen("export")) == 0)
-			{
-				// export to env
-				// exportstr(str, t_minishell);	
-			}
-			else if (ft_strncmp(str, "unset", ft_strlen("unset")) == 0)
-			{
-				// unset a variable in the env
-				// unsetmyenv(str, t_minishell);
-			}
-			else if (ft_strncmp(str, "pwd", ft_strlen("pwd")) ==0)
-			{
-				// updatepwd(t_minishell);
-				// printf("%s\n", t_minishell->currpwd);
-			}
-			else if (ft_strncmp(str, "cd", ft_strlen("cd")) ==0)
-			{
-				// changedirectory(str, t_minishell);
-			}
-			else
-			{
+			// else if (ft_strncmp(str, "export", ft_strlen("export")) == 0)
+			// {
+			// 	// export to env
+			// 	// exportstr(str, t_minishell);	
+			// }
+			// else if (ft_strncmp(str, "unset", ft_strlen("unset")) == 0)
+			// {
+			// 	// unset a variable in the env
+			// 	// unsetmyenv(str, t_minishell);
+			// }
+			// else if (ft_strncmp(str, "pwd", ft_strlen("pwd")) ==0)
+			// {
+			// 	// updatepwd(t_minishell);
+			// 	// printf("%s\n", t_minishell->currpwd);
+			// }
+			// else if (ft_strncmp(str, "cd", ft_strlen("cd")) ==0)
+			// {
+			// 	// changedirectory(str, t_minishell);
+			// }
+			// else
+			// {
 				// token_list token_list;
 				
 				// set up signal
@@ -188,7 +191,7 @@ int	checkforexit(char *envp[])
 
 				// free ast_nodes inside execution.c
 
-			}
+			// }
         }
 
         rl_on_new_line(); // Prepare readline for new input

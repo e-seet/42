@@ -261,6 +261,13 @@ int					init_command_internal(struct s_AST_Node *rootnode,
 // execution.c
 void				execution2(t_parameters *parameters);
 
+// executionbuiltin.c
+void				execute_cd(t_parameters* parameters);
+void				execute_pwd(t_parameters* parameters);
+
+// void				updatepwd(struct s_minishell *t_minishell);
+
+
 // struct SigintHandlerParams {
 //     int heredoc;
 //     int process;

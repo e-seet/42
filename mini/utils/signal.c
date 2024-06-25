@@ -4,19 +4,13 @@
 // this does not exit minishell.
 // just returns to minishell if pressed
 // reset my linked list and node if required
-void exit_currentprocess(int sig)
+void clear_mini(int sig)
 {
-
-	printf("\n\nIn exit current process %d\n", sig);
-	sigint_received = -1;
-	printf("exit current process\n\n");
-    // printf("Handler 1: Received SIGINT\n");
-    // Handle signal 1
-	// printf("sig:%d\n", sig);
-	// printf("Does nothing except another line. Here you go!\n");
-	
-	// do i want this? idk
+	printf("\n\nsigint 0 in minishell %d\n", sig);
 	sigint_received = 0;
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 void exit_heredoc(int sig)
@@ -24,11 +18,28 @@ void exit_heredoc(int sig)
 	printf("\n\nsigint -1 in heredoc %d\n", sig);
 	sigint_received = -1;
 	// printf("exit heredoc signal\n\n");
-	(void)sig;
+	// (void)sig;
 	// return ;
 	// rl_replace_line("", 0);
 	rl_on_new_line();
 	printf("press enter to continue\n");
+	// rl_redisplay();
+	return ;
+}
+
+void exit_child(int sig)
+{
+	printf("\nTo exit pipe/child%d\n", sig);
+	return ;
+}
+
+void exit_all(int sig)
+{
+	printf("\n\nsigint -3. Will exit program! %d\n", sig);
+	sigint_received = -3;
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 	// rl_redisplay();
 	return ;
 }
@@ -40,63 +51,39 @@ void setsignals(int sig)
 	struct sigaction sa1;
 	struct sigaction sa2;
 
+	// to handle control d
+	sa2.sa_flags = 0;
+	sa2.sa_handler = exit_all;
+	sigemptyset(&sa2.sa_mask);
+	sigaction(SIGQUIT, &sa2, NULL);
 	
 	// setuo
 	if (sig == 0)
 	{
-		sigint_received = 0;
-		printf("set up mini\n");
+		printf("set up mini || in minishell\n");
 		// printf("crtl c is clear line\n");
 		// printf("crtl d is to core dump\n");
-
-		sa1.sa_handler = exit_currentprocess;
+		sa1.sa_flags = 0;
+		sa1.sa_handler = clear_mini;
 		sigemptyset(&sa1.sa_mask);
-		// this is the inital
 		sigaction(SIGINT, &sa1, NULL);
-
-		// to do something else
-		// do core dump?
-		// sa2.sa_handler = exit_currentprocess;
-		// sigaction(SIGQUIT, &sa2, NULL);
 	}
-
-	// exit current process
 	if (sig == 1)
 	{
+		// printf("in process / pipes\n");
 		sa1.sa_flags = 0;
-		sa2.sa_flags = 0;
-		printf("inside mini signal\n");
-		// printf("crtl c is clear line\n");
-		// printf("crtl d is to core dump\n");
-
-		sa1.sa_handler = exit_currentprocess;
+		sa1.sa_handler = exit_child;
 		sigemptyset(&sa1.sa_mask);
-		// this is the inital
 		sigaction(SIGINT, &sa1, NULL);
-
-		// to do something else
-		// do core dump?
-		// sa2.sa_handler = exit_currentprocess;
-		// sigaction(SIGQUIT, &sa2, NULL);
 	}
-	else if (sig == 2)
+	if (sig == 2)
 	{
-		sa1.sa_flags = 0;
-		sa2.sa_flags = 0;
-		printf("inside heredoc signal");
 		// printf("crtl c is exit heredoc and return to the process\n");
-		// sigint_received = -1;
-		// printf("crtl d is to core dump\n");
-
-
+		printf("inside heredoc signal");
+		sa1.sa_flags = 0;
 		sa1.sa_handler = exit_heredoc;
 		sigemptyset(&sa1.sa_mask);
-		// this is the inital
 		sigaction(SIGINT, &sa1, NULL);
-
-
-		// sigaction(SIGINT, &sa2, NULL);
-		// sigaction(SIGQUIT, &sa2, NULL);
 	}
 	// else if (sig == 3)
 	// {
@@ -229,7 +216,9 @@ void setsignals(int sig)
 //     // sigemptyset(&sa3->sa_mask);
 // }
 
-// how to do signal?
-// 1 either i have a flag to help manage
-// 2 i have static varaible 
-// 
+// the 3 signal command to do
+// bash interactive:
+// crtl c: sigint
+// crtl \: sigquit
+// crtl d: eof
+
