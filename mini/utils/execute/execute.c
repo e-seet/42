@@ -1,20 +1,21 @@
 #include "../utils.h"
 
 // top layer: job ; command line
-void	execute_cmdline(struct s_AST_Node **rootnode, t_parameters *parameters, t_mini *mini)
+void	execute_cmdline(struct s_AST_Node **rootnode,
+	t_parameters *parameters, t_mini *mini)
 {
 	if ((*rootnode) == NULL)
 	{
 		return ;
 	}
-	if (NODETYPE((*rootnode)->type) == NODE_SEQ)
+	if (nodetype((*rootnode)->type) == NODE_SEQ)
 	{
 		execute_job(&((*rootnode)->left), 0, parameters, mini);
 		if (sigint_received == -1)
 			return ;
 		execute_cmdline(&((*rootnode)->right), parameters, mini);
 	}
-	// else if (NODETYPE(rootnode->type) == NODE_BCKGRND)
+	// else if (nodetype(rootnode->type) == NODE_BCKGRND)
 	// {
 	// 	execute_job(rootnode->left, 1);  // job to be background
 	// 	execute_cmdline(rootnode->right);
@@ -25,7 +26,7 @@ void	execute_cmdline(struct s_AST_Node **rootnode, t_parameters *parameters, t_m
 		return ;
 }
 
-int NODETYPE(enum e_NodeType type)
+int	nodetype(enum e_NodeType type)
 {
 	return (type & (~NODE_DATA));
 }
@@ -107,7 +108,8 @@ void	free_ast(struct s_AST_Node **rootnode, struct s_AST_Node *original)
 	free(*rootnode);
 }
 
-void	execute_syntax_tree(struct s_AST_Node *rootnode, t_parameters *parameters, t_mini *mini)
+void	execute_syntax_tree(struct s_AST_Node *rootnode,
+	t_parameters *parameters, t_mini *mini)
 {
 	execute_cmdline(&rootnode, parameters, mini);
 }

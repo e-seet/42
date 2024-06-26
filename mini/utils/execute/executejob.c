@@ -73,9 +73,9 @@ void	execute_job(struct s_AST_Node **rootnode,
 {
 	if ((*rootnode) == NULL)
 		return ;
-	if (NODETYPE((*rootnode)->type) == NODE_PIPE)
+	if (nodetype((*rootnode)->type) == NODE_PIPE)
 		execute_pipe((rootnode), async, parameters, mini);
-	else if (NODETYPE((*rootnode)->type) == NODE_HEREDOC)
+	else if (nodetype((*rootnode)->type) == NODE_HEREDOC)
 	{
 		prepheredoc(rootnode);
 		if (sigint_received == -1)

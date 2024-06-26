@@ -24,7 +24,6 @@ void	free_parameters(t_parameters *parameters)
 }
 
 void	execute_simple_command(struct s_AST_Node *rootnode,
-							// t_parameters *parameters,
 							t_mini	*mini,
 							char	*redirect_in,
 							char	*redirect_out
@@ -41,15 +40,16 @@ void	execute_simple_command(struct s_AST_Node *rootnode,
 	// free_parameters(mini->parameters);
 }
 
-void	execute_command2(struct s_AST_Node **rootnode, t_parameters *parameters, t_mini *mini)
+void	execute_command2(struct s_AST_Node **rootnode,
+	t_parameters *parameters, t_mini *mini)
 {
-	if (NODETYPE((*rootnode)->type) == NODE_REDIRECT)
+	if (nodetype((*rootnode)->type) == NODE_REDIRECT)
 	{
 		parameters->append = 1;
 		execute_simple_command(((*rootnode)->right),
 			mini, NULL, (*rootnode)->data);
 	}
-	else if (NODETYPE((*rootnode)->type) == NODE_REDIRECT_OUT)
+	else if (nodetype((*rootnode)->type) == NODE_REDIRECT_OUT)
 	{
 		parameters->append = 0;
 		execute_simple_command(((*rootnode)->right),
@@ -63,20 +63,21 @@ void	execute_command2(struct s_AST_Node **rootnode, t_parameters *parameters, t_
 }
 
 // 5 main cases
-void	execute_command(struct s_AST_Node **rootnode, t_parameters *parameters, t_mini *mini)
+void	execute_command(struct s_AST_Node **rootnode,
+	t_parameters *parameters, t_mini *mini)
 {
 	if ((*rootnode) == NULL)
 	{
 		printf("root node is null");
 		return ;
 	}
-	if (NODETYPE((*rootnode)->type) == NODE_HEREDOC)
+	if (nodetype((*rootnode)->type) == NODE_HEREDOC)
 	{
 		parameters->append = 1;
 		execute_simple_command(((*rootnode)->right),
 			mini, (*rootnode)->data, NULL);
 	}
-	else if (NODETYPE((*rootnode)->type) == NODE_REDIRECT_IN)
+	else if (nodetype((*rootnode)->type) == NODE_REDIRECT_IN)
 	{
 		parameters->append = 0;
 		execute_simple_command(((*rootnode)->right),

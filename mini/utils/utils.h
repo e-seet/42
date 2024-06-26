@@ -107,7 +107,7 @@ struct s_AST_Node
 	struct s_AST_Node	*left;
 	struct s_AST_Node	*right;
 };
-typedef struct s_AST_Node		t_AST_Node;
+typedef struct s_AST_Node		t_ast_node;
 
 // for execution
 struct s_parameters
@@ -137,6 +137,8 @@ struct s_mini
 	t_parameters		*parameters;
 	struct s_AST_Node	*ast_node;
 
+	char				*str;
+
 	// for cd -
 	char				*prevpwd;
 
@@ -157,8 +159,15 @@ typedef struct s_mini			t_mini;
 void				setupstruct(t_mini *t_minishell, char *envp[]);
 char				*findpath(char *envp[]);
 
-// env.c
-void				envvariables(t_mini *t_minishell, char *envp[]);
+// setenv.c
+// initial
+void				envvariables(t_mini *mini, char *envp[]);
+// if there export env (setting)
+void				exportstr(t_mini *mini);
+int					ft_breakspace(char *str);
+
+// unsetenv.c
+void				unsetmyenv(t_mini *mini);
 
 // lexical file
 t_linkedlist		*lexical(char *str);
@@ -250,7 +259,6 @@ void				execute_job(struct s_AST_Node **rootnode,
 // execute simple command
 void				free_parameters(t_parameters *parameters);
 void				execute_simple_command(struct s_AST_Node *rootnode,
-						// t_parameters *parameters,
 						t_mini	*mini,
 						char	*redirect_in,
 						char	*redirect_out
@@ -270,8 +278,8 @@ void				execute_syntax_tree(struct s_AST_Node *rootnode,
 						t_parameters *parameter,
 						t_mini *mini);
 // illegal to fix
-// # define NODETYPE(a) (a & (~NODE_DATA))	// get the type of the nodes
-int					NODETYPE(enum e_NodeType type);
+// # define nodetype(a) (a & (~NODE_DATA))	// get the type of the nodes
+int					nodetype(enum e_NodeType type);
 void				free_ast(struct s_AST_Node **rootnode,
 						struct s_AST_Node *original);
 

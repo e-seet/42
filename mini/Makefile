@@ -32,9 +32,9 @@ SRC_FILES			:=	main.c	\
 						./utils/execution/execution.c\
 						./utils/execution/executionprep.c\
 						./utils/signal.c\
-						./utils/builtin/executionbuiltin.c
-
-
+						./utils/builtin/executionbuiltin.c\
+						./utils/builtin/setenv.c\
+						./utils/builtin/unsetenv.c
 
 OBJS				=	$(SRC_FILES:.c=.o)
 

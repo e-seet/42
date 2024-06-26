@@ -3,8 +3,8 @@
 void	init_command_internal_prep_argv(struct s_AST_Node *rootnode,
 		t_parameters *parameters, struct s_AST_Node *argnode, int *i)
 {
-	while (argnode != NULL && (!(NODETYPE(argnode->type) == NODE_ARGUMENT)
-			|| !(NODETYPE(argnode->type) == NODE_CMDPATH)))
+	while (argnode != NULL && (!(nodetype(argnode->type) == NODE_ARGUMENT)
+			|| !(nodetype(argnode->type) == NODE_CMDPATH)))
 	{
 		argnode = argnode->right;
 		(*i)++;
@@ -19,8 +19,8 @@ void	init_command_internal_prep_argv(struct s_AST_Node *rootnode,
 	argnode = rootnode;
 	(*i) = 0;
 	while (
-		argnode != NULL && (NODETYPE(argnode->type) == NODE_ARGUMENT
-			|| NODETYPE(argnode->type) == NODE_CMDPATH))
+		argnode != NULL && (nodetype(argnode->type) == NODE_ARGUMENT
+			|| nodetype(argnode->type) == NODE_CMDPATH))
 	{
 		parameters->argv[*i] = (char *)malloc(ft_strlen(argnode->data) + 1);
 		ft_strlcpy(parameters->argv[*i], argnode->data,
@@ -36,7 +36,7 @@ int	init_command_internal(struct s_AST_Node *rootnode,
 	int					i;
 	struct s_AST_Node	*argnode;
 
-	if (rootnode == NULL || !(NODETYPE(rootnode->type) == NODE_CMDPATH))
+	if (rootnode == NULL || !(nodetype(rootnode->type) == NODE_CMDPATH))
 	{
 		parameters->argc = 0;
 		printf("return -1 in internal\n");

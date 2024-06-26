@@ -46,73 +46,56 @@ void	executeprocess(t_parameters *parameters, int	*pid)
 
 int	builtincommand(t_parameters *parameters, t_mini *mini)
 {
+	int	i;
+
 	if (parameters->argc < 0)
 		return (1);
-	
 	// echo
 	// cd
-	else if (ft_strncmp(parameters->argv[0], "cd", ft_strlen("cd")) ==0)
+	else if (ft_strncmp(parameters->argv[0], "cd", ft_strlen("cd")) == 0)
 	{
 		execute_cd(parameters, mini);
 		// changedirectory(str, t_minishell);
 		return (1);
 	}
 	// pwd
-	else if (ft_strncmp(parameters->argv[0], "pwd", ft_strlen("pwd")) ==0)
+	else if (ft_strncmp(parameters->argv[0], "pwd", ft_strlen("pwd")) == 0)
 	{
 		execute_pwd(parameters);
 		// updatepwd(t_minishell);
 		return (1);
 	}
-
-
-
-	// to check from here onwards
 	// // export
-	else if (ft_strncmp(parameters->argv[0], "export", ft_strlen("export")) == 0)
+	// No input / output reditection
+	// no pipes
+	else if (ft_strncmp(parameters->argv[0], "export",
+			ft_strlen("export")) == 0)
 	{
 		// export to env
-		// exportstr(str, t_minishell);	
-		// No input / output reditection
-		// no pipes
+		exportstr(mini);
 		return (1);
 	}
-
-	// // unset
-	//		// No input / output reditection
-	//		// no pipes
+	// unset
+	// No input / output reditection
+	// no pipes
 	else if (ft_strncmp(parameters->argv[0], "unset", ft_strlen("unset")) == 0)
 	{
-
-	// 	// unset a variable in the env
-	// 	// unsetmyenv(str, t_minishell);
+		// 	// unset a vabuiltiriable in the env
+		unsetmyenv(mini);
 		return (1);
 	}
-	
 	// // env
 	// No input / output reditection
 	// no pipes
 	else if (ft_strncmp(parameters->argv[0], "env", ft_strlen("env")) == 0)
 	{
-	// 	// if just env [Based off eval]
-	// 	// int i = 0;
-	// 	// while (t_minishell->envp[i])
-	// 	// {
-	// 	// 	printf("%s\n", t_minishell->envp[i]);
-	// 	// 	i++;
-	// 	// }
-
-	// 	// if there are other commands EG:
-	// 	// 1.Run command with modified env
-	// 	// env VAR1=foo VAR2=bar command
-	// 	// 2.Modify the env for shell session
-	// 	// env Path=$PATH:/new/path
-	// 	// 3.Print value of specific env
-	// 	// env | grep PATH
-	// 	// 4. execute command with clean env
-	// 	// env -i command
-	// 	// 5. setting env variable for a command
-	// 	// env -u VAR1 -i VAR2=value command
+		// 	just env [Based off eval]
+		i = 0;
+		while (mini->envp[i])
+		{
+			printf("%s\n", mini->envp[i]);
+			i++;
+		}
 		return (1);
 	}
 	// exit
@@ -122,16 +105,15 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 		exit(0);
 		return (1);
 	}
-	
-
 	// // ??	
 	// if (ft_strncmp(parameters->argv[0], "clear", ft_strlen("clear")) == 0)
 	// {
-	// 	rl_replace_line("", 0); // Clear the readline line buffer
-	// 	// system("clear"); // Use system call to clear the terminal screen // Check if this is allowed
+	// Clear the readline line buffer
+	// 	rl_replace_line("", 0);
+	// Use system call to clear the terminal screen // Check if this is allowed
+	// 	// system("clear");
 	// 	return (1);
 	// }
-
 	else
 		return (0);
 }

@@ -24,7 +24,7 @@ void	execute_pipe_job(struct s_AST_Node **rootnode,
 	struct s_AST_Node	*jobnode;
 
 	jobnode = (*rootnode)->right;
-	while (jobnode != NULL && NODETYPE(jobnode->type) == PIPE)
+	while (jobnode != NULL && nodetype(jobnode->type) == PIPE)
 	{
 		close(parameters->pipewrite);
 		pipe(fd);

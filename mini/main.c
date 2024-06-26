@@ -51,6 +51,7 @@ int	checkforexit(char *envp[])
 	mini->envp = NULL;
 
 	mini->prevpwd = NULL;
+	mini->str = NULL;
 
 	// this set up mini
 	setupstruct(mini, envp);
@@ -123,7 +124,7 @@ int	checkforexit(char *envp[])
 		{
             // Handle other commands
             printf("You entered: %s\n", str);
-	
+			mini -> str = str;
 			// if (ft_strncmp(str, "env", ft_strlen("env")) == 0)
 			// {
 				// if just env [Based off eval]
