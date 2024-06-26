@@ -21,23 +21,40 @@ volatile sig_atomic_t sigint_received = 0;
 int	checkforexit(char *envp[])
 {
 	char				*str;
+
 	t_linkedlist		*node;
-	struct s_AST_Node *ast_node;
+	t_AST_Node			*ast_node;
+	t_parameters		*parameters;
+	t_mini				*mini;
 
-	// char	*paths;
-	// struct s_minishell *t_minishell;
-
-	// t_minishell = ft_calloc(1, sizeof(struct s_minishell));
-	
 	//setup 
-	// setupstruct(t_minishell, envp);
-
 	printf("\033[1;31m\n");
 	printf("%p", envp);
 
 	str = NULL;
 	node = NULL;
 	ast_node = NULL;
+	parameters = malloc(sizeof(t_parameters));
+	parameters->argv = NULL;
+	parameters->file_in = NULL;
+	parameters->file_out = NULL;
+	
+	// Allocate memory for t_mini and its components
+	mini = malloc(sizeof(t_mini));
+	
+	mini->linkedlist = node;
+	mini->ast_node = ast_node;
+	mini->parameters = parameters;
+	
+	mini->paths = NULL;
+	mini->path = NULL;
+	mini->envp = NULL;
+
+	mini->prevpwd = NULL;
+
+	// this set up mini
+	setupstruct(mini, envp);
+
 	// initialize_readline();
 	rl_clear_history();
 
@@ -77,6 +94,9 @@ int	checkforexit(char *envp[])
 			printf("free both\n");
 			free_linkedlist(node);
 			free_ast(&ast_node, ast_node);
+			
+			free_parameters(parameters);
+			
 			printf("reset to 0\n");
 			if (sigint_received == -3)
 				exit(0);
@@ -153,7 +173,6 @@ int	checkforexit(char *envp[])
 				// token_list token_list;
 				
 				// set up signal
-				
 
 				printf("lexical\n");
 				node = lexical(str);// this return a linked list
@@ -163,8 +182,7 @@ int	checkforexit(char *envp[])
 				ast_node = breakcommandline(node);
 
 				printf("execution\n");
-				execute_syntax_tree(ast_node);
-
+				execute_syntax_tree(ast_node, parameters, mini);
 
 				// sigint
 				if (sigint_received == -1
@@ -176,6 +194,8 @@ int	checkforexit(char *envp[])
 					printf("free both\n");
 					free_linkedlist(node);
 					free_ast(&ast_node, ast_node);
+					// may have segfault
+					free_parameters(parameters);
 					node = NULL;
 					ast_node = NULL;
 					printf("reset to 0\n");
@@ -185,6 +205,8 @@ int	checkforexit(char *envp[])
 				{
 					free_linkedlist(node);
 					free_ast(&ast_node, ast_node);
+					// may have segfault
+					free_parameters(parameters);
 					node = NULL;
 					ast_node = NULL;
 				}

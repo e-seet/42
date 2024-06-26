@@ -69,12 +69,12 @@ void	prepheredoc(struct s_AST_Node **rootnode)
 // 						|	<command>
 // No need of pipes so all 4 parameters are 0
 void	execute_job(struct s_AST_Node **rootnode,
-	int async, t_parameters *parameters)
+	int async, t_parameters *parameters, t_mini *mini)
 {
 	if ((*rootnode) == NULL)
 		return ;
 	if (NODETYPE((*rootnode)->type) == NODE_PIPE)
-		execute_pipe((rootnode), async, parameters);
+		execute_pipe((rootnode), async, parameters, mini);
 	else if (NODETYPE((*rootnode)->type) == NODE_HEREDOC)
 	{
 		prepheredoc(rootnode);
@@ -85,7 +85,7 @@ void	execute_job(struct s_AST_Node **rootnode,
 		parameters->piperead = 0;
 		parameters->pipewrite = 0;
 		parameters->async = async;
-		execute_command(rootnode, parameters);
+		execute_command(rootnode, parameters, mini);
 	}
 	else
 	{
@@ -94,6 +94,6 @@ void	execute_job(struct s_AST_Node **rootnode,
 		parameters->piperead = 0;
 		parameters->pipewrite = 0;
 		parameters->async = async;
-		execute_command(rootnode, parameters);
+		execute_command(rootnode, parameters, mini);
 	}
 }

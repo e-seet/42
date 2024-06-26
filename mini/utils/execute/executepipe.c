@@ -4,10 +4,9 @@
 // left node pipe to right node
 // the number 1 and 0 signifies whether we need the pipe read and write
 void	execute_pipe(struct s_AST_Node **rootnode,
-	int async, t_parameters *parameters)
+	int async, t_parameters *parameters, t_mini *mini)
 {
 	int					fd[2];
-	struct s_AST_Node	*jobnode;
 
 	pipe(fd);
 	parameters->readpipe = 0;
@@ -15,14 +14,16 @@ void	execute_pipe(struct s_AST_Node **rootnode,
 	parameters->piperead = fd[0];
 	parameters->pipewrite = fd[1];
 	parameters->async = async;
-	execute_command(&((*rootnode)->left), parameters);
-	jobnode = (*rootnode)->right;
-	execute_pipe_job(rootnode, parameters, jobnode, fd);
+	execute_command(&((*rootnode)->left), parameters, mini);
+	execute_pipe_job(rootnode, parameters, mini, fd);
 }
 
 void	execute_pipe_job(struct s_AST_Node **rootnode,
-	t_parameters *parameters, struct s_AST_Node *jobnode, int fd[])
+	t_parameters *parameters, t_mini *mini, int fd[])
 {
+	struct s_AST_Node	*jobnode;
+
+	jobnode = (*rootnode)->right;
 	while (jobnode != NULL && NODETYPE(jobnode->type) == PIPE)
 	{
 		close(parameters->pipewrite);
@@ -30,7 +31,7 @@ void	execute_pipe_job(struct s_AST_Node **rootnode,
 		parameters->pipewrite = fd[1];
 		parameters->readpipe = 1;
 		parameters->writepipe = 1;
-		execute_command(&((*rootnode)->left), parameters);
+		execute_command(&((*rootnode)->left), parameters, mini);
 		close(parameters->piperead);
 		parameters->piperead = fd[0];
 		jobnode = jobnode -> right;
@@ -39,6 +40,6 @@ void	execute_pipe_job(struct s_AST_Node **rootnode,
 	close(parameters->pipewrite);
 	parameters->readpipe = 1;
 	parameters->writepipe = 0;
-	execute_command(&((*rootnode)->left), parameters);
+	execute_command(&((*rootnode)->left), parameters, mini);
 	close(parameters->piperead);
 }

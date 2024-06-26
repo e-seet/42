@@ -107,6 +107,7 @@ struct s_AST_Node
 	struct s_AST_Node	*left;
 	struct s_AST_Node	*right;
 };
+typedef struct s_AST_Node		t_AST_Node;
 
 // for execution
 struct s_parameters
@@ -127,7 +128,37 @@ struct s_parameters
 };
 typedef struct s_parameters		t_parameters;
 
+// general
+
+// Struct definition for t_mini
+struct s_mini
+{
+	t_linkedlist		*linkedlist;
+	t_parameters		*parameters;
+	struct s_AST_Node	*ast_node;
+
+	// for cd -
+	char				*prevpwd;
+
+	// for execvp
+	char				**paths;
+	char				*path;
+
+	// my env variables
+	char				**envp;
+	// number of env variable
+	int					envplen;
+};
+typedef struct s_mini			t_mini;
+
 // functions
+
+// setup.c
+void				setupstruct(t_mini *t_minishell, char *envp[]);
+char				*findpath(char *envp[]);
+
+// env.c
+void				envvariables(t_mini *t_minishell, char *envp[]);
 
 // lexical file
 t_linkedlist		*lexical(char *str);
@@ -213,24 +244,31 @@ void				heredocinput(char *input,
 						struct s_AST_Node **rootnode, int heredocwritefd);
 void				prepheredoc(struct s_AST_Node **rootnode);
 void				execute_job(struct s_AST_Node **rootnode,
-						int async, t_parameters *parameters);
+						int async, t_parameters *parameters,
+						t_mini *mini);
 
 // execute simple command
 void				free_parameters(t_parameters *parameters);
 void				execute_simple_command(struct s_AST_Node *rootnode,
-						t_parameters *parameters,
+						// t_parameters *parameters,
+						t_mini	*mini,
 						char	*redirect_in,
 						char	*redirect_out
 						);
 void				execute_command2(struct s_AST_Node **rootnode,
-						t_parameters *parameters);
+						t_parameters *parameters,
+						t_mini *mini);
 void				execute_command(struct s_AST_Node **rootnode,
-						t_parameters *parameters);
+						t_parameters *parameters,
+						t_mini	*mini);
 
 // execute.c
 void				execute_cmdline(struct s_AST_Node **rootnode,
-						t_parameters *parameters);
-void				execute_syntax_tree(struct s_AST_Node *rootnode);
+						t_parameters *parameters,
+						t_mini	*mini);
+void				execute_syntax_tree(struct s_AST_Node *rootnode,
+						t_parameters *parameter,
+						t_mini *mini);
 // illegal to fix
 // # define NODETYPE(a) (a & (~NODE_DATA))	// get the type of the nodes
 int					NODETYPE(enum e_NodeType type);
@@ -240,9 +278,12 @@ void				free_ast(struct s_AST_Node **rootnode,
 // executepipe.c
 void				execute_pipe_job(struct s_AST_Node **rootnode,
 						t_parameters *parameters,
-						struct s_AST_Node *jobnode, int fd[]);
+						t_mini *mini,
+						int fd[]);
+
 void				execute_pipe(struct s_AST_Node **rootnode,
-						int async, t_parameters *parameters);
+						int async, t_parameters *parameters,
+						t_mini *mini);
 
 // execution_redir.c
 void				redirection_async(t_parameters *parameters);
@@ -259,14 +300,13 @@ int					init_command_internal(struct s_AST_Node *rootnode,
 						char *file_out);
 
 // execution.c
-void				execution2(t_parameters *parameters);
+void				execution2(t_parameters *parameters, t_mini *mini);
 
 // executionbuiltin.c
-void				execute_cd(t_parameters* parameters);
-void				execute_pwd(t_parameters* parameters);
+void				execute_cd(t_parameters *parameters, t_mini *mini);
+void				execute_pwd(t_parameters *parameters);
 
 // void				updatepwd(struct s_minishell *t_minishell);
-
 
 // struct SigintHandlerParams {
 //     int heredoc;

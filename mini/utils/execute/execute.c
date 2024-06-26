@@ -1,7 +1,7 @@
 #include "../utils.h"
 
 // top layer: job ; command line
-void	execute_cmdline(struct s_AST_Node **rootnode, t_parameters *parameters)
+void	execute_cmdline(struct s_AST_Node **rootnode, t_parameters *parameters, t_mini *mini)
 {
 	if ((*rootnode) == NULL)
 	{
@@ -9,10 +9,10 @@ void	execute_cmdline(struct s_AST_Node **rootnode, t_parameters *parameters)
 	}
 	if (NODETYPE((*rootnode)->type) == NODE_SEQ)
 	{
-		execute_job(&((*rootnode)->left), 0, parameters);
+		execute_job(&((*rootnode)->left), 0, parameters, mini);
 		if (sigint_received == -1)
 			return ;
-		execute_cmdline(&((*rootnode)->right), parameters);
+		execute_cmdline(&((*rootnode)->right), parameters, mini);
 	}
 	// else if (NODETYPE(rootnode->type) == NODE_BCKGRND)
 	// {
@@ -20,7 +20,7 @@ void	execute_cmdline(struct s_AST_Node **rootnode, t_parameters *parameters)
 	// 	execute_cmdline(rootnode->right);
 	// }
 	else
-		execute_job((rootnode), 0, parameters);
+		execute_job((rootnode), 0, parameters, mini);
 	if (sigint_received == -1)
 		return ;
 }
@@ -107,11 +107,9 @@ void	free_ast(struct s_AST_Node **rootnode, struct s_AST_Node *original)
 	free(*rootnode);
 }
 
-void	execute_syntax_tree(struct s_AST_Node *rootnode)
+void	execute_syntax_tree(struct s_AST_Node *rootnode, t_parameters *parameters, t_mini *mini)
 {
-	t_parameters	parameters;
-
-	execute_cmdline(&rootnode, &parameters);
+	execute_cmdline(&rootnode, parameters, mini);
 }
 // to free ast here
 // printf("before free ast\n");
