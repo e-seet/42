@@ -17,7 +17,14 @@ void	waitprocess(t_parameters *parameters, int *pid)
 // restore the crtl c signal in the child process
 // restore_sigint_in_child();
 // store the stdout file desc
-void	executeprocess(t_parameters *parameters, int	*pid)
+
+// execvp example
+// char *argv[] = {"/bin/ls", "-l", NULL}; // Command and its arguments
+// char *envp[] = {"PATH=/usr/bin", "HOME=/home/user", NULL}; // Environment variables
+// (execve("/bin/ls", argv, envp) == -1) 
+
+// to test execve. Not done testing
+void	executeprocess(t_parameters *parameters, int *pid, t_mini *mini)
 {
 	int		stdoutfd;
 
@@ -26,7 +33,7 @@ void	executeprocess(t_parameters *parameters, int	*pid)
 		stdoutfd = dup(STDOUT_FILENO);
 		redirection(parameters);
 		// To change to execve
-		if (execvp(parameters->argv[0], parameters->argv) == -1)
+		if (execve(parameters->argv[0], parameters->argv, mini->envp) == -1)
 		{
 			// restore the stdout for displaying error message
 			dup2(stdoutfd, STDOUT_FILENO);
@@ -46,8 +53,6 @@ void	executeprocess(t_parameters *parameters, int	*pid)
 
 int	builtincommand(t_parameters *parameters, t_mini *mini)
 {
-	int	i;
-
 	if (parameters->argc < 0)
 		return (1);
 	// echo
@@ -55,14 +60,12 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 	else if (ft_strncmp(parameters->argv[0], "cd", ft_strlen("cd")) == 0)
 	{
 		execute_cd(parameters, mini);
-		// changedirectory(str, t_minishell);
 		return (1);
 	}
 	// pwd
 	else if (ft_strncmp(parameters->argv[0], "pwd", ft_strlen("pwd")) == 0)
 	{
 		execute_pwd(parameters);
-		// updatepwd(t_minishell);
 		return (1);
 	}
 	// // export
@@ -71,7 +74,6 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 	else if (ft_strncmp(parameters->argv[0], "export",
 			ft_strlen("export")) == 0)
 	{
-		// export to env
 		exportstr(mini);
 		return (1);
 	}
@@ -80,7 +82,6 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 	// no pipes
 	else if (ft_strncmp(parameters->argv[0], "unset", ft_strlen("unset")) == 0)
 	{
-		// 	// unset a vabuiltiriable in the env
 		unsetmyenv(mini);
 		return (1);
 	}
@@ -89,13 +90,7 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 	// no pipes
 	else if (ft_strncmp(parameters->argv[0], "env", ft_strlen("env")) == 0)
 	{
-		// 	just env [Based off eval]
-		i = 0;
-		while (mini->envp[i])
-		{
-			printf("%s\n", mini->envp[i]);
-			i++;
-		}
+		printenv(mini);
 		return (1);
 	}
 	// exit
@@ -134,7 +129,7 @@ void	execution2(t_parameters *parameters, t_mini	*mini)
 	if (builtincommand(parameters, mini))
 		return ;
 	pid = fork();
-	executeprocess(parameters, &pid);
+	executeprocess(parameters, &pid, mini);
 	return ;
 }
 

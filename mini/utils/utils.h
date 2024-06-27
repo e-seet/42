@@ -161,12 +161,13 @@ char				*findpath(char *envp[]);
 
 // setenv.c
 // initial
+void				printenv(t_mini *mini);
 void				envvariables(t_mini *mini, char *envp[]);
 // if there export env (setting)
 void				exportstr(t_mini *mini);
-int					ft_breakspace(char *str);
 
 // unsetenv.c
+int					ft_breakspace(char *str);
 void				unsetmyenv(t_mini *mini);
 
 // lexical file
@@ -311,8 +312,11 @@ int					init_command_internal(struct s_AST_Node *rootnode,
 void				execution2(t_parameters *parameters, t_mini *mini);
 
 // executionbuiltin.c
-void				execute_cd(t_parameters *parameters, t_mini *mini);
 void				execute_pwd(t_parameters *parameters);
+// refer to setenv.c (exporting/ set env)
+// refer to unsetenv.c (unset env)
+// executioncd.c
+void				execute_cd(t_parameters *parameters, t_mini *mini);
 
 // void				updatepwd(struct s_minishell *t_minishell);
 

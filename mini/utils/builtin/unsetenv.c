@@ -1,5 +1,20 @@
 #include "../utils.h"
 
+int	ft_breakspace(char *str)
+{
+	int	len;
+
+	len = ft_strlen(str);
+	while (len --)
+	{
+		if (str[len] == ' ')
+		{
+			break ;
+		}
+	}
+	return (len);
+}
+
 // Found the variable
 // update the envp accordingly
 void	updateenvvariable_unset2(t_mini *mini, int *i)

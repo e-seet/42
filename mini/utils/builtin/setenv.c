@@ -1,5 +1,18 @@
 #include "../utils.h"
 
+void	printenv(t_mini *mini)
+{
+	int	i;
+
+	// 	just env [Based off eval]
+	i = 0;
+	while (mini->envp[i])
+	{
+		printf("%s\n", mini->envp[i]);
+		i++;
+	}
+}
+
 // copy the env over
 void	envvariables(t_mini *mini, char *envp[])
 {
@@ -16,23 +29,7 @@ void	envvariables(t_mini *mini, char *envp[])
 	}
 }
 
-int	ft_breakspace(char *str)
-{
-	int	len;
-
-	len = ft_strlen(str);
-	while (len --)
-	{
-		if (str[len] == ' ')
-		{
-			break ;
-		}
-	}
-	return (len);
-}
-
 // export MY_VAR="HELLO"
-
 // check if the variable name already exist
 // if so, over ride it
 // else continue to copy over the content from existing
