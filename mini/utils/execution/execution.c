@@ -1,7 +1,53 @@
 #include "../utils.h"
 
-void	waitprocess(t_parameters *parameters, int *pid)
+void	executeprocess_child(t_parameters *parameters, t_mini *mini)
 {
+	int		stdoutfd;
+
+	stdoutfd = dup(STDOUT_FILENO);
+	redirection(parameters);
+	mini->path = findprocesspath(mini, parameters);
+	if (mini->path == NULL)
+	{
+		perror("Access Path not found. Should free properly\n");
+		free(mini->path);
+		exit (0);
+	}
+	if (execve(mini->path, parameters->argv, mini->envp) == -1)
+	{
+		// restore the stdout for displaying error message
+		dup2(stdoutfd, STDOUT_FILENO);
+		printf("Command not found: \'%s\'\n", parameters->argv[0]);
+		exit(1);
+	}
+	else
+		printf("ended execution\n");
+}
+
+// allow signals to be used
+// restore the crtl c signal in the child process
+// restore_sigint_in_child();
+// store the stdout file desc
+
+// execvp example
+// char *argv[] = {"/bin/ls", "-l", NULL}; 
+// Command and its arguments
+// char *envp[] = {"PATH=/usr/bin", "HOME=/home/user", NULL};
+// Environment variables
+// (execve("/bin/ls", argv, envp) == -1) 
+
+// to test execve. Not done testing
+void	executeprocess(t_parameters *parameters, int *pid, t_mini *mini)
+{
+	if ((*pid) == 0)
+	{
+		executeprocess_child(parameters, mini);
+	}
+	else if ((*pid) < 0)
+	{
+		perror("fork");
+		return ;
+	}
 	if (!parameters->async)
 	{
 		// wait till the process has not finished
@@ -13,42 +59,22 @@ void	waitprocess(t_parameters *parameters, int *pid)
 	}
 }
 
-// allow signals to be used
-// restore the crtl c signal in the child process
-// restore_sigint_in_child();
-// store the stdout file desc
-
-// execvp example
-// char *argv[] = {"/bin/ls", "-l", NULL}; // Command and its arguments
-// char *envp[] = {"PATH=/usr/bin", "HOME=/home/user", NULL}; // Environment variables
-// (execve("/bin/ls", argv, envp) == -1) 
-
-// to test execve. Not done testing
-void	executeprocess(t_parameters *parameters, int *pid, t_mini *mini)
+// combine everything to a string
+// write to fd
+void	execute_echo(t_parameters *parameters)
 {
-	int		stdoutfd;
+	int		i;
+	char	*str;
 
-	if ((*pid) == 0)
+	str = calloc(1, sizeof(char));
+	str[0] = '\0';
+	i = 1;
+	while (parameters->argv[i])
 	{
-		stdoutfd = dup(STDOUT_FILENO);
-		redirection(parameters);
-		// To change to execve
-		if (execve(parameters->argv[0], parameters->argv, mini->envp) == -1)
-		{
-			// restore the stdout for displaying error message
-			dup2(stdoutfd, STDOUT_FILENO);
-			printf("Command not found: \'%s\'\n", parameters->argv[0]);
-			exit(1);
-		}
-		else
-			printf("ended execution\n");
+		str = ft_strjoin(str, parameters->argv[i]);
+		i ++;
 	}
-	else if ((*pid) < 0)
-	{
-		perror("fork");
-		return ;
-	}
-	waitprocess(parameters, pid);
+	ft_putstr_fd(str, STDOUT_FILENO);
 }
 
 int	builtincommand(t_parameters *parameters, t_mini *mini)
@@ -56,6 +82,11 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 	if (parameters->argc < 0)
 		return (1);
 	// echo
+	else if (ft_strncmp(parameters->argv[0], "cd", ft_strlen("echo")) == 0)
+	{
+		execute_echo(parameters);
+		return (1);
+	}
 	// cd
 	else if (ft_strncmp(parameters->argv[0], "cd", ft_strlen("cd")) == 0)
 	{

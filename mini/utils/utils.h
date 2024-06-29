@@ -158,6 +158,7 @@ typedef struct s_mini			t_mini;
 // setup.c
 void				setupstruct(t_mini *t_minishell, char *envp[]);
 char				*findpath(char *envp[]);
+char				*findprocesspath(t_mini *mini, t_parameters *parameters);
 
 // setenv.c
 // initial
@@ -171,7 +172,10 @@ int					ft_breakspace(char *str);
 void				unsetmyenv(t_mini *mini);
 
 // lexical file
-t_linkedlist		*lexical(char *str);
+t_linkedlist		*lexical(char *str, t_mini *mini);
+
+// lexical processing
+void				lexicalprocess(t_linkedlist *original, t_mini *mini);
 
 // lexicalutils
 int					ft_is_output_redirect(char *str);

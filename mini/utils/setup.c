@@ -45,7 +45,6 @@ void setupstruct(t_mini *mini, char *envp[])
 	envvariables(mini, envp); //temp here
 	mini->path = findpath(envp);
 	mini->paths = ft_split(mini->path + 5, ':');
-	
 	// currpwd = ft_calloc(1024, sizeof(char));
 	// currpwd = getcwd(currpwd, 1024);
 	// mini->currpwd = currpwd;
@@ -64,3 +63,27 @@ void setupstruct(t_mini *mini, char *envp[])
 // 	printf("path%d: %s\n", i, mini->paths[i]);
 // 	i++;
 // }
+
+char	*findprocesspath(t_mini *mini, t_parameters *parameters)
+{
+	int		i;
+	char	*path;
+
+	i = 0;
+	while (mini->paths[i])
+	{
+		path = ft_strjoin(mini->paths[i], "/");
+		mini->path = ft_strjoin(path,
+				parameters->argv[0]);
+		free(path);
+		if (access(mini->path, F_OK) == 0)
+			break ;
+		free (mini->path);
+		mini->path = NULL;
+		i++;
+	}
+	if (mini->path != NULL && access(mini->path, F_OK) == 0)
+		return (mini->path);
+	else
+		return (NULL);
+}

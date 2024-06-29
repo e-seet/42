@@ -23,7 +23,7 @@ int	checkforexit(char *envp[])
 	char				*str;
 
 	t_linkedlist		*node;
-	t_AST_Node			*ast_node;
+	struct s_AST_Node			*ast_node;
 	t_parameters		*parameters;
 	t_mini				*mini;
 
@@ -176,7 +176,7 @@ int	checkforexit(char *envp[])
 				// set up signal
 
 				printf("lexical\n");
-				node = lexical(str);// this return a linked list
+				node = lexical(str, mini);// this return a linked list
 				// // pass the linked list into the parser
 
 				printf("parsing\n");

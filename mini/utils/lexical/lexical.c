@@ -1,47 +1,5 @@
 #include "../utils.h"
 
-// int	returnint(char *str, int i)
-// {
-// 	if (ft_is_append_output_redirect(&str[i]) == 1)
-// 		return (REDIR);
-// 	else if (ft_is_heredoc_redirect(&str[i]) == 1)
-// 		return (HEREDOC);
-// 	else if (ft_is_output_redirect(&str[i]) == 1)
-// 		return (GREATER);
-// 	else if (ft_is_input_redirect(&str[i]) == 1)
-// 		return (LESSER);
-// 	else if (ft_is_pipe(&str[i]) == 1)
-// 		return (PIPE);
-// 	else
-// 		return (TOKEN);
-// }
-
-// void	create_node(t_linkedlist **node, char *str, int i, int strlen)
-// {
-// 	int				start;
-
-// 	start = 0;
-// 	(*node)->data = ft_calloc(strlen + 1, sizeof(char));
-// 	(*node)->data[strlen + 1] = '\0';
-// 	i = i - strlen;
-// 	if (
-// 		(ft_is_append_output_redirect(&str[i]) == 1)
-// 		|| (ft_is_heredoc_redirect(&str[i]) == 1)
-// 		|| (ft_is_output_redirect(&str[i]) == 1)
-// 		|| (ft_is_input_redirect(&str[i]) == 1)
-// 		|| (ft_is_pipe(&str[i]) == 1)
-// 	)
-// 		(*node)->type = returnint(str, i);
-// 	else
-// 		(*node)->type = TOKEN;
-// 	while (strlen > start)
-// 	{
-// 		(*node)->data[start] = str[(i) + start];
-// 		start ++;
-// 	}
-// 	move_to_nextnode(node);
-// }
-
 // (cd .. && pwd) && pwd >> file
 // Check for sepeartor, if found. Add to list.
 // > : ft_is_output_redirect
@@ -147,6 +105,57 @@ t_linkedlist	*ft_breakup_str(char *str)
 	return (head);
 }
 
+t_linkedlist	*lexical(char *str, t_mini *mini)
+{
+	t_linkedlist	*node;
+
+	node = ft_breakup_str(str);
+	lexicalprocess(node, mini);
+	return (node);
+}
+
+// int	returnint(char *str, int i)
+// {
+// 	if (ft_is_append_output_redirect(&str[i]) == 1)
+// 		return (REDIR);
+// 	else if (ft_is_heredoc_redirect(&str[i]) == 1)
+// 		return (HEREDOC);
+// 	else if (ft_is_output_redirect(&str[i]) == 1)
+// 		return (GREATER);
+// 	else if (ft_is_input_redirect(&str[i]) == 1)
+// 		return (LESSER);
+// 	else if (ft_is_pipe(&str[i]) == 1)
+// 		return (PIPE);
+// 	else
+// 		return (TOKEN);
+// }
+
+// void	create_node(t_linkedlist **node, char *str, int i, int strlen)
+// {
+// 	int				start;
+
+// 	start = 0;
+// 	(*node)->data = ft_calloc(strlen + 1, sizeof(char));
+// 	(*node)->data[strlen + 1] = '\0';
+// 	i = i - strlen;
+// 	if (
+// 		(ft_is_append_output_redirect(&str[i]) == 1)
+// 		|| (ft_is_heredoc_redirect(&str[i]) == 1)
+// 		|| (ft_is_output_redirect(&str[i]) == 1)
+// 		|| (ft_is_input_redirect(&str[i]) == 1)
+// 		|| (ft_is_pipe(&str[i]) == 1)
+// 	)
+// 		(*node)->type = returnint(str, i);
+// 	else
+// 		(*node)->type = TOKEN;
+// 	while (strlen > start)
+// 	{
+// 		(*node)->data[start] = str[(i) + start];
+// 		start ++;
+// 	}
+// 	move_to_nextnode(node);
+// }
+
 // void	ft_strip_quote2(char *str, char *dest, int n, int i)
 // {
 // 	char	lastquote;
@@ -199,11 +208,3 @@ t_linkedlist	*ft_breakup_str(char *str)
 // 	}
 // }
 // printf("%p", node);
-
-t_linkedlist	*lexical(char *str)
-{
-	t_linkedlist	*node;
-
-	node = ft_breakup_str(str);
-	return (node);
-}
