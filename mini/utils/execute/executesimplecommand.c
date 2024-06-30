@@ -9,17 +9,21 @@ void	free_parameters(t_parameters *parameters)
 	while (parameters->argc > i)
 	{
 		free(parameters->argv[i]);
+		parameters->argv[i] = NULL;
 		i++;
 	}
 	free(parameters->argv);
+	parameters->argv = NULL;
 	parameters->argc = 0;
 	if (parameters->file_in)
 	{
 		free(parameters->file_in);
+		parameters->file_in = NULL;
 	}
 	if (parameters->file_out)
 	{
 		free(parameters->file_out);
+		parameters->file_out = NULL;
 	}
 }
 
@@ -37,7 +41,6 @@ void	execute_simple_command(struct s_AST_Node *rootnode,
 	{
 		execution2(mini->parameters, mini);
 	}
-	// free_parameters(mini->parameters);
 }
 
 void	execute_command2(struct s_AST_Node **rootnode,

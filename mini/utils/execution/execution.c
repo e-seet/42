@@ -1,8 +1,9 @@
 #include "../utils.h"
 
-void	executeprocess_child(t_parameters *parameters, t_mini *mini)
+int	executeprocess_child(t_parameters *parameters, t_mini *mini)
 {
 	int		stdoutfd;
+	int		result;
 
 	stdoutfd = dup(STDOUT_FILENO);
 	redirection(parameters);
@@ -13,15 +14,19 @@ void	executeprocess_child(t_parameters *parameters, t_mini *mini)
 		free(mini->path);
 		exit (0);
 	}
-	if (execve(mini->path, parameters->argv, mini->envp) == -1)
+	result = execve(mini->path, parameters->argv, mini->envp);
+	if (result == -1)
 	{
 		// restore the stdout for displaying error message
 		dup2(stdoutfd, STDOUT_FILENO);
 		printf("Command not found: \'%s\'\n", parameters->argv[0]);
+		// mini->exit_status = 1;
+		return (1);
 		exit(1);
 	}
 	else
-		printf("ended execution\n");
+		// mini->exit_status = result;
+		return (0);
 }
 
 // allow signals to be used
@@ -41,7 +46,10 @@ void	executeprocess(t_parameters *parameters, int *pid, t_mini *mini)
 {
 	if ((*pid) == 0)
 	{
-		executeprocess_child(parameters, mini);
+		if (executeprocess_child(parameters, mini) == -1)
+			mini->exit_status = 1;
+		else
+			mini->exit_status = 0;
 	}
 	else if ((*pid) < 0)
 	{
@@ -61,20 +69,25 @@ void	executeprocess(t_parameters *parameters, int *pid, t_mini *mini)
 
 // combine everything to a string
 // write to fd
-void	execute_echo(t_parameters *parameters)
+void	execute_echo(t_parameters *parameters, t_mini *mini)
 {
 	int		i;
 	char	*str;
 
 	str = calloc(1, sizeof(char));
-	str[0] = '\0';
+	str[0] = '\0';	
 	i = 1;
+	if (ft_strncmp(parameters->argv[1], "-n", ft_strlen("-n")) == 0)
+		i = 2;
 	while (parameters->argv[i])
 	{
 		str = ft_strjoin(str, parameters->argv[i]);
 		i ++;
 	}
 	ft_putstr_fd(str, STDOUT_FILENO);
+	if (ft_strncmp(parameters->argv[1], "-n", ft_strlen("-n")) == 0)
+		ft_putstr_fd("\n", STDOUT_FILENO);
+	mini->exit_status = 0;
 }
 
 int	builtincommand(t_parameters *parameters, t_mini *mini)
@@ -84,7 +97,7 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 	// echo
 	else if (ft_strncmp(parameters->argv[0], "cd", ft_strlen("echo")) == 0)
 	{
-		execute_echo(parameters);
+		execute_echo(parameters, mini);
 		return (1);
 	}
 	// cd
@@ -131,15 +144,6 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 		exit(0);
 		return (1);
 	}
-	// // ??	
-	// if (ft_strncmp(parameters->argv[0], "clear", ft_strlen("clear")) == 0)
-	// {
-	// Clear the readline line buffer
-	// 	rl_replace_line("", 0);
-	// Use system call to clear the terminal screen // Check if this is allowed
-	// 	// system("clear");
-	// 	return (1);
-	// }
 	else
 		return (0);
 }
@@ -150,7 +154,6 @@ void	execution2(t_parameters *parameters, t_mini	*mini)
 {
 	pid_t	pid;
 
-	printf("mini pointer:%p. To use for execute process. To do\n", mini);
 	if (parameters->argc < 0)
 	{
 		printf("return due to argc < 0 ");

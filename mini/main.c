@@ -1,21 +1,44 @@
 #include "utils/utils.h"
 
-//check if the last character is a \n and subtract accordingly
-// go to the position before \0 and check if it is a \n
-// int	linechecker(char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str[i] != '\0')
-// 		i++;
-// 	if (str[i - 1] == '\n')
-// 		return (1);
-// 	else
-// 		return (0);
-// }
-
 volatile sig_atomic_t sigint_received = 0;
+
+void	free_arraypointers(char **strs)
+{
+	int	i;
+
+	i = 0;
+	while (strs[i])
+	{
+		free(strs[i]);
+		strs[i] = NULL;
+		i ++;
+	}
+	strs[i] = NULL;
+}
+
+// may have segfault
+// free parameters(parameters);
+void	free_mini(t_mini *mini)
+{
+	if (mini->linkedlist)
+		free_linkedlist(mini->linkedlist);
+	if (mini->ast_node)
+		free_ast(&mini->ast_node, mini->ast_node);
+	if (mini->parameters)
+		free_parameters(mini->parameters);
+	
+	// to check if i want to free the below
+	// if (mini->str)
+	// 	free(mini->str);
+	// if (mini->prevpwd)
+	// 	free(mini->prevpwd);
+	// if (mini->path)
+	// 	free(mini->path);
+	// if (mini->envp)
+	// 	free_arraypointers(mini->envp);
+	// if (mini->envp)
+	// 	free_arraypointers(mini->paths);
+}
 
 // starts the program and get the input from user.
 int	checkforexit(char *envp[])
@@ -29,7 +52,6 @@ int	checkforexit(char *envp[])
 
 	//setup 
 	printf("\033[1;31m\n");
-	printf("%p", envp);
 
 	str = NULL;
 	node = NULL;
@@ -52,6 +74,7 @@ int	checkforexit(char *envp[])
 
 	mini->prevpwd = NULL;
 	mini->str = NULL;
+	mini->exit_status = -1;
 
 	// this set up mini
 	setupstruct(mini, envp);
@@ -93,11 +116,7 @@ int	checkforexit(char *envp[])
 		{
 			printf("sigint received: %d", sigint_received);
 			printf("free both\n");
-			free_linkedlist(node);
-			free_ast(&ast_node, ast_node);
-			
-			free_parameters(parameters);
-			
+			free_mini(mini);
 			printf("reset to 0\n");
 			if (sigint_received == -3)
 				exit(0);
@@ -192,22 +211,13 @@ int	checkforexit(char *envp[])
 					)
 				{
 					// printf("sigint received: %d\n", sigint_received);
-					printf("free both\n");
-					free_linkedlist(node);
-					free_ast(&ast_node, ast_node);
-					// may have segfault
-					free_parameters(parameters);
-					node = NULL;
-					ast_node = NULL;
+					free_mini(mini);
 					printf("reset to 0\n");
 					sigint_received = 0;
 				}
 				else
 				{
-					free_linkedlist(node);
-					free_ast(&ast_node, ast_node);
-					// may have segfault
-					free_parameters(parameters);
+					free_mini(mini);
 					node = NULL;
 					ast_node = NULL;
 				}

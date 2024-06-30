@@ -150,8 +150,29 @@ struct s_mini
 	char				**envp;
 	// number of env variable
 	int					envplen;
+	// exe result
+	int					exit_status;
 };
 typedef struct s_mini			t_mini;
+
+// exit_status is for $?
+// exit_status -1 means not used / put inside yet.
+// execve:
+//  0 = success
+// -1 = failure
+// EACCESS (13): Permission denied.
+// ENOENT (2): No such file or directory.
+// ENOMEM (12): Out of memory.
+// EIO (5): Input/output error.
+// EISDIR (21): Is a directory (attempting to execute a directory).
+// EINVAL (22): Invalid argument (typically indicates a problem with the executable format or other arguments).
+
+// $? numbers:
+// 0: Success.
+// 1: Typically used to indicate general errors or unspecified errors.
+// 2: Misuse of shell builtins (for example, incorrect syntax).
+// 126: Command invoked cannot execute (permission problem or not an executable).
+// 127: Command not found (typically because the command doesn't exist or is not executable).
 
 // functions
 

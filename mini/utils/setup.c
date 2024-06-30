@@ -53,6 +53,7 @@ void setupstruct(t_mini *mini, char *envp[])
 	// printf("curr pwd: %s\n", mini->currpwd);
 	// mini->commandlen = 0;
 }
+
 // For Paths and Path
 // print if required to know the content
 // printf("path:%s\n\n", mini->path);

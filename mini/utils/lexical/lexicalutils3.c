@@ -70,7 +70,6 @@ void	free_linkedlist(t_linkedlist *node)
 {
 	t_linkedlist	*prevnode;
 
-	printf("free linked list\n");
 	if (node == NULL)
 		return ;
 	else
@@ -80,6 +79,9 @@ void	free_linkedlist(t_linkedlist *node)
 			prevnode = node;
 			node = node ->next;
 			free(prevnode);
+			prevnode = NULL;
 		}
+		free(prevnode);
+		prevnode = NULL;
 	}
 }

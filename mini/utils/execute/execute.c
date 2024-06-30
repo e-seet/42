@@ -106,6 +106,7 @@ void	free_ast(struct s_AST_Node **rootnode, struct s_AST_Node *original)
 		}
 	}
 	free(*rootnode);
+	*rootnode = NULL;
 }
 
 void	execute_syntax_tree(struct s_AST_Node *rootnode,
