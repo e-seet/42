@@ -1,6 +1,7 @@
 #include "../utils.h"
 
-void	execution_pwd(t_parameters *parameters, int fd, char *cwd)
+// this is in child program
+int	execution_pwd(t_parameters *parameters, int fd, char *cwd, t_mini *mini)
 {
 	if (parameters->file_out)
 	{
@@ -9,66 +10,78 @@ void	execution_pwd(t_parameters *parameters, int fd, char *cwd)
 		if (fd == -1)
 		{
 			perror(parameters->file_out);
-			exit(1);
+			return (5);
 		}
 		dup2(fd, STDOUT_FILENO);
 	}
 	if (parameters->writepipe)
 		dup2(parameters->pipewrite, STDOUT_FILENO);
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	if (getcwd(cwd, 4096) != NULL)
 	{
 		write(STDOUT_FILENO, cwd, strlen(cwd));
-		write(STDOUT_FILENO, "\n", 1);
 		free(cwd);
+		return (0);
 	}
 	else
 	{
 		perror("getcwd() error");
-		exit(1);
+		mini -> exit_status = 2;
+		return (2);
 	}
 }
 
 // parent to wait for child process
-void	execution_pwd_parent_wait(int wpid, int pid, char *cwd)
+void	execution_pwd_parent_wait(int pid, char *cwd, t_mini *mini)
 {
+	int	wpid;
+
+	wpid = 0;
 	while (wpid <= 0)
 	{
 		if (waitpid(pid, &wpid, 0) == -1)
 		{
 			perror("waitpid");
+			mini -> exit_status = 1;
 			break ;
 		}
+		else
+			mini -> exit_status = 0;
 	}
 	free(cwd);
+	if ((wpid & 0xFF) == 0)
+		mini->exit_status = (wpid >> 8) & 0xFF;
 }
 
 // double check this
-void	execute_pwd(t_parameters *parameters)
+// should process the child more
+
+// checking on which exit status to store
+// the child or the parent
+void	execute_pwd(t_parameters *parameters, t_mini *mini)
 {
 	pid_t	pid;
 	int		fd;
 	char	*cwd;
-	int		wpid;
+	int		result;
 
-	wpid = 0;
 	fd = 0;
-	cwd = ft_calloc(1024, sizeof(char));
+	cwd = ft_calloc(4096, sizeof(char));
 	pid = fork();
 	if (pid == 0)
 	{
-		execution_pwd(parameters, fd, cwd);
+		result = execution_pwd(parameters, fd, cwd, mini);
 		if (parameters->file_out && fd != STDOUT_FILENO)
 			close(fd);
+		exit(result);
 	}
 	else if (pid < 0)
 	{
 		perror("fork");
+		mini -> exit_status = 1;
 		free(cwd);
-		return ;
 	}
 	else
-		execution_pwd_parent_wait(wpid, pid, cwd);
-	return ;
+		execution_pwd_parent_wait(pid, cwd, mini);
 }
 
 // void updatepwd(struct s_minishell *t_minishell)

@@ -4,7 +4,7 @@ void	free_parameters(t_parameters *parameters)
 {
 	int	i;
 
-	printf("to check where i am doing freeing of parameters\n");
+	// printf("to check where i am doing freeing of parameters\n");
 	i = 0;
 	while (parameters->argc > i)
 	{

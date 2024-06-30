@@ -142,7 +142,7 @@ int	checkforexit(char *envp[])
 		else
 		{
             // Handle other commands
-            printf("You entered: %s\n", str);
+            // printf("You entered: %s\n", str);
 			mini -> str = str;
 			// if (ft_strncmp(str, "env", ft_strlen("env")) == 0)
 			// {
@@ -194,14 +194,14 @@ int	checkforexit(char *envp[])
 				
 				// set up signal
 
-				printf("lexical\n");
+				// printf("lexical\n");
 				node = lexical(str, mini);// this return a linked list
 				// // pass the linked list into the parser
 
-				printf("parsing\n");
+				// printf("parsing\n");
 				ast_node = breakcommandline(node);
 
-				printf("execution\n");
+				// printf("execution\n");
 				execute_syntax_tree(ast_node, parameters, mini);
 
 				// sigint

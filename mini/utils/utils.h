@@ -157,6 +157,7 @@ typedef struct s_mini			t_mini;
 
 // exit_status is for $?
 // exit_status -1 means not used / put inside yet.
+
 // execve:
 //  0 = success
 // -1 = failure
@@ -168,11 +169,14 @@ typedef struct s_mini			t_mini;
 // EINVAL (22): Invalid argument (typically indicates a problem with the executable format or other arguments).
 
 // $? numbers:
-// 0: Success.
-// 1: Typically used to indicate general errors or unspecified errors.
+// 0: Successful completion. Indicates that the command or script executed without errors.
+// 1: General error. This exit status is often used to indicate that a command or script encountered an unspecified error condition.
 // 2: Misuse of shell builtins (for example, incorrect syntax).
-// 126: Command invoked cannot execute (permission problem or not an executable).
-// 127: Command not found (typically because the command doesn't exist or is not executable).
+// 126: Command invoked cannot execute. This typically indicates a permission problem or a non-executable file being attempted to execute.
+// 127: Command not found. Indicates that the command invoked was not found in the search path or is not executable.
+// 128: Invalid argument to exit. This indicates that the exit command was used incorrectly.
+// 130: Script terminated by Control-C. This is the exit status returned when a script is terminated by the user pressing Ctrl+C.
+// 255: Exit status out of range. Indicates that the command or script encountered an exit status that was outside the allowable range of 0-255.
 
 // functions
 
@@ -337,7 +341,7 @@ int					init_command_internal(struct s_AST_Node *rootnode,
 void				execution2(t_parameters *parameters, t_mini *mini);
 
 // executionbuiltin.c
-void				execute_pwd(t_parameters *parameters);
+void				execute_pwd(t_parameters *parameters, t_mini *mini);
 // refer to setenv.c (exporting/ set env)
 // refer to unsetenv.c (unset env)
 // executioncd.c

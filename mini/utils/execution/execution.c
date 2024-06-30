@@ -109,7 +109,7 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 	// pwd
 	else if (ft_strncmp(parameters->argv[0], "pwd", ft_strlen("pwd")) == 0)
 	{
-		execute_pwd(parameters);
+		execute_pwd(parameters, mini);
 		return (1);
 	}
 	// // export

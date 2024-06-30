@@ -60,7 +60,7 @@ void setsignals(int sig)
 	// setuo
 	if (sig == 0)
 	{
-		printf("set up mini || in minishell\n");
+		// printf("set up mini || in minishell\n");
 		// printf("crtl c is clear line\n");
 		// printf("crtl d is to core dump\n");
 		sa1.sa_flags = 0;

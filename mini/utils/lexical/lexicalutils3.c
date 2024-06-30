@@ -62,7 +62,7 @@ void	create_node(t_linkedlist **node, char *str, int i, int strlen)
 		(*node)->data[start] = str[(i) + start];
 		start ++;
 	}
-	printf("the data:%s, %p\n", (*node)->data, (*node));
+	// printf("the data:%s, %p\n", (*node)->data, (*node));
 	move_to_nextnode(node);
 }
 
