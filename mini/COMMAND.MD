@@ -70,3 +70,6 @@ env
 ## Some others
 
 to do
+
+## By Aqil
+unset PATH, to test if built-ins can still be used or not
