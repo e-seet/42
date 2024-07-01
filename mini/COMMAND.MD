@@ -70,3 +70,6 @@ env
 ## Some others
 
 to do
+
+## By Aqil
+unset PATH, to test if common commands can still be used or not
