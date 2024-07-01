@@ -72,4 +72,4 @@ env
 to do
 
 ## By Aqil
-unset PATH, to test if built-ins can still be used or not
+unset PATH, to test if common commands can still be used or not
