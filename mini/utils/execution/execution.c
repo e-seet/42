@@ -12,7 +12,7 @@ int	executeprocess_child(t_parameters *parameters, t_mini *mini)
 	{
 		perror("Access Path not found. Should free properly\n");
 		free(mini->path);
-		exit (0);
+		return (5);
 	}
 	result = execve(mini->path, parameters->argv, mini->envp);
 	if (result == -1)
@@ -22,7 +22,6 @@ int	executeprocess_child(t_parameters *parameters, t_mini *mini)
 		printf("Command not found: \'%s\'\n", parameters->argv[0]);
 		// mini->exit_status = 1;
 		return (1);
-		exit(1);
 	}
 	else
 		// mini->exit_status = result;
@@ -41,15 +40,35 @@ int	executeprocess_child(t_parameters *parameters, t_mini *mini)
 // Environment variables
 // (execve("/bin/ls", argv, envp) == -1) 
 
+void	executeprocess_parent_wait(int *pid, t_mini *mini)
+{
+	int	wpid;
+
+	wpid = 0;
+	// wait till the process has not finished
+	while (wpid <= 0)
+	{
+		if (waitpid(*pid, &wpid, 0) == -1)
+		{
+			mini -> exit_status = 1;
+			break ;
+		}
+		else
+			mini -> exit_status = 0;
+	}
+	if ((wpid & 0xFF) == 0)
+		mini->exit_status = (wpid >> 8) & 0xFF;
+}
+
 // to test execve. Not done testing
 void	executeprocess(t_parameters *parameters, int *pid, t_mini *mini)
 {
+	int	child_exit_code;
+
 	if ((*pid) == 0)
 	{
-		if (executeprocess_child(parameters, mini) == -1)
-			mini->exit_status = 1;
-		else
-			mini->exit_status = 0;
+		child_exit_code = executeprocess_child(parameters, mini);
+		exit(child_exit_code);
 	}
 	else if ((*pid) < 0)
 	{
@@ -58,12 +77,7 @@ void	executeprocess(t_parameters *parameters, int *pid, t_mini *mini)
 	}
 	if (!parameters->async)
 	{
-		// wait till the process has not finished
-		while (waitpid(*pid, NULL, 0) <= 0)
-		{
-			continue ;
-		}
-		printf("\n");
+		executeprocess_parent_wait(pid, mini);
 	}
 }
 
@@ -75,7 +89,7 @@ void	execute_echo(t_parameters *parameters, t_mini *mini)
 	char	*str;
 
 	str = calloc(1, sizeof(char));
-	str[0] = '\0';	
+	str[0] = '\0';
 	i = 1;
 	if (ft_strncmp(parameters->argv[1], "-n", ft_strlen("-n")) == 0)
 		i = 2;
@@ -84,9 +98,10 @@ void	execute_echo(t_parameters *parameters, t_mini *mini)
 		str = ft_strjoin(str, parameters->argv[i]);
 		i ++;
 	}
-	ft_putstr_fd(str, STDOUT_FILENO);
 	if (ft_strncmp(parameters->argv[1], "-n", ft_strlen("-n")) == 0)
-		ft_putstr_fd("\n", STDOUT_FILENO);
+		ft_putstr_fd(str, STDOUT_FILENO);
+	else
+		ft_putstr_fd(ft_strjoin(str, "\n"), STDOUT_FILENO);
 	mini->exit_status = 0;
 }
 
@@ -94,25 +109,21 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 {
 	if (parameters->argc < 0)
 		return (1);
-	// echo
-	else if (ft_strncmp(parameters->argv[0], "cd", ft_strlen("echo")) == 0)
+	else if (ft_strncmp(parameters->argv[0], "echo", ft_strlen("echo")) == 0)
 	{
 		execute_echo(parameters, mini);
 		return (1);
 	}
-	// cd
 	else if (ft_strncmp(parameters->argv[0], "cd", ft_strlen("cd")) == 0)
 	{
 		execute_cd(parameters, mini);
 		return (1);
 	}
-	// pwd
 	else if (ft_strncmp(parameters->argv[0], "pwd", ft_strlen("pwd")) == 0)
 	{
 		execute_pwd(parameters, mini);
 		return (1);
 	}
-	// // export
 	// No input / output reditection
 	// no pipes
 	else if (ft_strncmp(parameters->argv[0], "export",
@@ -121,7 +132,6 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 		exportstr(mini);
 		return (1);
 	}
-	// unset
 	// No input / output reditection
 	// no pipes
 	else if (ft_strncmp(parameters->argv[0], "unset", ft_strlen("unset")) == 0)
@@ -129,7 +139,6 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 		unsetmyenv(mini);
 		return (1);
 	}
-	// // env
 	// No input / output reditection
 	// no pipes
 	else if (ft_strncmp(parameters->argv[0], "env", ft_strlen("env")) == 0)
@@ -137,7 +146,6 @@ int	builtincommand(t_parameters *parameters, t_mini *mini)
 		printenv(mini);
 		return (1);
 	}
-	// exit
 	else if (strcmp(parameters->argv[0], "exit") == 0)
 	{
 		// to free stuff first

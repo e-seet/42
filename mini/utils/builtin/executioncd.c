@@ -119,8 +119,8 @@ void	execute_cd(t_parameters *parameters, t_mini *mini)
 	char	*currpwd;
 
 	envvariable = NULL;
-	currpwd = ft_calloc(1024, sizeof(char));
-	currpwd = getcwd(currpwd, 1024);
+	currpwd = ft_calloc(4096, sizeof(char));
+	currpwd = getcwd(currpwd, 4096);
 	if (parameters->argc == 1)
 		execute_cd_argc1(envvariable, mini, currpwd);
 	else if (parameters->argc > 2)

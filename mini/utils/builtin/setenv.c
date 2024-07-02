@@ -1,3 +1,4 @@
+// to do: exit status for set and unset variables
 #include "../utils.h"
 
 void	printenv(t_mini *mini)
@@ -11,6 +12,7 @@ void	printenv(t_mini *mini)
 		printf("%s\n", mini->envp[i]);
 		i++;
 	}
+	mini->exit_status = 0;
 }
 
 // copy the env over
@@ -81,6 +83,7 @@ void	updateenvvariable_set(t_mini *mini, char *str)
 		mini->envplen = mini->envplen + 1;
 	}
 	mini->envp = newenvp;
+	mini->exit_status = 0;
 }
 
 // // dont over write if it exist 

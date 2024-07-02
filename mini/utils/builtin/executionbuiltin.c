@@ -18,7 +18,7 @@ int	execution_pwd(t_parameters *parameters, int fd, char *cwd, t_mini *mini)
 		dup2(parameters->pipewrite, STDOUT_FILENO);
 	if (getcwd(cwd, 4096) != NULL)
 	{
-		write(STDOUT_FILENO, cwd, strlen(cwd));
+		write(STDOUT_FILENO, ft_strjoin(cwd, "\n"), strlen(cwd) + 1);
 		free(cwd);
 		return (0);
 	}
@@ -40,7 +40,6 @@ void	execution_pwd_parent_wait(int pid, char *cwd, t_mini *mini)
 	{
 		if (waitpid(pid, &wpid, 0) == -1)
 		{
-			perror("waitpid");
 			mini -> exit_status = 1;
 			break ;
 		}

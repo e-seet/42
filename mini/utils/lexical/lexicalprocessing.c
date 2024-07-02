@@ -96,12 +96,14 @@ void	lexicalprocess(t_linkedlist *original, t_mini *mini)
 	char			*strip;
 
 	node = original;
-	while (node)
+	while (node != NULL)
 	{
 		strip = ft_calloc(ft_strlen(original->data) + 1, sizeof(char));
-		strip_quotes(original->data, strip, mini);
-		free(original->data);
-		original->data = strip;
+		strip_quotes(node->data, strip, mini);
+		free(node->data);
+		node->data = strip;
 		node = node -> next;
+		if (node -> next == NULL)
+			break ;
 	}
 }

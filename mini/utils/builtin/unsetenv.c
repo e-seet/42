@@ -87,4 +87,5 @@ void	unsetmyenv(t_mini *mini)
 	if (!strs[1])
 		perror("missing variable name\n");
 	updateenvvariable_unset(mini, strs);
+	mini->exit_status = 0;
 }
